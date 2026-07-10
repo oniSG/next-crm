@@ -1,0 +1,80 @@
+"use client";
+
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
+
+export type AreaChartCardProps = {
+  title: string;
+  description?: string;
+  data: object[];
+  config: ChartConfig;
+  categoryKey: string;
+  series: string[];
+  stacked?: boolean;
+  className?: string;
+};
+
+export function AreaChartCard({
+  title,
+  description,
+  data,
+  config,
+  categoryKey,
+  series,
+  stacked = true,
+  className,
+}: AreaChartCardProps) {
+  return (
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={config} className="max-h-75 w-full">
+          <AreaChart
+            accessibilityLayer
+            data={data}
+            margin={{ left: 12, right: 12 }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey={categoryKey}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            {series.map((key) => (
+              <Area
+                key={key}
+                dataKey={key}
+                type="monotone"
+                stackId={stacked ? "a" : undefined}
+                stroke={`var(--color-${key})`}
+                fill={`var(--color-${key})`}
+                fillOpacity={0.4}
+              />
+            ))}
+          </AreaChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
+  );
+}
