@@ -15,3 +15,21 @@ export const EMAIL_STATS_CHART_CONFIG = {
     otevreno: { label: 'Otevřeno', color: 'var(--chart-2)' },
     kliknuto: { label: 'Kliknuto', color: 'var(--chart-3)' },
 } satisfies ChartConfig
+
+export const EMAIL_DELIVERY_BY_MONTH = [
+    { month: 'Led', doruceno: 8200, nedoruceno: 320, hardBounce: 85, softBounce: 120, spam: 45 },
+    { month: 'Úno', doruceno: 7650, nedoruceno: 290, hardBounce: 72, softBounce: 105, spam: 38 },
+    { month: 'Bře', doruceno: 8910, nedoruceno: 340, hardBounce: 95, softBounce: 138, spam: 52 },
+    { month: 'Dub', doruceno: 8480, nedoruceno: 310, hardBounce: 88, softBounce: 125, spam: 41 },
+    { month: 'Kvě', doruceno: 9420, nedoruceno: 365, hardBounce: 102, softBounce: 148, spam: 55 },
+    { month: 'Čer', doruceno: 9980, nedoruceno: 385, hardBounce: 110, softBounce: 155, spam: 48 },
+    { month: 'Čvc', doruceno: 10620, nedoruceno: 410, hardBounce: 118, softBounce: 162, spam: 60 },
+]
+
+export const EMAIL_DELIVERY_CHART_CONFIG = {
+    doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-2)' },
+    hardBounce: { label: 'Hard bounce', color: 'var(--chart-3)' },
+    softBounce: { label: 'Soft bounce', color: 'var(--chart-4)' },
+    spam: { label: 'Spam', color: 'var(--destructive)' },
+} satisfies ChartConfig
