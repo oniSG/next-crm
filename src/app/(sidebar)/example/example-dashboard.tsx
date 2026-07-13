@@ -27,6 +27,7 @@ import {
     VISITS_BY_DAY,
     VISITS_CHART_CONFIG,
 } from './data'
+import InfoSheet from '@/components/custom/other/info-sheet'
 
 export function ExampleDashboard() {
     return (
@@ -46,6 +47,19 @@ export function ExampleDashboard() {
                     categoryKey="month"
                     series={['desktop', 'mobile']}
                     className="lg:col-span-2"
+                    action={
+                        <InfoSheet>
+                            <h2>What is kpi card?</h2>
+                            <p>
+                                The KPI card is a component that displays key performance
+                                indicators (KPIs) in a concise and visually appealing
+                                manner. It typically includes a label, value, delta
+                                (change), and trend indicator to provide insights into the
+                                performance of a specific metric.
+                            </p>
+                            <p>Add more...</p>
+                        </InfoSheet>
+                    }
                 />
                 <PieChartCard
                     title="Customer Segments"

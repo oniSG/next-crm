@@ -4,6 +4,7 @@ import { Bar, BarChart, CartesianGrid, LabelList } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -17,6 +18,7 @@ import {
 } from '@/components/ui/chart'
 
 export type NegativeBarChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: object[]
@@ -29,6 +31,7 @@ export type NegativeBarChartCardProps = {
 }
 
 export function NegativeBarChartCard({
+    action,
     title,
     description,
     data,
@@ -52,6 +55,7 @@ export function NegativeBarChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
                 <ChartContainer config={config} className="max-h-75 w-full">

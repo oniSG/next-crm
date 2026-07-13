@@ -4,6 +4,7 @@ import { Pie, PieChart } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/chart'
 
 export type PieChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: { name: string; value: number; fill: string }[]
@@ -27,6 +29,7 @@ export type PieChartCardProps = {
 }
 
 export function PieChartCard({
+    action,
     title,
     description,
     data,
@@ -38,6 +41,7 @@ export function PieChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
                 <ChartContainer

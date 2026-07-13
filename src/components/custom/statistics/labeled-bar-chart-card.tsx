@@ -4,6 +4,7 @@ import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -17,6 +18,7 @@ import {
 } from '@/components/ui/chart'
 
 export type LabeledBarChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: object[]
@@ -27,6 +29,7 @@ export type LabeledBarChartCardProps = {
 }
 
 export function LabeledBarChartCard({
+    action,
     title,
     description,
     data,
@@ -40,6 +43,7 @@ export function LabeledBarChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
                 <ChartContainer config={config} className="max-h-75 w-full">

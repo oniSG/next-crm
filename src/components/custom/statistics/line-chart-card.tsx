@@ -4,6 +4,7 @@ import { CartesianGrid, Line, LineChart, XAxis } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/chart'
 
 export type LineChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: object[]
@@ -29,6 +31,7 @@ export type LineChartCardProps = {
 }
 
 export function LineChartCard({
+    action,
     title,
     description,
     data,
@@ -42,6 +45,7 @@ export function LineChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent className="flex flex-1 flex-col">
                 <ChartContainer

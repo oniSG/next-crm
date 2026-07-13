@@ -4,6 +4,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/chart'
 
 export type AreaChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: object[]
@@ -30,6 +32,7 @@ export type AreaChartCardProps = {
 }
 
 export function AreaChartCard({
+    action,
     title,
     description,
     data,
@@ -44,6 +47,7 @@ export function AreaChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent className="flex flex-1 flex-col">
                 <ChartContainer

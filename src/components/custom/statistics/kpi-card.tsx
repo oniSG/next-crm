@@ -2,6 +2,7 @@ import { TrendingDown, TrendingUp } from 'lucide-react'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -14,9 +15,10 @@ export type KpiCardProps = {
     delta: string
     hint?: string
     trend: 'up' | 'down'
+    action?: React.ReactNode
 }
 
-export function KpiCard({ label, value, delta, hint, trend }: KpiCardProps) {
+export function KpiCard({ label, value, delta, hint, trend, action }: KpiCardProps) {
     const TrendIcon = trend === 'up' ? TrendingUp : TrendingDown
     const trendColor = trend === 'up' ? 'text-chart-1' : 'text-chart-3'
 
@@ -25,6 +27,7 @@ export function KpiCard({ label, value, delta, hint, trend }: KpiCardProps) {
             <CardHeader>
                 <CardDescription>{label}</CardDescription>
                 <CardTitle className="text-2xl">{value}</CardTitle>
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
                 <div className="flex items-center gap-1.5 text-xs">

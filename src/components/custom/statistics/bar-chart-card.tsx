@@ -4,6 +4,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/chart'
 
 export type BarChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: object[]
@@ -48,6 +50,7 @@ function getBarRadius(
 }
 
 export function BarChartCard({
+    action,
     title,
     description,
     data,
@@ -65,6 +68,7 @@ export function BarChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
                 <ChartContainer config={config} className="max-h-75 w-full">

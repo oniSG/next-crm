@@ -4,6 +4,7 @@ import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from 'recharts'
 
 import {
     Card,
+    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -19,6 +20,7 @@ import {
 } from '@/components/ui/chart'
 
 export type RadarChartCardProps = {
+    action?: React.ReactNode
     title: string
     description?: string
     data: object[]
@@ -29,6 +31,7 @@ export type RadarChartCardProps = {
 }
 
 export function RadarChartCard({
+    action,
     title,
     description,
     data,
@@ -42,6 +45,7 @@ export function RadarChartCard({
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
                 <ChartContainer

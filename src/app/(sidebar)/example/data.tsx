@@ -1,5 +1,6 @@
 import type { ChartConfig } from '@/components/ui/chart'
 import type { TypeFilterOption } from '@/components/custom/filters/type-filter'
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 
 export const SEGMENT_OPTIONS: TypeFilterOption[] = [
     { value: 'all', label: 'All segments' },
@@ -16,6 +17,14 @@ export const KPIS = [
         delta: '+10.1%',
         hint: 'vs. last month',
         trend: 'up' as const,
+        action: (
+            <InfoTooltip>
+                The KPI card is a component that displays key performance indicators
+                (KPIs) in a concise and visually appealing manner. It typically includes a
+                label, value, delta (change), and trend indicator to provide insights into
+                the performance of a specific metric.
+            </InfoTooltip>
+        ),
     },
     {
         label: 'Active Customers',
