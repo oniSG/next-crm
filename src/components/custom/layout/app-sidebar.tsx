@@ -156,17 +156,32 @@ const businessGroups: NavGroup[] = [
                 url: '#',
                 icon: <ChartBarIcon />,
                 items: [
-                    { title: 'Opportunities filter', url: '/report-filter-business-case' },
-                    { title: 'Free spaces filter', url: '/report-free-advertising-spaces' },
-                    { title: 'Occupied spaces filter', url: '/report-occupied-advertising-spaces' },
+                    {
+                        title: 'Opportunities filter',
+                        url: '/report-filter-business-case',
+                    },
+                    {
+                        title: 'Free spaces filter',
+                        url: '/report-free-advertising-spaces',
+                    },
+                    {
+                        title: 'Occupied spaces filter',
+                        url: '/report-occupied-advertising-spaces',
+                    },
                     { title: 'Sales funnel', url: '/report-sales-funnel' },
                     { title: 'Sales development', url: '/report-sales-development' },
                     { title: 'Sales by product', url: '/report-sales-by-product' },
                     { title: 'Sales by merchant', url: '/report-sales-by-merchant' },
                     { title: 'Success by merchant', url: '/report-success-by-merchant' },
                     { title: 'Number of cases', url: '/report-number-of-cases' },
-                    { title: 'Number of activities', url: '/report-number-of-activities' },
-                    { title: 'Profitability of cases', url: '/report-profitability-of-cases' },
+                    {
+                        title: 'Number of activities',
+                        url: '/report-number-of-activities',
+                    },
+                    {
+                        title: 'Profitability of cases',
+                        url: '/report-profitability-of-cases',
+                    },
                     { title: 'Profit development', url: '/report-profit-development' },
                     { title: 'Invoicing', url: '/report-invoice' },
                     { title: 'Management report', url: '/report-management' },

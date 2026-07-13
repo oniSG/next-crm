@@ -47,10 +47,7 @@ function CollapsibleNavItem({ item }: { item: NavItem }) {
         >
             <CollapsibleTrigger
                 render={
-                    <SidebarMenuButton
-                        tooltip={item.title}
-                        isActive={item.isActive}
-                    />
+                    <SidebarMenuButton tooltip={item.title} isActive={item.isActive} />
                 }
             >
                 {item.icon}
@@ -75,13 +72,7 @@ function CollapsibleNavItem({ item }: { item: NavItem }) {
     )
 }
 
-export function NavMain({
-    label,
-    items,
-}: {
-    label?: string
-    items: NavItem[]
-}) {
+export function NavMain({ label, items }: { label?: string; items: NavItem[] }) {
     return (
         <SidebarGroup>
             {label ? <SidebarGroupLabel>{label}</SidebarGroupLabel> : null}

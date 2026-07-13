@@ -45,7 +45,7 @@ export function PrintShell({ title, description, body }: PrintPageSettings) {
     const year = now.getFullYear()
 
     return (
-        <div className="font-sans mx-auto flex min-h-svh w-full max-w-6xl flex-col px-10 py-12">
+        <div className="mx-auto flex min-h-svh w-full max-w-6xl flex-col px-10 py-12 font-sans">
             <header className="mb-16">
                 <div className="mb-14 flex items-start justify-between">
                     <TenantMark />

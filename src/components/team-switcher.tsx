@@ -76,7 +76,9 @@ export function TeamSwitcher({
                                         {team.logo}
                                     </div>
                                     {team.name}
-                                    <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                                    <DropdownMenuShortcut>
+                                        ⌘{index + 1}
+                                    </DropdownMenuShortcut>
                                 </DropdownMenuItem>
                             ))}
                         </DropdownMenuGroup>
