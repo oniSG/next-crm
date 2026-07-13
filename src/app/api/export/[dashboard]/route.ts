@@ -12,6 +12,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled_notifikacni_listy',
     'vernostni_program',
     'stats_email',
+    'stats_sms',
 ])
 
 const VIEWPORT_WIDTH = 1280
