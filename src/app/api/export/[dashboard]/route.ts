@@ -15,6 +15,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'stats_sms',
     'stats_push',
     'stats_popup',
+    'stats_notify_listy',
 ])
 
 const VIEWPORT_WIDTH = 1280
