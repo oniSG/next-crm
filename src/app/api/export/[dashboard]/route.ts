@@ -13,6 +13,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'vernostni_program',
     'stats_email',
     'stats_sms',
+    'stats_push',
 ])
 
 const VIEWPORT_WIDTH = 1280
