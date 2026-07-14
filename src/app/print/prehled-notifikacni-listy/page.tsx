@@ -1,4 +1,4 @@
-import { PrehledNotifikacniListy } from '@/app/(sidebar)/prehled_notifikacni_listy/prehled_notifikacni_listy'
+import { PrehledNotifikacniListy } from '@/app/(sidebar)/prehled-notifikacni-listy/prehled-notifikacni-listy'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 

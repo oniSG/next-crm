@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Přehled notifikační lišty',
-        path: '/prehled_notifikacni_listy',
+        path: '/prehled-notifikacni-listy',
         status: 'progress',
         by: 'Tomas',
     },

@@ -6,10 +6,7 @@ export const maxDuration = 60
 
 const ALLOWED_DASHBOARDS = new Set([
     'example',
-    'prehled_emailu',
-    'prehled_push',
-    'prehled_popup',
-    'prehled_notifikacni_listy',
+    'prehled-notifikacni-listy',
 ])
 
 const VIEWPORT_WIDTH = 1280
