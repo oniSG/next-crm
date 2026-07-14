@@ -1,4 +1,4 @@
-import { PrehledPush } from '@/app/(sidebar)/prehled_push/prehled_push'
+import { PrehledPush } from '@/app/(sidebar)/prehled-push/prehled_push'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
