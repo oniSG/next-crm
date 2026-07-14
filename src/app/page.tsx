@@ -10,6 +10,12 @@ const pages: {
         status: 'progress',
         by: 'Denis',
     },
+    {
+        name: 'Přehled notifikační lišty',
+        path: '/prehled_notifikacni_listy',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
