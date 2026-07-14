@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { StatsEmail } from './stats_email'
+import { StatsEmail } from './stats-email'
 
 export default function Page() {
     return (

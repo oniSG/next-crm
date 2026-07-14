@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Stats Email',
-        path: '/stats_email',
+        path: '/stats-email',
         status: 'progress',
         by: 'Tomas',
     },

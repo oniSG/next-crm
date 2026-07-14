@@ -1,4 +1,4 @@
-import { StatsEmail } from '@/app/(sidebar)/stats_email/stats_email'
+import { StatsEmail } from '@/app/(sidebar)/stats-email/stats-email'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
