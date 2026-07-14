@@ -7,6 +7,7 @@ export const maxDuration = 60
 const ALLOWED_DASHBOARDS = new Set([
     'example',
     'stats-push',
+    'stats-sms',
 ])
 
 const VIEWPORT_WIDTH = 1280
