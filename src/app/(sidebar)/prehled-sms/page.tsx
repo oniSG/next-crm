@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { PrehledSms } from './prehled_sms'
+import { PrehledSms } from './prehled-sms'
 
 export default function Page() {
     return (
