@@ -1,4 +1,4 @@
-import { PrehledEmailu } from '@/app/(sidebar)/prehled_emailu/prehled_emailu'
+import { PrehledEmailu } from '@/app/(sidebar)/prehled-emailu/prehled_emailu'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 

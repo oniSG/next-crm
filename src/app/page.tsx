@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Přehled emailu',
-        path: '/prehled_emailu',
+        path: '/prehled-emailu',
         status: 'progress',
         by: 'Tomas',
     },
