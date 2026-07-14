@@ -10,6 +10,12 @@ const pages: {
         status: 'progress',
         by: 'Denis',
     },
+    {
+        name: 'Věrnostní program',
+        path: '/vernostni_program',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
