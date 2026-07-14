@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Stats Popup',
-        path: '/stats_popup',
+        path: '/stats-popup',
         status: 'progress',
         by: 'Tomas',
     },

@@ -1,4 +1,4 @@
-import { StatsPopup } from '@/app/(sidebar)/stats_popup/stats_popup'
+import { StatsPopup } from '@/app/(sidebar)/stats-popup/stats-popup'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 

@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { StatsPopup } from './stats_popup'
+import { StatsPopup } from './stats-popup'
 
 export default function Page() {
     return (
