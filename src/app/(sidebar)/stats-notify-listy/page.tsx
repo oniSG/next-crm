@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { StatsNotifyListy } from './stats_notify_listy'
+import { StatsNotifyListy } from './stats-notify-listy'
 
 export default function Page() {
     return (

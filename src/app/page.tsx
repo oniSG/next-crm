@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Stats Notification Bar',
-        path: '/stats_notify_listy',
+        path: '/stats-notify-listy',
         status: 'progress',
         by: 'Denis',
     },

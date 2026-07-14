@@ -1,4 +1,4 @@
-import { StatsNotifyListy } from '@/app/(sidebar)/stats_notify_listy/stats_notify_listy'
+import { StatsNotifyListy } from '@/app/(sidebar)/stats-notify-listy/stats-notify-listy'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
