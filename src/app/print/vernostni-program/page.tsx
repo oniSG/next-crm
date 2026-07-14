@@ -1,4 +1,4 @@
-import { VernostniProgram } from '@/app/(sidebar)/vernostni-program/vernostni_program'
+import { VernostniProgram } from '@/app/(sidebar)/vernostni-program/vernostni-program'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 

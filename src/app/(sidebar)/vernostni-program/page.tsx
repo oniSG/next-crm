@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { VernostniProgram } from './vernostni_program'
+import { VernostniProgram } from './vernostni-program'
 
 export default function Page() {
     return (
