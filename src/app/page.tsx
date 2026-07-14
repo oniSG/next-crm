@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Věrnostní program',
-        path: '/vernostni_program',
+        path: '/vernostni-program',
         status: 'progress',
         by: 'Tomas',
     },

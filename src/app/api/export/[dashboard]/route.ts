@@ -4,14 +4,7 @@ import puppeteer from 'puppeteer'
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
-const ALLOWED_DASHBOARDS = new Set([
-    'example',
-    'prehled_emailu',
-    'prehled_push',
-    'prehled_popup',
-    'prehled_notifikacni_listy',
-    'vernostni_program',
-])
+const ALLOWED_DASHBOARDS = new Set(['example', 'vernostni-program'])
 
 const VIEWPORT_WIDTH = 1280
 const VIEWPORT_HEIGHT = 800
