@@ -28,6 +28,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Stats Email',
+        path: '/stats-email',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
