@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Přehled SMS',
-        path: '/prehled_sms',
+        path: '/prehled-sms',
         status: 'progress',
         by: 'Tomas',
     },
