@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Přehled push',
-        path: '/prehled_push',
+        path: '/prehled-push',
         status: 'progress',
         by: 'Tomas',
     },
