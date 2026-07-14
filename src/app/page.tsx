@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Přehled popup',
-        path: '/prehled_popup',
+        path: '/prehled-popup',
         status: 'progress',
         by: 'Tomas',
     },

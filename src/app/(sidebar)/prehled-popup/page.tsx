@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { PrehledPopup } from './prehled_popup'
+import { PrehledPopup } from './prehled-popup'
 
 export default function Page() {
     return (

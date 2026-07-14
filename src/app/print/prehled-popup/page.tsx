@@ -1,4 +1,4 @@
-import { PrehledPopup } from '@/app/(sidebar)/prehled_popup/prehled_popup'
+import { PrehledPopup } from '@/app/(sidebar)/prehled-popup/prehled-popup'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
