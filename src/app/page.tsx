@@ -11,6 +11,8 @@ const pages: {
         by: 'Denis',
     },
     {
+        name: 'Stats Push',
+        path: '/stats-push',
         name: 'Stats SMS',
         path: '/stats-sms',
         status: 'progress',
