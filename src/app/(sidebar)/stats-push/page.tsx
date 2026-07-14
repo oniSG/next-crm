@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { StatsPush } from './stats_push'
+import { StatsPush } from './stats-push'
 
 export default function Page() {
     return (

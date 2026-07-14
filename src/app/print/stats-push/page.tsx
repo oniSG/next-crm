@@ -1,4 +1,4 @@
-import { StatsPush } from '@/app/(sidebar)/stats_push/stats_push'
+import { StatsPush } from '@/app/(sidebar)/stats-push/stats-push'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 

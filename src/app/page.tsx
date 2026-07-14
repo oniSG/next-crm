@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Stats Push',
-        path: '/stats_push',
+        path: '/stats-push',
         status: 'progress',
         by: 'Tomas',
     },
