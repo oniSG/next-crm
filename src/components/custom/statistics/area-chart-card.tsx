@@ -1,6 +1,6 @@
 'use client'
 
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
     Card,
@@ -57,11 +57,16 @@ export function AreaChartCard({
                     <AreaChart
                         accessibilityLayer
                         data={data}
-                        margin={{ left: 12, right: 12 }}
+                        margin={{ left: 0, right: 12 }}
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey={categoryKey}
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                        />
+                        <YAxis
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
