@@ -10,6 +10,12 @@ const pages: {
         status: 'progress',
         by: 'Denis',
     },
+    {
+        name: 'Stats Email',
+        path: '/stats_email',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
