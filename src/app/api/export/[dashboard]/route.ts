@@ -16,6 +16,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-popup',
     'prehled-push',
     'prehled-sms',
+    'vernostni-program',
 ])
 
 const VIEWPORT_WIDTH = 1280
