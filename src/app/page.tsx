@@ -40,6 +40,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Stats Notification Bar',
+        path: '/stats-notify-listy',
+        status: 'progress',
+        by: 'Denis',
+    },
 ]
 
 export default function Page() {

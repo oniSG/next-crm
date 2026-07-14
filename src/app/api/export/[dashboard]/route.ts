@@ -11,6 +11,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'stats-popup',
     'stats-email',
     'prehled-emailu',
+    'stats-notify-listy',
 ])
 
 const VIEWPORT_WIDTH = 1280
