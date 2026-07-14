@@ -13,8 +13,18 @@ const pages: {
     {
         name: 'Stats Push',
         path: '/stats-push',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
         name: 'Stats SMS',
         path: '/stats-sms',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
+        name: 'Stats Popup',
+        path: '/stats-popup',
         status: 'progress',
         by: 'Tomas',
     },
