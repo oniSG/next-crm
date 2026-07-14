@@ -58,6 +58,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Přehled push',
+        path: '/prehled-push',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
