@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { StatsSms } from './stats_sms'
+import { StatsSms } from './stats-sms'
 
 export default function Page() {
     return (

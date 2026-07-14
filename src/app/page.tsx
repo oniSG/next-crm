@@ -12,7 +12,7 @@ const pages: {
     },
     {
         name: 'Stats SMS',
-        path: '/stats_sms',
+        path: '/stats-sms',
         status: 'progress',
         by: 'Tomas',
     },

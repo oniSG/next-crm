@@ -1,4 +1,4 @@
-import { StatsSms } from '@/app/(sidebar)/stats_sms/stats_sms'
+import { StatsSms } from '@/app/(sidebar)/stats-sms/stats-sms'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
