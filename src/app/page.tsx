@@ -10,6 +10,12 @@ const pages: {
         status: 'progress',
         by: 'Denis',
     },
+    {
+        name: 'Přehled SMS',
+        path: '/prehled_sms',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
