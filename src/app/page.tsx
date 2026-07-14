@@ -10,6 +10,12 @@ const pages: {
         status: 'progress',
         by: 'Denis',
     },
+    {
+        name: 'Stats Notification Bar',
+        path: '/stats_notify_listy',
+        status: 'progress',
+        by: 'Denis',
+    },
 ]
 
 export default function Page() {
