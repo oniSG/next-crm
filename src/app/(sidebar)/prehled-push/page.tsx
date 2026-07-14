@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { PageActions } from './page-actions'
-import { PrehledPush } from './prehled_push'
+import { PrehledPush } from './prehled-push'
 
 export default function Page() {
     return (
