@@ -35,7 +35,7 @@ export function DataTable<TData>({
     })
 
     return (
-        <div className="min-w-0 flex-1 overflow-auto overscroll-contain">
+        <div className="min-w-0 flex-1 overflow-auto overscroll-none">
             <Table containerClassName="">
                 <TableHeader className="[&_tr]:border-b-0">
                     {table.getHeaderGroups().map((headerGroup) => (
