@@ -43,7 +43,7 @@ export function DataTable<TData>({
                             {headerGroup.headers.map((header) => (
                                 <TableHead
                                     key={header.id}
-                                    className="bg-background sticky top-0 z-10 shadow-[inset_0_-1px_0_var(--border)]"
+                                    className="bg-background sticky top-0 z-10 border-r last:border-r-0 shadow-[inset_0_-1px_0_var(--border)]"
                                 >
                                     {header.isPlaceholder
                                         ? null
@@ -70,7 +70,10 @@ export function DataTable<TData>({
                         table.getRowModel().rows.map((row) => (
                             <TableRow key={row.id}>
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell
+                                        key={cell.id}
+                                        className="border-r last:border-r-0"
+                                    >
                                         {flexRender(
                                             cell.column.columnDef.cell,
                                             cell.getContext(),
