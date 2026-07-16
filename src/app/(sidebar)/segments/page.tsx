@@ -6,9 +6,9 @@ import { segments } from './data'
 
 export default function Page() {
     return (
-        <>
+        <div className="flex h-svh flex-col">
             <PageHeader breadcrumbs={[{ label: 'Segmenty' }]} />
             <DataTable data={segments} columns={columns} />
-        </>
+        </div>
     )
 }
