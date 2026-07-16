@@ -16,12 +16,17 @@ import {
     TableRow,
 } from '@/components/ui/table'
 
-type SegmentsTableProps<TData> = {
+type DataTableProps<TData> = {
     data: TData[]
     columns: ColumnDef<TData>[]
+    emptyMessage?: string
 }
 
-export function SegmentsTable<TData>({ data, columns }: SegmentsTableProps<TData>) {
+export function DataTable<TData>({
+    data,
+    columns,
+    emptyMessage = 'Žádné výsledky.',
+}: DataTableProps<TData>) {
     // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data,
@@ -54,7 +59,7 @@ export function SegmentsTable<TData>({ data, columns }: SegmentsTableProps<TData
                             colSpan={columns.length}
                             className="text-muted-foreground h-24 text-center"
                         >
-                            Žádné výsledky.
+                            {emptyMessage}
                         </TableCell>
                     </TableRow>
                 ) : (
