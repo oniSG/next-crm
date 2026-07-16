@@ -23,6 +23,7 @@ import { ChevronRightIcon } from 'lucide-react'
 export type NavSubItem = {
     title: string
     url: string
+    icon?: React.ReactNode
     isActive?: boolean
 }
 
@@ -62,6 +63,7 @@ function CollapsibleNavItem({ item }: { item: NavItem }) {
                                 isActive={subItem.isActive}
                                 render={<Link href={subItem.url} />}
                             >
+                                {subItem.icon}
                                 <span>{subItem.title}</span>
                             </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
