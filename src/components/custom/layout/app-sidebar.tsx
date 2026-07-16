@@ -58,8 +58,8 @@ const fansGroups: NavGroup[] = [
         items: [
             { title: 'Dashboard', url: '/fans', icon: <TargetIcon /> },
             { title: 'Visitors', url: '/fan', icon: <ZapIcon /> },
-            { title: 'Segments', url: '/segment', icon: <LayersIcon /> },
-            { title: 'Templates', url: '/template', icon: <LayoutDashboardIcon /> },
+            { title: 'Segments', url: '/segments', icon: <LayersIcon /> },
+            { title: 'Templates', url: '/templates', icon: <LayoutDashboardIcon /> },
             { title: 'Campaigns', url: '/fan-action', icon: <WaypointsIcon /> },
             { title: 'Surveys', url: '/survey', icon: <FileTextIcon /> },
             { title: 'Event lists', url: '/event-list', icon: <CalendarDaysIcon /> },
