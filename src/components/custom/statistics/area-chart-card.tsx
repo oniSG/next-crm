@@ -49,8 +49,11 @@ export function AreaChartCard({
                 {description && <CardDescription>{description}</CardDescription>}
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={config} className="h-56 w-full">
+            <CardContent className="flex flex-1 flex-col">
+                <ChartContainer
+                    config={config}
+                    className="aspect-auto h-full min-h-56 w-full"
+                >
                     <AreaChart
                         accessibilityLayer
                         data={data}

@@ -4,8 +4,8 @@ import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
 const printPageSettings: PrintPageSettings = {
     title: 'Statistiky',
-    description: 'Rozložení kanálů a hodnocení 1–5 hvězdiček.',
-    body: <Stats expanded />,
+    description: 'Výsledky průzkumu — odpovědi respondentů podle otázek.',
+    body: <Stats />,
 }
 
 export default function PrintStatsPage() {

@@ -47,10 +47,10 @@ export function LineChartCard({
                 {description && <CardDescription>{description}</CardDescription>}
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-1 flex-col">
                 <ChartContainer
                     config={config}
-                    className="h-56 w-full"
+                    className="aspect-auto h-full min-h-56 w-full"
                 >
                     <LineChart
                         accessibilityLayer
