@@ -1,14 +1,18 @@
-import PageHeader from '@/components/custom/layout/page-header'
-import { DataTable } from '@/components/custom/data-table/data-table'
+'use client'
 
-import { columns } from './columns'
-import { templates } from './data'
+import { Suspense } from 'react'
+
+import PageHeader from '@/components/custom/layout/page-header'
+
+import { TemplatesTable } from './templates-table'
 
 export default function Page() {
     return (
         <div className="flex h-svh flex-col">
             <PageHeader breadcrumbs={[{ label: 'Šablony' }]} />
-            <DataTable data={templates} columns={columns} />
+            <Suspense fallback={null}>
+                <TemplatesTable />
+            </Suspense>
         </div>
     )
 }

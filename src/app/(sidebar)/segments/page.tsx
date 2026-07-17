@@ -1,14 +1,18 @@
-import PageHeader from '@/components/custom/layout/page-header'
-import { DataTable } from '@/components/custom/data-table/data-table'
+'use client'
 
-import { columns } from './columns'
-import { segments } from './data'
+import { Suspense } from 'react'
+
+import PageHeader from '@/components/custom/layout/page-header'
+
+import { SegmentsTable } from './segments-table'
 
 export default function Page() {
     return (
         <div className="flex h-svh flex-col">
             <PageHeader breadcrumbs={[{ label: 'Segmenty' }]} />
-            <DataTable data={segments} columns={columns} />
+            <Suspense fallback={null}>
+                <SegmentsTable />
+            </Suspense>
         </div>
     )
 }

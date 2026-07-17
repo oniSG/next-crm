@@ -2,10 +2,10 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 
-import { DateCell } from '@/components/custom/data-table/cells/date-cell'
-import { PersonCell } from '@/components/custom/data-table/cells/person-cell'
-import { TagCell } from '@/components/custom/data-table/cells/tag-cell'
-import { TextCell } from '@/components/custom/data-table/cells/text-cell'
+import { DateCell } from '@/components/custom/table-page-template/table-body/cells/date-cell'
+import { PersonCell } from '@/components/custom/table-page-template/table-body/cells/person-cell'
+import { TagCell } from '@/components/custom/table-page-template/table-body/cells/tag-cell'
+import { TextCell } from '@/components/custom/table-page-template/table-body/cells/text-cell'
 
 import type { Segment } from './types'
 

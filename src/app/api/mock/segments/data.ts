@@ -1,4 +1,4 @@
-import { Segment } from "./types";
+import { Segment } from '@/app/(sidebar)/segments/types'
 
 export const segments: Segment[] = [
     {

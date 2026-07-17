@@ -1,4 +1,4 @@
-import { Template } from './types'
+import { Template } from '@/app/(sidebar)/templates/types'
 
 export const templates: Template[] = [
     {
