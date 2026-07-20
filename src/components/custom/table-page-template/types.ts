@@ -1,9 +1,13 @@
 import type { UseQueryOptions } from '@tanstack/react-query'
 
+export type SortDirection = 'asc' | 'desc'
+
 export type TablePageQueryArgs = {
     page: number
     limit: number
     endless: boolean
+    sort: string | null
+    dir: SortDirection | null
 }
 
 export type TablePageQueryResult<TRow> = {

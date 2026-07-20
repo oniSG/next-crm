@@ -19,6 +19,8 @@ export async function fetchSegments(
         limit: String(args.limit),
         endless: String(args.endless),
     })
+    if (args.sort) search.set('sort', args.sort)
+    if (args.dir) search.set('dir', args.dir)
     const res = await fetch(`/api/mock/${SEGMENTS_KEY}?${search.toString()}`)
     if (!res.ok) throw new Error(`Failed to fetch segments (${res.status})`)
     return (await res.json()) as TablePageQueryResult<Segment>

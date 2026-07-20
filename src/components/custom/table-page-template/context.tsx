@@ -8,12 +8,19 @@ import {
     type ColumnDef,
     type Table,
 } from '@tanstack/react-table'
-import { parseAsBoolean, parseAsInteger, useQueryState } from 'nuqs'
+import {
+    parseAsBoolean,
+    parseAsInteger,
+    parseAsString,
+    parseAsStringLiteral,
+    useQueryState,
+} from 'nuqs'
 
 import {
     DEFAULT_EMPTY_MESSAGE,
     DEFAULT_LIMIT,
     DEFAULT_PAGE_SIZES,
+    type SortDirection,
     type TablePageQueryOptionsBuilder,
 } from './types'
 
@@ -28,6 +35,9 @@ type ContextValue<TRow> = {
     pageSizes: readonly number[]
     emptyMessage: string
     table: Table<TRow>
+    sortBy: string | null
+    sortDir: SortDirection | null
+    toggleSort: (field: string) => void
     goToPage: (page: number) => void
     nextPage: () => void
     prevPage: () => void
@@ -38,6 +48,7 @@ type ContextValue<TRow> = {
 const TablePageContext = React.createContext<ContextValue<unknown> | null>(null)
 
 const EMPTY_ROWS: unknown[] = []
+const SORT_DIRS = ['asc', 'desc'] as const
 
 export function useTablePage<TRow = unknown>() {
     const ctx = React.useContext(TablePageContext)
@@ -76,8 +87,16 @@ export function TablePageProvider<TRow>({
         'endless',
         parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true }),
     )
+    const [sortBy, setSortBy] = useQueryState(
+        'sort',
+        parseAsString.withOptions({ clearOnDefault: true }),
+    )
+    const [sortDir, setSortDir] = useQueryState(
+        'dir',
+        parseAsStringLiteral(SORT_DIRS).withOptions({ clearOnDefault: true }),
+    )
 
-    const query = useQuery(queryOptions({ page, limit, endless }))
+    const query = useQuery(queryOptions({ page, limit, endless, sort: sortBy, dir: sortDir }))
     const rows = React.useMemo<TRow[]>(
         () => query.data?.rows ?? (EMPTY_ROWS as TRow[]),
         [query.data],
@@ -128,6 +147,22 @@ export function TablePageProvider<TRow>({
         [setEndlessParam, setPage],
     )
 
+    const toggleSort = React.useCallback(
+        (field: string) => {
+            if (sortBy !== field) {
+                setSortBy(field)
+                setSortDir('asc')
+            } else if (sortDir === 'asc') {
+                setSortDir('desc')
+            } else {
+                setSortBy(null)
+                setSortDir(null)
+            }
+            setPage(1)
+        },
+        [sortBy, sortDir, setSortBy, setSortDir, setPage],
+    )
+
     // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data: rows,
@@ -147,6 +182,9 @@ export function TablePageProvider<TRow>({
             pageSizes,
             emptyMessage,
             table,
+            sortBy,
+            sortDir,
+            toggleSort,
             goToPage,
             nextPage,
             prevPage,
@@ -164,6 +202,9 @@ export function TablePageProvider<TRow>({
             pageSizes,
             emptyMessage,
             table,
+            sortBy,
+            sortDir,
+            toggleSort,
             goToPage,
             nextPage,
             prevPage,

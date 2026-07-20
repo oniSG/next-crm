@@ -19,6 +19,8 @@ export async function fetchTemplates(
         limit: String(args.limit),
         endless: String(args.endless),
     })
+    if (args.sort) search.set('sort', args.sort)
+    if (args.dir) search.set('dir', args.dir)
     const res = await fetch(`/api/mock/${TEMPLATES_KEY}?${search.toString()}`)
     if (!res.ok) throw new Error(`Failed to fetch templates (${res.status})`)
     return (await res.json()) as TablePageQueryResult<Template>
