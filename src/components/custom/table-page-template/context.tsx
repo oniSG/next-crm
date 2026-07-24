@@ -6,8 +6,10 @@ import {
     getCoreRowModel,
     useReactTable,
     type ColumnDef,
+    type ColumnOrderState,
     type ColumnSizingState,
     type Table,
+    type VisibilityState,
 } from '@tanstack/react-table'
 import {
     parseAsBoolean,
@@ -44,6 +46,8 @@ type ContextValue<TRow> = {
     pageSizes: readonly number[]
     emptyMessage: string
     table: Table<TRow>
+    columnVisibility: VisibilityState
+    columnOrder: ColumnOrderState
     sortBy: string | null
     sortDir: SortDirection | null
     toggleSort: (field: string) => void
@@ -184,6 +188,8 @@ export function TablePageProvider<TRow>({
     )
 
     const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>({})
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+    const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>([])
     const [scrollState, setScrollState] = React.useState<ScrollState>({
         scrolledFromTop: false,
         scrolledFromBottom: false,
@@ -203,8 +209,10 @@ export function TablePageProvider<TRow>({
         data: rows,
         columns,
         defaultColumn,
-        state: { columnSizing },
+        state: { columnSizing, columnVisibility, columnOrder },
         onColumnSizingChange: setColumnSizing,
+        onColumnVisibilityChange: setColumnVisibility,
+        onColumnOrderChange: setColumnOrder,
         columnResizeMode: 'onChange',
         enableColumnResizing: true,
         getCoreRowModel: getCoreRowModel(),
@@ -251,6 +259,8 @@ export function TablePageProvider<TRow>({
             pageSizes,
             emptyMessage,
             table,
+            columnVisibility,
+            columnOrder,
             sortBy,
             sortDir,
             toggleSort,
@@ -276,6 +286,8 @@ export function TablePageProvider<TRow>({
             pageSizes,
             emptyMessage,
             table,
+            columnVisibility,
+            columnOrder,
             sortBy,
             sortDir,
             toggleSort,

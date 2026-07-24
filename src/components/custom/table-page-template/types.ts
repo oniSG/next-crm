@@ -7,11 +7,16 @@ declare module '@tanstack/react-table' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface ColumnMeta<TData, TValue> {
         fill?: boolean
+        label?: string
     }
 }
 
 export function isFillColumn<TRow>(column: Column<TRow, unknown>): boolean {
     return column.columnDef.meta?.fill === true
+}
+
+export function getColumnLabel<TRow>(column: Column<TRow, unknown>): string {
+    return column.columnDef.meta?.label ?? column.id
 }
 
 export type SortDirection = 'asc' | 'desc'

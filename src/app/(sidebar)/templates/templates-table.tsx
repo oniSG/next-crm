@@ -9,10 +9,15 @@ import { TableTopbar } from '@/components/custom/table-page-template/table-topba
 import { columns } from './columns'
 import { templatesQueryOptions } from './queries'
 import type { Template } from './types'
+import { TableToolbar } from '@/components/custom/table-page-template/table-toolbar/table-toolbar'
 
 export function TemplatesTable() {
     return (
-        <TablePageProvider<Template> queryOptions={templatesQueryOptions} columns={columns}>
+        <TablePageProvider<Template>
+            queryOptions={templatesQueryOptions}
+            columns={columns}
+        >
+            <TableToolbar />
             <Table>
                 <TableTopbar />
                 <TableBody />

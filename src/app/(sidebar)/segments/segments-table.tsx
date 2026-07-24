@@ -4,6 +4,7 @@ import { TablePageProvider } from '@/components/custom/table-page-template/conte
 import { Table } from '@/components/custom/table-page-template/table'
 import { TableBody } from '@/components/custom/table-page-template/table-body/table-body'
 import { TableBottombar } from '@/components/custom/table-page-template/table-bottombar/table-bottombar'
+import { TableToolbar } from '@/components/custom/table-page-template/table-toolbar/table-toolbar'
 import { TableTopbar } from '@/components/custom/table-page-template/table-topbar/table-topbar'
 
 import { columns } from './columns'
@@ -13,6 +14,7 @@ import type { Segment } from './types'
 export function SegmentsTable() {
     return (
         <TablePageProvider<Segment> queryOptions={segmentsQueryOptions} columns={columns}>
+            <TableToolbar />
             <Table>
                 <TableTopbar />
                 <TableBody />
