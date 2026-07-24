@@ -9,11 +9,14 @@ import {
 } from '@/components/ui/table'
 
 import { useTablePage } from '../context'
+import { isFillColumn } from '../types'
 
 export function TableBody() {
     const { table, emptyMessage } = useTablePage()
     const rows = table.getRowModel().rows
-    const columnCount = table.getAllLeafColumns().length
+    const leafColumns = table.getAllLeafColumns()
+    const columnCount = leafColumns.length
+    const hasExplicitFill = leafColumns.some((c) => isFillColumn(c))
 
     if (rows.length === 0) {
         return (
@@ -34,11 +37,24 @@ export function TableBody() {
         <UiTableBody>
             {rows.map((row) => (
                 <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className="border-r last:border-r-0">
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                    ))}
+                    {row.getVisibleCells().map((cell, index, arr) => {
+                        const isFill = hasExplicitFill
+                            ? isFillColumn(cell.column)
+                            : index === arr.length - 1
+                        return (
+                            <TableCell
+                                key={cell.id}
+                                style={
+                                    isFill
+                                        ? undefined
+                                        : { width: `var(--c-${cell.column.id})` }
+                                }
+                                className="overflow-hidden border-r text-ellipsis last:border-r-0"
+                            >
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </TableCell>
+                        )
+                    })}
                 </TableRow>
             ))}
         </UiTableBody>

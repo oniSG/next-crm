@@ -7,12 +7,14 @@ import { LimitSelector } from './limit-selector'
 import { Pagination } from './pagination'
 
 export function TableBottombar({ className }: { className?: string }) {
-    const { total, endless } = useTablePage()
+    const { total, endless, scrollState } = useTablePage()
 
     return (
         <div
             className={cn(
-                'grid grid-cols-3 items-center gap-3 border-t bg-background px-3 py-2',
+                'relative grid grid-cols-3 items-center gap-3 border-t bg-background px-3 py-2 transition-shadow duration-150',
+                scrollState.scrolledFromBottom &&
+                    'shadow-[0_-6px_10px_-8px_rgb(0_0_0/0.15)]',
                 className,
             )}
         >

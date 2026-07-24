@@ -6,6 +6,7 @@ import {
     getCoreRowModel,
     useReactTable,
     type ColumnDef,
+    type ColumnSizingState,
     type Table,
 } from '@tanstack/react-table'
 import {
@@ -17,12 +18,20 @@ import {
 } from 'nuqs'
 
 import {
+    DEFAULT_COLUMN_MAX_SIZE,
+    DEFAULT_COLUMN_MIN_SIZE,
+    DEFAULT_COLUMN_SIZE,
     DEFAULT_EMPTY_MESSAGE,
     DEFAULT_LIMIT,
     DEFAULT_PAGE_SIZES,
     type SortDirection,
     type TablePageQueryOptionsBuilder,
 } from './types'
+
+type ScrollState = {
+    scrolledFromTop: boolean
+    scrolledFromBottom: boolean
+}
 
 type ContextValue<TRow> = {
     page: number
@@ -43,6 +52,11 @@ type ContextValue<TRow> = {
     prevPage: () => void
     setLimit: (limit: number) => void
     setEndless: (endless: boolean) => void
+    columnSizeVars: React.CSSProperties
+    tableTotalWidth: number
+    isResizingColumn: boolean
+    scrollState: ScrollState
+    setScrollState: React.Dispatch<React.SetStateAction<ScrollState>>
 }
 
 const TablePageContext = React.createContext<ContextValue<unknown> | null>(null)
@@ -64,6 +78,9 @@ export type TablePageProviderProps<TRow> = {
     pageSizes?: readonly number[]
     defaultLimit?: number
     emptyMessage?: string
+    defaultColumnWidth?: number
+    minColumnWidth?: number
+    maxColumnWidth?: number
     children: React.ReactNode
 }
 
@@ -73,6 +90,9 @@ export function TablePageProvider<TRow>({
     pageSizes = DEFAULT_PAGE_SIZES,
     defaultLimit = DEFAULT_LIMIT,
     emptyMessage = DEFAULT_EMPTY_MESSAGE,
+    defaultColumnWidth = DEFAULT_COLUMN_SIZE,
+    minColumnWidth = DEFAULT_COLUMN_MIN_SIZE,
+    maxColumnWidth = DEFAULT_COLUMN_MAX_SIZE,
     children,
 }: TablePageProviderProps<TRow>) {
     const [page, setPage] = useQueryState(
@@ -163,12 +183,61 @@ export function TablePageProvider<TRow>({
         [sortBy, sortDir, setSortBy, setSortDir, setPage],
     )
 
+    const [columnSizing, setColumnSizing] = React.useState<ColumnSizingState>({})
+    const [scrollState, setScrollState] = React.useState<ScrollState>({
+        scrolledFromTop: false,
+        scrolledFromBottom: false,
+    })
+
+    const defaultColumn = React.useMemo(
+        () => ({
+            size: defaultColumnWidth,
+            minSize: minColumnWidth,
+            maxSize: maxColumnWidth,
+        }),
+        [defaultColumnWidth, minColumnWidth, maxColumnWidth],
+    )
+
     // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data: rows,
         columns,
+        defaultColumn,
+        state: { columnSizing },
+        onColumnSizingChange: setColumnSizing,
+        columnResizeMode: 'onChange',
+        enableColumnResizing: true,
         getCoreRowModel: getCoreRowModel(),
     })
+
+    const columnSizingInfo = table.getState().columnSizingInfo
+    const isResizingColumn = Boolean(columnSizingInfo.isResizingColumn)
+
+    const columnSizeVars = React.useMemo<React.CSSProperties>(() => {
+        const headers = table.getFlatHeaders()
+        const vars: Record<string, string> = {}
+        for (const header of headers) {
+            vars[`--h-${header.id}`] = `${header.getSize()}px`
+            vars[`--c-${header.column.id}`] = `${header.column.getSize()}px`
+        }
+        return vars as React.CSSProperties
+        // Recompute whenever a resize event or sizing state changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [columnSizing, columnSizingInfo, table])
+
+    const tableTotalWidth = table.getTotalSize()
+
+    React.useEffect(() => {
+        if (!isResizingColumn) return
+        const prevCursor = document.body.style.cursor
+        const prevUserSelect = document.body.style.userSelect
+        document.body.style.cursor = 'col-resize'
+        document.body.style.userSelect = 'none'
+        return () => {
+            document.body.style.cursor = prevCursor
+            document.body.style.userSelect = prevUserSelect
+        }
+    }, [isResizingColumn])
 
     const value = React.useMemo<ContextValue<TRow>>(
         () => ({
@@ -190,6 +259,11 @@ export function TablePageProvider<TRow>({
             prevPage,
             setLimit,
             setEndless,
+            columnSizeVars,
+            tableTotalWidth,
+            isResizingColumn,
+            scrollState,
+            setScrollState,
         }),
         [
             page,
@@ -210,6 +284,10 @@ export function TablePageProvider<TRow>({
             prevPage,
             setLimit,
             setEndless,
+            columnSizeVars,
+            tableTotalWidth,
+            isResizingColumn,
+            scrollState,
         ],
     )
 
