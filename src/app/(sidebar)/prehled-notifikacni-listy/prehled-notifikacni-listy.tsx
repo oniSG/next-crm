@@ -2,7 +2,7 @@ import { AreaChartCard } from '@/components/custom/statistics/area-chart-card'
 
 import { NOTIFY_LISTY_STATS_BY_MONTH, NOTIFY_LISTY_STATS_CHART_CONFIG } from './data'
 
-export function StatsNotifyListy() {
+export function PrehledNotifikacniListy() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
             <section className="grid grid-cols-1 gap-4">

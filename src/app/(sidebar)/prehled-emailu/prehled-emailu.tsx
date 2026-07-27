@@ -9,7 +9,7 @@ import {
     EMAIL_STATS_CHART_CONFIG,
 } from './data'
 
-export function StatsEmail() {
+export function PrehledEmailu() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
             <section className="grid grid-cols-1 gap-4">
