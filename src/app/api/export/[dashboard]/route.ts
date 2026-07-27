@@ -18,6 +18,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-sms',
     'vernostni-program',
     'stats',
+    'sankey',
 ])
 
 const VIEWPORT_WIDTH = 1280
