@@ -76,6 +76,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Stats',
+        path: '/stats',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
