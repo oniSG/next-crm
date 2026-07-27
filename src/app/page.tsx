@@ -82,6 +82,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Funnel chart',
+        path: '/funnel-chart',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
