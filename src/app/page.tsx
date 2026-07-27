@@ -76,6 +76,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Email send',
+        path: '/email-send',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {

@@ -17,6 +17,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-push',
     'prehled-sms',
     'vernostni-program',
+    'email-send',
 ])
 
 const VIEWPORT_WIDTH = 1280
