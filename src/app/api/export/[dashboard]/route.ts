@@ -19,6 +19,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'vernostni-program',
     'stats',
     'sankey',
+    'funnel-chart',
 ])
 
 const VIEWPORT_WIDTH = 1280
