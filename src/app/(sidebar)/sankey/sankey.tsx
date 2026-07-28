@@ -56,7 +56,8 @@ function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
                 textAnchor={isLeft ? 'end' : 'start'}
                 dominantBaseline="middle"
                 fontSize={12}
-                fill="var(--foreground)"
+                fill={fill}
+                paintOrder="stroke"
                 style={{ pointerEvents: 'none' }}
             >
                 {label}
@@ -86,7 +87,7 @@ function SankeyLink({
             fill="none"
             stroke={targetFill}
             strokeWidth={linkWidth}
-            strokeOpacity={0.28}
+            strokeOpacity={0.1}
         />
     )
 }
@@ -121,15 +122,7 @@ export function SankeyPage() {
                                     }}
                                     link={SankeyLink}
                                     node={SankeyNode}
-                                >
-                                    <Tooltip
-                                        contentStyle={{
-                                            borderRadius: 8,
-                                            border: '1px solid var(--border)',
-                                            fontSize: 12,
-                                        }}
-                                    />
-                                </Sankey>
+                                ></Sankey>
                             </ResponsiveContainer>
                         </div>
                     </CardContent>
