@@ -90,3 +90,48 @@ export const GLOBAL_REPORT_CHART_CONFIG = {
     softBounce: { label: 'Soft bounce', color: 'oklch(0.5 0.1 55)' },
     spam: { label: 'Spam', color: 'var(--destructive)' },
 } satisfies ChartConfig
+
+export const GLOBAL_REPORT_SERIES = [
+    'doruceno',
+    'unikatniOtevreni',
+    'unikatniProklik',
+    'nedoruceno',
+    'odhlaseno',
+    'hardBounce',
+    'softBounce',
+    'spam',
+] as const
+
+export const SMS_REPORT_BY_MONTH = [
+    { month: 'Led', doruceno: 4210, nedoruceno: 186 },
+    { month: 'Úno', doruceno: 3980, nedoruceno: 172 },
+    { month: 'Bře', doruceno: 4520, nedoruceno: 198 },
+    { month: 'Dub', doruceno: 4380, nedoruceno: 181 },
+    { month: 'Kvě', doruceno: 4760, nedoruceno: 205 },
+    { month: 'Čer', doruceno: 5010, nedoruceno: 219 },
+    { month: 'Čvc', doruceno: 5240, nedoruceno: 231 },
+]
+
+export const SMS_REPORT_CHART_CONFIG = {
+    doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-3)' },
+} satisfies ChartConfig
+
+export const SMS_REPORT_SERIES = ['doruceno', 'nedoruceno'] as const
+
+export const PUSH_REPORT_BY_MONTH = [
+    { month: 'Led', doruceno: 12420, nedoruceno: 380 },
+    { month: 'Úno', doruceno: 11890, nedoruceno: 345 },
+    { month: 'Bře', doruceno: 13150, nedoruceno: 410 },
+    { month: 'Dub', doruceno: 12720, nedoruceno: 392 },
+    { month: 'Kvě', doruceno: 13680, nedoruceno: 428 },
+    { month: 'Čer', doruceno: 14240, nedoruceno: 445 },
+    { month: 'Čvc', doruceno: 14890, nedoruceno: 462 },
+]
+
+export const PUSH_REPORT_CHART_CONFIG = {
+    doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-3)' },
+} satisfies ChartConfig
+
+export const PUSH_REPORT_SERIES = ['doruceno', 'nedoruceno'] as const

@@ -59,7 +59,10 @@ export function TabbedCard({
                 </CardHeader>
                 <CardContent>
                     {panels.map((panel, index) => (
-                        <TabsContent key={tabs[index]?.name ?? index} value={`tab-${index}`}>
+                        <TabsContent
+                            key={tabs[index]?.name ?? index}
+                            value={`tab-${index}`}
+                        >
                             {panel}
                         </TabsContent>
                     ))}
