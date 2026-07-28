@@ -21,29 +21,48 @@ import {
 } from '@/components/ui/table'
 
 import {
-    GLOBAL_REPORT_BY_MONTH,
     GLOBAL_REPORT_CHART_CONFIG,
     GLOBAL_REPORT_SERIES,
-    PUSH_REPORT_BY_MONTH,
     PUSH_REPORT_CHART_CONFIG,
     PUSH_REPORT_SERIES,
-    SMS_REPORT_BY_MONTH,
     SMS_REPORT_CHART_CONFIG,
     SMS_REPORT_SERIES,
 } from './data'
+import { aggregateByPeriod, usePeriod } from './report-utils'
+import {
+    GLOBAL_REPORT_BY_DAY,
+    PUSH_REPORT_BY_DAY,
+    SMS_REPORT_BY_DAY,
+} from './temp/mock-daily-data'
 
 const VIEW_TABS = [
     { name: 'Graf', icon: <ChartColumnIcon /> },
     { name: 'Tabulka', icon: <TableIcon /> },
 ]
 
+const PERIOD_DESCRIPTION = {
+    day: 'Přehled po dnech (posledních 90 dní).',
+    month: 'Přehled po měsících.',
+    year: 'Přehled po rocích.',
+} as const
+
 export function ReportFanGeneral() {
+    const { period } = usePeriod()
+
+    const globalData = aggregateByPeriod(
+        GLOBAL_REPORT_BY_DAY,
+        GLOBAL_REPORT_SERIES,
+        period,
+    )
+    const smsData = aggregateByPeriod(SMS_REPORT_BY_DAY, SMS_REPORT_SERIES, period)
+    const pushData = aggregateByPeriod(PUSH_REPORT_BY_DAY, PUSH_REPORT_SERIES, period)
+
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
             <section className="grid grid-cols-1 gap-4">
                 <TabbedCard
                     title="Globální report"
-                    description="Přehled všech metrik po měsících."
+                    description={PERIOD_DESCRIPTION[period]}
                     tabs={VIEW_TABS}
                 >
                     <ChartContainer
@@ -52,15 +71,16 @@ export function ReportFanGeneral() {
                     >
                         <BarChart
                             accessibilityLayer
-                            data={GLOBAL_REPORT_BY_MONTH}
+                            data={globalData}
                             margin={{ left: 12, right: 12 }}
                         >
                             <CartesianGrid vertical={false} />
                             <XAxis
-                                dataKey="month"
+                                dataKey="label"
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
+                                minTickGap={period === 'day' ? 24 : 8}
                             />
                             <YAxis
                                 tickLine={false}
@@ -94,7 +114,13 @@ export function ReportFanGeneral() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Měsíc</TableHead>
+                                <TableHead>
+                                    {period === 'day'
+                                        ? 'Den'
+                                        : period === 'month'
+                                          ? 'Měsíc'
+                                          : 'Rok'}
+                                </TableHead>
                                 {GLOBAL_REPORT_SERIES.map((key) => (
                                     <TableHead key={key} className="text-right">
                                         {GLOBAL_REPORT_CHART_CONFIG[key].label}
@@ -103,14 +129,14 @@ export function ReportFanGeneral() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {GLOBAL_REPORT_BY_MONTH.map((row) => (
-                                <TableRow key={row.month}>
+                            {globalData.map((row) => (
+                                <TableRow key={String(row.label)}>
                                     <TableCell className="font-medium">
-                                        {row.month}
+                                        {row.label}
                                     </TableCell>
                                     {GLOBAL_REPORT_SERIES.map((key) => (
                                         <TableCell key={key} className="text-right">
-                                            {row[key].toLocaleString('cs-CZ')}
+                                            {Number(row[key]).toLocaleString('cs-CZ')}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -121,7 +147,7 @@ export function ReportFanGeneral() {
 
                 <TabbedCard
                     title="SMS"
-                    description="Doručeno a nedoručeno po měsících."
+                    description={PERIOD_DESCRIPTION[period]}
                     tabs={VIEW_TABS}
                 >
                     <ChartContainer
@@ -130,15 +156,16 @@ export function ReportFanGeneral() {
                     >
                         <BarChart
                             accessibilityLayer
-                            data={SMS_REPORT_BY_MONTH}
+                            data={smsData}
                             margin={{ left: 12, right: 12 }}
                         >
                             <CartesianGrid vertical={false} />
                             <XAxis
-                                dataKey="month"
+                                dataKey="label"
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
+                                minTickGap={period === 'day' ? 24 : 8}
                             />
                             <YAxis
                                 tickLine={false}
@@ -172,7 +199,13 @@ export function ReportFanGeneral() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Měsíc</TableHead>
+                                <TableHead>
+                                    {period === 'day'
+                                        ? 'Den'
+                                        : period === 'month'
+                                          ? 'Měsíc'
+                                          : 'Rok'}
+                                </TableHead>
                                 {SMS_REPORT_SERIES.map((key) => (
                                     <TableHead key={key} className="text-right">
                                         {SMS_REPORT_CHART_CONFIG[key].label}
@@ -181,14 +214,14 @@ export function ReportFanGeneral() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {SMS_REPORT_BY_MONTH.map((row) => (
-                                <TableRow key={row.month}>
+                            {smsData.map((row) => (
+                                <TableRow key={String(row.label)}>
                                     <TableCell className="font-medium">
-                                        {row.month}
+                                        {row.label}
                                     </TableCell>
                                     {SMS_REPORT_SERIES.map((key) => (
                                         <TableCell key={key} className="text-right">
-                                            {row[key].toLocaleString('cs-CZ')}
+                                            {Number(row[key]).toLocaleString('cs-CZ')}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -199,7 +232,7 @@ export function ReportFanGeneral() {
 
                 <TabbedCard
                     title="Push notifikace"
-                    description="Doručeno a nedoručeno po měsících."
+                    description={PERIOD_DESCRIPTION[period]}
                     tabs={VIEW_TABS}
                 >
                     <ChartContainer
@@ -208,15 +241,16 @@ export function ReportFanGeneral() {
                     >
                         <BarChart
                             accessibilityLayer
-                            data={PUSH_REPORT_BY_MONTH}
+                            data={pushData}
                             margin={{ left: 12, right: 12 }}
                         >
                             <CartesianGrid vertical={false} />
                             <XAxis
-                                dataKey="month"
+                                dataKey="label"
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
+                                minTickGap={period === 'day' ? 24 : 8}
                             />
                             <YAxis
                                 tickLine={false}
@@ -250,7 +284,13 @@ export function ReportFanGeneral() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Měsíc</TableHead>
+                                <TableHead>
+                                    {period === 'day'
+                                        ? 'Den'
+                                        : period === 'month'
+                                          ? 'Měsíc'
+                                          : 'Rok'}
+                                </TableHead>
                                 {PUSH_REPORT_SERIES.map((key) => (
                                     <TableHead key={key} className="text-right">
                                         {PUSH_REPORT_CHART_CONFIG[key].label}
@@ -259,14 +299,14 @@ export function ReportFanGeneral() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {PUSH_REPORT_BY_MONTH.map((row) => (
-                                <TableRow key={row.month}>
+                            {pushData.map((row) => (
+                                <TableRow key={String(row.label)}>
                                     <TableCell className="font-medium">
-                                        {row.month}
+                                        {row.label}
                                     </TableCell>
                                     {PUSH_REPORT_SERIES.map((key) => (
                                         <TableCell key={key} className="text-right">
-                                            {row[key].toLocaleString('cs-CZ')}
+                                            {Number(row[key]).toLocaleString('cs-CZ')}
                                         </TableCell>
                                     ))}
                                 </TableRow>
