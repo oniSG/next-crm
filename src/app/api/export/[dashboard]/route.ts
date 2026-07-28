@@ -18,6 +18,8 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-sms',
     'vernostni-program',
     'email-send',
+    'stats',
+    'funnel-chart',
 ])
 
 const VIEWPORT_WIDTH = 1280
