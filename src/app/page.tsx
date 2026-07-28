@@ -77,8 +77,20 @@ const pages: {
         by: 'Tomas',
     },
     {
+        name: 'Stats',
+        path: '/stats',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
         name: 'Globální report',
         path: '/global-report',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
+        name: 'Funnel chart',
+        path: '/funnel-chart',
         status: 'progress',
         by: 'Tomas',
     },
