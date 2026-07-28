@@ -20,6 +20,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'email-send',
     'stats',
     'funnel-chart',
+    'report-fan-general',
 ])
 
 const VIEWPORT_WIDTH = 1280
