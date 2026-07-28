@@ -89,6 +89,12 @@ const pages: {
         by: 'Tomas',
     },
     {
+        name: 'Email send',
+        path: '/email-send',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
         name: 'Funnel chart',
         path: '/funnel-chart',
         status: 'progress',

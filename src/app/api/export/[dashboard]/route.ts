@@ -18,6 +18,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-sms',
     'vernostni-program',
     'global-report',
+    'email-send',
     'stats',
     'funnel-chart',
 ])
