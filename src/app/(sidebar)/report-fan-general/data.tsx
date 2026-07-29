@@ -8,7 +8,7 @@ export const PERIOD_OPTIONS = [
     { label: 'Rok', value: 'year' },
 ] as const
 
-export const GLOBAL_REPORT_SERIES = [
+export const EMAIL_REPORT_SERIES = [
     'doruceno',
     'unikatniOtevreni',
     'unikatniProklik',
@@ -22,7 +22,7 @@ export const GLOBAL_REPORT_SERIES = [
 export const SMS_REPORT_SERIES = ['doruceno', 'nedoruceno'] as const
 export const PUSH_REPORT_SERIES = ['doruceno', 'nedoruceno'] as const
 
-export const GLOBAL_REPORT_CHART_CONFIG = {
+export const EMAIL_REPORT_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
     unikatniOtevreni: { label: 'Unikátní otevření', color: 'var(--chart-2)' },
     unikatniProklik: { label: 'Unikátní proklik', color: 'var(--chart-3)' },

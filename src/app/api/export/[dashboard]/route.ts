@@ -36,8 +36,8 @@ export async function GET(
         return new Response('Unknown dashboard', { status: 404 })
     }
 
-    const origin = new URL(request.url).origin
-    const printUrl = `${origin}/print/${dashboard}`
+    const requestUrl = new URL(request.url)
+    const printUrl = `${requestUrl.origin}/print/${dashboard}${requestUrl.search}`
 
     let browser: Browser | undefined
     try {

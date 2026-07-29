@@ -11,24 +11,22 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 
-import { PERIOD_OPTIONS, type Period } from './data'
-import { usePeriod } from './report-utils'
-
-const periodItems = PERIOD_OPTIONS.map((option) => ({
-    label: option.label,
-    value: option.value,
-}))
+import { PERIOD_OPTIONS } from './data'
+import { useReportDateRange, useReportPeriod } from './report-utils'
 
 export function PageActions() {
-    const { period, setPeriod, dateRange, setDateRange, today } = usePeriod()
+    const [period, setPeriod] = useReportPeriod()
+    const { dateRange, setDateRange, today } = useReportDateRange()
 
     return (
         <>
             <Select
-                items={periodItems}
+                items={PERIOD_OPTIONS}
                 value={period}
                 onValueChange={(value) => {
-                    if (value) setPeriod(value as Period)
+                    if (value === 'day' || value === 'month' || value === 'year') {
+                        void setPeriod(value)
+                    }
                 }}
             >
                 <SelectTrigger className="w-36">

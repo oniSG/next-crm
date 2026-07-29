@@ -21,23 +21,28 @@ import {
 } from '@/components/ui/table'
 
 import {
-    GLOBAL_REPORT_CHART_CONFIG,
-    GLOBAL_REPORT_SERIES,
+    EMAIL_REPORT_CHART_CONFIG,
+    EMAIL_REPORT_SERIES,
     PUSH_REPORT_CHART_CONFIG,
     PUSH_REPORT_SERIES,
     SMS_REPORT_CHART_CONFIG,
     SMS_REPORT_SERIES,
 } from './data'
-import { aggregateByPeriod, filterByDateRange, usePeriod } from './report-utils'
 import {
-    GLOBAL_REPORT_BY_DAY,
+    aggregateByPeriod,
+    filterByDateRange,
+    useReportDateRange,
+    useReportPeriod,
+} from './report-utils'
+import {
+    EMAIL_REPORT_BY_DAY,
     PUSH_REPORT_BY_DAY,
     SMS_REPORT_BY_DAY,
 } from './temp/mock-daily-data'
 
 const VIEW_TABS = [
-    { name: 'Graf', icon: <ChartColumnIcon /> },
-    { name: 'Tabulka', icon: <TableIcon /> },
+    { name: 'Graf', value: 'chart', icon: <ChartColumnIcon /> },
+    { name: 'Tabulka', value: 'table', icon: <TableIcon /> },
 ]
 
 const PERIOD_DESCRIPTION = {
@@ -47,11 +52,12 @@ const PERIOD_DESCRIPTION = {
 } as const
 
 export function ReportFanGeneral() {
-    const { period, dateRange } = usePeriod()
+    const [period] = useReportPeriod()
+    const { dateRange } = useReportDateRange()
 
-    const globalData = aggregateByPeriod(
-        filterByDateRange(GLOBAL_REPORT_BY_DAY, dateRange),
-        GLOBAL_REPORT_SERIES,
+    const emailData = aggregateByPeriod(
+        filterByDateRange(EMAIL_REPORT_BY_DAY, dateRange),
+        EMAIL_REPORT_SERIES,
         period,
     )
     const smsData = aggregateByPeriod(
@@ -66,20 +72,20 @@ export function ReportFanGeneral() {
     )
 
     return (
-        <div className="flex w-full max-w-6xl flex-col gap-3">
-            <section className="grid grid-cols-1 gap-4">
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
                 <TabbedCard
-                    title="Globální report"
+                    queryKey="view-email"
+                    title="E-mail"
                     description={PERIOD_DESCRIPTION[period]}
                     tabs={VIEW_TABS}
                 >
                     <ChartContainer
-                        config={GLOBAL_REPORT_CHART_CONFIG}
+                        config={EMAIL_REPORT_CHART_CONFIG}
                         className="max-h-75 w-full"
                     >
                         <BarChart
                             accessibilityLayer
-                            data={globalData}
+                            data={emailData}
                             margin={{ left: 12, right: 12 }}
                         >
                             <CartesianGrid vertical={false} />
@@ -101,7 +107,7 @@ export function ReportFanGeneral() {
                             />
                             <ChartTooltip content={<ChartTooltipContent />} />
                             <ChartLegend content={<ChartLegendContent />} />
-                            {GLOBAL_REPORT_SERIES.map((key, i) => (
+                            {EMAIL_REPORT_SERIES.map((key, i) => (
                                 <Bar
                                     key={key}
                                     dataKey={key}
@@ -110,7 +116,7 @@ export function ReportFanGeneral() {
                                     radius={
                                         i === 0
                                             ? [0, 0, 4, 4]
-                                            : i === GLOBAL_REPORT_SERIES.length - 1
+                                            : i === EMAIL_REPORT_SERIES.length - 1
                                               ? [4, 4, 0, 0]
                                               : [0, 0, 0, 0]
                                     }
@@ -129,20 +135,20 @@ export function ReportFanGeneral() {
                                           ? 'Měsíc'
                                           : 'Rok'}
                                 </TableHead>
-                                {GLOBAL_REPORT_SERIES.map((key) => (
+                                {EMAIL_REPORT_SERIES.map((key) => (
                                     <TableHead key={key} className="text-right">
-                                        {GLOBAL_REPORT_CHART_CONFIG[key].label}
+                                        {EMAIL_REPORT_CHART_CONFIG[key].label}
                                     </TableHead>
                                 ))}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {globalData.map((row) => (
+                            {emailData.map((row) => (
                                 <TableRow key={String(row.label)}>
                                     <TableCell className="font-medium">
                                         {row.label}
                                     </TableCell>
-                                    {GLOBAL_REPORT_SERIES.map((key) => (
+                                    {EMAIL_REPORT_SERIES.map((key) => (
                                         <TableCell key={key} className="text-right">
                                             {Number(row[key]).toLocaleString('cs-CZ')}
                                         </TableCell>
@@ -154,6 +160,7 @@ export function ReportFanGeneral() {
                 </TabbedCard>
 
                 <TabbedCard
+                    queryKey="view-sms"
                     title="SMS"
                     description={PERIOD_DESCRIPTION[period]}
                     tabs={VIEW_TABS}
@@ -239,6 +246,7 @@ export function ReportFanGeneral() {
                 </TabbedCard>
 
                 <TabbedCard
+                    queryKey="view-push"
                     title="Push notifikace"
                     description={PERIOD_DESCRIPTION[period]}
                     tabs={VIEW_TABS}
@@ -322,7 +330,6 @@ export function ReportFanGeneral() {
                         </TableBody>
                     </Table>
                 </TabbedCard>
-            </section>
         </div>
     )
 }
