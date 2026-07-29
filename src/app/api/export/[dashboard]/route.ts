@@ -17,9 +17,11 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-push',
     'prehled-sms',
     'vernostni-program',
+    'email-send',
     'stats',
     'sankey',
     'funnel-chart',
+    'report-fan-general',
 ])
 
 const VIEWPORT_WIDTH = 1280
@@ -35,8 +37,8 @@ export async function GET(
         return new Response('Unknown dashboard', { status: 404 })
     }
 
-    const origin = new URL(request.url).origin
-    const printUrl = `${origin}/print/${dashboard}`
+    const requestUrl = new URL(request.url)
+    const printUrl = `${requestUrl.origin}/print/${dashboard}${requestUrl.search}`
 
     let browser: Browser | undefined
     try {

@@ -83,12 +83,24 @@ const pages: {
         by: 'Tomas',
     },
     {
+        name: 'Email send',
+        path: '/email-send',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
         name: 'Funnel chart',
         path: '/funnel-chart',
         status: 'progress',
         by: 'Tomas',
     },
     {
+        name: 'Global analytics',
+        path: '/report-fan-general',
+        status: 'progress',
+        by: 'Tomas',
+    },
+   {
         name: 'Sankey',
         path: '/sankey',
         status: 'progress',

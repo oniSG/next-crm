@@ -18,7 +18,8 @@ export function ExportButton({ dashboard, filename }: ExportButtonProps) {
         if (loading) return
         setLoading(true)
         try {
-            const res = await fetch(`/api/export/${dashboard}`)
+            const search = window.location.search
+        const res = await fetch(`/api/export/${dashboard}${search}`)
             if (!res.ok) throw new Error(`Export failed: ${res.status}`)
 
             const blob = await res.blob()
