@@ -7,7 +7,12 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
     DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -16,6 +21,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar'
+import { useTheme, type Theme } from '@/components/theme-provider'
 import {
     ChevronsUpDownIcon,
     SparklesIcon,
@@ -23,6 +29,9 @@ import {
     CreditCardIcon,
     BellIcon,
     LogOutIcon,
+    SunIcon,
+    MoonIcon,
+    MonitorIcon,
 } from 'lucide-react'
 
 export function NavUser({
@@ -35,6 +44,7 @@ export function NavUser({
     }
 }) {
     const { isMobile } = useSidebar()
+    const { theme, setTheme } = useTheme()
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -102,6 +112,32 @@ export function NavUser({
                                 <BellIcon />
                                 Notifications
                             </DropdownMenuItem>
+                            <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>
+                                    <SunIcon className="dark:hidden" />
+                                    <MoonIcon className="hidden dark:inline" />
+                                    Theme
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuSubContent>
+                                    <DropdownMenuRadioGroup
+                                        value={theme}
+                                        onValueChange={(v) => setTheme(v as Theme)}
+                                    >
+                                        <DropdownMenuRadioItem value="light">
+                                            <SunIcon />
+                                            Light
+                                        </DropdownMenuRadioItem>
+                                        <DropdownMenuRadioItem value="dark">
+                                            <MoonIcon />
+                                            Dark
+                                        </DropdownMenuRadioItem>
+                                        <DropdownMenuRadioItem value="system">
+                                            <MonitorIcon />
+                                            System
+                                        </DropdownMenuRadioItem>
+                                    </DropdownMenuRadioGroup>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuSub>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
