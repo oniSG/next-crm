@@ -28,7 +28,7 @@ import {
     SMS_REPORT_CHART_CONFIG,
     SMS_REPORT_SERIES,
 } from './data'
-import { aggregateByPeriod, usePeriod } from './report-utils'
+import { aggregateByPeriod, filterByDateRange, usePeriod } from './report-utils'
 import {
     GLOBAL_REPORT_BY_DAY,
     PUSH_REPORT_BY_DAY,
@@ -41,21 +41,29 @@ const VIEW_TABS = [
 ]
 
 const PERIOD_DESCRIPTION = {
-    day: 'Přehled po dnech (posledních 90 dní).',
-    month: 'Přehled po měsících.',
-    year: 'Přehled po rocích.',
+    day: 'Přehled po dnech ve zvoleném období.',
+    month: 'Přehled po měsících ve zvoleném období.',
+    year: 'Přehled po rocích ve zvoleném období.',
 } as const
 
 export function ReportFanGeneral() {
-    const { period } = usePeriod()
+    const { period, dateRange } = usePeriod()
 
     const globalData = aggregateByPeriod(
-        GLOBAL_REPORT_BY_DAY,
+        filterByDateRange(GLOBAL_REPORT_BY_DAY, dateRange),
         GLOBAL_REPORT_SERIES,
         period,
     )
-    const smsData = aggregateByPeriod(SMS_REPORT_BY_DAY, SMS_REPORT_SERIES, period)
-    const pushData = aggregateByPeriod(PUSH_REPORT_BY_DAY, PUSH_REPORT_SERIES, period)
+    const smsData = aggregateByPeriod(
+        filterByDateRange(SMS_REPORT_BY_DAY, dateRange),
+        SMS_REPORT_SERIES,
+        period,
+    )
+    const pushData = aggregateByPeriod(
+        filterByDateRange(PUSH_REPORT_BY_DAY, dateRange),
+        PUSH_REPORT_SERIES,
+        period,
+    )
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">

@@ -1,5 +1,6 @@
 'use client'
 
+import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 import {
     Select,
@@ -19,7 +20,7 @@ const periodItems = PERIOD_OPTIONS.map((option) => ({
 }))
 
 export function PageActions() {
-    const { period, setPeriod } = usePeriod()
+    const { period, setPeriod, dateRange, setDateRange, today } = usePeriod()
 
     return (
         <>
@@ -43,6 +44,11 @@ export function PageActions() {
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            <DateRangeFilter
+                value={dateRange}
+                onChange={setDateRange}
+                today={today}
+            />
             <ExportButton
                 dashboard="report-fan-general"
                 filename="report-fan-general.pdf"
