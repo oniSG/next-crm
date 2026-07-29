@@ -22,6 +22,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'sankey',
     'funnel-chart',
     'report-fan-general',
+    'noticeboard-marketing',
 ])
 
 const VIEWPORT_WIDTH = 1280
