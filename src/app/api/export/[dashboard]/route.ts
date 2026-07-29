@@ -21,6 +21,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'stats',
     'funnel-chart',
     'report-fan-general',
+    'report-expert',
 ])
 
 const VIEWPORT_WIDTH = 1280
