@@ -19,6 +19,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'vernostni-program',
     'email-send',
     'stats',
+    'sankey',
     'funnel-chart',
     'report-fan-general',
     'report-expert',
