@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    { "name": "Aktivita", "fill": "var(--chart-1)" },
+    { "name": "Doručeno", "fill": "var(--chart-1)" },
+    { "name": "Soft Bounce", "fill": "var(--destructive)" },
+    { "name": "Nedoručeno", "fill": "oklch(0.75 0.14 85)" },
+    { "name": "Neotevřeno", "fill": "var(--chart-2)" },
+    { "name": "Otevřeno", "fill": "oklch(0.55 0.14 155)" },
+    { "name": "Bez prokliku", "fill": "var(--chart-4)" },
+    { "name": "Proklik", "fill": "var(--chart-3)" }
+  ],
+  "links": [
+    { "source": 0, "target": 1, "value": 9500 },
+    { "source": 0, "target": 2, "value": 200 },
+    { "source": 0, "target": 3, "value": 300 },
+    { "source": 1, "target": 4, "value": 5200 },
+    { "source": 1, "target": 5, "value": 4300 },
+    { "source": 5, "target": 6, "value": 4000 },
+    { "source": 5, "target": 7, "value": 300 }
+  ]
+}
