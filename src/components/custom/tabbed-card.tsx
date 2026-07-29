@@ -1,6 +1,7 @@
 'use client'
 
 import { Children, type ReactNode } from 'react'
+import { parseAsString, useQueryState } from 'nuqs'
 
 import {
     Card,
@@ -15,6 +16,7 @@ import { cn } from '@/lib/utils'
 
 export type TabbedCardTab = {
     name: string
+    value: string
     icon?: ReactNode
 }
 
@@ -23,7 +25,9 @@ export type TabbedCardProps = {
     description?: string
     tabs: TabbedCardTab[]
     children: ReactNode
-    defaultIndex?: number
+    /** URL search param key for the active tab (nuqs). */
+    queryKey: string
+    defaultValue?: string
     className?: string
 }
 
@@ -32,24 +36,34 @@ export function TabbedCard({
     description,
     tabs,
     children,
-    defaultIndex = 0,
+    queryKey,
+    defaultValue,
     className,
 }: TabbedCardProps) {
+    const fallbackValue = defaultValue ?? tabs[0]?.value ?? ''
+    const [value, setValue] = useQueryState(
+        queryKey,
+        parseAsString.withDefault(fallbackValue).withOptions({ clearOnDefault: true }),
+    )
+
     const panels = Children.toArray(children)
-    const defaultValue = `tab-${defaultIndex}`
 
     return (
-        <Tabs defaultValue={defaultValue} className={cn('w-full gap-0', className)}>
+        <Tabs
+            value={value}
+            onValueChange={(next) => {
+                if (next) void setValue(next)
+            }}
+            className={cn('w-full gap-0', className)}
+        >
             <Card className="w-full">
                 <CardHeader>
                     <CardTitle>{title}</CardTitle>
-                    {description && (
-                        <CardDescription>{description}</CardDescription>
-                    )}
+                    {description && <CardDescription>{description}</CardDescription>}
                     <CardAction>
                         <TabsList>
-                            {tabs.map((tab, index) => (
-                                <TabsTrigger key={tab.name} value={`tab-${index}`}>
+                            {tabs.map((tab) => (
+                                <TabsTrigger key={tab.value} value={tab.value}>
                                     {tab.icon}
                                     {tab.name}
                                 </TabsTrigger>
@@ -58,14 +72,15 @@ export function TabbedCard({
                     </CardAction>
                 </CardHeader>
                 <CardContent>
-                    {panels.map((panel, index) => (
-                        <TabsContent
-                            key={tabs[index]?.name ?? index}
-                            value={`tab-${index}`}
-                        >
-                            {panel}
-                        </TabsContent>
-                    ))}
+                    {panels.map((panel, index) => {
+                        const tab = tabs[index]
+                        if (!tab) return null
+                        return (
+                            <TabsContent key={tab.value} value={tab.value}>
+                                {panel}
+                            </TabsContent>
+                        )
+                    })}
                 </CardContent>
             </Card>
         </Tabs>

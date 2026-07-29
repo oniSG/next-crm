@@ -69,7 +69,7 @@ const RANGE_START = new Date(2022, 0, 1)
 const RANGE_END = new Date(2026, 7, 28)
 
 /** Mock daily data — delete this folder when real API data is wired. */
-export const GLOBAL_REPORT_BY_DAY = buildDailyRange(RANGE_START, RANGE_END, {
+export const EMAIL_REPORT_BY_DAY = buildDailyRange(RANGE_START, RANGE_END, {
     doruceno: 280,
     unikatniOtevreni: 170,
     unikatniProklik: 42,
