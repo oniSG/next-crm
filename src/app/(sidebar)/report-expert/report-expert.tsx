@@ -1,7 +1,18 @@
 'use client'
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
+import {
+    Area,
+    AreaChart,
+    Bar,
+    BarChart,
+    CartesianGrid,
+    LabelList,
+    Pie,
+    PieChart,
+    XAxis,
+    YAxis,
+} from 'recharts'
 
 import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
 import {
@@ -27,6 +38,9 @@ import {
     BEST_SEND_TIME_BY_SLOT,
     BEST_SEND_TIME_CHART_CONFIG,
     BEST_SEND_TIME_SERIES,
+    EMAIL_METRICS_PIE,
+    EMAIL_METRICS_PIE_CONFIG,
+    EMAIL_METRICS_STAGES,
 } from './data'
 
 export function ReportExpert() {
@@ -198,6 +212,75 @@ export function ReportExpert() {
         },
     ]
 
+    const VIEW_TABS_EMAIL_METRICS: Tab[] = [
+        {
+            name: 'Graf',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: (
+                <ChartContainer
+                    config={EMAIL_METRICS_PIE_CONFIG}
+                    className="mx-auto aspect-square max-h-75"
+                >
+                    <PieChart>
+                        <ChartTooltip
+                            cursor={false}
+                            content={
+                                <ChartTooltipContent hideLabel nameKey="name" />
+                            }
+                        />
+                        <Pie
+                            data={EMAIL_METRICS_PIE}
+                            dataKey="value"
+                            nameKey="name"
+                            innerRadius={55}
+                            strokeWidth={4}
+                        />
+                        <ChartLegend
+                            content={<ChartLegendContent nameKey="name" />}
+                            verticalAlign="bottom"
+                        />
+                    </PieChart>
+                </ChartContainer>
+            ),
+        },
+        {
+            name: 'Tabulka',
+            value: 'table',
+            icon: <TableIcon />,
+            content: (
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Metrika</TableHead>
+                            <TableHead className="text-right">Počet</TableHead>
+                            <TableHead className="text-right">Podíl</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {EMAIL_METRICS_STAGES.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell className="font-medium">
+                                    {row.label}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    {row.pocet.toLocaleString('cs-CZ')}
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    {row.percent.toLocaleString('cs-CZ', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}
+                                    %
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            ),
+        },
+    ]
+
     return (
         <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
             <TabbedCard
@@ -211,6 +294,12 @@ export function ReportExpert() {
                 title="Nejlepší den na odesílání e-mailů"
                 description="Průměr unikátně otevřených za 90 dní."
                 tabs={VIEW_TABS_BEST_SEND_DAY}
+            />
+            <TabbedCard
+                queryKey="view-email-metrics"
+                title="E-mailové metriky"
+                description="Doručení, otevření, prokliky a odhlášení."
+                tabs={VIEW_TABS_EMAIL_METRICS}
             />
         </div>
     )
