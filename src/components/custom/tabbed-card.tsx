@@ -1,6 +1,6 @@
 'use client'
 
-import { Children, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { parseAsString, useQueryState } from 'nuqs'
 
 import {
@@ -14,17 +14,17 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 
-export type TabbedCardTab = {
+export type Tab = {
     name: string
     value: string
+    content: ReactNode
     icon?: ReactNode
 }
 
 export type TabbedCardProps = {
     title: string
     description?: string
-    tabs: TabbedCardTab[]
-    children: ReactNode
+    tabs: Tab[]
     /** URL search param key for the active tab (nuqs). */
     queryKey: string
     defaultValue?: string
@@ -35,7 +35,6 @@ export function TabbedCard({
     title,
     description,
     tabs,
-    children,
     queryKey,
     defaultValue,
     className,
@@ -43,10 +42,10 @@ export function TabbedCard({
     const fallbackValue = defaultValue ?? tabs[0]?.value ?? ''
     const [value, setValue] = useQueryState(
         queryKey,
-        parseAsString.withDefault(fallbackValue).withOptions({ clearOnDefault: true }),
+        parseAsString
+            .withDefault(fallbackValue)
+            .withOptions({ clearOnDefault: true }),
     )
-
-    const panels = Children.toArray(children)
 
     return (
         <Tabs
@@ -59,7 +58,9 @@ export function TabbedCard({
             <Card className="w-full">
                 <CardHeader>
                     <CardTitle>{title}</CardTitle>
-                    {description && <CardDescription>{description}</CardDescription>}
+                    {description && (
+                        <CardDescription>{description}</CardDescription>
+                    )}
                     <CardAction>
                         <TabsList>
                             {tabs.map((tab) => (
@@ -72,15 +73,11 @@ export function TabbedCard({
                     </CardAction>
                 </CardHeader>
                 <CardContent>
-                    {panels.map((panel, index) => {
-                        const tab = tabs[index]
-                        if (!tab) return null
-                        return (
-                            <TabsContent key={tab.value} value={tab.value}>
-                                {panel}
-                            </TabsContent>
-                        )
-                    })}
+                    {tabs.map((tab) => (
+                        <TabsContent key={tab.value} value={tab.value}>
+                            {tab.content}
+                        </TabsContent>
+                    ))}
                 </CardContent>
             </Card>
         </Tabs>

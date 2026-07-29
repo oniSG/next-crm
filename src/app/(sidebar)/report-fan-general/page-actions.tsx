@@ -42,11 +42,7 @@ export function PageActions() {
                     </SelectGroup>
                 </SelectContent>
             </Select>
-            <DateRangeFilter
-                value={dateRange}
-                onChange={setDateRange}
-                today={today}
-            />
+            <DateRangeFilter value={dateRange} onChange={setDateRange} today={today} />
             <ExportButton
                 dashboard="report-fan-general"
                 filename="report-fan-general.pdf"
