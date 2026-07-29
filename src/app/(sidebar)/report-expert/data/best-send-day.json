@@ -1,0 +1,9 @@
+[
+  { "label": "Po", "pocet": 18 },
+  { "label": "Út", "pocet": 18 },
+  { "label": "St", "pocet": 20 },
+  { "label": "Čt", "pocet": 18 },
+  { "label": "Pá", "pocet": 25 },
+  { "label": "So", "pocet": 27 },
+  { "label": "Ne", "pocet": 2 }
+]

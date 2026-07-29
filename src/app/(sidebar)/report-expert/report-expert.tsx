@@ -1,7 +1,7 @@
 'use client'
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 
 import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
 import {
@@ -21,6 +21,9 @@ import {
 } from '@/components/ui/table'
 
 import {
+    BEST_SEND_DAY_BY_WEEKDAY,
+    BEST_SEND_DAY_CHART_CONFIG,
+    BEST_SEND_DAY_SERIES,
     BEST_SEND_TIME_BY_SLOT,
     BEST_SEND_TIME_CHART_CONFIG,
     BEST_SEND_TIME_SERIES,
@@ -109,6 +112,92 @@ export function ReportExpert() {
         },
     ]
 
+    const VIEW_TABS_BEST_SEND_DAY: Tab[] = [
+        {
+            name: 'Graf',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: (
+                <ChartContainer
+                    config={BEST_SEND_DAY_CHART_CONFIG}
+                    className="max-h-75 w-full"
+                >
+                    <BarChart
+                        accessibilityLayer
+                        data={BEST_SEND_DAY_BY_WEEKDAY}
+                        margin={{ left: 12, right: 12, top: 24 }}
+                    >
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey="label"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                        />
+                        <YAxis
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            width={32}
+                            domain={[0, 28]}
+                            ticks={[0, 7, 14, 21, 28]}
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <ChartLegend content={<ChartLegendContent />} />
+                        {BEST_SEND_DAY_SERIES.map((key) => (
+                            <Bar
+                                key={key}
+                                dataKey={key}
+                                fill={`var(--color-${key})`}
+                                radius={[4, 4, 0, 0]}
+                            >
+                                <LabelList
+                                    dataKey={key}
+                                    position="top"
+                                    className="fill-foreground"
+                                    fontSize={12}
+                                />
+                            </Bar>
+                        ))}
+                    </BarChart>
+                </ChartContainer>
+            ),
+        },
+        {
+            name: 'Tabulka',
+            value: 'table',
+            icon: <TableIcon />,
+            content: (
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Den</TableHead>
+                            {BEST_SEND_DAY_SERIES.map((key) => (
+                                <TableHead key={key} className="text-right">
+                                    {BEST_SEND_DAY_CHART_CONFIG[key].label}
+                                </TableHead>
+                            ))}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {BEST_SEND_DAY_BY_WEEKDAY.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell className="font-medium">
+                                    {row.label}
+                                </TableCell>
+                                {BEST_SEND_DAY_SERIES.map((key) => (
+                                    <TableCell key={key} className="text-right">
+                                        {Number(row[key]).toLocaleString('cs-CZ')}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            ),
+        },
+    ]
+
     return (
         <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
             <TabbedCard
@@ -116,6 +205,12 @@ export function ReportExpert() {
                 title="Nejlepší čas na odesílání e-mailů"
                 description="Průměr unikátně otevřených za 90 dní."
                 tabs={VIEW_TABS_BEST_SEND_TIME}
+            />
+            <TabbedCard
+                queryKey="view-best-send-day"
+                title="Nejlepší den na odesílání e-mailů"
+                description="Průměr unikátně otevřených za 90 dní."
+                tabs={VIEW_TABS_BEST_SEND_DAY}
             />
         </div>
     )
