@@ -1,20 +1,11 @@
 'use client'
 
-import { MoreHorizontalIcon } from 'lucide-react'
-
 import { DetailCard } from '@/components/custom/statistics/detail-card'
 import { GraphCard } from '@/components/custom/statistics/graph-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { ValueCard } from '@/components/custom/statistics/value-card'
-import { Button } from '@/components/ui/button'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import {
     Table,
     TableBody,
@@ -37,8 +28,8 @@ import {
     GDPR_UNSUBSCRIBE_STATS,
     GDPR_UNSUBSCRIBE_STATS_CONFIG,
     GDPR_UNSUBSCRIBE_STATS_SERIES,
-    NOTICEBOARD_DETAILS,
-    NOTICEBOARD_METRICS,
+    NOTICEBOARD_DETAIL,
+    NOTICEBOARD_METRIC,
     UNDELIVERED_EMAILS,
     UNDELIVERED_EMAILS_CONFIG,
 } from './data'
@@ -48,22 +39,16 @@ export function NoticeboardMarketing() {
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-stretch">
                 <div className="grid grid-cols-1 gap-4">
-                    {NOTICEBOARD_DETAILS.map((detail) => (
-                        <DetailCard
-                            key={detail.title}
-                            title={detail.title}
-                            rows={detail.rows}
-                            className="h-full"
-                        />
-                    ))}
-                    {NOTICEBOARD_METRICS.map((metric) => (
-                        <ValueCard
-                            key={metric.title}
-                            title={metric.title}
-                            value={metric.value}
-                            className="h-full"
-                        />
-                    ))}
+                    <DetailCard
+                        title={NOTICEBOARD_DETAIL.title}
+                        rows={NOTICEBOARD_DETAIL.rows}
+                        className="h-full"
+                    />
+                    <ValueCard
+                        title={NOTICEBOARD_METRIC.title}
+                        value={NOTICEBOARD_METRIC.value}
+                        className="h-full"
+                    />
                 </div>
 
                 <GraphCard
@@ -162,68 +147,32 @@ export function NoticeboardMarketing() {
                 title="Seznamy událostí"
                 queryKey="event-lists"
                 content={
-                    <>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Jméno seznamu</TableHead>
-                                    <TableHead>Události</TableHead>
-                                    <TableHead>ID seznamu událostí</TableHead>
-                                    <TableHead className="w-12 text-right">
-                                        Akce
-                                    </TableHead>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Jméno seznamu</TableHead>
+                                <TableHead>Události</TableHead>
+                                <TableHead>ID seznamu událostí</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {EVENT_LISTS.map((list) => (
+                                <TableRow key={list.id}>
+                                    <TableCell className="font-medium">
+                                        {list.name}
+                                    </TableCell>
+                                    <TableCell className="text-muted-foreground max-w-md truncate">
+                                        {list.events.length > 0
+                                            ? `[${list.events.join(', ')}]`
+                                            : '[]'}
+                                    </TableCell>
+                                    <TableCell className="font-mono text-xs">
+                                        {list.id}
+                                    </TableCell>
                                 </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {EVENT_LISTS.map((list) => (
-                                    <TableRow key={list.id}>
-                                        <TableCell className="font-medium">
-                                            {list.name}
-                                        </TableCell>
-                                        <TableCell className="max-w-md truncate text-muted-foreground">
-                                            {list.events.length > 0
-                                                ? `[${list.events.join(', ')}]`
-                                                : '[]'}
-                                        </TableCell>
-                                        <TableCell className="font-mono text-xs">
-                                            {list.id}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger
-                                                    render={
-                                                        <Button
-                                                            type="button"
-                                                            variant="ghost"
-                                                            size="icon-sm"
-                                                            className="text-muted-foreground"
-                                                            aria-label={`Akce pro ${list.name}`}
-                                                        />
-                                                    }
-                                                >
-                                                    <MoreHorizontalIcon />
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem>
-                                                        Upravit
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem>
-                                                        Duplikovat
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem variant="destructive">
-                                                        Smazat
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                        <p className="text-muted-foreground mt-3 text-right text-xs">
-                            {EVENT_LISTS.length} řádků
-                        </p>
-                    </>
+                            ))}
+                        </TableBody>
+                    </Table>
                 }
             />
         </div>

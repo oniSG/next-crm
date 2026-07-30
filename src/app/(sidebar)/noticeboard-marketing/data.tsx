@@ -18,19 +18,18 @@ export type NoticeboardDetail = {
     rows: { label: string; value: string }[]
 }
 
-export const NOTICEBOARD_METRICS: NoticeboardMetric[] = [
-    { title: 'Úspěšnost e-mailů', value: '5,76 %' },
-]
+export const NOTICEBOARD_METRIC: NoticeboardMetric = {
+    title: 'Úspěšnost e-mailů',
+    value: '5,76 %',
+}
 
-export const NOTICEBOARD_DETAILS: NoticeboardDetail[] = [
-    {
-        title: 'Relatoo index',
-        rows: [
-            { label: 'Relatoo index', value: '3,65' },
-            { label: 'Stav', value: 'Dobrý' },
-        ],
-    },
-]
+export const NOTICEBOARD_DETAIL: NoticeboardDetail = {
+    title: 'Relatoo index',
+    rows: [
+        { label: 'Relatoo index', value: '3,65' },
+        { label: 'Stav', value: 'Dobrý' },
+    ],
+}
 
 export const EMAIL_CAMPAIGN_FLOW = emailCampaignFlow
 
