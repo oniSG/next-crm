@@ -1,11 +1,10 @@
 'use client'
 
-import { DetailCard } from '@/components/custom/statistics/detail-card'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
+import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
-import { ValueCard } from '@/components/custom/statistics/value-card'
 import {
     Table,
     TableBody,
@@ -39,13 +38,13 @@ export function NoticeboardMarketing() {
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-stretch">
                 <div className="grid grid-cols-1 gap-4">
-                    <DetailCard
-                        title={NOTICEBOARD_DETAIL.title}
-                        rows={NOTICEBOARD_DETAIL.rows}
+                    <OverviewKpiCard
+                        label={NOTICEBOARD_DETAIL.title}
+                        metrics={NOTICEBOARD_DETAIL.rows}
                         className="h-full"
                     />
-                    <ValueCard
-                        title={NOTICEBOARD_METRIC.title}
+                    <OverviewKpiCard
+                        label={NOTICEBOARD_METRIC.title}
                         value={NOTICEBOARD_METRIC.value}
                         className="h-full"
                     />
