@@ -1,0 +1,12 @@
+[
+  { "datum": "24/5/2026", "doruceno": 12000, "softBounce": 800, "unikatneOtevreno": 4200 },
+  { "datum": "31/5/2026", "doruceno": 15000, "softBounce": 900, "unikatneOtevreno": 5100 },
+  { "datum": "7/6/2026", "doruceno": 18000, "softBounce": 1100, "unikatneOtevreno": 6300 },
+  { "datum": "14/6/2026", "doruceno": 14000, "softBounce": 700, "unikatneOtevreno": 4800 },
+  { "datum": "21/6/2026", "doruceno": 16000, "softBounce": 850, "unikatneOtevreno": 5500 },
+  { "datum": "28/6/2026", "doruceno": 20000, "softBounce": 1000, "unikatneOtevreno": 7000 },
+  { "datum": "5/7/2026", "doruceno": 420000, "softBounce": 2800000, "unikatneOtevreno": 150000 },
+  { "datum": "12/7/2026", "doruceno": 25000, "softBounce": 1200, "unikatneOtevreno": 9000 },
+  { "datum": "19/7/2026", "doruceno": 22000, "softBounce": 950, "unikatneOtevreno": 8200 },
+  { "datum": "26/7/2026", "doruceno": 19000, "softBounce": 800, "unikatneOtevreno": 7100 }
+]

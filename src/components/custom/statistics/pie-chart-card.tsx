@@ -1,7 +1,5 @@
 'use client'
 
-import { Pie, PieChart } from 'recharts'
-
 import {
     Card,
     CardAction,
@@ -10,14 +8,9 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import {
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from '@/components/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
+
+import { PieChart } from './pie-chart'
 
 export type PieChartCardProps = {
     action?: React.ReactNode
@@ -44,28 +37,7 @@ export function PieChartCard({
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent>
-                <ChartContainer
-                    config={config}
-                    className="mx-auto aspect-square max-h-65"
-                >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel nameKey="name" />}
-                        />
-                        <Pie
-                            data={data}
-                            dataKey="value"
-                            nameKey="name"
-                            innerRadius={55}
-                            strokeWidth={4}
-                        />
-                        <ChartLegend
-                            content={<ChartLegendContent nameKey="name" />}
-                            verticalAlign="bottom"
-                        />
-                    </PieChart>
-                </ChartContainer>
+                <PieChart data={data} config={config} />
             </CardContent>
         </Card>
     )
