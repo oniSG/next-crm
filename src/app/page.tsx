@@ -83,6 +83,12 @@ const pages: {
         by: 'Tomas',
     },
     {
+        name: 'Globální report',
+        path: '/global-report',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
         name: 'Email send',
         path: '/email-send',
         status: 'progress',
