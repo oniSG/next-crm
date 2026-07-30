@@ -3,13 +3,14 @@
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-import { TabbedCard } from '@/components/custom/tabbed-card'
+import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
 import {
     ChartContainer,
     ChartLegend,
     ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
+    type ChartConfig,
 } from '@/components/ui/chart'
 import {
     Table,
@@ -21,37 +22,128 @@ import {
 } from '@/components/ui/table'
 
 import {
-    GLOBAL_REPORT_CHART_CONFIG,
-    GLOBAL_REPORT_SERIES,
+    EMAIL_REPORT_BY_DAY,
+    EMAIL_REPORT_CHART_CONFIG,
+    EMAIL_REPORT_SERIES,
+    PUSH_REPORT_BY_DAY,
     PUSH_REPORT_CHART_CONFIG,
     PUSH_REPORT_SERIES,
+    SMS_REPORT_BY_DAY,
     SMS_REPORT_CHART_CONFIG,
     SMS_REPORT_SERIES,
+    type Period,
 } from './data'
-import { aggregateByPeriod, filterByDateRange, usePeriod } from './report-utils'
 import {
-    GLOBAL_REPORT_BY_DAY,
-    PUSH_REPORT_BY_DAY,
-    SMS_REPORT_BY_DAY,
-} from './temp/mock-daily-data'
+    aggregateByPeriod,
+    filterByDateRange,
+    useReportDateRange,
+    useReportPeriod,
+    type ChartRow,
+} from './report-utils'
 
-const VIEW_TABS = [
-    { name: 'Graf', icon: <ChartColumnIcon /> },
-    { name: 'Tabulka', icon: <TableIcon /> },
-]
+function periodColumnLabel(period: Period) {
+    if (period === 'day') return 'Den'
+    if (period === 'month') return 'Měsíc'
+    return 'Rok'
+}
 
-const PERIOD_DESCRIPTION = {
-    day: 'Přehled po dnech ve zvoleném období.',
-    month: 'Přehled po měsících ve zvoleném období.',
-    year: 'Přehled po rocích ve zvoleném období.',
-} as const
+function ReportChart({
+    config,
+    series,
+    data,
+    period,
+}: {
+    config: ChartConfig
+    series: readonly string[]
+    data: ChartRow[]
+    period: Period
+}) {
+    return (
+        <ChartContainer config={config} className="max-h-75 w-full">
+            <BarChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                    dataKey="label"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    minTickGap={period === 'day' ? 24 : 8}
+                />
+                <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    width={48}
+                    tickFormatter={(value) => Number(value).toLocaleString('cs-CZ')}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                {series.map((key, i) => (
+                    <Bar
+                        key={key}
+                        dataKey={key}
+                        fill={`var(--color-${key})`}
+                        stackId="a"
+                        radius={
+                            i === 0
+                                ? [0, 0, 4, 4]
+                                : i === series.length - 1
+                                  ? [4, 4, 0, 0]
+                                  : [0, 0, 0, 0]
+                        }
+                    />
+                ))}
+            </BarChart>
+        </ChartContainer>
+    )
+}
+
+function ReportTable({
+    config,
+    series,
+    data,
+    period,
+}: {
+    config: ChartConfig
+    series: readonly string[]
+    data: ChartRow[]
+    period: Period
+}) {
+    return (
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>{periodColumnLabel(period)}</TableHead>
+                    {series.map((key) => (
+                        <TableHead key={key} className="text-right">
+                            {config[key]?.label}
+                        </TableHead>
+                    ))}
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {data.map((row) => (
+                    <TableRow key={String(row.label)}>
+                        <TableCell className="font-medium">{row.label}</TableCell>
+                        {series.map((key) => (
+                            <TableCell key={key} className="text-right">
+                                {Number(row[key]).toLocaleString('cs-CZ')}
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
+}
 
 export function ReportFanGeneral() {
-    const { period, dateRange } = usePeriod()
+    const [period] = useReportPeriod()
+    const { dateRange } = useReportDateRange()
 
-    const globalData = aggregateByPeriod(
-        filterByDateRange(GLOBAL_REPORT_BY_DAY, dateRange),
-        GLOBAL_REPORT_SERIES,
+    const emailData = aggregateByPeriod(
+        filterByDateRange(EMAIL_REPORT_BY_DAY, dateRange),
+        EMAIL_REPORT_SERIES,
         period,
     )
     const smsData = aggregateByPeriod(
@@ -65,264 +157,113 @@ export function ReportFanGeneral() {
         period,
     )
 
+    const VIEW_TABS_EMAIL: Tab[] = [
+        {
+            name: 'Graf',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: (
+                <ReportChart
+                    config={EMAIL_REPORT_CHART_CONFIG}
+                    series={EMAIL_REPORT_SERIES}
+                    data={emailData}
+                    period={period}
+                />
+            ),
+        },
+        {
+            name: 'Tabulka',
+            value: 'table',
+            icon: <TableIcon />,
+            content: (
+                <ReportTable
+                    config={EMAIL_REPORT_CHART_CONFIG}
+                    series={EMAIL_REPORT_SERIES}
+                    data={emailData}
+                    period={period}
+                />
+            ),
+        },
+    ]
+
+    const VIEW_TABS_SMS: Tab[] = [
+        {
+            name: 'Graf',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: (
+                <ReportChart
+                    config={SMS_REPORT_CHART_CONFIG}
+                    series={SMS_REPORT_SERIES}
+                    data={smsData}
+                    period={period}
+                />
+            ),
+        },
+        {
+            name: 'Tabulka',
+            value: 'table',
+            icon: <TableIcon />,
+            content: (
+                <ReportTable
+                    config={SMS_REPORT_CHART_CONFIG}
+                    series={SMS_REPORT_SERIES}
+                    data={smsData}
+                    period={period}
+                />
+            ),
+        },
+    ]
+
+    const VIEW_TABS_PUSH: Tab[] = [
+        {
+            name: 'Graf',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: (
+                <ReportChart
+                    config={PUSH_REPORT_CHART_CONFIG}
+                    series={PUSH_REPORT_SERIES}
+                    data={pushData}
+                    period={period}
+                />
+            ),
+        },
+        {
+            name: 'Tabulka',
+            value: 'table',
+            icon: <TableIcon />,
+            content: (
+                <ReportTable
+                    config={PUSH_REPORT_CHART_CONFIG}
+                    series={PUSH_REPORT_SERIES}
+                    data={pushData}
+                    period={period}
+                />
+            ),
+        },
+    ]
+
     return (
-        <div className="flex w-full max-w-6xl flex-col gap-3">
-            <section className="grid grid-cols-1 gap-4">
-                <TabbedCard
-                    title="Globální report"
-                    description={PERIOD_DESCRIPTION[period]}
-                    tabs={VIEW_TABS}
-                >
-                    <ChartContainer
-                        config={GLOBAL_REPORT_CHART_CONFIG}
-                        className="max-h-75 w-full"
-                    >
-                        <BarChart
-                            accessibilityLayer
-                            data={globalData}
-                            margin={{ left: 12, right: 12 }}
-                        >
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="label"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                minTickGap={period === 'day' ? 24 : 8}
-                            />
-                            <YAxis
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                width={48}
-                                tickFormatter={(value) =>
-                                    Number(value).toLocaleString('cs-CZ')
-                                }
-                            />
-                            <ChartTooltip content={<ChartTooltipContent />} />
-                            <ChartLegend content={<ChartLegendContent />} />
-                            {GLOBAL_REPORT_SERIES.map((key, i) => (
-                                <Bar
-                                    key={key}
-                                    dataKey={key}
-                                    fill={`var(--color-${key})`}
-                                    stackId="a"
-                                    radius={
-                                        i === 0
-                                            ? [0, 0, 4, 4]
-                                            : i === GLOBAL_REPORT_SERIES.length - 1
-                                              ? [4, 4, 0, 0]
-                                              : [0, 0, 0, 0]
-                                    }
-                                />
-                            ))}
-                        </BarChart>
-                    </ChartContainer>
-
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>
-                                    {period === 'day'
-                                        ? 'Den'
-                                        : period === 'month'
-                                          ? 'Měsíc'
-                                          : 'Rok'}
-                                </TableHead>
-                                {GLOBAL_REPORT_SERIES.map((key) => (
-                                    <TableHead key={key} className="text-right">
-                                        {GLOBAL_REPORT_CHART_CONFIG[key].label}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {globalData.map((row) => (
-                                <TableRow key={String(row.label)}>
-                                    <TableCell className="font-medium">
-                                        {row.label}
-                                    </TableCell>
-                                    {GLOBAL_REPORT_SERIES.map((key) => (
-                                        <TableCell key={key} className="text-right">
-                                            {Number(row[key]).toLocaleString('cs-CZ')}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TabbedCard>
-
-                <TabbedCard
-                    title="SMS"
-                    description={PERIOD_DESCRIPTION[period]}
-                    tabs={VIEW_TABS}
-                >
-                    <ChartContainer
-                        config={SMS_REPORT_CHART_CONFIG}
-                        className="max-h-75 w-full"
-                    >
-                        <BarChart
-                            accessibilityLayer
-                            data={smsData}
-                            margin={{ left: 12, right: 12 }}
-                        >
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="label"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                minTickGap={period === 'day' ? 24 : 8}
-                            />
-                            <YAxis
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                width={48}
-                                tickFormatter={(value) =>
-                                    Number(value).toLocaleString('cs-CZ')
-                                }
-                            />
-                            <ChartTooltip content={<ChartTooltipContent />} />
-                            <ChartLegend content={<ChartLegendContent />} />
-                            {SMS_REPORT_SERIES.map((key, i) => (
-                                <Bar
-                                    key={key}
-                                    dataKey={key}
-                                    fill={`var(--color-${key})`}
-                                    stackId="a"
-                                    radius={
-                                        i === 0
-                                            ? [0, 0, 4, 4]
-                                            : i === SMS_REPORT_SERIES.length - 1
-                                              ? [4, 4, 0, 0]
-                                              : [0, 0, 0, 0]
-                                    }
-                                />
-                            ))}
-                        </BarChart>
-                    </ChartContainer>
-
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>
-                                    {period === 'day'
-                                        ? 'Den'
-                                        : period === 'month'
-                                          ? 'Měsíc'
-                                          : 'Rok'}
-                                </TableHead>
-                                {SMS_REPORT_SERIES.map((key) => (
-                                    <TableHead key={key} className="text-right">
-                                        {SMS_REPORT_CHART_CONFIG[key].label}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {smsData.map((row) => (
-                                <TableRow key={String(row.label)}>
-                                    <TableCell className="font-medium">
-                                        {row.label}
-                                    </TableCell>
-                                    {SMS_REPORT_SERIES.map((key) => (
-                                        <TableCell key={key} className="text-right">
-                                            {Number(row[key]).toLocaleString('cs-CZ')}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TabbedCard>
-
-                <TabbedCard
-                    title="Push notifikace"
-                    description={PERIOD_DESCRIPTION[period]}
-                    tabs={VIEW_TABS}
-                >
-                    <ChartContainer
-                        config={PUSH_REPORT_CHART_CONFIG}
-                        className="max-h-75 w-full"
-                    >
-                        <BarChart
-                            accessibilityLayer
-                            data={pushData}
-                            margin={{ left: 12, right: 12 }}
-                        >
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="label"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                minTickGap={period === 'day' ? 24 : 8}
-                            />
-                            <YAxis
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                width={48}
-                                tickFormatter={(value) =>
-                                    Number(value).toLocaleString('cs-CZ')
-                                }
-                            />
-                            <ChartTooltip content={<ChartTooltipContent />} />
-                            <ChartLegend content={<ChartLegendContent />} />
-                            {PUSH_REPORT_SERIES.map((key, i) => (
-                                <Bar
-                                    key={key}
-                                    dataKey={key}
-                                    fill={`var(--color-${key})`}
-                                    stackId="a"
-                                    radius={
-                                        i === 0
-                                            ? [0, 0, 4, 4]
-                                            : i === PUSH_REPORT_SERIES.length - 1
-                                              ? [4, 4, 0, 0]
-                                              : [0, 0, 0, 0]
-                                    }
-                                />
-                            ))}
-                        </BarChart>
-                    </ChartContainer>
-
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>
-                                    {period === 'day'
-                                        ? 'Den'
-                                        : period === 'month'
-                                          ? 'Měsíc'
-                                          : 'Rok'}
-                                </TableHead>
-                                {PUSH_REPORT_SERIES.map((key) => (
-                                    <TableHead key={key} className="text-right">
-                                        {PUSH_REPORT_CHART_CONFIG[key].label}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {pushData.map((row) => (
-                                <TableRow key={String(row.label)}>
-                                    <TableCell className="font-medium">
-                                        {row.label}
-                                    </TableCell>
-                                    {PUSH_REPORT_SERIES.map((key) => (
-                                        <TableCell key={key} className="text-right">
-                                            {Number(row[key]).toLocaleString('cs-CZ')}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TabbedCard>
-            </section>
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
+            <TabbedCard
+                queryKey="view-email"
+                title="E-mail"
+                description="Přehled ve zvoleném období."
+                tabs={VIEW_TABS_EMAIL}
+            />
+            <TabbedCard
+                queryKey="view-sms"
+                title="SMS"
+                description="Přehled ve zvoleném období."
+                tabs={VIEW_TABS_SMS}
+            />
+            <TabbedCard
+                queryKey="view-push"
+                title="Push notifikace"
+                description="Přehled ve zvoleném období."
+                tabs={VIEW_TABS_PUSH}
+            />
         </div>
     )
 }

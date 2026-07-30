@@ -1,0 +1,4 @@
+[
+  { "name": "email", "value": 94, "fill": "var(--color-email)" },
+  { "name": "push", "value": 6, "fill": "var(--color-push)" }
+]

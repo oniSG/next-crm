@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useContext, useState, type ReactNode } from 'react'
+import { parseAsIsoDate, useQueryState } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
 
@@ -20,24 +21,31 @@ function toPeriod(date: Date) {
 
 export function ReportPeriodProvider({ children }: { children: ReactNode }) {
     const [today] = useState(() => new Date())
-    const [dateRange, setDateRange] = useState<DateRange>(() => ({
-        from: new Date(2026, 0, 1),
-        to: new Date(2026, 5, 30),
-    }))
-
-    const value = useMemo(
-        () => ({
-            dateRange,
-            setDateRange,
-            today,
-            periodFrom: toPeriod(dateRange.from),
-            periodTo: toPeriod(dateRange.to),
-        }),
-        [dateRange, today],
+    const [from, setFrom] = useQueryState(
+        'from',
+        parseAsIsoDate.withDefault(new Date(2026, 0, 1)),
     )
+    const [to, setTo] = useQueryState(
+        'to',
+        parseAsIsoDate.withDefault(new Date(2026, 5, 30)),
+    )
+    const dateRange = { from, to }
+
+    function setDateRange(value: DateRange) {
+        void setFrom(value.from)
+        void setTo(value.to)
+    }
 
     return (
-        <ReportPeriodContext.Provider value={value}>
+        <ReportPeriodContext.Provider
+            value={{
+                dateRange,
+                setDateRange,
+                today,
+                periodFrom: toPeriod(from),
+                periodTo: toPeriod(to),
+            }}
+        >
             {children}
         </ReportPeriodContext.Provider>
     )

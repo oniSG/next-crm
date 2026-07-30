@@ -1,34 +1,13 @@
 'use client'
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    Line,
-    LineChart,
-    Pie,
-    PieChart,
-    XAxis,
-    YAxis,
-} from 'recharts'
 
-import { TabbedCard } from '@/components/custom/tabbed-card'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
-import {
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from '@/components/ui/chart'
+import { BarChart } from '@/components/custom/statistics/bar-chart'
+import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { LineChart } from '@/components/custom/statistics/line-chart'
+import { PieChart } from '@/components/custom/statistics/pie-chart'
+import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
+import type { ChartConfig } from '@/components/ui/chart'
 import {
     Table,
     TableBody,
@@ -58,11 +37,6 @@ type Series = {
     color: string
 }
 
-const VIEW_TABS = [
-    { name: 'Chart', icon: <ChartColumnIcon /> },
-    { name: 'Table', icon: <TableIcon /> },
-]
-
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const currencyFormatter = new Intl.NumberFormat('cs-CZ', {
     style: 'currency',
@@ -88,6 +62,7 @@ function ChartTableSection({
     stacked = false,
     showTotals = true,
     emptyMessage,
+    queryKey,
 }: {
     title: string
     description: string
@@ -99,6 +74,7 @@ function ChartTableSection({
     stacked?: boolean
     showTotals?: boolean
     emptyMessage: string
+    queryKey: string
 }) {
     const config = Object.fromEntries(
         series.map((item) => [item.key, { label: item.label, color: item.color }]),
@@ -111,148 +87,124 @@ function ChartTableSection({
         return result
     }, {})
 
-    const axes = (
-        <>
-            <CartesianGrid vertical={false} />
-            <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
-            <YAxis
-                allowDecimals={false}
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                width={64}
-                tickFormatter={(value) => numberFormatter.format(Number(value))}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            {series.length > 1 && <ChartLegend content={<ChartLegendContent />} />}
-        </>
-    )
-
-    return (
-        <TabbedCard title={title} description={description} tabs={VIEW_TABS}>
-            {rows.length > 0 ? (
-                <ChartContainer
-                    key={`${title}-chart-${periodKey}`}
+    const chart =
+        rows.length > 0 ? (
+            chartType === 'line' ? (
+                <LineChart
+                    key={`${queryKey}-chart-${periodKey}`}
+                    data={rows}
                     config={config}
-                    className="max-h-80 w-full"
-                >
-                    {chartType === 'line' ? (
-                        <LineChart
-                            accessibilityLayer
-                            data={rows}
-                            margin={{ left: 12, right: 12 }}
-                        >
-                            {axes}
-                            {series.map((item) => (
-                                <Line
-                                    key={item.key}
-                                    type="monotone"
-                                    dataKey={item.key}
-                                    stroke={`var(--color-${item.key})`}
-                                    strokeWidth={2}
-                                    dot={{ r: 4 }}
-                                    activeDot={{ r: 6 }}
-                                />
-                            ))}
-                        </LineChart>
-                    ) : (
-                        <BarChart
-                            accessibilityLayer
-                            data={rows}
-                            margin={{ left: 12, right: 12 }}
-                        >
-                            {axes}
-                            {series.map((item, index) => (
-                                <Bar
-                                    key={item.key}
-                                    dataKey={item.key}
-                                    fill={`var(--color-${item.key})`}
-                                    stackId={stacked ? 'value' : undefined}
-                                    radius={
-                                        !stacked
-                                            ? [4, 4, 4, 4]
-                                            : index === 0
-                                              ? [0, 0, 4, 4]
-                                              : index === series.length - 1
-                                                ? [4, 4, 0, 0]
-                                                : [0, 0, 0, 0]
-                                    }
-                                />
-                            ))}
-                        </BarChart>
-                    )}
-                </ChartContainer>
+                    categoryKey="label"
+                    series={series.map((item) => item.key)}
+                    showYAxis
+                    showDots
+                    className="h-80"
+                />
             ) : (
-                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                    {emptyMessage}
-                </div>
-            )}
+                <BarChart
+                    key={`${queryKey}-chart-${periodKey}`}
+                    data={rows}
+                    config={config}
+                    categoryKey="label"
+                    series={series.map((item) => item.key)}
+                    stacked={stacked}
+                    showYAxis
+                    className="h-80"
+                />
+            )
+        ) : (
+            <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
+                {emptyMessage}
+            </div>
+        )
 
-            <div key={`${title}-table-${periodKey}`}>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Month</TableHead>
-                            {columns.map((column) => (
-                                <TableHead key={column.key} className="text-right">
-                                    {column.label}
-                                </TableHead>
-                            ))}
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {rows.length > 0 ? (
-                            rows.map((row) => (
-                                <TableRow key={row.period}>
-                                    <TableCell className="font-medium">
-                                        {row.label}
-                                    </TableCell>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.key}
-                                            className={
-                                                column.emphasize
-                                                    ? 'text-right font-medium tabular-nums'
-                                                    : 'text-right tabular-nums'
-                                            }
-                                        >
-                                            {formatValue(
-                                                Number(row[column.key] ?? 0),
-                                                column.format,
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length + 1}
-                                    className="text-muted-foreground h-24 text-center"
-                                >
-                                    {emptyMessage}
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                    {showTotals && rows.length > 0 && (
-                        <TableFooter>
-                            <TableRow>
-                                <TableCell>Total</TableCell>
+    const table = (
+        <div key={`${queryKey}-table-${periodKey}`}>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Month</TableHead>
+                        {columns.map((column) => (
+                            <TableHead key={column.key} className="text-right">
+                                {column.label}
+                            </TableHead>
+                        ))}
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {rows.length > 0 ? (
+                        rows.map((row) => (
+                            <TableRow key={row.period}>
+                                <TableCell className="font-medium">{row.label}</TableCell>
                                 {columns.map((column) => (
                                     <TableCell
                                         key={column.key}
-                                        className="text-right tabular-nums"
+                                        className={
+                                            column.emphasize
+                                                ? 'text-right font-medium tabular-nums'
+                                                : 'text-right tabular-nums'
+                                        }
                                     >
-                                        {formatValue(totals[column.key], column.format)}
+                                        {formatValue(
+                                            Number(row[column.key] ?? 0),
+                                            column.format,
+                                        )}
                                     </TableCell>
                                 ))}
                             </TableRow>
-                        </TableFooter>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell
+                                colSpan={columns.length + 1}
+                                className="text-muted-foreground h-24 text-center"
+                            >
+                                {emptyMessage}
+                            </TableCell>
+                        </TableRow>
                     )}
-                </Table>
-            </div>
-        </TabbedCard>
+                </TableBody>
+                {showTotals && rows.length > 0 && (
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell>Total</TableCell>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.key}
+                                    className="text-right tabular-nums"
+                                >
+                                    {formatValue(totals[column.key], column.format)}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableFooter>
+                )}
+            </Table>
+        </div>
+    )
+
+    const tabs: Tab[] = [
+        {
+            name: 'Chart',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: chart,
+        },
+        {
+            name: 'Table',
+            value: 'table',
+            icon: <TableIcon />,
+            content: table,
+        },
+    ]
+
+    return (
+        <TabbedCard
+            title={title}
+            description={description}
+            tabs={tabs}
+            queryKey={queryKey}
+        />
     )
 }
 
@@ -290,6 +242,7 @@ export function TicketRevenueSection(props: {
             series={channelSeries}
             stacked
             emptyMessage="No ticket sales data for the selected period."
+            queryKey="management-ticket-revenue-view"
         />
     )
 }
@@ -307,6 +260,7 @@ export function TicketCountSection(props: {
             series={channelSeries}
             stacked
             emptyMessage="No ticket sales data for the selected period."
+            queryKey="management-ticket-count-view"
         />
     )
 }
@@ -338,6 +292,7 @@ export function VisitorTotalSection(props: {
             chartType="line"
             showTotals={false}
             emptyMessage="No visitor data for the selected period."
+            queryKey="management-visitor-total-view"
         />
     )
 }
@@ -369,6 +324,7 @@ export function VisitorGrowthSection(props: {
                 },
             ]}
             emptyMessage="No visitor growth data for the selected period."
+            queryKey="management-visitor-growth-view"
         />
     )
 }
@@ -398,6 +354,7 @@ function DeliveredSection({
             ]}
             series={[{ key: 'delivered', label: 'Delivered', color }]}
             emptyMessage={`No ${channel} data for the selected period.`}
+            queryKey={`management-delivered-${channel.replaceAll(' ', '-')}-view`}
         />
     )
 }
@@ -452,6 +409,7 @@ export function WonBusinessCasesSection(props: {
                 },
             ]}
             emptyMessage="No won business case data for the selected period."
+            queryKey="management-won-business-cases-view"
         />
     )
 }
@@ -486,6 +444,7 @@ export function BusinessCaseStatusSection(props: {
                 },
             ]}
             emptyMessage="No business case data for the selected period."
+            queryKey="management-business-case-status-view"
         />
     )
 }
@@ -510,12 +469,12 @@ export function AdvertisingSpacesSection({
     const data = hasData
         ? [
               {
-                  status: 'occupied',
+                  name: 'occupied',
                   value: occupied,
                   fill: 'var(--color-occupied)',
               },
               {
-                  status: 'free',
+                  name: 'free',
                   value: free,
                   fill: 'var(--color-free)',
               },
@@ -523,38 +482,23 @@ export function AdvertisingSpacesSection({
         : []
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Ratio of available and taken advertising spaces</CardTitle>
-                <CardDescription>Current state as of {dateLabel}.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                {hasData ? (
-                    <ChartContainer
-                        key={`advertising-spaces-${periodKey}`}
-                        config={advertisingSpacesConfig}
-                        className="mx-auto aspect-square max-h-64 w-full"
-                    >
-                        <PieChart>
-                            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                            <Pie
-                                data={data}
-                                dataKey="value"
-                                nameKey="status"
-                                innerRadius={56}
-                                strokeWidth={4}
-                            />
-                            <ChartLegend
-                                content={<ChartLegendContent nameKey="status" />}
-                            />
-                        </PieChart>
-                    </ChartContainer>
-                ) : (
-                    <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                        No advertising space data for the selected period.
-                    </div>
-                )}
-            </CardContent>
-        </Card>
+        <GraphCard
+            title="Ratio of available and taken advertising spaces"
+            description={`Current state as of ${dateLabel}.`}
+        >
+            {hasData ? (
+                <PieChart
+                    key={`advertising-spaces-${periodKey}`}
+                    data={data}
+                    config={advertisingSpacesConfig}
+                    className="max-h-64"
+                    innerRadius={56}
+                />
+            ) : (
+                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
+                    No advertising space data for the selected period.
+                </div>
+            )}
+        </GraphCard>
     )
 }

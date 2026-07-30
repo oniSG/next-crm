@@ -100,6 +100,18 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+   {
+        name: 'Sankey',
+        path: '/sankey',
+        status: 'progress',
+        by: 'Tomas',
+    },
+    {
+        name: 'Noticeboard marketing',
+        path: '/noticeboard-marketing',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {

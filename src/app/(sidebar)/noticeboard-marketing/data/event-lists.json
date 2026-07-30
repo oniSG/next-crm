@@ -1,0 +1,31 @@
+[
+  {
+    "id": "6a5e176e605773aed38f9ae9",
+    "name": "Kvalifikace Domácí - U21",
+    "events": ["CZECHIA - BULGARIA - 30/09/2026 18:45"]
+  },
+  {
+    "id": "7b2c984f1a0e44d2b91c8f01",
+    "name": "Kvalifikace Domácí - Ženy",
+    "events": []
+  },
+  {
+    "id": "3d9a12bc87ef4501a6e4d2c8",
+    "name": "Kvalifikace domácí - A Muži",
+    "events": [
+      "CZECHIA - CROATIA - 26/09/2026 18:45",
+      "CZECHIA - ENGLAND - 29/09/2026 18:45",
+      "CZECHIA - SPAIN - 12/11/2026 19:45"
+    ]
+  },
+  {
+    "id": "9f0e33aa55bb7788ccdd1122",
+    "name": "Kvalifikace venkovní - A Muži",
+    "events": []
+  },
+  {
+    "id": "1c4d66ee99aa0033bbff4455",
+    "name": "Liga Národů Domácí - A Muži",
+    "events": ["CZECHIA - PORTUGAL - 14/10/2026 20:45"]
+  }
+]

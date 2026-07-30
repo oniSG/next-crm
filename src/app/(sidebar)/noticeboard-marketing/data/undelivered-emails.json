@@ -1,0 +1,4 @@
+[
+  { "name": "softBounce", "value": 82, "fill": "var(--color-softBounce)" },
+  { "name": "ostatni", "value": 18, "fill": "var(--color-ostatni)" }
+]

@@ -1,0 +1,6 @@
+[
+  { "datum": "dub 2026", "sdeleniOAkci": 120, "sdeleniPoradatele": 110, "marketing": 95 },
+  { "datum": "kvě 2026", "sdeleniOAkci": 180, "sdeleniPoradatele": 165, "marketing": 140 },
+  { "datum": "čvn 2026", "sdeleniOAkci": 450, "sdeleniPoradatele": 420, "marketing": 380 },
+  { "datum": "čvc 2026", "sdeleniOAkci": 1350, "sdeleniPoradatele": 1280, "marketing": 1200 }
+]

@@ -1,52 +1,14 @@
 'use client'
 
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { useMemo, useState } from 'react'
 import { format } from 'date-fns'
+import { parseAsIsoDate, parseAsStringLiteral, useQueryState } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
 
 import type { Period } from './data'
 
-type ReportFiltersContextValue = {
-    period: Period
-    setPeriod: (period: Period) => void
-    dateRange: DateRange
-    setDateRange: (range: DateRange) => void
-    today: Date
-}
-
-const ReportFiltersContext = createContext<ReportFiltersContextValue | null>(null)
-
-function defaultDateRange(today: Date): DateRange {
-    return {
-        from: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
-        to: today,
-    }
-}
-
-export function PeriodProvider({ children }: { children: ReactNode }) {
-    const [today] = useState(() => new Date())
-    const [period, setPeriod] = useState<Period>('month')
-    const [dateRange, setDateRange] = useState<DateRange>(() =>
-        defaultDateRange(today),
-    )
-
-    return (
-        <ReportFiltersContext.Provider
-            value={{ period, setPeriod, dateRange, setDateRange, today }}
-        >
-            {children}
-        </ReportFiltersContext.Provider>
-    )
-}
-
-export function usePeriod() {
-    const context = useContext(ReportFiltersContext)
-    if (!context) {
-        throw new Error('usePeriod must be used within PeriodProvider')
-    }
-    return context
-}
+const PERIODS = ['day', 'month', 'year'] as const satisfies readonly Period[]
 
 export type ChartRow = {
     label: string
@@ -66,6 +28,38 @@ const MONTH_LABELS = [
     'Lis',
     'Pro',
 ] as const
+
+export function useReportPeriod() {
+    return useQueryState(
+        'period',
+        parseAsStringLiteral(PERIODS)
+            .withDefault('month')
+            .withOptions({ clearOnDefault: true }),
+    )
+}
+
+export function useReportDateRange() {
+    const [today] = useState(() => new Date())
+    const defaultFrom = useMemo(
+        () => new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
+        [today],
+    )
+
+    const [from, setFrom] = useQueryState('from', parseAsIsoDate)
+    const [to, setTo] = useQueryState('to', parseAsIsoDate)
+
+    const dateRange: DateRange = {
+        from: from ?? defaultFrom,
+        to: to ?? today,
+    }
+
+    function setDateRange(range: DateRange) {
+        void setFrom(range.from)
+        void setTo(range.to)
+    }
+
+    return { today, dateRange, setDateRange }
+}
 
 function formatDayLabel(date: string) {
     const [year, month, day] = date.split('-')
@@ -127,9 +121,7 @@ export function aggregateByPeriod(
 
     for (const row of data) {
         const key =
-            period === 'month'
-                ? formatMonthLabel(row.date)
-                : formatYearLabel(row.date)
+            period === 'month' ? formatMonthLabel(row.date) : formatYearLabel(row.date)
         const bucket = groups.get(key) ?? []
         bucket.push(row)
         groups.set(key, bucket)
