@@ -23,6 +23,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'funnel-chart',
     'report-fan-general',
     'report-management',
+    'report-event',
     'noticeboard-marketing',
 ])
 

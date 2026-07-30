@@ -42,6 +42,7 @@ export type SankeyChartProps = {
         left?: number
     }
     className?: string
+    labelSideThreshold?: number
 }
 
 function getNodeFill(node: unknown): string {
@@ -56,11 +57,18 @@ function getNodeFill(node: unknown): string {
     return 'var(--chart-1)'
 }
 
-function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
+function SankeyNode({
+    x,
+    y,
+    width,
+    height,
+    payload,
+    labelSideThreshold = 100,
+}: SankeyNodeProps & { labelSideThreshold?: number }) {
     const name = typeof payload?.name === 'string' ? payload.name : ''
     const value = typeof payload?.value === 'number' ? payload.value : null
     const fill = getNodeFill(payload)
-    const isLeft = x < 100
+    const isLeft = x < labelSideThreshold
     const label = value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
 
     return (
@@ -126,6 +134,7 @@ export function SankeyChart({
     verticalAlign = 'top',
     margin = { top: 16, right: 180, bottom: 16, left: 140 },
     className,
+    labelSideThreshold = 100,
 }: SankeyChartProps) {
     return (
         <div className={cn('h-140 w-full', className)}>
@@ -140,7 +149,9 @@ export function SankeyChart({
                     iterations={iterations}
                     margin={margin}
                     link={SankeyLink}
-                    node={SankeyNode}
+                    node={(props) => (
+                        <SankeyNode {...props} labelSideThreshold={labelSideThreshold} />
+                    )}
                 />
             </ResponsiveContainer>
         </div>
