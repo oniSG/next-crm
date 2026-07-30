@@ -60,7 +60,6 @@ function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
     const name = typeof payload?.name === 'string' ? payload.name : ''
     const value = typeof payload?.value === 'number' ? payload.value : null
     const fill = getNodeFill(payload)
-    const isLeft = x < 100
     const label = value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
 
     return (
@@ -75,9 +74,9 @@ function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
                 radius={2}
             />
             <text
-                x={isLeft ? x - 8 : x + width + 8}
+                x={x + width + 8}
                 y={y + height / 2}
-                textAnchor={isLeft ? 'end' : 'start'}
+                textAnchor="start"
                 dominantBaseline="middle"
                 fontSize={12}
                 fill={fill}
