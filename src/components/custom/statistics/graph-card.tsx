@@ -48,30 +48,6 @@ export function GraphCard({
             .withOptions({ clearOnDefault: true }),
     )
 
-    const header = (
-        <CardHeader className="pb-2">
-            <CardTitle className="truncate text-sm font-medium">{title}</CardTitle>
-            {description && <CardDescription>{description}</CardDescription>}
-            {tabs ? (
-                <CardAction>
-                    <div className="flex items-center gap-2">
-                        <TabsList>
-                            {tabs.map((tab) => (
-                                <TabsTrigger key={tab.value} value={tab.value}>
-                                    {tab.icon}
-                                    {tab.name}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
-                        {action}
-                    </div>
-                </CardAction>
-            ) : (
-                action && <CardAction>{action}</CardAction>
-            )}
-        </CardHeader>
-    )
-
     if (tabs) {
         return (
             <Tabs
@@ -82,7 +58,30 @@ export function GraphCard({
                 className={cn('w-full gap-0', className)}
             >
                 <Card className="flex w-full flex-1 flex-col gap-0">
-                    {header}
+                    <CardHeader className="pb-2">
+                        <CardTitle className="truncate text-sm font-medium">
+                            {title}
+                        </CardTitle>
+                        {description && (
+                            <CardDescription>{description}</CardDescription>
+                        )}
+                        <CardAction>
+                            <div className="flex items-center gap-2">
+                                <TabsList>
+                                    {tabs.map((tab) => (
+                                        <TabsTrigger
+                                            key={tab.value}
+                                            value={tab.value}
+                                        >
+                                            {tab.icon}
+                                            {tab.name}
+                                        </TabsTrigger>
+                                    ))}
+                                </TabsList>
+                                {action}
+                            </div>
+                        </CardAction>
+                    </CardHeader>
                     <CardContent className="flex min-h-0 flex-1 flex-col">
                         {tabs.map((tab) => (
                             <TabsContent key={tab.value} value={tab.value}>
@@ -97,7 +96,13 @@ export function GraphCard({
 
     return (
         <Card className={cn('flex flex-1 flex-col gap-0', className)}>
-            {header}
+            <CardHeader className="pb-2">
+                <CardTitle className="truncate text-sm font-medium">
+                    {title}
+                </CardTitle>
+                {description && <CardDescription>{description}</CardDescription>}
+                {action && <CardAction>{action}</CardAction>}
+            </CardHeader>
             <CardContent className="flex min-h-0 flex-1 flex-col">
                 {content}
             </CardContent>
