@@ -12,15 +12,14 @@ export function StatsPush() {
                     description="Doručeno a nedoručeno po měsících."
                     className="w-full"
                     queryKey="push-success"
-                    content={
-                        <AreaChart
-                            data={PUSH_STATS_BY_MONTH}
-                            config={PUSH_STATS_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['doruceno', 'nedoruceno']}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={PUSH_STATS_BY_MONTH}
+                        config={PUSH_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno', 'nedoruceno']}
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

@@ -12,15 +12,14 @@ export function StatsNotifyListy() {
                     description="Doručeno po měsících."
                     className="w-full"
                     queryKey="notify-listy-success"
-                    content={
-                        <AreaChart
-                            data={NOTIFY_LISTY_STATS_BY_MONTH}
-                            config={NOTIFY_LISTY_STATS_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['doruceno']}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={NOTIFY_LISTY_STATS_BY_MONTH}
+                        config={NOTIFY_LISTY_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno']}
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

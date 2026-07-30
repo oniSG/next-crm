@@ -17,14 +17,54 @@ export type PieChartProps = {
 }
 
 export function PieChart({ data, config, className }: PieChartProps) {
+    const total = data.reduce((sum, item) => sum + item.value, 0)
+
     return (
         <ChartContainer
             config={config}
-            className={cn('mx-auto aspect-square max-h-[250px] w-full px-0', className)}
+            className={cn(
+                'mx-auto aspect-square max-h-[250px] w-full px-0',
+                className,
+            )}
         >
             <RechartsPieChart>
                 <ChartTooltip
-                    content={<ChartTooltipContent hideLabel nameKey="name" />}
+                    cursor={false}
+                    content={({ active, payload }) => {
+                        if (!active || !payload?.length) {
+                            return null
+                        }
+
+                        const item = payload[0]
+                        const num =
+                            typeof item.value === 'number'
+                                ? item.value
+                                : Number(item.value)
+                        const percent =
+                            total > 0 ? Math.round((num / total) * 100) : 0
+
+                        return (
+                            <ChartTooltipContent
+                                active={active}
+                                hideIndicator
+                                hideLabel
+                                payload={[
+                                    {
+                                        ...item,
+                                        name: 'Hodnota',
+                                        value: num,
+                                        dataKey: 'value',
+                                    },
+                                    {
+                                        ...item,
+                                        name: 'Procenta',
+                                        value: `${percent}%`,
+                                        dataKey: 'percent',
+                                    },
+                                ]}
+                            />
+                        )
+                    }}
                 />
                 <Pie
                     data={data}
@@ -33,7 +73,11 @@ export function PieChart({ data, config, className }: PieChartProps) {
                     labelLine={false}
                     label={({ payload, ...props }) => {
                         const value =
-                            typeof payload?.value === 'number' ? payload.value : 0
+                            typeof payload?.value === 'number'
+                                ? payload.value
+                                : 0
+                        const percent =
+                            total > 0 ? Math.round((value / total) * 100) : 0
 
                         return (
                             <text
@@ -46,7 +90,7 @@ export function PieChart({ data, config, className }: PieChartProps) {
                                 fill="var(--foreground)"
                                 className="text-xs"
                             >
-                                {value.toLocaleString('cs-CZ')}%
+                                {`${value.toLocaleString('cs-CZ')} (${percent}%)`}
                             </text>
                         )
                     }}

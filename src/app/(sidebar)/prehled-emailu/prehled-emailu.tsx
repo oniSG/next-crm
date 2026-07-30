@@ -19,15 +19,14 @@ export function PrehledEmailu() {
                     description="Doručeno, otevřeno a kliknuto po měsících."
                     className="w-full"
                     queryKey="prehled-email-success"
-                    content={
-                        <AreaChart
-                            data={EMAIL_STATS_BY_MONTH}
-                            config={EMAIL_STATS_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['doruceno', 'otevreno', 'kliknuto']}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={EMAIL_STATS_BY_MONTH}
+                        config={EMAIL_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno', 'otevreno', 'kliknuto']}
+                    />
+                </DataVisulaizationCard>
 
                 <DataVisulaizationCard
                     title="Doručeno"
@@ -44,22 +43,21 @@ export function PrehledEmailu() {
                             </p>
                         </InfoSheet>
                     }
-                    content={
-                        <BarChart
-                            data={EMAIL_DELIVERY_BY_MONTH}
-                            config={EMAIL_DELIVERY_CHART_CONFIG}
-                            categoryKey="month"
-                            series={[
-                                'doruceno',
-                                'nedoruceno',
-                                'hardBounce',
-                                'softBounce',
-                                'spam',
-                            ]}
-                            stacked
-                        />
-                    }
-                />
+                >
+                    <BarChart
+                        data={EMAIL_DELIVERY_BY_MONTH}
+                        config={EMAIL_DELIVERY_CHART_CONFIG}
+                        categoryKey="month"
+                        series={[
+                            'doruceno',
+                            'nedoruceno',
+                            'hardBounce',
+                            'softBounce',
+                            'spam',
+                        ]}
+                        stacked
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

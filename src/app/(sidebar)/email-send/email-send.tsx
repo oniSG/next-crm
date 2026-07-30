@@ -12,15 +12,14 @@ export function EmailSend() {
                     description="Míra prokliků od pondělí do neděle."
                     className="w-full"
                     queryKey="click-rate"
-                    content={
-                        <LineChart
-                            data={CLICK_RATE_BY_DAY}
-                            config={CLICK_RATE_CHART_CONFIG}
-                            categoryKey="day"
-                            series={['miraProkliku']}
-                        />
-                    }
-                />
+                >
+                    <LineChart
+                        data={CLICK_RATE_BY_DAY}
+                        config={CLICK_RATE_CHART_CONFIG}
+                        categoryKey="day"
+                        series={['miraProkliku']}
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

@@ -1,5 +1,6 @@
 'use client'
 
+import { numericFormatter } from 'react-number-format'
 import {
     CartesianGrid,
     Line,
@@ -31,6 +32,29 @@ export type LineChartProps = {
     showDots?: boolean
 }
 
+function formatCompactNumber(value: number): string {
+    const abs = Math.abs(value)
+
+    if (abs >= 1_000_000) {
+        return `${numericFormatter(String(value / 1_000_000), {
+            decimalScale: 1,
+            decimalSeparator: ',',
+        })}M`
+    }
+
+    if (abs >= 1_000) {
+        return `${numericFormatter(String(value / 1_000), {
+            decimalScale: 1,
+            decimalSeparator: ',',
+        })}k`
+    }
+
+    return numericFormatter(String(value), {
+        thousandSeparator: ' ',
+        decimalScale: 0,
+    })
+}
+
 export function LineChart({
     data,
     config,
@@ -52,7 +76,7 @@ export function LineChart({
                 accessibilityLayer
                 data={data}
                 margin={{
-                    left: 12,
+                    left: showYAxis ? 0 : 12,
                     right: 12,
                     bottom: xAxisLabel || angledXAxis ? 24 : 0,
                 }}
@@ -80,11 +104,9 @@ export function LineChart({
                     <YAxis
                         tickLine={false}
                         axisLine={false}
-                        tickMargin={8}
-                        width={72}
-                        tickFormatter={(value) =>
-                            Number(value).toLocaleString('en-US')
-                        }
+                        tickMargin={4}
+                        width={48}
+                        tickFormatter={(value) => formatCompactNumber(Number(value))}
                         label={
                             yAxisLabel
                                 ? {

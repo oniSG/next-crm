@@ -23,10 +23,9 @@ export function SurveyChart({
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
-                    content={
-                        <PieChart data={question.pieData} config={question.pieConfig} />
-                    }
-                />
+                >
+                    <PieChart data={question.pieData} config={question.pieConfig} />
+                </DataVisulaizationCard>
             )
         case 'bar':
             return (
@@ -35,16 +34,15 @@ export function SurveyChart({
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
-                    content={
-                        <BarChart
-                            data={question.barData}
-                            config={question.barConfig}
-                            categoryKey={question.categoryKey}
-                            series={question.series}
-                            stacked={question.stacked}
-                        />
-                    }
-                />
+                >
+                    <BarChart
+                        data={question.barData}
+                        config={question.barConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                        stacked={question.stacked}
+                    />
+                </DataVisulaizationCard>
             )
         case 'line':
             return (
@@ -53,15 +51,14 @@ export function SurveyChart({
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
-                    content={
-                        <LineChart
-                            data={question.lineData}
-                            config={question.lineConfig}
-                            categoryKey={question.categoryKey}
-                            series={question.series}
-                        />
-                    }
-                />
+                >
+                    <LineChart
+                        data={question.lineData}
+                        config={question.lineConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </DataVisulaizationCard>
             )
         case 'area':
             return (
@@ -70,15 +67,14 @@ export function SurveyChart({
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
-                    content={
-                        <AreaChart
-                            data={question.areaData}
-                            config={question.areaConfig}
-                            categoryKey={question.categoryKey}
-                            series={question.series}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={question.areaData}
+                        config={question.areaConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </DataVisulaizationCard>
             )
         case 'radar':
             return (
@@ -87,15 +83,14 @@ export function SurveyChart({
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
-                    content={
-                        <RadarChart
-                            data={question.radarData}
-                            config={question.radarConfig}
-                            categoryKey={question.categoryKey}
-                            series={question.series}
-                        />
-                    }
-                />
+                >
+                    <RadarChart
+                        data={question.radarData}
+                        config={question.radarConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </DataVisulaizationCard>
             )
         case 'labeledBar':
             return (
@@ -104,15 +99,14 @@ export function SurveyChart({
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
-                    content={
-                        <LabeledBarChart
-                            data={question.labeledBarData}
-                            config={question.labeledBarConfig}
-                            categoryKey={question.categoryKey}
-                            valueKey={question.valueKey}
-                        />
-                    }
-                />
+                >
+                    <LabeledBarChart
+                        data={question.labeledBarData}
+                        config={question.labeledBarConfig}
+                        categoryKey={question.categoryKey}
+                        valueKey={question.valueKey}
+                    />
+                </DataVisulaizationCard>
             )
     }
 }

@@ -58,23 +58,21 @@ export function ExampleDashboard() {
                             <p>Add more...</p>
                         </InfoSheet>
                     }
-                    content={
-                        <BarChart
-                            data={REVENUE_BY_MONTH}
-                            config={REVENUE_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['desktop', 'mobile']}
-                        />
-                    }
-                />
+                >
+                    <BarChart
+                        data={REVENUE_BY_MONTH}
+                        config={REVENUE_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['desktop', 'mobile']}
+                    />
+                </DataVisulaizationCard>
                 <DataVisulaizationCard
                     title="Customer Segments"
                     description="Share of revenue by plan tier."
                     queryKey="customer-segments"
-                    content={
-                        <PieChart data={CATEGORY_SHARE} config={CATEGORY_CHART_CONFIG} />
-                    }
-                />
+                >
+                    <PieChart data={CATEGORY_SHARE} config={CATEGORY_CHART_CONFIG} />
+                </DataVisulaizationCard>
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -82,41 +80,38 @@ export function ExampleDashboard() {
                     title="Weekly Traffic"
                     description="Visits and signups by day."
                     queryKey="weekly-traffic"
-                    content={
-                        <LineChart
-                            data={VISITS_BY_DAY}
-                            config={VISITS_CHART_CONFIG}
-                            categoryKey="day"
-                            series={['visits', 'signups']}
-                        />
-                    }
-                />
+                >
+                    <LineChart
+                        data={VISITS_BY_DAY}
+                        config={VISITS_CHART_CONFIG}
+                        categoryKey="day"
+                        series={['visits', 'signups']}
+                    />
+                </DataVisulaizationCard>
                 <DataVisulaizationCard
                     title="MRR Growth"
                     description="New vs. expansion, stacked."
                     queryKey="mrr-growth"
-                    content={
-                        <AreaChart
-                            data={MRR_BY_MONTH}
-                            config={MRR_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['newMrr', 'expansion']}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={MRR_BY_MONTH}
+                        config={MRR_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['newMrr', 'expansion']}
+                    />
+                </DataVisulaizationCard>
                 <DataVisulaizationCard
                     title="Team Performance"
                     description="Team score vs. target across metrics."
                     queryKey="team-performance"
-                    content={
-                        <RadarChart
-                            data={PERFORMANCE}
-                            config={PERFORMANCE_CHART_CONFIG}
-                            categoryKey="metric"
-                            series={['team', 'target']}
-                        />
-                    }
-                />
+                >
+                    <RadarChart
+                        data={PERFORMANCE}
+                        config={PERFORMANCE_CHART_CONFIG}
+                        categoryKey="metric"
+                        series={['team', 'target']}
+                    />
+                </DataVisulaizationCard>
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -124,30 +119,28 @@ export function ExampleDashboard() {
                     title="Visitors — Horizontal"
                     description="Last 6 months"
                     queryKey="visitors-horizontal"
-                    content={
-                        <BarChart
-                            data={VISITORS_BY_MONTH}
-                            config={VISITORS_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['desktop']}
-                            orientation="horizontal"
-                        />
-                    }
-                />
+                >
+                    <BarChart
+                        data={VISITORS_BY_MONTH}
+                        config={VISITORS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['desktop']}
+                        orientation="horizontal"
+                    />
+                </DataVisulaizationCard>
                 <DataVisulaizationCard
                     title="Revenue — Stacked"
                     description="Desktop + mobile stacked totals"
                     queryKey="revenue-stacked"
-                    content={
-                        <BarChart
-                            data={REVENUE_BY_MONTH}
-                            config={REVENUE_STACKED_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['desktop', 'mobile']}
-                            stacked
-                        />
-                    }
-                />
+                >
+                    <BarChart
+                        data={REVENUE_BY_MONTH}
+                        config={REVENUE_STACKED_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['desktop', 'mobile']}
+                        stacked
+                    />
+                </DataVisulaizationCard>
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -155,30 +148,28 @@ export function ExampleDashboard() {
                     title="Sessions by Channel"
                     description="Last 30 days"
                     queryKey="sessions-by-channel"
-                    content={
-                        <LabeledBarChart
-                            data={SESSIONS_BY_CHANNEL}
-                            config={SESSIONS_CHART_CONFIG}
-                            categoryKey="channel"
-                            valueKey="sessions"
-                        />
-                    }
-                />
+                >
+                    <LabeledBarChart
+                        data={SESSIONS_BY_CHANNEL}
+                        config={SESSIONS_CHART_CONFIG}
+                        categoryKey="channel"
+                        valueKey="sessions"
+                    />
+                </DataVisulaizationCard>
                 <DataVisulaizationCard
                     title="Net Income"
                     description="Monthly P&L, positive / negative"
                     queryKey="net-income"
-                    content={
-                        <NegativeBarChart
-                            data={NET_INCOME_MONTHLY}
-                            config={NET_INCOME_CHART_CONFIG}
-                            categoryKey="month"
-                            valueKey="netIncome"
-                            positiveColor="var(--chart-1)"
-                            negativeColor="var(--chart-3)"
-                        />
-                    }
-                />
+                >
+                    <NegativeBarChart
+                        data={NET_INCOME_MONTHLY}
+                        config={NET_INCOME_CHART_CONFIG}
+                        categoryKey="month"
+                        valueKey="netIncome"
+                        positiveColor="var(--chart-1)"
+                        negativeColor="var(--chart-3)"
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

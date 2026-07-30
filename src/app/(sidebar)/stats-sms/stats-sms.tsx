@@ -12,20 +12,14 @@ export function StatsSms() {
                     description="Doručeno, rozkliknuto, nedoručeno a odhlášeno po měsících."
                     className="w-full"
                     queryKey="sms-success"
-                    content={
-                        <AreaChart
-                            data={SMS_STATS_BY_MONTH}
-                            config={SMS_STATS_CHART_CONFIG}
-                            categoryKey="month"
-                            series={[
-                                'doruceno',
-                                'rozkliknuto',
-                                'nedoruceno',
-                                'odhlaseno',
-                            ]}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={SMS_STATS_BY_MONTH}
+                        config={SMS_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno', 'rozkliknuto', 'nedoruceno', 'odhlaseno']}
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

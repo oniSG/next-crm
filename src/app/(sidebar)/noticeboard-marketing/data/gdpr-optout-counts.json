@@ -1,5 +1,5 @@
 [
-  { "name": "zpravy", "value": 34, "fill": "var(--color-zpravy)" },
-  { "name": "push", "value": 33, "fill": "var(--color-push)" },
-  { "name": "email", "value": 33, "fill": "var(--color-email)" }
+  { "name": "zpravy", "value": 1020, "fill": "var(--color-zpravy)" },
+  { "name": "push", "value": 990, "fill": "var(--color-push)" },
+  { "name": "email", "value": 990, "fill": "var(--color-email)" }
 ]

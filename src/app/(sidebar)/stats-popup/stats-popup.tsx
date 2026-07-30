@@ -12,15 +12,14 @@ export function StatsPopup() {
                     description="Doručeno po měsících."
                     className="w-full"
                     queryKey="popup-success"
-                    content={
-                        <AreaChart
-                            data={POPUP_STATS_BY_MONTH}
-                            config={POPUP_STATS_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['doruceno']}
-                        />
-                    }
-                />
+                >
+                    <AreaChart
+                        data={POPUP_STATS_BY_MONTH}
+                        config={POPUP_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno']}
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

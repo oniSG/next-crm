@@ -12,15 +12,14 @@ export function VernostniProgram() {
                     description="Vývoj počtu bodů ve věrnostním programu po měsících."
                     className="w-full"
                     queryKey="loyalty-points"
-                    content={
-                        <LineChart
-                            data={BODY_BY_MONTH}
-                            config={BODY_CHART_CONFIG}
-                            categoryKey="month"
-                            series={['pocetBodu']}
-                        />
-                    }
-                />
+                >
+                    <LineChart
+                        data={BODY_BY_MONTH}
+                        config={BODY_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['pocetBodu']}
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

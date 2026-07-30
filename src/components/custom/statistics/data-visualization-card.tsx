@@ -27,8 +27,7 @@ export type GraphCardProps = {
     action?: ReactNode
     queryKey: string
     className?: string
-    //todo, renave to children and just pass the component as valina html
-    content?: ReactNode
+    children?: ReactNode
     tabs?: GraphCardTab[]
 }
 
@@ -38,7 +37,7 @@ export function DataVisulaizationCard({
     action,
     queryKey,
     className,
-    content,
+    children,
     tabs,
 }: GraphCardProps) {
     const fallbackValue = tabs?.[0]?.value ?? ''
@@ -95,7 +94,7 @@ export function DataVisulaizationCard({
                 {description && <CardDescription>{description}</CardDescription>}
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
-            <CardContent className="flex min-h-0 flex-1 flex-col">{content}</CardContent>
+            <CardContent className="flex min-h-0 flex-1 flex-col">{children}</CardContent>
         </Card>
     )
 }
