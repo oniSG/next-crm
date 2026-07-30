@@ -14,14 +14,16 @@ export function PrehledNotifikacniListy() {
                     title="Úspěšnost"
                     description="Doručeno po měsících."
                     className="w-full"
-                >
-                    <AreaChart
-                        data={NOTIFY_LISTY_STATS_BY_MONTH}
-                        config={NOTIFY_LISTY_STATS_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['doruceno']}
-                    />
-                </GraphCard>
+                    queryKey="prehled-notify-listy-success"
+                    content={
+                        <AreaChart
+                            data={NOTIFY_LISTY_STATS_BY_MONTH}
+                            config={NOTIFY_LISTY_STATS_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['doruceno']}
+                        />
+                    }
+                />
             </section>
         </div>
     )

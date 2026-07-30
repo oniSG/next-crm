@@ -69,135 +69,163 @@ export function NoticeboardMarketing() {
                 <GraphCard
                     title="Flowchart e-mailových kampaní"
                     className="lg:col-span-3"
-                >
-                    <SankeyChart
-                        data={EMAIL_CAMPAIGN_FLOW}
-                        className="h-80"
-                        margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
-                    />
-                </GraphCard>
+                    queryKey="email-campaign-flow"
+                    content={
+                        <SankeyChart
+                            data={EMAIL_CAMPAIGN_FLOW}
+                            className="h-80"
+                            margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
+                        />
+                    }
+                />
             </div>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
                 <div className="flex h-full min-h-0 flex-col gap-4 lg:col-span-2">
-                    <GraphCard title="Statistika e-mailových kampaní">
-                        <LineChart
-                            data={EMAIL_CAMPAIGN_STATS}
-                            config={EMAIL_CAMPAIGN_STATS_CONFIG}
-                            categoryKey="datum"
-                            series={[...EMAIL_CAMPAIGN_STATS_SERIES]}
-                            showYAxis
-                            angledXAxis
-                            showDots
-                            className="min-h-72 flex-1"
-                        />
-                    </GraphCard>
+                    <GraphCard
+                        title="Statistika e-mailových kampaní"
+                        queryKey="email-campaign-stats"
+                        content={
+                            <LineChart
+                                data={EMAIL_CAMPAIGN_STATS}
+                                config={EMAIL_CAMPAIGN_STATS_CONFIG}
+                                categoryKey="datum"
+                                series={[...EMAIL_CAMPAIGN_STATS_SERIES]}
+                                showYAxis
+                                angledXAxis
+                                showDots
+                                className="min-h-72 flex-1"
+                            />
+                        }
+                    />
 
-                    <GraphCard title="Statistika odhlášení GDPR souhlasů">
-                        <LineChart
-                            data={GDPR_UNSUBSCRIBE_STATS}
-                            config={GDPR_UNSUBSCRIBE_STATS_CONFIG}
-                            categoryKey="datum"
-                            series={[...GDPR_UNSUBSCRIBE_STATS_SERIES]}
-                            showYAxis
-                            showDots
-                            className="min-h-72 flex-1"
-                        />
-                    </GraphCard>
+                    <GraphCard
+                        title="Statistika odhlášení GDPR souhlasů"
+                        queryKey="gdpr-unsubscribe-stats"
+                        content={
+                            <LineChart
+                                data={GDPR_UNSUBSCRIBE_STATS}
+                                config={GDPR_UNSUBSCRIBE_STATS_CONFIG}
+                                categoryKey="datum"
+                                series={[...GDPR_UNSUBSCRIBE_STATS_SERIES]}
+                                showYAxis
+                                showDots
+                                className="min-h-72 flex-1"
+                            />
+                        }
+                    />
                 </div>
 
                 <div className="flex h-full min-h-0 flex-col gap-4">
-                    <GraphCard title="Komunikační kanály">
-                        <PieChart
-                            data={COMMUNICATION_CHANNELS}
-                            config={COMMUNICATION_CHANNELS_CONFIG}
-                            className="max-h-44"
-                            innerRadius={40}
-                        />
-                    </GraphCard>
+                    <GraphCard
+                        title="Komunikační kanály"
+                        queryKey="communication-channels"
+                        content={
+                            <PieChart
+                                data={COMMUNICATION_CHANNELS}
+                                config={COMMUNICATION_CHANNELS_CONFIG}
+                                className="max-h-44"
+                                innerRadius={40}
+                            />
+                        }
+                    />
 
-                    <GraphCard title="Nedoručené e-maily">
-                        <PieChart
-                            data={UNDELIVERED_EMAILS}
-                            config={UNDELIVERED_EMAILS_CONFIG}
-                            className="max-h-44"
-                            innerRadius={40}
-                        />
-                    </GraphCard>
+                    <GraphCard
+                        title="Nedoručené e-maily"
+                        queryKey="undelivered-emails"
+                        content={
+                            <PieChart
+                                data={UNDELIVERED_EMAILS}
+                                config={UNDELIVERED_EMAILS_CONFIG}
+                                className="max-h-44"
+                                innerRadius={40}
+                            />
+                        }
+                    />
 
-                    <GraphCard title="Počty odhlášených GDPR">
-                        <PieChart
-                            data={GDPR_OPTOUT_COUNTS}
-                            config={GDPR_OPTOUT_COUNTS_CONFIG}
-                            className="max-h-44"
-                            innerRadius={40}
-                        />
-                    </GraphCard>
+                    <GraphCard
+                        title="Počty odhlášených GDPR"
+                        queryKey="gdpr-optout-counts"
+                        content={
+                            <PieChart
+                                data={GDPR_OPTOUT_COUNTS}
+                                config={GDPR_OPTOUT_COUNTS_CONFIG}
+                                className="max-h-44"
+                                innerRadius={40}
+                            />
+                        }
+                    />
                 </div>
             </div>
 
-            <GraphCard title="Seznamy událostí">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Jméno seznamu</TableHead>
-                            <TableHead>Události</TableHead>
-                            <TableHead>ID seznamu událostí</TableHead>
-                            <TableHead className="w-12 text-right">
-                                Akce
-                            </TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {EVENT_LISTS.map((list) => (
-                            <TableRow key={list.id}>
-                                <TableCell className="font-medium">
-                                    {list.name}
-                                </TableCell>
-                                <TableCell className="max-w-md truncate text-muted-foreground">
-                                    {list.events.length > 0
-                                        ? `[${list.events.join(', ')}]`
-                                        : '[]'}
-                                </TableCell>
-                                <TableCell className="font-mono text-xs">
-                                    {list.id}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger
-                                            render={
-                                                <Button
-                                                    type="button"
-                                                    variant="ghost"
-                                                    size="icon-sm"
-                                                    className="text-muted-foreground"
-                                                    aria-label={`Akce pro ${list.name}`}
-                                                />
-                                            }
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem>
-                                                Upravit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                Duplikovat
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem variant="destructive">
-                                                Smazat
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                <p className="text-muted-foreground mt-3 text-right text-xs">
-                    {EVENT_LISTS.length} řádků
-                </p>
-            </GraphCard>
+            <GraphCard
+                title="Seznamy událostí"
+                queryKey="event-lists"
+                content={
+                    <>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Jméno seznamu</TableHead>
+                                    <TableHead>Události</TableHead>
+                                    <TableHead>ID seznamu událostí</TableHead>
+                                    <TableHead className="w-12 text-right">
+                                        Akce
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {EVENT_LISTS.map((list) => (
+                                    <TableRow key={list.id}>
+                                        <TableCell className="font-medium">
+                                            {list.name}
+                                        </TableCell>
+                                        <TableCell className="max-w-md truncate text-muted-foreground">
+                                            {list.events.length > 0
+                                                ? `[${list.events.join(', ')}]`
+                                                : '[]'}
+                                        </TableCell>
+                                        <TableCell className="font-mono text-xs">
+                                            {list.id}
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger
+                                                    render={
+                                                        <Button
+                                                            type="button"
+                                                            variant="ghost"
+                                                            size="icon-sm"
+                                                            className="text-muted-foreground"
+                                                            aria-label={`Akce pro ${list.name}`}
+                                                        />
+                                                    }
+                                                >
+                                                    <MoreHorizontalIcon />
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem>
+                                                        Upravit
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        Duplikovat
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem variant="destructive">
+                                                        Smazat
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        <p className="text-muted-foreground mt-3 text-right text-xs">
+                            {EVENT_LISTS.length} řádků
+                        </p>
+                    </>
+                }
+            />
         </div>
     )
 }

@@ -11,14 +11,16 @@ export function StatsPopup() {
                     title="Úspěšnost"
                     description="Doručeno po měsících."
                     className="w-full"
-                >
-                    <AreaChart
-                        data={POPUP_STATS_BY_MONTH}
-                        config={POPUP_STATS_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['doruceno']}
-                    />
-                </GraphCard>
+                    queryKey="popup-success"
+                    content={
+                        <AreaChart
+                            data={POPUP_STATS_BY_MONTH}
+                            config={POPUP_STATS_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['doruceno']}
+                        />
+                    }
+                />
             </section>
         </div>
     )

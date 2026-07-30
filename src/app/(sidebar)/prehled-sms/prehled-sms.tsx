@@ -11,19 +11,21 @@ export function PrehledSms() {
                     title="Úspěšnost"
                     description="Doručeno, rozkliknuto, nedoručeno a odhlášeno po měsících."
                     className="w-full"
-                >
-                    <AreaChart
-                        data={SMS_STATS_BY_MONTH}
-                        config={SMS_STATS_CHART_CONFIG}
-                        categoryKey="month"
-                        series={[
-                            'doruceno',
-                            'rozkliknuto',
-                            'nedoruceno',
-                            'odhlaseno',
-                        ]}
-                    />
-                </GraphCard>
+                    queryKey="prehled-sms-success"
+                    content={
+                        <AreaChart
+                            data={SMS_STATS_BY_MONTH}
+                            config={SMS_STATS_CHART_CONFIG}
+                            categoryKey="month"
+                            series={[
+                                'doruceno',
+                                'rozkliknuto',
+                                'nedoruceno',
+                                'odhlaseno',
+                            ]}
+                        />
+                    }
+                />
             </section>
         </div>
     )

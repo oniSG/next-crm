@@ -18,19 +18,22 @@ export function StatsEmail() {
                     title="Úspěšnost"
                     description="Doručeno, otevřeno a kliknuto po měsících."
                     className="w-full"
-                >
-                    <AreaChart
-                        data={EMAIL_STATS_BY_MONTH}
-                        config={EMAIL_STATS_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['doruceno', 'otevreno', 'kliknuto']}
-                    />
-                </GraphCard>
+                    queryKey="email-success"
+                    content={
+                        <AreaChart
+                            data={EMAIL_STATS_BY_MONTH}
+                            config={EMAIL_STATS_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['doruceno', 'otevreno', 'kliknuto']}
+                        />
+                    }
+                />
 
                 <GraphCard
                     title="Doručeno"
                     description="Doručeno, nedoručeno, bouncy a spam po měsících."
                     className="w-full"
+                    queryKey="email-delivery"
                     action={
                         <InfoSheet>
                             <h2>Doručeno</h2>
@@ -41,21 +44,22 @@ export function StatsEmail() {
                             </p>
                         </InfoSheet>
                     }
-                >
-                    <BarChart
-                        data={EMAIL_DELIVERY_BY_MONTH}
-                        config={EMAIL_DELIVERY_CHART_CONFIG}
-                        categoryKey="month"
-                        series={[
-                            'doruceno',
-                            'nedoruceno',
-                            'hardBounce',
-                            'softBounce',
-                            'spam',
-                        ]}
-                        stacked
-                    />
-                </GraphCard>
+                    content={
+                        <BarChart
+                            data={EMAIL_DELIVERY_BY_MONTH}
+                            config={EMAIL_DELIVERY_CHART_CONFIG}
+                            categoryKey="month"
+                            series={[
+                                'doruceno',
+                                'nedoruceno',
+                                'hardBounce',
+                                'softBounce',
+                                'spam',
+                            ]}
+                            stacked
+                        />
+                    }
+                />
             </section>
         </div>
     )

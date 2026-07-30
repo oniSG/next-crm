@@ -44,6 +44,7 @@ export function ExampleDashboard() {
                     title="Revenue Trend"
                     description="Desktop vs. mobile, monthly totals."
                     className="lg:col-span-2"
+                    queryKey="revenue-trend"
                     action={
                         <InfoSheet>
                             <h2>What is kpi card?</h2>
@@ -57,113 +58,130 @@ export function ExampleDashboard() {
                             <p>Add more...</p>
                         </InfoSheet>
                     }
-                >
-                    <BarChart
-                        data={REVENUE_BY_MONTH}
-                        config={REVENUE_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['desktop', 'mobile']}
-                    />
-                </GraphCard>
+                    content={
+                        <BarChart
+                            data={REVENUE_BY_MONTH}
+                            config={REVENUE_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['desktop', 'mobile']}
+                        />
+                    }
+                />
                 <GraphCard
                     title="Customer Segments"
                     description="Share of revenue by plan tier."
-                >
-                    <PieChart
-                        data={CATEGORY_SHARE}
-                        config={CATEGORY_CHART_CONFIG}
-                    />
-                </GraphCard>
+                    queryKey="customer-segments"
+                    content={
+                        <PieChart
+                            data={CATEGORY_SHARE}
+                            config={CATEGORY_CHART_CONFIG}
+                        />
+                    }
+                />
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
                 <GraphCard
                     title="Weekly Traffic"
                     description="Visits and signups by day."
-                >
-                    <LineChart
-                        data={VISITS_BY_DAY}
-                        config={VISITS_CHART_CONFIG}
-                        categoryKey="day"
-                        series={['visits', 'signups']}
-                    />
-                </GraphCard>
+                    queryKey="weekly-traffic"
+                    content={
+                        <LineChart
+                            data={VISITS_BY_DAY}
+                            config={VISITS_CHART_CONFIG}
+                            categoryKey="day"
+                            series={['visits', 'signups']}
+                        />
+                    }
+                />
                 <GraphCard
                     title="MRR Growth"
                     description="New vs. expansion, stacked."
-                >
-                    <AreaChart
-                        data={MRR_BY_MONTH}
-                        config={MRR_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['newMrr', 'expansion']}
-                    />
-                </GraphCard>
+                    queryKey="mrr-growth"
+                    content={
+                        <AreaChart
+                            data={MRR_BY_MONTH}
+                            config={MRR_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['newMrr', 'expansion']}
+                        />
+                    }
+                />
                 <GraphCard
                     title="Team Performance"
                     description="Team score vs. target across metrics."
-                >
-                    <RadarChart
-                        data={PERFORMANCE}
-                        config={PERFORMANCE_CHART_CONFIG}
-                        categoryKey="metric"
-                        series={['team', 'target']}
-                    />
-                </GraphCard>
+                    queryKey="team-performance"
+                    content={
+                        <RadarChart
+                            data={PERFORMANCE}
+                            config={PERFORMANCE_CHART_CONFIG}
+                            categoryKey="metric"
+                            series={['team', 'target']}
+                        />
+                    }
+                />
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <GraphCard
                     title="Visitors — Horizontal"
                     description="Last 6 months"
-                >
-                    <BarChart
-                        data={VISITORS_BY_MONTH}
-                        config={VISITORS_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['desktop']}
-                        orientation="horizontal"
-                    />
-                </GraphCard>
+                    queryKey="visitors-horizontal"
+                    content={
+                        <BarChart
+                            data={VISITORS_BY_MONTH}
+                            config={VISITORS_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['desktop']}
+                            orientation="horizontal"
+                        />
+                    }
+                />
                 <GraphCard
                     title="Revenue — Stacked"
                     description="Desktop + mobile stacked totals"
-                >
-                    <BarChart
-                        data={REVENUE_BY_MONTH}
-                        config={REVENUE_STACKED_CHART_CONFIG}
-                        categoryKey="month"
-                        series={['desktop', 'mobile']}
-                        stacked
-                    />
-                </GraphCard>
+                    queryKey="revenue-stacked"
+                    content={
+                        <BarChart
+                            data={REVENUE_BY_MONTH}
+                            config={REVENUE_STACKED_CHART_CONFIG}
+                            categoryKey="month"
+                            series={['desktop', 'mobile']}
+                            stacked
+                        />
+                    }
+                />
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <GraphCard
                     title="Sessions by Channel"
                     description="Last 30 days"
-                >
-                    <LabeledBarChart
-                        data={SESSIONS_BY_CHANNEL}
-                        config={SESSIONS_CHART_CONFIG}
-                        categoryKey="channel"
-                        valueKey="sessions"
-                    />
-                </GraphCard>
+                    queryKey="sessions-by-channel"
+                    content={
+                        <LabeledBarChart
+                            data={SESSIONS_BY_CHANNEL}
+                            config={SESSIONS_CHART_CONFIG}
+                            categoryKey="channel"
+                            valueKey="sessions"
+                        />
+                    }
+                />
                 <GraphCard
                     title="Net Income"
                     description="Monthly P&L, positive / negative"
-                >
-                    <NegativeBarChart
-                        data={NET_INCOME_MONTHLY}
-                        config={NET_INCOME_CHART_CONFIG}
-                        categoryKey="month"
-                        valueKey="netIncome"
-                        positiveColor="var(--chart-1)"
-                        negativeColor="var(--chart-3)"
-                    />
-                </GraphCard>
+                    queryKey="net-income"
+                    content={
+                        <NegativeBarChart
+                            data={NET_INCOME_MONTHLY}
+                            config={NET_INCOME_CHART_CONFIG}
+                            categoryKey="month"
+                            valueKey="netIncome"
+                            positiveColor="var(--chart-1)"
+                            negativeColor="var(--chart-3)"
+                        />
+                    }
+                />
             </section>
         </div>
     )
