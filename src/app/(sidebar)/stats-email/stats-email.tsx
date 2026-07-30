@@ -1,6 +1,7 @@
-import { AreaChartCard } from '@/components/custom/statistics/area-chart-card'
-import { BarChartCard } from '@/components/custom/statistics/bar-chart-card'
 import InfoSheet from '@/components/custom/other/info-sheet'
+import { AreaChart } from '@/components/custom/statistics/area-chart'
+import { BarChart } from '@/components/custom/statistics/bar-chart'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 
 import {
     EMAIL_DELIVERY_BY_MONTH,
@@ -13,25 +14,25 @@ export function StatsEmail() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
             <section className="grid grid-cols-1 gap-4">
-                <AreaChartCard
+                <DataVisulaizationCard
                     title="Úspěšnost"
                     description="Doručeno, otevřeno a kliknuto po měsících."
-                    data={EMAIL_STATS_BY_MONTH}
-                    config={EMAIL_STATS_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['doruceno', 'otevreno', 'kliknuto']}
                     className="w-full"
-                />
+                    queryKey="email-success"
+                >
+                    <AreaChart
+                        data={EMAIL_STATS_BY_MONTH}
+                        config={EMAIL_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno', 'otevreno', 'kliknuto']}
+                    />
+                </DataVisulaizationCard>
 
-                <BarChartCard
+                <DataVisulaizationCard
                     title="Doručeno"
                     description="Doručeno, nedoručeno, bouncy a spam po měsících."
-                    data={EMAIL_DELIVERY_BY_MONTH}
-                    config={EMAIL_DELIVERY_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['doruceno', 'nedoruceno', 'hardBounce', 'softBounce', 'spam']}
-                    stacked
                     className="w-full"
+                    queryKey="email-delivery"
                     action={
                         <InfoSheet>
                             <h2>Doručeno</h2>
@@ -42,7 +43,21 @@ export function StatsEmail() {
                             </p>
                         </InfoSheet>
                     }
-                />
+                >
+                    <BarChart
+                        data={EMAIL_DELIVERY_BY_MONTH}
+                        config={EMAIL_DELIVERY_CHART_CONFIG}
+                        categoryKey="month"
+                        series={[
+                            'doruceno',
+                            'nedoruceno',
+                            'hardBounce',
+                            'softBounce',
+                            'spam',
+                        ]}
+                        stacked
+                    />
+                </DataVisulaizationCard>
             </section>
         </div>
     )

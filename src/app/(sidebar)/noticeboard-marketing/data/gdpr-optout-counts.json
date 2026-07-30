@@ -1,0 +1,5 @@
+[
+  { "name": "zpravy", "value": 1020, "fill": "var(--color-zpravy)" },
+  { "name": "push", "value": 990, "fill": "var(--color-push)" },
+  { "name": "email", "value": 990, "fill": "var(--color-email)" }
+]
