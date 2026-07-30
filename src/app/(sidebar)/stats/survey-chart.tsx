@@ -1,9 +1,10 @@
-import { AreaChartCard } from '@/components/custom/statistics/area-chart-card'
-import { BarChartCard } from '@/components/custom/statistics/bar-chart-card'
-import { LabeledBarChartCard } from '@/components/custom/statistics/labeled-bar-chart-card'
-import { LineChartCard } from '@/components/custom/statistics/line-chart-card'
-import { PieChartCard } from '@/components/custom/statistics/pie-chart-card'
-import { RadarChartCard } from '@/components/custom/statistics/radar-chart-card'
+import { AreaChart } from '@/components/custom/statistics/area-chart'
+import { BarChart } from '@/components/custom/statistics/bar-chart'
+import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { LabeledBarChart } from '@/components/custom/statistics/labeled-bar-chart'
+import { LineChart } from '@/components/custom/statistics/line-chart'
+import { PieChart } from '@/components/custom/statistics/pie-chart'
+import { RadarChart } from '@/components/custom/statistics/radar-chart'
 
 import type { StatsQuestion } from './data'
 
@@ -17,74 +18,92 @@ export function SurveyChart({
     switch (question.chartType) {
         case 'pie':
             return (
-                <PieChartCard
+                <GraphCard
                     title={title}
                     description={question.description}
-                    data={question.pieData}
-                    config={question.pieConfig}
                     className="w-full"
-                />
+                >
+                    <PieChart
+                        data={question.pieData}
+                        config={question.pieConfig}
+                    />
+                </GraphCard>
             )
         case 'bar':
             return (
-                <BarChartCard
+                <GraphCard
                     title={title}
                     description={question.description}
-                    data={question.barData}
-                    config={question.barConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
-                    stacked={question.stacked}
                     className="w-full"
-                />
+                >
+                    <BarChart
+                        data={question.barData}
+                        config={question.barConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                        stacked={question.stacked}
+                    />
+                </GraphCard>
             )
         case 'line':
             return (
-                <LineChartCard
+                <GraphCard
                     title={title}
                     description={question.description}
-                    data={question.lineData}
-                    config={question.lineConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
                     className="w-full"
-                />
+                >
+                    <LineChart
+                        data={question.lineData}
+                        config={question.lineConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </GraphCard>
             )
         case 'area':
             return (
-                <AreaChartCard
+                <GraphCard
                     title={title}
                     description={question.description}
-                    data={question.areaData}
-                    config={question.areaConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
                     className="w-full"
-                />
+                >
+                    <AreaChart
+                        data={question.areaData}
+                        config={question.areaConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </GraphCard>
             )
         case 'radar':
             return (
-                <RadarChartCard
+                <GraphCard
                     title={title}
                     description={question.description}
-                    data={question.radarData}
-                    config={question.radarConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
                     className="w-full"
-                />
+                >
+                    <RadarChart
+                        data={question.radarData}
+                        config={question.radarConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </GraphCard>
             )
         case 'labeledBar':
             return (
-                <LabeledBarChartCard
+                <GraphCard
                     title={title}
                     description={question.description}
-                    data={question.labeledBarData}
-                    config={question.labeledBarConfig}
-                    categoryKey={question.categoryKey}
-                    valueKey={question.valueKey}
                     className="w-full"
-                />
+                >
+                    <LabeledBarChart
+                        data={question.labeledBarData}
+                        config={question.labeledBarConfig}
+                        categoryKey={question.categoryKey}
+                        valueKey={question.valueKey}
+                    />
+                </GraphCard>
             )
     }
 }

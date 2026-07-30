@@ -1,20 +1,27 @@
-import { AreaChartCard } from '@/components/custom/statistics/area-chart-card'
+import { AreaChart } from '@/components/custom/statistics/area-chart'
+import { GraphCard } from '@/components/custom/statistics/graph-card'
 
-import { NOTIFY_LISTY_STATS_BY_MONTH, NOTIFY_LISTY_STATS_CHART_CONFIG } from './data'
+import {
+    NOTIFY_LISTY_STATS_BY_MONTH,
+    NOTIFY_LISTY_STATS_CHART_CONFIG,
+} from './data'
 
 export function PrehledNotifikacniListy() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
             <section className="grid grid-cols-1 gap-4">
-                <AreaChartCard
+                <GraphCard
                     title="Úspěšnost"
                     description="Doručeno po měsících."
-                    data={NOTIFY_LISTY_STATS_BY_MONTH}
-                    config={NOTIFY_LISTY_STATS_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['doruceno']}
                     className="w-full"
-                />
+                >
+                    <AreaChart
+                        data={NOTIFY_LISTY_STATS_BY_MONTH}
+                        config={NOTIFY_LISTY_STATS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['doruceno']}
+                    />
+                </GraphCard>
             </section>
         </div>
     )

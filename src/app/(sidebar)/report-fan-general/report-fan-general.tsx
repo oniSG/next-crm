@@ -3,7 +3,7 @@
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
+import { GraphCard, type GraphCardTab } from '@/components/custom/statistics/graph-card'
 import {
     ChartContainer,
     ChartLegend,
@@ -157,7 +157,7 @@ export function ReportFanGeneral() {
         period,
     )
 
-    const VIEW_TABS_EMAIL: Tab[] = [
+    const VIEW_TABS_EMAIL: GraphCardTab[] = [
         {
             name: 'Graf',
             value: 'chart',
@@ -186,7 +186,7 @@ export function ReportFanGeneral() {
         },
     ]
 
-    const VIEW_TABS_SMS: Tab[] = [
+    const VIEW_TABS_SMS: GraphCardTab[] = [
         {
             name: 'Graf',
             value: 'chart',
@@ -215,7 +215,7 @@ export function ReportFanGeneral() {
         },
     ]
 
-    const VIEW_TABS_PUSH: Tab[] = [
+    const VIEW_TABS_PUSH: GraphCardTab[] = [
         {
             name: 'Graf',
             value: 'chart',
@@ -246,19 +246,19 @@ export function ReportFanGeneral() {
 
     return (
         <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
-            <TabbedCard
+            <GraphCard
                 queryKey="view-email"
                 title="E-mail"
                 description="Přehled ve zvoleném období."
                 tabs={VIEW_TABS_EMAIL}
             />
-            <TabbedCard
+            <GraphCard
                 queryKey="view-sms"
                 title="SMS"
                 description="Přehled ve zvoleném období."
                 tabs={VIEW_TABS_SMS}
             />
-            <TabbedCard
+            <GraphCard
                 queryKey="view-push"
                 title="Push notifikace"
                 description="Přehled ve zvoleném období."

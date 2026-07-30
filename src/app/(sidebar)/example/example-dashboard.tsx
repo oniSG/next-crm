@@ -1,11 +1,13 @@
-import { AreaChartCard } from '@/components/custom/statistics/area-chart-card'
-import { BarChartCard } from '@/components/custom/statistics/bar-chart-card'
+import { AreaChart } from '@/components/custom/statistics/area-chart'
+import { BarChart } from '@/components/custom/statistics/bar-chart'
+import { GraphCard } from '@/components/custom/statistics/graph-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { LabeledBarChartCard } from '@/components/custom/statistics/labeled-bar-chart-card'
-import { LineChartCard } from '@/components/custom/statistics/line-chart-card'
-import { NegativeBarChartCard } from '@/components/custom/statistics/negative-bar-chart-card'
-import { PieChartCard } from '@/components/custom/statistics/pie-chart-card'
-import { RadarChartCard } from '@/components/custom/statistics/radar-chart-card'
+import { LabeledBarChart } from '@/components/custom/statistics/labeled-bar-chart'
+import { LineChart } from '@/components/custom/statistics/line-chart'
+import { NegativeBarChart } from '@/components/custom/statistics/negative-bar-chart'
+import { PieChart } from '@/components/custom/statistics/pie-chart'
+import { RadarChart } from '@/components/custom/statistics/radar-chart'
+import InfoSheet from '@/components/custom/other/info-sheet'
 
 import {
     CATEGORY_CHART_CONFIG,
@@ -27,7 +29,6 @@ import {
     VISITS_BY_DAY,
     VISITS_CHART_CONFIG,
 } from './data'
-import InfoSheet from '@/components/custom/other/info-sheet'
 
 export function ExampleDashboard() {
     return (
@@ -39,13 +40,9 @@ export function ExampleDashboard() {
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                <BarChartCard
+                <GraphCard
                     title="Revenue Trend"
                     description="Desktop vs. mobile, monthly totals."
-                    data={REVENUE_BY_MONTH}
-                    config={REVENUE_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['desktop', 'mobile']}
                     className="lg:col-span-2"
                     action={
                         <InfoSheet>
@@ -60,82 +57,113 @@ export function ExampleDashboard() {
                             <p>Add more...</p>
                         </InfoSheet>
                     }
-                />
-                <PieChartCard
+                >
+                    <BarChart
+                        data={REVENUE_BY_MONTH}
+                        config={REVENUE_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['desktop', 'mobile']}
+                    />
+                </GraphCard>
+                <GraphCard
                     title="Customer Segments"
                     description="Share of revenue by plan tier."
-                    data={CATEGORY_SHARE}
-                    config={CATEGORY_CHART_CONFIG}
-                />
+                >
+                    <PieChart
+                        data={CATEGORY_SHARE}
+                        config={CATEGORY_CHART_CONFIG}
+                    />
+                </GraphCard>
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                <LineChartCard
+                <GraphCard
                     title="Weekly Traffic"
                     description="Visits and signups by day."
-                    data={VISITS_BY_DAY}
-                    config={VISITS_CHART_CONFIG}
-                    categoryKey="day"
-                    series={['visits', 'signups']}
-                />
-                <AreaChartCard
+                >
+                    <LineChart
+                        data={VISITS_BY_DAY}
+                        config={VISITS_CHART_CONFIG}
+                        categoryKey="day"
+                        series={['visits', 'signups']}
+                    />
+                </GraphCard>
+                <GraphCard
                     title="MRR Growth"
                     description="New vs. expansion, stacked."
-                    data={MRR_BY_MONTH}
-                    config={MRR_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['newMrr', 'expansion']}
-                />
-                <RadarChartCard
+                >
+                    <AreaChart
+                        data={MRR_BY_MONTH}
+                        config={MRR_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['newMrr', 'expansion']}
+                    />
+                </GraphCard>
+                <GraphCard
                     title="Team Performance"
                     description="Team score vs. target across metrics."
-                    data={PERFORMANCE}
-                    config={PERFORMANCE_CHART_CONFIG}
-                    categoryKey="metric"
-                    series={['team', 'target']}
-                />
+                >
+                    <RadarChart
+                        data={PERFORMANCE}
+                        config={PERFORMANCE_CHART_CONFIG}
+                        categoryKey="metric"
+                        series={['team', 'target']}
+                    />
+                </GraphCard>
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                <BarChartCard
+                <GraphCard
                     title="Visitors — Horizontal"
                     description="Last 6 months"
-                    data={VISITORS_BY_MONTH}
-                    config={VISITORS_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['desktop']}
-                    orientation="horizontal"
-                />
-                <BarChartCard
+                >
+                    <BarChart
+                        data={VISITORS_BY_MONTH}
+                        config={VISITORS_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['desktop']}
+                        orientation="horizontal"
+                    />
+                </GraphCard>
+                <GraphCard
                     title="Revenue — Stacked"
                     description="Desktop + mobile stacked totals"
-                    data={REVENUE_BY_MONTH}
-                    config={REVENUE_STACKED_CHART_CONFIG}
-                    categoryKey="month"
-                    series={['desktop', 'mobile']}
-                    stacked
-                />
+                >
+                    <BarChart
+                        data={REVENUE_BY_MONTH}
+                        config={REVENUE_STACKED_CHART_CONFIG}
+                        categoryKey="month"
+                        series={['desktop', 'mobile']}
+                        stacked
+                    />
+                </GraphCard>
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                <LabeledBarChartCard
+                <GraphCard
                     title="Sessions by Channel"
                     description="Last 30 days"
-                    data={SESSIONS_BY_CHANNEL}
-                    config={SESSIONS_CHART_CONFIG}
-                    categoryKey="channel"
-                    valueKey="sessions"
-                />
-                <NegativeBarChartCard
+                >
+                    <LabeledBarChart
+                        data={SESSIONS_BY_CHANNEL}
+                        config={SESSIONS_CHART_CONFIG}
+                        categoryKey="channel"
+                        valueKey="sessions"
+                    />
+                </GraphCard>
+                <GraphCard
                     title="Net Income"
                     description="Monthly P&L, positive / negative"
-                    data={NET_INCOME_MONTHLY}
-                    config={NET_INCOME_CHART_CONFIG}
-                    categoryKey="month"
-                    valueKey="netIncome"
-                    positiveColor="var(--chart-1)"
-                    negativeColor="var(--chart-3)"
-                />
+                >
+                    <NegativeBarChart
+                        data={NET_INCOME_MONTHLY}
+                        config={NET_INCOME_CHART_CONFIG}
+                        categoryKey="month"
+                        valueKey="netIncome"
+                        positiveColor="var(--chart-1)"
+                        negativeColor="var(--chart-3)"
+                    />
+                </GraphCard>
             </section>
         </div>
     )
