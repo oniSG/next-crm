@@ -3,10 +3,12 @@
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import {
+    DataVisulaizationCard,
+    type GraphCardTab,
+} from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
-import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
 import type { ChartConfig } from '@/components/ui/chart'
 import {
     Table,
@@ -183,7 +185,7 @@ function ChartTableSection({
         </div>
     )
 
-    const tabs: Tab[] = [
+    const tabs: GraphCardTab[] = [
         {
             name: 'Chart',
             value: 'chart',
@@ -199,7 +201,7 @@ function ChartTableSection({
     ]
 
     return (
-        <TabbedCard
+        <DataVisulaizationCard
             title={title}
             description={description}
             tabs={tabs}
@@ -482,9 +484,10 @@ export function AdvertisingSpacesSection({
         : []
 
     return (
-        <GraphCard
+        <DataVisulaizationCard
             title="Ratio of available and taken advertising spaces"
             description={`Current state as of ${dateLabel}.`}
+            queryKey="management-advertising-spaces"
         >
             {hasData ? (
                 <PieChart
@@ -499,6 +502,6 @@ export function AdvertisingSpacesSection({
                     No advertising space data for the selected period.
                 </div>
             )}
-        </GraphCard>
+        </DataVisulaizationCard>
     )
 }

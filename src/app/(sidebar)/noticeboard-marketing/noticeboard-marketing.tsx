@@ -1,20 +1,11 @@
 'use client'
 
-import { MoreHorizontalIcon } from 'lucide-react'
-
 import { DetailCard } from '@/components/custom/statistics/detail-card'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { ValueCard } from '@/components/custom/statistics/value-card'
-import { Button } from '@/components/ui/button'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import {
     Table,
     TableBody,
@@ -37,8 +28,8 @@ import {
     GDPR_UNSUBSCRIBE_STATS,
     GDPR_UNSUBSCRIBE_STATS_CONFIG,
     GDPR_UNSUBSCRIBE_STATS_SERIES,
-    NOTICEBOARD_DETAILS,
-    NOTICEBOARD_METRICS,
+    NOTICEBOARD_DETAIL,
+    NOTICEBOARD_METRIC,
     UNDELIVERED_EMAILS,
     UNDELIVERED_EMAILS_CONFIG,
 } from './data'
@@ -48,39 +39,38 @@ export function NoticeboardMarketing() {
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-stretch">
                 <div className="grid grid-cols-1 gap-4">
-                    {NOTICEBOARD_DETAILS.map((detail) => (
-                        <DetailCard
-                            key={detail.title}
-                            title={detail.title}
-                            rows={detail.rows}
-                            className="h-full"
-                        />
-                    ))}
-                    {NOTICEBOARD_METRICS.map((metric) => (
-                        <ValueCard
-                            key={metric.title}
-                            title={metric.title}
-                            value={metric.value}
-                            className="h-full"
-                        />
-                    ))}
+                    <DetailCard
+                        title={NOTICEBOARD_DETAIL.title}
+                        rows={NOTICEBOARD_DETAIL.rows}
+                        className="h-full"
+                    />
+                    <ValueCard
+                        title={NOTICEBOARD_METRIC.title}
+                        value={NOTICEBOARD_METRIC.value}
+                        className="h-full"
+                    />
                 </div>
 
-                <GraphCard
+                <DataVisulaizationCard
                     title="Flowchart e-mailových kampaní"
                     className="lg:col-span-3"
+                    queryKey="email-campaign-flow"
                 >
                     <SankeyChart
                         data={EMAIL_CAMPAIGN_FLOW}
                         className="h-80"
                         margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
                     />
-                </GraphCard>
+                </DataVisulaizationCard>
             </div>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
                 <div className="flex h-full min-h-0 flex-col gap-4 lg:col-span-2">
-                    <GraphCard title="Statistika e-mailových kampaní">
+                    <DataVisulaizationCard
+                        title="Statistika e-mailových kampaní"
+                        description="Doručeno, otevřeno, kliknuto a odhlášeno po dnech."
+                        queryKey="email-campaign-stats"
+                    >
                         <LineChart
                             data={EMAIL_CAMPAIGN_STATS}
                             config={EMAIL_CAMPAIGN_STATS_CONFIG}
@@ -89,11 +79,14 @@ export function NoticeboardMarketing() {
                             showYAxis
                             angledXAxis
                             showDots
-                            className="h-72 flex-1"
+                            className="min-h-72 flex-1"
                         />
-                    </GraphCard>
+                    </DataVisulaizationCard>
 
-                    <GraphCard title="Statistika odhlášení GDPR souhlasů">
+                    <DataVisulaizationCard
+                        title="Statistika odhlášení GDPR souhlasů"
+                        queryKey="gdpr-unsubscribe-stats"
+                    >
                         <LineChart
                             data={GDPR_UNSUBSCRIBE_STATS}
                             config={GDPR_UNSUBSCRIBE_STATS_CONFIG}
@@ -101,55 +94,62 @@ export function NoticeboardMarketing() {
                             series={[...GDPR_UNSUBSCRIBE_STATS_SERIES]}
                             showYAxis
                             showDots
-                            className="h-72 flex-1"
+                            className="min-h-72 flex-1"
                         />
-                    </GraphCard>
+                    </DataVisulaizationCard>
                 </div>
 
                 <div className="flex h-full min-h-0 flex-col gap-4">
-                    <GraphCard title="Komunikační kanály">
+                    <DataVisulaizationCard
+                        title="Komunikační kanály"
+                        queryKey="communication-channels"
+                    >
                         <PieChart
                             data={COMMUNICATION_CHANNELS}
                             config={COMMUNICATION_CHANNELS_CONFIG}
                             className="max-h-44"
-                            innerRadius={40}
                         />
-                    </GraphCard>
+                    </DataVisulaizationCard>
 
-                    <GraphCard title="Nedoručené e-maily">
+                    <DataVisulaizationCard
+                        title="Nedoručené e-maily"
+                        queryKey="undelivered-emails"
+                    >
                         <PieChart
                             data={UNDELIVERED_EMAILS}
                             config={UNDELIVERED_EMAILS_CONFIG}
                             className="max-h-44"
-                            innerRadius={40}
                         />
-                    </GraphCard>
+                    </DataVisulaizationCard>
 
-                    <GraphCard title="Počty odhlášených GDPR">
+                    <DataVisulaizationCard
+                        title="Počty odhlášených GDPR"
+                        queryKey="gdpr-optout-counts"
+                    >
                         <PieChart
                             data={GDPR_OPTOUT_COUNTS}
                             config={GDPR_OPTOUT_COUNTS_CONFIG}
                             className="max-h-44"
-                            innerRadius={40}
                         />
-                    </GraphCard>
+                    </DataVisulaizationCard>
                 </div>
             </div>
 
-            <GraphCard title="Seznamy událostí">
+            <DataVisulaizationCard title="Seznamy událostí" queryKey="event-lists">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Jméno seznamu</TableHead>
+                            <TableHead className="pl-0">Jméno seznamu</TableHead>
                             <TableHead>Události</TableHead>
                             <TableHead>ID seznamu událostí</TableHead>
-                            <TableHead className="w-12 text-right">Akce</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {EVENT_LISTS.map((list) => (
                             <TableRow key={list.id}>
-                                <TableCell className="font-medium">{list.name}</TableCell>
+                                <TableCell className="pl-0 font-medium">
+                                    {list.name}
+                                </TableCell>
                                 <TableCell className="text-muted-foreground max-w-md truncate">
                                     {list.events.length > 0
                                         ? `[${list.events.join(', ')}]`
@@ -158,40 +158,11 @@ export function NoticeboardMarketing() {
                                 <TableCell className="font-mono text-xs">
                                     {list.id}
                                 </TableCell>
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger
-                                            render={
-                                                <Button
-                                                    type="button"
-                                                    variant="ghost"
-                                                    size="icon-sm"
-                                                    className="text-muted-foreground"
-                                                    aria-label={`Akce pro ${list.name}`}
-                                                />
-                                            }
-                                        >
-                                            <MoreHorizontalIcon />
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem>Upravit</DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                Duplikovat
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem variant="destructive">
-                                                Smazat
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                <p className="text-muted-foreground mt-3 text-right text-xs">
-                    {EVENT_LISTS.length} řádků
-                </p>
-            </GraphCard>
+            </DataVisulaizationCard>
         </div>
     )
 }

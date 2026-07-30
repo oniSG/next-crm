@@ -3,9 +3,11 @@
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import {
+    DataVisulaizationCard,
+    type GraphCardTab,
+} from '@/components/custom/statistics/data-visualization-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
-import { TabbedCard, type Tab } from '@/components/custom/tabbed-card'
 import {
     Table,
     TableBody,
@@ -112,7 +114,7 @@ export function SalesByDaySection({
         </Table>
     )
 
-    const tabs: Tab[] = [
+    const tabs: GraphCardTab[] = [
         {
             name: 'Chart',
             value: 'chart',
@@ -128,7 +130,7 @@ export function SalesByDaySection({
     ]
 
     return (
-        <TabbedCard
+        <DataVisulaizationCard
             title="Sales by days"
             description="Number of tickets sold on individual sales days."
             tabs={tabs}
@@ -218,7 +220,7 @@ export function SalesByPriceSection({
         </Table>
     )
 
-    const tabs: Tab[] = [
+    const tabs: GraphCardTab[] = [
         {
             name: 'Chart',
             value: 'chart',
@@ -234,7 +236,7 @@ export function SalesByPriceSection({
     ]
 
     return (
-        <TabbedCard
+        <DataVisulaizationCard
             title="Number of tickets sold by price"
             description="Ticket volume grouped by price level."
             tabs={tabs}
@@ -253,9 +255,10 @@ export function SeasonTicketOverviewSection({
     const hasData = data.nodes.length > 1 && data.links.length > 0
 
     return (
-        <GraphCard
+        <DataVisulaizationCard
             title="Overview of season tickets"
             description="Flow of season-ticket attendance, forwarding, gifting and resale."
+            queryKey="event-season-ticket-overview"
         >
             {hasData ? (
                 <SankeyChart
@@ -271,7 +274,7 @@ export function SeasonTicketOverviewSection({
                     No season ticket data for the selected event.
                 </div>
             )}
-        </GraphCard>
+        </DataVisulaizationCard>
     )
 }
 
@@ -285,9 +288,10 @@ export function TicketSalesOverviewSection({
     const hasData = data.nodes.length > 1 && data.links.length > 0
 
     return (
-        <GraphCard
+        <DataVisulaizationCard
             title="Ticket sales overview"
             description="Paid and free tickets grouped by sales channel."
+            queryKey="event-ticket-sales-overview"
         >
             {hasData ? (
                 <SankeyChart
@@ -303,7 +307,7 @@ export function TicketSalesOverviewSection({
                     No ticket sales data for the selected event.
                 </div>
             )}
-        </GraphCard>
+        </DataVisulaizationCard>
     )
 }
 
@@ -316,7 +320,7 @@ export function SalesBySectorSection({
 }) {
     const total = data.reduce((sum, point) => sum + point.count, 0)
 
-    const tabs: Tab[] = [
+    const tabs: GraphCardTab[] = [
         {
             value: 'chart',
             name: 'Chart',
@@ -388,7 +392,7 @@ export function SalesBySectorSection({
     ]
 
     return (
-        <TabbedCard
+        <DataVisulaizationCard
             title="Tickets sold by sector"
             description="Ticket volume grouped by venue sector."
             tabs={tabs}

@@ -17,19 +17,26 @@ export type BarChartProps = {
     config: ChartConfig
     categoryKey: string
     series: string[]
-    className?: string
+    orientation?: 'vertical' | 'horizontal'
     stacked?: boolean
     showYAxis?: boolean
+    className?: string
 }
 
 function getBarRadius(
     index: number,
     total: number,
     stacked: boolean,
+    orientation: 'vertical' | 'horizontal',
 ): number | [number, number, number, number] {
     if (!stacked || total === 1) return 4
-    if (index === 0) return [0, 0, 4, 4]
-    if (index === total - 1) return [4, 4, 0, 0]
+    if (orientation === 'vertical') {
+        if (index === 0) return [0, 0, 4, 4]
+        if (index === total - 1) return [4, 4, 0, 0]
+        return [0, 0, 0, 0]
+    }
+    if (index === 0) return [4, 0, 0, 4]
+    if (index === total - 1) return [0, 4, 4, 0]
     return [0, 0, 0, 0]
 }
 
@@ -38,46 +45,65 @@ export function BarChart({
     config,
     categoryKey,
     series,
-    className,
+    orientation = 'vertical',
     stacked = false,
     showYAxis = false,
+    className,
 }: BarChartProps) {
+    const isHorizontal = orientation === 'horizontal'
+
     return (
-        <ChartContainer
-            config={config}
-            className={cn('aspect-auto h-56 w-full', className)}
-        >
+        <ChartContainer config={config} className={cn('max-h-75 w-full', className)}>
             <RechartsBarChart
                 accessibilityLayer
                 data={data}
-                margin={{ left: 12, right: 12 }}
+                layout={isHorizontal ? 'vertical' : 'horizontal'}
+                margin={isHorizontal ? { left: -20 } : { left: 12, right: 12 }}
             >
-                <CartesianGrid vertical={false} />
-                <XAxis
-                    dataKey={categoryKey}
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                />
-                {showYAxis && (
-                    <YAxis
-                        allowDecimals={false}
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={8}
-                        width={64}
-                        tickFormatter={(value) => Number(value).toLocaleString('cs-CZ')}
-                    />
+                {isHorizontal ? (
+                    <>
+                        <CartesianGrid horizontal={false} />
+                        <XAxis type="number" hide />
+                        <YAxis
+                            dataKey={categoryKey}
+                            type="category"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={10}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey={categoryKey}
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                        />
+                        {showYAxis && (
+                            <YAxis
+                                allowDecimals={false}
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={8}
+                                width={64}
+                                tickFormatter={(value) =>
+                                    Number(value).toLocaleString('cs-CZ')
+                                }
+                            />
+                        )}
+                    </>
                 )}
                 <ChartTooltip content={<ChartTooltipContent />} />
                 {series.length > 1 && <ChartLegend content={<ChartLegendContent />} />}
-                {series.map((key, index) => (
+                {series.map((key, i) => (
                     <Bar
                         key={key}
                         dataKey={key}
                         fill={`var(--color-${key})`}
-                        stackId={stacked ? 'value' : undefined}
-                        radius={getBarRadius(index, series.length, stacked)}
+                        stackId={stacked ? 'a' : undefined}
+                        radius={getBarRadius(i, series.length, stacked, orientation)}
                     />
                 ))}
             </RechartsBarChart>

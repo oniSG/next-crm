@@ -4,8 +4,6 @@ import { Pie, PieChart as RechartsPieChart } from 'recharts'
 
 import {
     ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
     type ChartConfig,
@@ -19,32 +17,78 @@ export type PieChartProps = {
     innerRadius?: number
 }
 
-export function PieChart({
-    data,
-    config,
-    className,
-    innerRadius = 55,
-}: PieChartProps) {
+export function PieChart({ data, config, className, innerRadius }: PieChartProps) {
+    const total = data.reduce((sum, item) => sum + item.value, 0)
+
     return (
         <ChartContainer
             config={config}
-            className={cn('mx-auto aspect-square max-h-65 w-full', className)}
+            className={cn('mx-auto aspect-square max-h-[250px] w-full px-0', className)}
         >
             <RechartsPieChart>
                 <ChartTooltip
                     cursor={false}
-                    content={<ChartTooltipContent hideLabel nameKey="name" />}
+                    content={({ active, payload }) => {
+                        if (!active || !payload?.length) {
+                            return null
+                        }
+
+                        const item = payload[0]
+                        const num =
+                            typeof item.value === 'number'
+                                ? item.value
+                                : Number(item.value)
+                        const percent = total > 0 ? Math.round((num / total) * 100) : 0
+
+                        return (
+                            <ChartTooltipContent
+                                active={active}
+                                hideIndicator
+                                hideLabel
+                                payload={[
+                                    {
+                                        ...item,
+                                        name: 'Hodnota',
+                                        value: num,
+                                        dataKey: 'value',
+                                    },
+                                    {
+                                        ...item,
+                                        name: 'Procenta',
+                                        value: `${percent}%`,
+                                        dataKey: 'percent',
+                                    },
+                                ]}
+                            />
+                        )
+                    }}
                 />
                 <Pie
                     data={data}
                     dataKey="value"
                     nameKey="name"
                     innerRadius={innerRadius}
-                    strokeWidth={4}
-                />
-                <ChartLegend
-                    content={<ChartLegendContent nameKey="name" />}
-                    verticalAlign="bottom"
+                    labelLine={false}
+                    label={({ payload, ...props }) => {
+                        const value =
+                            typeof payload?.value === 'number' ? payload.value : 0
+                        const percent = total > 0 ? Math.round((value / total) * 100) : 0
+
+                        return (
+                            <text
+                                cx={props.cx}
+                                cy={props.cy}
+                                x={props.x}
+                                y={props.y}
+                                textAnchor={props.textAnchor}
+                                dominantBaseline={props.dominantBaseline}
+                                fill="var(--foreground)"
+                                className="text-xs"
+                            >
+                                {`${value.toLocaleString('cs-CZ')} (${percent}%)`}
+                            </text>
+                        )
+                    }}
                 />
             </RechartsPieChart>
         </ChartContainer>

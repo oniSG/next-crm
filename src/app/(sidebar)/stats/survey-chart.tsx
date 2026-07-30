@@ -1,9 +1,10 @@
-import { AreaChartCard } from '@/components/custom/statistics/area-chart-card'
-import { BarChartCard } from '@/components/custom/statistics/bar-chart-card'
-import { LabeledBarChartCard } from '@/components/custom/statistics/labeled-bar-chart-card'
-import { LineChartCard } from '@/components/custom/statistics/line-chart-card'
-import { PieChartCard } from '@/components/custom/statistics/pie-chart-card'
-import { RadarChartCard } from '@/components/custom/statistics/radar-chart-card'
+import { AreaChart } from '@/components/custom/statistics/area-chart'
+import { BarChart } from '@/components/custom/statistics/bar-chart'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
+import { LabeledBarChart } from '@/components/custom/statistics/labeled-bar-chart'
+import { LineChart } from '@/components/custom/statistics/line-chart'
+import { PieChart } from '@/components/custom/statistics/pie-chart'
+import { RadarChart } from '@/components/custom/statistics/radar-chart'
 
 import type { StatsQuestion } from './data'
 
@@ -17,74 +18,95 @@ export function SurveyChart({
     switch (question.chartType) {
         case 'pie':
             return (
-                <PieChartCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
-                    data={question.pieData}
-                    config={question.pieConfig}
                     className="w-full"
-                />
+                    queryKey={question.chartType}
+                >
+                    <PieChart data={question.pieData} config={question.pieConfig} />
+                </DataVisulaizationCard>
             )
         case 'bar':
             return (
-                <BarChartCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
-                    data={question.barData}
-                    config={question.barConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
-                    stacked={question.stacked}
                     className="w-full"
-                />
+                    queryKey={question.chartType}
+                >
+                    <BarChart
+                        data={question.barData}
+                        config={question.barConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                        stacked={question.stacked}
+                    />
+                </DataVisulaizationCard>
             )
         case 'line':
             return (
-                <LineChartCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
-                    data={question.lineData}
-                    config={question.lineConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
                     className="w-full"
-                />
+                    queryKey={question.chartType}
+                >
+                    <LineChart
+                        data={question.lineData}
+                        config={question.lineConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </DataVisulaizationCard>
             )
         case 'area':
             return (
-                <AreaChartCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
-                    data={question.areaData}
-                    config={question.areaConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
                     className="w-full"
-                />
+                    queryKey={question.chartType}
+                >
+                    <AreaChart
+                        data={question.areaData}
+                        config={question.areaConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </DataVisulaizationCard>
             )
         case 'radar':
             return (
-                <RadarChartCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
-                    data={question.radarData}
-                    config={question.radarConfig}
-                    categoryKey={question.categoryKey}
-                    series={question.series}
                     className="w-full"
-                />
+                    queryKey={question.chartType}
+                >
+                    <RadarChart
+                        data={question.radarData}
+                        config={question.radarConfig}
+                        categoryKey={question.categoryKey}
+                        series={question.series}
+                    />
+                </DataVisulaizationCard>
             )
         case 'labeledBar':
             return (
-                <LabeledBarChartCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
-                    data={question.labeledBarData}
-                    config={question.labeledBarConfig}
-                    categoryKey={question.categoryKey}
-                    valueKey={question.valueKey}
                     className="w-full"
-                />
+                    queryKey={question.chartType}
+                >
+                    <LabeledBarChart
+                        data={question.labeledBarData}
+                        config={question.labeledBarConfig}
+                        categoryKey={question.categoryKey}
+                        valueKey={question.valueKey}
+                    />
+                </DataVisulaizationCard>
             )
     }
 }
