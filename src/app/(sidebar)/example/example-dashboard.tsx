@@ -1,6 +1,6 @@
 import { AreaChart } from '@/components/custom/statistics/area-chart'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LabeledBarChart } from '@/components/custom/statistics/labeled-bar-chart'
 import { LineChart } from '@/components/custom/statistics/line-chart'
@@ -40,7 +40,7 @@ export function ExampleDashboard() {
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                <GraphCard
+                <DataVisulaizationCard
                     title="Revenue Trend"
                     description="Desktop vs. mobile, monthly totals."
                     className="lg:col-span-2"
@@ -67,21 +67,18 @@ export function ExampleDashboard() {
                         />
                     }
                 />
-                <GraphCard
+                <DataVisulaizationCard
                     title="Customer Segments"
                     description="Share of revenue by plan tier."
                     queryKey="customer-segments"
                     content={
-                        <PieChart
-                            data={CATEGORY_SHARE}
-                            config={CATEGORY_CHART_CONFIG}
-                        />
+                        <PieChart data={CATEGORY_SHARE} config={CATEGORY_CHART_CONFIG} />
                     }
                 />
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-                <GraphCard
+                <DataVisulaizationCard
                     title="Weekly Traffic"
                     description="Visits and signups by day."
                     queryKey="weekly-traffic"
@@ -94,7 +91,7 @@ export function ExampleDashboard() {
                         />
                     }
                 />
-                <GraphCard
+                <DataVisulaizationCard
                     title="MRR Growth"
                     description="New vs. expansion, stacked."
                     queryKey="mrr-growth"
@@ -107,7 +104,7 @@ export function ExampleDashboard() {
                         />
                     }
                 />
-                <GraphCard
+                <DataVisulaizationCard
                     title="Team Performance"
                     description="Team score vs. target across metrics."
                     queryKey="team-performance"
@@ -123,7 +120,7 @@ export function ExampleDashboard() {
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                <GraphCard
+                <DataVisulaizationCard
                     title="Visitors — Horizontal"
                     description="Last 6 months"
                     queryKey="visitors-horizontal"
@@ -137,7 +134,7 @@ export function ExampleDashboard() {
                         />
                     }
                 />
-                <GraphCard
+                <DataVisulaizationCard
                     title="Revenue — Stacked"
                     description="Desktop + mobile stacked totals"
                     queryKey="revenue-stacked"
@@ -154,7 +151,7 @@ export function ExampleDashboard() {
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                <GraphCard
+                <DataVisulaizationCard
                     title="Sessions by Channel"
                     description="Last 30 days"
                     queryKey="sessions-by-channel"
@@ -167,7 +164,7 @@ export function ExampleDashboard() {
                         />
                     }
                 />
-                <GraphCard
+                <DataVisulaizationCard
                     title="Net Income"
                     description="Monthly P&L, positive / negative"
                     queryKey="net-income"

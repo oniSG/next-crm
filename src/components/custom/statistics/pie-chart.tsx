@@ -19,12 +19,8 @@ export type PieChartProps = {
     innerRadius?: number
 }
 
-export function PieChart({
-    data,
-    config,
-    className,
-    innerRadius = 55,
-}: PieChartProps) {
+//todo use Pie Chart - Custom Label add values + percents to the lables
+export function PieChart({ data, config, className, innerRadius = 55 }: PieChartProps) {
     return (
         <ChartContainer
             config={config}

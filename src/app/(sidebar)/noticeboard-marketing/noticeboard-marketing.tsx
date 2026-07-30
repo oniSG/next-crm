@@ -1,7 +1,7 @@
 'use client'
 
 import { DetailCard } from '@/components/custom/statistics/detail-card'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
@@ -51,7 +51,7 @@ export function NoticeboardMarketing() {
                     />
                 </div>
 
-                <GraphCard
+                <DataVisulaizationCard
                     title="Flowchart e-mailových kampaní"
                     className="lg:col-span-3"
                     queryKey="email-campaign-flow"
@@ -67,8 +67,9 @@ export function NoticeboardMarketing() {
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
                 <div className="flex h-full min-h-0 flex-col gap-4 lg:col-span-2">
-                    <GraphCard
+                    <DataVisulaizationCard
                         title="Statistika e-mailových kampaní"
+                        description="Doručeno, otevřeno, kliknuto a odhlášeno po dnech."
                         queryKey="email-campaign-stats"
                         content={
                             <LineChart
@@ -84,7 +85,7 @@ export function NoticeboardMarketing() {
                         }
                     />
 
-                    <GraphCard
+                    <DataVisulaizationCard
                         title="Statistika odhlášení GDPR souhlasů"
                         queryKey="gdpr-unsubscribe-stats"
                         content={
@@ -102,7 +103,7 @@ export function NoticeboardMarketing() {
                 </div>
 
                 <div className="flex h-full min-h-0 flex-col gap-4">
-                    <GraphCard
+                    <DataVisulaizationCard
                         title="Komunikační kanály"
                         queryKey="communication-channels"
                         content={
@@ -115,7 +116,7 @@ export function NoticeboardMarketing() {
                         }
                     />
 
-                    <GraphCard
+                    <DataVisulaizationCard
                         title="Nedoručené e-maily"
                         queryKey="undelivered-emails"
                         content={
@@ -128,7 +129,7 @@ export function NoticeboardMarketing() {
                         }
                     />
 
-                    <GraphCard
+                    <DataVisulaizationCard
                         title="Počty odhlášených GDPR"
                         queryKey="gdpr-optout-counts"
                         content={
@@ -143,14 +144,14 @@ export function NoticeboardMarketing() {
                 </div>
             </div>
 
-            <GraphCard
+            <DataVisulaizationCard
                 title="Seznamy událostí"
                 queryKey="event-lists"
                 content={
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Jméno seznamu</TableHead>
+                                <TableHead className="pl-0">Jméno seznamu</TableHead>
                                 <TableHead>Události</TableHead>
                                 <TableHead>ID seznamu událostí</TableHead>
                             </TableRow>
@@ -158,7 +159,7 @@ export function NoticeboardMarketing() {
                         <TableBody>
                             {EVENT_LISTS.map((list) => (
                                 <TableRow key={list.id}>
-                                    <TableCell className="font-medium">
+                                    <TableCell className="pl-0 font-medium">
                                         {list.name}
                                     </TableCell>
                                     <TableCell className="text-muted-foreground max-w-md truncate">

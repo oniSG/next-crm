@@ -1,7 +1,7 @@
 import InfoSheet from '@/components/custom/other/info-sheet'
 import { AreaChart } from '@/components/custom/statistics/area-chart'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 
 import {
     EMAIL_DELIVERY_BY_MONTH,
@@ -14,7 +14,7 @@ export function PrehledEmailu() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
             <section className="grid grid-cols-1 gap-4">
-                <GraphCard
+                <DataVisulaizationCard
                     title="Úspěšnost"
                     description="Doručeno, otevřeno a kliknuto po měsících."
                     className="w-full"
@@ -29,7 +29,7 @@ export function PrehledEmailu() {
                     }
                 />
 
-                <GraphCard
+                <DataVisulaizationCard
                     title="Doručeno"
                     description="Doručeno, nedoručeno, bouncy a spam po měsících."
                     className="w-full"

@@ -27,11 +27,12 @@ export type GraphCardProps = {
     action?: ReactNode
     queryKey: string
     className?: string
+    //todo, renave to children and just pass the component as valina html
     content?: ReactNode
     tabs?: GraphCardTab[]
 }
 
-export function GraphCard({
+export function DataVisulaizationCard({
     title,
     description,
     action,
@@ -43,9 +44,7 @@ export function GraphCard({
     const fallbackValue = tabs?.[0]?.value ?? ''
     const [value, setValue] = useQueryState(
         queryKey,
-        parseAsString
-            .withDefault(fallbackValue)
-            .withOptions({ clearOnDefault: true }),
+        parseAsString.withDefault(fallbackValue).withOptions({ clearOnDefault: true }),
     )
 
     if (tabs) {
@@ -62,17 +61,12 @@ export function GraphCard({
                         <CardTitle className="truncate text-sm font-medium">
                             {title}
                         </CardTitle>
-                        {description && (
-                            <CardDescription>{description}</CardDescription>
-                        )}
+                        {description && <CardDescription>{description}</CardDescription>}
                         <CardAction>
                             <div className="flex items-center gap-2">
                                 <TabsList>
                                     {tabs.map((tab) => (
-                                        <TabsTrigger
-                                            key={tab.value}
-                                            value={tab.value}
-                                        >
+                                        <TabsTrigger key={tab.value} value={tab.value}>
                                             {tab.icon}
                                             {tab.name}
                                         </TabsTrigger>
@@ -97,15 +91,11 @@ export function GraphCard({
     return (
         <Card className={cn('flex flex-1 flex-col gap-0', className)}>
             <CardHeader className="pb-2">
-                <CardTitle className="truncate text-sm font-medium">
-                    {title}
-                </CardTitle>
+                <CardTitle className="truncate text-sm font-medium">{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
-            <CardContent className="flex min-h-0 flex-1 flex-col">
-                {content}
-            </CardContent>
+            <CardContent className="flex min-h-0 flex-1 flex-col">{content}</CardContent>
         </Card>
     )
 }

@@ -3,7 +3,10 @@
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-import { GraphCard, type GraphCardTab } from '@/components/custom/statistics/graph-card'
+import {
+    DataVisulaizationCard,
+    type GraphCardTab,
+} from '@/components/custom/statistics/data-visualization-card'
 import {
     ChartContainer,
     ChartLegend,
@@ -246,19 +249,19 @@ export function ReportFanGeneral() {
 
     return (
         <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
-            <GraphCard
+            <DataVisulaizationCard
                 queryKey="view-email"
                 title="E-mail"
                 description="Přehled ve zvoleném období."
                 tabs={VIEW_TABS_EMAIL}
             />
-            <GraphCard
+            <DataVisulaizationCard
                 queryKey="view-sms"
                 title="SMS"
                 description="Přehled ve zvoleném období."
                 tabs={VIEW_TABS_SMS}
             />
-            <GraphCard
+            <DataVisulaizationCard
                 queryKey="view-push"
                 title="Push notifikace"
                 description="Přehled ve zvoleném období."

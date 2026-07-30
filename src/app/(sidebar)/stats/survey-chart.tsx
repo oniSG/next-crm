@@ -1,6 +1,6 @@
 import { AreaChart } from '@/components/custom/statistics/area-chart'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import { GraphCard } from '@/components/custom/statistics/graph-card'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LabeledBarChart } from '@/components/custom/statistics/labeled-bar-chart'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
@@ -18,22 +18,19 @@ export function SurveyChart({
     switch (question.chartType) {
         case 'pie':
             return (
-                <GraphCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
                     className="w-full"
                     queryKey={question.chartType}
                     content={
-                        <PieChart
-                            data={question.pieData}
-                            config={question.pieConfig}
-                        />
+                        <PieChart data={question.pieData} config={question.pieConfig} />
                     }
                 />
             )
         case 'bar':
             return (
-                <GraphCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
                     className="w-full"
@@ -51,7 +48,7 @@ export function SurveyChart({
             )
         case 'line':
             return (
-                <GraphCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
                     className="w-full"
@@ -68,7 +65,7 @@ export function SurveyChart({
             )
         case 'area':
             return (
-                <GraphCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
                     className="w-full"
@@ -85,7 +82,7 @@ export function SurveyChart({
             )
         case 'radar':
             return (
-                <GraphCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
                     className="w-full"
@@ -102,7 +99,7 @@ export function SurveyChart({
             )
         case 'labeledBar':
             return (
-                <GraphCard
+                <DataVisulaizationCard
                     title={title}
                     description={question.description}
                     className="w-full"
