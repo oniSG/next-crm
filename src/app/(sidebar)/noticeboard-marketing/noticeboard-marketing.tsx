@@ -111,7 +111,6 @@ export function NoticeboardMarketing() {
                                 data={COMMUNICATION_CHANNELS}
                                 config={COMMUNICATION_CHANNELS_CONFIG}
                                 className="max-h-44"
-                                innerRadius={40}
                             />
                         }
                     />
@@ -124,7 +123,6 @@ export function NoticeboardMarketing() {
                                 data={UNDELIVERED_EMAILS}
                                 config={UNDELIVERED_EMAILS_CONFIG}
                                 className="max-h-44"
-                                innerRadius={40}
                             />
                         }
                     />
@@ -137,7 +135,6 @@ export function NoticeboardMarketing() {
                                 data={GDPR_OPTOUT_COUNTS}
                                 config={GDPR_OPTOUT_COUNTS_CONFIG}
                                 className="max-h-44"
-                                innerRadius={40}
                             />
                         }
                     />
