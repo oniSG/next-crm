@@ -26,6 +26,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'report-management',
     'report-event',
     'noticeboard-marketing',
+    'mobile-app',
 ])
 
 const VIEWPORT_WIDTH = 1280

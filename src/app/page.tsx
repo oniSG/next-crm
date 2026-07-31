@@ -118,6 +118,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Mobile app',
+        path: '/mobile-app',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {

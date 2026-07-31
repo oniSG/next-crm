@@ -145,6 +145,7 @@ const fansGroups: NavGroup[] = [
                     { title: 'GDPR changes', url: '/report-gdpr-change', icon: <ShieldCheckIcon /> },
                     { title: 'Event report', url: '/report-event', icon: <CalendarCheckIcon /> },
                     { title: 'Management report', url: '/report-management', icon: <BriefcaseIcon /> },
+                    { title: 'Mobile app', url: '/mobile-app', icon: <MonitorIcon /> },
                 ],
             },
         ],
