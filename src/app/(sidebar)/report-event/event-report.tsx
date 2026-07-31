@@ -14,10 +14,7 @@ import {
 } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import {
-    DataVisulaizationCard,
-    type GraphCardTab,
-} from '@/components/custom/statistics/data-visualization-card'
+import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
@@ -30,7 +27,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import type { ChartConfig } from '@/components/ui/chart'
 
 import {
     EVENT_REPORT_CHART_SERIES,
@@ -44,9 +40,6 @@ import {
     SALES_BY_PRICE_COLUMNS,
     SALES_BY_SECTOR_COLUMNS,
     type EventReportChartPoint,
-    type EventSalesByDayRow,
-    type EventSalesByPriceRow,
-    type EventSalesBySectorRow,
 } from './data'
 import { useEventReportFilters } from './report-utils'
 
@@ -63,60 +56,6 @@ function sumSales(data: EventReportChartPoint[]) {
             revenue: result.revenue + (point.revenue ?? 0),
         }),
         { count: 0, revenue: 0 },
-    )
-}
-
-function chartOrEmpty(hasData: boolean, chart: ReactNode, emptyMessage: string) {
-    if (hasData) return chart
-    return (
-        <div className="text-muted-foreground flex h-80 items-center justify-center text-sm">
-            {emptyMessage}
-        </div>
-    )
-}
-
-function chartTableTabs({
-    chart,
-    table,
-}: {
-    chart: ReactNode
-    table: ReactNode
-}): GraphCardTab[] {
-    return [
-        {
-            name: 'Chart',
-            value: 'chart',
-            icon: <ChartColumnIcon />,
-            content: chart,
-        },
-        {
-            name: 'Table',
-            value: 'table',
-            icon: <TableIcon />,
-            content: table,
-        },
-    ]
-}
-
-function SalesBarChart({
-    chartKey,
-    data,
-    config,
-}: {
-    chartKey: string
-    data: EventReportChartPoint[]
-    config: ChartConfig
-}) {
-    return (
-        <BarChart
-            key={chartKey}
-            data={data}
-            config={config}
-            categoryKey="label"
-            series={[...EVENT_REPORT_CHART_SERIES]}
-            showYAxis
-            className="h-80"
-        />
     )
 }
 
@@ -138,12 +77,6 @@ export function EventReport() {
         (sum, point) => sum + point.count,
         0,
     )
-    const hasSeasonTicketFlow =
-        event.seasonTicketFlow.nodes.length > 1 &&
-        event.seasonTicketFlow.links.length > 0
-    const hasTicketSalesFlow =
-        event.ticketSalesFlow.nodes.length > 1 &&
-        event.ticketSalesFlow.links.length > 0
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -267,29 +200,43 @@ export function EventReport() {
                     title="Sales by days"
                     description="Number of tickets sold on individual sales days."
                     queryKey="event-sales-by-day-view"
-                    tabs={chartTableTabs({
-                        chart: chartOrEmpty(
-                            event.salesByDay.length > 0,
-                            <SalesBarChart
-                                chartKey={`sales-by-day-${event.id}`}
-                                data={event.salesByDay}
-                                config={EVENT_SALES_BY_DAY_CONFIG}
-                            />,
-                            'No ticket sales data for the selected event.',
-                        ),
-                        table: (
-                            <SimpleTable<EventSalesByDayRow>
-                                data={event.salesByDay}
-                                columns={SALES_BY_DAY_COLUMNS}
-                                getRowKey={(row) => row.date}
-                                footer={[
-                                    'Total',
-                                    formatEventCount(salesByDayTotal.count),
-                                    formatEventCurrency(salesByDayTotal.revenue),
-                                ]}
-                            />
-                        ),
-                    })}
+                    tabs={[
+                        {
+                            name: 'Chart',
+                            value: 'chart',
+                            icon: <ChartColumnIcon />,
+                            content: (
+                                <BarChart
+                                    key={`sales-by-day-${event.id}`}
+                                    data={event.salesByDay}
+                                    config={EVENT_SALES_BY_DAY_CONFIG}
+                                    categoryKey="label"
+                                    series={[...EVENT_REPORT_CHART_SERIES]}
+                                    showYAxis
+                                    className="h-80"
+                                />
+                            ),
+                        },
+                        {
+                            name: 'Table',
+                            value: 'table',
+                            icon: <TableIcon />,
+                            content: (
+                                <SimpleTable
+                                    data={event.salesByDay}
+                                    columns={SALES_BY_DAY_COLUMNS}
+                                    getRowKey={(row) => row.date}
+                                    footer={[
+                                        'Total',
+                                        formatEventCount(salesByDayTotal.count),
+                                        formatEventCurrency(
+                                            salesByDayTotal.revenue,
+                                        ),
+                                    ]}
+                                />
+                            ),
+                        },
+                    ]}
                 />
             </section>
 
@@ -298,31 +245,45 @@ export function EventReport() {
                     title="Number of tickets sold by price"
                     description="Ticket volume grouped by price level."
                     queryKey="event-sales-by-price-view"
-                    tabs={chartTableTabs({
-                        chart: chartOrEmpty(
-                            event.salesByPrice.length > 0,
-                            <SalesBarChart
-                                chartKey={`sales-by-price-${event.id}`}
-                                data={event.salesByPrice}
-                                config={EVENT_SALES_BY_PRICE_CONFIG}
-                            />,
-                            'No ticket price data for the selected event.',
-                        ),
-                        table: (
-                            <SimpleTable<EventSalesByPriceRow>
-                                data={event.salesByPrice}
-                                columns={SALES_BY_PRICE_COLUMNS}
-                                getRowKey={(row) => String(row.price)}
-                                footer={[
-                                    'Total',
-                                    formatEventCount(salesByPriceTotal.count),
-                                    formatEventCurrency(
-                                        salesByPriceTotal.revenue,
-                                    ),
-                                ]}
-                            />
-                        ),
-                    })}
+                    tabs={[
+                        {
+                            name: 'Chart',
+                            value: 'chart',
+                            icon: <ChartColumnIcon />,
+                            content: (
+                                <BarChart
+                                    key={`sales-by-price-${event.id}`}
+                                    data={event.salesByPrice}
+                                    config={EVENT_SALES_BY_PRICE_CONFIG}
+                                    categoryKey="label"
+                                    series={[...EVENT_REPORT_CHART_SERIES]}
+                                    showYAxis
+                                    className="h-80"
+                                />
+                            ),
+                        },
+                        {
+                            name: 'Table',
+                            value: 'table',
+                            icon: <TableIcon />,
+                            content: (
+                                <SimpleTable
+                                    data={event.salesByPrice}
+                                    columns={SALES_BY_PRICE_COLUMNS}
+                                    getRowKey={(row) => String(row.price)}
+                                    footer={[
+                                        'Total',
+                                        formatEventCount(
+                                            salesByPriceTotal.count,
+                                        ),
+                                        formatEventCurrency(
+                                            salesByPriceTotal.revenue,
+                                        ),
+                                    ]}
+                                />
+                            ),
+                        },
+                    ]}
                 />
             </section>
 
@@ -332,17 +293,13 @@ export function EventReport() {
                     description="Flow of season-ticket attendance, forwarding, gifting and resale."
                     queryKey="event-season-ticket-overview"
                 >
-                    {chartOrEmpty(
-                        hasSeasonTicketFlow,
-                        <SankeyChart
-                            key={`season-ticket-flow-${event.id}`}
-                            data={event.seasonTicketFlow}
-                            className="h-160"
-                            nodePadding={48}
-                            margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
-                        />,
-                        'No season ticket data for the selected event.',
-                    )}
+                    <SankeyChart
+                        key={`season-ticket-flow-${event.id}`}
+                        data={event.seasonTicketFlow}
+                        className="h-160"
+                        nodePadding={48}
+                        margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
+                    />
                 </DataVisulaizationCard>
             </section>
 
@@ -352,17 +309,13 @@ export function EventReport() {
                     description="Paid and free tickets grouped by sales channel."
                     queryKey="event-ticket-sales-overview"
                 >
-                    {chartOrEmpty(
-                        hasTicketSalesFlow,
-                        <SankeyChart
-                            key={`ticket-sales-flow-${event.id}`}
-                            data={event.ticketSalesFlow}
-                            className="h-120"
-                            nodePadding={28}
-                            margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
-                        />,
-                        'No ticket sales data for the selected event.',
-                    )}
+                    <SankeyChart
+                        key={`ticket-sales-flow-${event.id}`}
+                        data={event.ticketSalesFlow}
+                        className="h-120"
+                        nodePadding={28}
+                        margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
+                    />
                 </DataVisulaizationCard>
             </section>
 
@@ -371,28 +324,40 @@ export function EventReport() {
                     title="Tickets sold by sector"
                     description="Ticket volume grouped by venue sector."
                     queryKey="event-sales-by-sector-view"
-                    tabs={chartTableTabs({
-                        chart: chartOrEmpty(
-                            event.salesBySector.length > 0,
-                            <SalesBarChart
-                                chartKey={`sales-by-sector-${event.id}`}
-                                data={event.salesBySector}
-                                config={EVENT_SALES_BY_SECTOR_CONFIG}
-                            />,
-                            'No sector sales data for the selected event.',
-                        ),
-                        table: (
-                            <SimpleTable<EventSalesBySectorRow>
-                                data={event.salesBySector}
-                                columns={SALES_BY_SECTOR_COLUMNS}
-                                getRowKey={(row) => row.sector}
-                                footer={[
-                                    'Total',
-                                    formatEventCount(salesBySectorTotal),
-                                ]}
-                            />
-                        ),
-                    })}
+                    tabs={[
+                        {
+                            name: 'Chart',
+                            value: 'chart',
+                            icon: <ChartColumnIcon />,
+                            content: (
+                                <BarChart
+                                    key={`sales-by-sector-${event.id}`}
+                                    data={event.salesBySector}
+                                    config={EVENT_SALES_BY_SECTOR_CONFIG}
+                                    categoryKey="label"
+                                    series={[...EVENT_REPORT_CHART_SERIES]}
+                                    showYAxis
+                                    className="h-80"
+                                />
+                            ),
+                        },
+                        {
+                            name: 'Table',
+                            value: 'table',
+                            icon: <TableIcon />,
+                            content: (
+                                <SimpleTable
+                                    data={event.salesBySector}
+                                    columns={SALES_BY_SECTOR_COLUMNS}
+                                    getRowKey={(row) => row.sector}
+                                    footer={[
+                                        'Total',
+                                        formatEventCount(salesBySectorTotal),
+                                    ]}
+                                />
+                            ),
+                        },
+                    ]}
                 />
             </section>
         </div>
