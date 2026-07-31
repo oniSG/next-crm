@@ -6,6 +6,7 @@ import {
     CardAction,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
@@ -32,6 +33,22 @@ export type KpiCardProps = {
     className?: string
 }
 
+export function KpiTrendFooter({ trend }: { trend: KpiTrend }) {
+    const TrendIcon = trend.direction === 'up' ? TrendingUp : TrendingDown
+    const trendColor =
+        trend.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
+
+    return (
+        <div className="flex items-center gap-1.5 text-xs">
+            <TrendIcon className={`size-3.5 ${trendColor}`} />
+            <span className={`font-medium ${trendColor}`}>{trend.delta}</span>
+            {trend.hint && (
+                <span className="text-muted-foreground">{trend.hint}</span>
+            )}
+        </div>
+    )
+}
+
 export function KpiCard({
     label,
     content,
@@ -43,27 +60,17 @@ export function KpiCard({
 }: KpiCardProps) {
     const hero = content.find((item) => item.label == null)
     const rows = content.filter((item) => item.label != null)
-    const isSingleValue = Boolean(hero) && rows.length === 0
     const isTableOnly = !hero && rows.length > 0
-
-    const TrendIcon = trend?.direction === 'up' ? TrendingUp : TrendingDown
-    const trendColor =
-        trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
 
     return (
         <Card className={cn('gap-0', className)}>
-            <CardHeader className={cn(isTableOnly && 'pb-2')}>
+            <CardHeader className={cn(isTableOnly ? 'pb-2' : 'pb-0')}>
                 {isTableOnly ? (
                     <CardTitle className="truncate text-sm font-medium">
                         {label}
                     </CardTitle>
                 ) : (
-                    <>
-                        <CardDescription>{label}</CardDescription>
-                        <CardTitle className="text-3xl tabular-nums">
-                            {hero?.value}
-                        </CardTitle>
-                    </>
+                    <CardDescription>{label}</CardDescription>
                 )}
                 {(action || icon) && (
                     <CardAction>
@@ -81,13 +88,17 @@ export function KpiCard({
                 )}
             </CardHeader>
 
+            {hero && (
+                <CardContent className="flex flex-col py-6">
+                    <div className="text-center text-3xl font-medium tabular-nums">
+                        {hero.value}
+                    </div>
+                </CardContent>
+            )}
+
             {rows.length > 0 && (
                 <CardContent
-                    className={cn(
-                        hero
-                            ? 'space-y-2 border-t pt-4'
-                            : 'space-y-3 py-4',
-                    )}
+                    className={cn('space-y-3 py-4', hero && 'border-t')}
                 >
                     {rows.map((item) => (
                         <div
@@ -106,23 +117,9 @@ export function KpiCard({
             )}
 
             {trend && (
-                <CardContent
-                    className={cn(
-                        (!isSingleValue || rows.length > 0) && 'border-t pt-4',
-                    )}
-                >
-                    <div className="flex items-center gap-1.5 text-xs">
-                        <TrendIcon className={`size-3.5 ${trendColor}`} />
-                        <span className={`font-medium ${trendColor}`}>
-                            {trend.delta}
-                        </span>
-                        {trend.hint && (
-                            <span className="text-muted-foreground">
-                                {trend.hint}
-                            </span>
-                        )}
-                    </div>
-                </CardContent>
+                <CardFooter>
+                    <KpiTrendFooter trend={trend} />
+                </CardFooter>
             )}
         </Card>
     )

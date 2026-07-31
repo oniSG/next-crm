@@ -1,12 +1,24 @@
-import type { KpiCardProps } from '@/components/custom/statistics/kpi-card'
+import type { KpiTrend } from '@/components/custom/statistics/kpi-card'
 
-export const DATA_QUALITY_KPIS: Omit<KpiCardProps, 'className'>[] = [
+export type DataQualityKpi = {
+    id: string
+    label: string
+    percent: string
+    count: string
+    countLabel: string
+    getTooltip: (percent: string) => string
+    trend: KpiTrend
+}
+
+export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
     {
+        id: 'inactive-fans',
         label: 'Neaktivní fanoušci',
-        content: [
-            { label: 'Počet', value: '252 077' },
-            { label: 'Procenta', value: '44,01%' },
-        ],
+        percent: '44,01%',
+        count: '252 077',
+        countLabel: 'Počet',
+        getTooltip: (percent) =>
+            `${percent} uživatelů není přihlášeno.`,
         trend: {
             direction: 'down',
             delta: '-1,2 %',
@@ -14,11 +26,13 @@ export const DATA_QUALITY_KPIS: Omit<KpiCardProps, 'className'>[] = [
         },
     },
     {
+        id: 'invalid-emails',
         label: 'Neplatné e-maily',
-        content: [
-            { label: 'Počet', value: '51' },
-            { label: 'Procenta', value: '0,01%' },
-        ],
+        percent: '0,01%',
+        count: '51',
+        countLabel: 'Počet',
+        getTooltip: (percent) =>
+            `${percent} uživatelů má neplatný e-mail.`,
         trend: {
             direction: 'down',
             delta: '-0,01 %',
@@ -26,11 +40,13 @@ export const DATA_QUALITY_KPIS: Omit<KpiCardProps, 'className'>[] = [
         },
     },
     {
+        id: 'missing-birthdate',
         label: 'Chybí datum narození',
-        content: [
-            { label: 'Počet', value: '118 257' },
-            { label: 'Procenta', value: '20,65%' },
-        ],
+        percent: '20,65%',
+        count: '118 257',
+        countLabel: 'Počet',
+        getTooltip: (percent) =>
+            `${percent} uživatelů nemá vyplněné datum narození.`,
         trend: {
             direction: 'up',
             delta: '+0,4 %',
@@ -38,11 +54,13 @@ export const DATA_QUALITY_KPIS: Omit<KpiCardProps, 'className'>[] = [
         },
     },
     {
+        id: 'missing-surname',
         label: 'Chybí příjmení',
-        content: [
-            { label: 'Počet', value: '1 842' },
-            { label: 'Procenta', value: '0,32%' },
-        ],
+        percent: '0,32%',
+        count: '1 842',
+        countLabel: 'Počet',
+        getTooltip: (percent) =>
+            `${percent} uživatelů nemá vyplněné příjmení.`,
         trend: {
             direction: 'down',
             delta: '-0,05 %',
@@ -50,11 +68,13 @@ export const DATA_QUALITY_KPIS: Omit<KpiCardProps, 'className'>[] = [
         },
     },
     {
+        id: 'missing-firstname',
         label: 'Chybí jméno',
-        content: [
-            { label: 'Počet', value: '2 156' },
-            { label: 'Procenta', value: '0,38%' },
-        ],
+        percent: '0,38%',
+        count: '2 156',
+        countLabel: 'Počet',
+        getTooltip: (percent) =>
+            `${percent} uživatelů nemá vyplněné jméno.`,
         trend: {
             direction: 'down',
             delta: '-0,08 %',
@@ -62,11 +82,13 @@ export const DATA_QUALITY_KPIS: Omit<KpiCardProps, 'className'>[] = [
         },
     },
     {
+        id: 'missing-phone',
         label: 'Chybí telefon',
-        content: [
-            { label: 'Počet', value: '543 587' },
-            { label: 'Procenta', value: '94,9%' },
-        ],
+        percent: '94,9%',
+        count: '543 587',
+        countLabel: 'Počet',
+        getTooltip: (percent) =>
+            `${percent} uživatelů nemá vyplněný telefon.`,
         trend: {
             direction: 'up',
             delta: '+0,3 %',
