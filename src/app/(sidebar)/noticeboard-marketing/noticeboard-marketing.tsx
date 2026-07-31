@@ -49,11 +49,7 @@ export function NoticeboardMarketing() {
                     className="lg:col-span-3"
                     queryKey="email-campaign-flow"
                 >
-                    <SankeyChart
-                        data={EMAIL_CAMPAIGN_FLOW}
-                        className="h-64"
-                        margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
-                    />
+                    <SankeyChart data={EMAIL_CAMPAIGN_FLOW} className="h-60" />
                 </DataVisulaizationCard>
             </div>
 
