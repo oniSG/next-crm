@@ -4,6 +4,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -23,6 +24,7 @@ export type SimpleTableProps<T> = {
     columns: SimpleTableColumn<T>[]
     getRowKey: (row: T) => string
     className?: string
+    footer?: ReactNode[]
 }
 
 export function SimpleTable<T>({
@@ -30,6 +32,7 @@ export function SimpleTable<T>({
     columns,
     getRowKey,
     className,
+    footer,
 }: SimpleTableProps<T>) {
     return (
         <Table className={cn(className)}>
@@ -59,6 +62,20 @@ export function SimpleTable<T>({
                     </TableRow>
                 ))}
             </TableBody>
+            {footer && (
+                <TableFooter>
+                    <TableRow>
+                        {footer.map((cell, index) => (
+                            <TableCell
+                                key={columns[index]?.id ?? index}
+                                className={columns[index]?.cellClassName}
+                            >
+                                {cell}
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                </TableFooter>
+            )}
         </Table>
     )
 }

@@ -30,8 +30,8 @@ import {
 export function NoticeboardMarketing() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-start">
-                <div className="grid grid-cols-1 gap-4">
+            <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+                <div className="flex flex-col gap-4">
                     <KpiCard
                         label={NOTICEBOARD_DETAIL.title}
                         content={NOTICEBOARD_DETAIL.rows}
@@ -46,14 +46,17 @@ export function NoticeboardMarketing() {
 
                 <DataVisulaizationCard
                     title="Flowchart e-mailových kampaní"
-                    className="lg:col-span-3"
+                    className="h-full min-h-0 lg:col-span-3"
                     queryKey="email-campaign-flow"
                 >
-                    <SankeyChart data={EMAIL_CAMPAIGN_FLOW} className="h-60" />
+                    <SankeyChart
+                        data={EMAIL_CAMPAIGN_FLOW}
+                        className="h-full min-h-0 max-lg:min-h-75"
+                    />
                 </DataVisulaizationCard>
-            </div>
+            </section>
 
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
+            <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
                 <div className="flex h-full min-h-0 flex-col gap-4 lg:col-span-2">
                     <DataVisulaizationCard
                         title="Statistika e-mailových kampaní"
@@ -122,15 +125,17 @@ export function NoticeboardMarketing() {
                         />
                     </DataVisulaizationCard>
                 </div>
-            </div>
+            </section>
 
-            <DataVisulaizationCard title="Seznamy událostí" queryKey="event-lists">
-                <SimpleTable
-                    data={EVENT_LISTS}
-                    columns={EVENT_LIST_COLUMNS}
-                    getRowKey={(row) => row.id}
-                />
-            </DataVisulaizationCard>
+            <section>
+                <DataVisulaizationCard title="Seznamy událostí" queryKey="event-lists">
+                    <SimpleTable
+                        data={EVENT_LISTS}
+                        columns={EVENT_LIST_COLUMNS}
+                        getRowKey={(row) => row.id}
+                    />
+                </DataVisulaizationCard>
+            </section>
         </div>
     )
 }
