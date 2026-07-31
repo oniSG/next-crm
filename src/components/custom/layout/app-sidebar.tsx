@@ -189,21 +189,6 @@ const fansGroups: NavGroup[] = [
                         url: '/report-management',
                         icon: <BriefcaseIcon />,
                     },
-                    {
-                        title: 'Data quality',
-                        url: '/data-quality',
-                        icon: <ClipboardCheckIcon />,
-                    },
-                    {
-                        title: 'Relatoo index',
-                        url: '/relatoo-index',
-                        icon: <GaugeIcon />,
-                    },
-                    {
-                        title: 'Mobile app',
-                        url: '/mobile-app',
-                        icon: <MonitorIcon />,
-                    },
                 ],
             },
         ],

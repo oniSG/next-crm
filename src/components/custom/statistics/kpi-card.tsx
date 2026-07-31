@@ -24,12 +24,12 @@ export type KpiMetric = {
 
 export type KpiCardContent = {
     label: string
-    value: ReactNode
+    value: string | number
 }
 
 export type KpiCardProps = {
     label: string
-    value?: ReactNode
+    value?: string | number
     content?: KpiCardContent[]
     trend?: KpiTrend
     metric?: KpiMetric
@@ -42,7 +42,7 @@ export type KpiCardProps = {
 export function KpiCard({
     label,
     value,
-    content = [],
+    content,
     trend,
     metric,
     action,
@@ -51,17 +51,12 @@ export function KpiCard({
     className,
 }: KpiCardProps) {
     const TrendIcon = trend?.direction === 'up' ? TrendingUp : TrendingDown
-    const trendColor =
-        trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
+    const trendColor = trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
 
     return (
         <Card className={cn('h-full gap-0', className)}>
-            <CardHeader
-                className={cn(content.length > 0 || metric ? 'pb-2' : 'pb-0')}
-            >
-                <CardTitle className="truncate text-sm font-medium">
-                    {label}
-                </CardTitle>
+            <CardHeader className={cn(content || metric ? 'pb-2' : 'pb-0')}>
+                <CardTitle className="truncate text-sm font-medium">{label}</CardTitle>
                 {(action || icon) && (
                     <CardAction>
                         {action ?? (
@@ -82,13 +77,12 @@ export function KpiCard({
                 <CardContent
                     className={cn(
                         'flex',
-                        content.length === 0 && 'flex-1',
+                        !content && 'flex-1',
                         metric
                             ? 'items-baseline justify-between gap-4 py-2'
                             : cn(
                                   'flex-col py-6',
-                                  content.length === 0 &&
-                                      'items-center justify-center',
+                                  !content && 'items-center justify-center',
                               ),
                     )}
                 >
@@ -110,7 +104,7 @@ export function KpiCard({
                 </CardContent>
             )}
 
-            {content.length > 0 && (
+            {content && (
                 <CardContent
                     className={cn(
                         'space-y-3 py-4',
@@ -138,13 +132,9 @@ export function KpiCard({
                 <CardFooter className="mt-auto">
                     <div className="flex items-center gap-1.5 text-xs">
                         <TrendIcon className={`size-3.5 ${trendColor}`} />
-                        <span className={`font-medium ${trendColor}`}>
-                            {trend.delta}
-                        </span>
+                        <span className={`font-medium ${trendColor}`}>{trend.delta}</span>
                         {trend.hint && (
-                            <span className="text-muted-foreground">
-                                {trend.hint}
-                            </span>
+                            <span className="text-muted-foreground">{trend.hint}</span>
                         )}
                     </div>
                 </CardFooter>
