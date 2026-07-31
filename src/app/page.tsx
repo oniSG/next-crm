@@ -118,6 +118,12 @@ const pages: {
         status: 'progress',
         by: 'Tomas',
     },
+    {
+        name: 'Relatoo index',
+        path: '/relatoo-index',
+        status: 'progress',
+        by: 'Tomas',
+    },
 ]
 
 export default function Page() {
