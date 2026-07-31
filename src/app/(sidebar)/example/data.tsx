@@ -13,7 +13,7 @@ export const SEGMENT_OPTIONS: TypeFilterOption[] = [
 export const KPIS = [
     {
         label: 'Total Revenue',
-        content: [{ value: '$45,231' }],
+        value: '$45,231',
         trend: {
             direction: 'up' as const,
             delta: '+10.1%',
@@ -30,7 +30,7 @@ export const KPIS = [
     },
     {
         label: 'Active Customers',
-        content: [{ value: '1,203' }],
+        value: '1,203',
         trend: {
             direction: 'up' as const,
             delta: '+5.4%',
@@ -39,7 +39,7 @@ export const KPIS = [
     },
     {
         label: 'Conversion Rate',
-        content: [{ value: '3.62%' }],
+        value: '3.62%',
         trend: {
             direction: 'down' as const,
             delta: '-0.34%',

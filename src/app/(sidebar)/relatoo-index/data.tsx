@@ -4,8 +4,8 @@ import InfoTooltip from '@/components/custom/other/info-tooltip'
 export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
     {
         label: 'Relatoo index',
+        value: '3,63',
         content: [
-            { value: '3,63' },
             { label: 'Předchozí relatoo index', value: '3,03' },
             { label: 'Změna indexu', value: '0,59' },
             { label: 'Pořadí mezi tenanty', value: '14' },
@@ -19,7 +19,7 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
     },
     {
         label: 'Stav',
-        content: [{ value: 'Dobrý' }],
+        value: 'Dobrý',
         trend: {
             direction: 'up',
             delta: '+0,59',

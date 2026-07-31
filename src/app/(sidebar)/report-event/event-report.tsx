@@ -108,10 +108,8 @@ export function EventReport() {
                     label="Tickets sold / capacity"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
+                    value={`${numberFormatter.format(event.tickets.sold)} / ${numberFormatter.format(event.tickets.capacity)}`}
                     content={[
-                        {
-                            value: `${numberFormatter.format(event.tickets.sold)} / ${numberFormatter.format(event.tickets.capacity)}`,
-                        },
                         {
                             label: 'Paid',
                             value: `${numberFormatter.format(event.tickets.paid)} pcs`,
@@ -126,10 +124,8 @@ export function EventReport() {
                     label="Total entries incl. season tickets"
                     icon={<ScanLineIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
+                    value={numberFormatter.format(event.entrances.total)}
                     content={[
-                        {
-                            value: numberFormatter.format(event.entrances.total),
-                        },
                         {
                             label: 'Tickets',
                             value: `${numberFormatter.format(event.entrances.tickets)} pcs`,
@@ -152,10 +148,8 @@ export function EventReport() {
                     label="Total revenue"
                     icon={<CircleDollarSignIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
+                    value={currencyFormatter.format(event.revenue.total)}
                     content={[
-                        {
-                            value: currencyFormatter.format(event.revenue.total),
-                        },
                         {
                             label: 'Ticket sales',
                             value: currencyFormatter.format(event.revenue.tickets),

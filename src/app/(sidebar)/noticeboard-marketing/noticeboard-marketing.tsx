@@ -39,7 +39,7 @@ export function NoticeboardMarketing() {
                     />
                     <KpiCard
                         label={NOTICEBOARD_METRIC.title}
-                        content={[{ value: NOTICEBOARD_METRIC.value }]}
+                        value={NOTICEBOARD_METRIC.value}
                         trend={NOTICEBOARD_METRIC.trend}
                     />
                 </div>

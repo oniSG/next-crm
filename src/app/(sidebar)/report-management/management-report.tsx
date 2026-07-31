@@ -232,8 +232,8 @@ export function ManagementReport() {
                     label="Visitors"
                     icon={<ContactRoundIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
+                    value={numberFormatter.format(currentFanCount)}
                     content={[
-                        { value: numberFormatter.format(currentFanCount) },
                         {
                             label: 'Net growth',
                             value: `${fanNetGrowth >= 0 ? '+' : ''}${numberFormatter.format(fanNetGrowth)}`,
@@ -248,12 +248,8 @@ export function ManagementReport() {
                     label="Season tickets"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
+                    value={currencyFormatter.format(seasonTicketSummary.revenue)}
                     content={[
-                        {
-                            value: currencyFormatter.format(
-                                seasonTicketSummary.revenue,
-                            ),
-                        },
                         {
                             label: 'Sold',
                             value: `${numberFormatter.format(seasonTicketSummary.sold)} pcs`,
@@ -273,10 +269,8 @@ export function ManagementReport() {
                     label="Tickets"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
+                    value={currencyFormatter.format(ticketSummary.revenue)}
                     content={[
-                        {
-                            value: currencyFormatter.format(ticketSummary.revenue),
-                        },
                         {
                             label: 'Sold',
                             value: `${numberFormatter.format(ticketSummary.sold)} pcs`,
@@ -305,10 +299,8 @@ export function ManagementReport() {
                     label="E-mail"
                     icon={<MailIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
+                    value={numberFormatter.format(emailSummary.delivered)}
                     content={[
-                        {
-                            value: numberFormatter.format(emailSummary.delivered),
-                        },
                         {
                             label: 'Uniquely opened',
                             value: `${emailOpenRate.toFixed(1)} %`,
@@ -323,10 +315,8 @@ export function ManagementReport() {
                     label="Push"
                     icon={<SendIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
+                    value={numberFormatter.format(pushSummary.delivered)}
                     content={[
-                        {
-                            value: numberFormatter.format(pushSummary.delivered),
-                        },
                         {
                             label: 'Not delivered',
                             value: `${pushFailureRate.toFixed(1)} %`,
@@ -341,10 +331,8 @@ export function ManagementReport() {
                     label="SMS"
                     icon={<MessageSquareTextIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
+                    value={numberFormatter.format(smsSummary.delivered)}
                     content={[
-                        {
-                            value: numberFormatter.format(smsSummary.delivered),
-                        },
                         {
                             label: 'Delivered',
                             value: numberFormatter.format(smsSummary.delivered),
