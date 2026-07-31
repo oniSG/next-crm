@@ -266,8 +266,7 @@ export function SeasonTicketOverviewSection({
                     data={data}
                     className="h-160"
                     nodePadding={48}
-                    labelSideThreshold={200}
-                    margin={{ top: 16, right: 180, bottom: 16, left: 140 }}
+                    margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
                 />
             ) : (
                 <div className="text-muted-foreground flex h-80 items-center justify-center text-sm">
@@ -299,8 +298,7 @@ export function TicketSalesOverviewSection({
                     data={data}
                     className="h-120"
                     nodePadding={28}
-                    labelSideThreshold={200}
-                    margin={{ top: 16, right: 180, bottom: 16, left: 140 }}
+                    margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
                 />
             ) : (
                 <div className="text-muted-foreground flex h-80 items-center justify-center text-sm">

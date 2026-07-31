@@ -42,7 +42,6 @@ export type SankeyChartProps = {
         left?: number
     }
     className?: string
-    labelSideThreshold?: number
 }
 
 function getNodeFill(node: unknown): string {
@@ -57,18 +56,10 @@ function getNodeFill(node: unknown): string {
     return 'var(--chart-1)'
 }
 
-function SankeyNode({
-    x,
-    y,
-    width,
-    height,
-    payload,
-    labelSideThreshold = 100,
-}: SankeyNodeProps & { labelSideThreshold?: number }) {
+function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
     const name = typeof payload?.name === 'string' ? payload.name : ''
     const value = typeof payload?.value === 'number' ? payload.value : null
     const fill = getNodeFill(payload)
-    const isLeft = x < labelSideThreshold
     const label = value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
 
     return (
@@ -83,9 +74,9 @@ function SankeyNode({
                 radius={2}
             />
             <text
-                x={isLeft ? x - 8 : x + width + 8}
+                x={x + width + 8}
                 y={y + height / 2}
-                textAnchor={isLeft ? 'end' : 'start'}
+                textAnchor="start"
                 dominantBaseline="middle"
                 fontSize={12}
                 fill={fill}
@@ -132,9 +123,8 @@ export function SankeyChart({
     sort = false,
     align = 'left',
     verticalAlign = 'top',
-    margin = { top: 16, right: 180, bottom: 16, left: 140 },
+    margin = { top: 16, right: 180, bottom: 16, left: 16 },
     className,
-    labelSideThreshold = 100,
 }: SankeyChartProps) {
     return (
         <div className={cn('h-140 w-full', className)}>
@@ -149,9 +139,7 @@ export function SankeyChart({
                     iterations={iterations}
                     margin={margin}
                     link={SankeyLink}
-                    node={(props) => (
-                        <SankeyNode {...props} labelSideThreshold={labelSideThreshold} />
-                    )}
+                    node={SankeyNode}
                 />
             </ResponsiveContainer>
         </div>

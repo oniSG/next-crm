@@ -14,9 +14,11 @@ export const KPIS = [
     {
         label: 'Total Revenue',
         value: '$45,231',
-        delta: '+10.1%',
-        hint: 'vs. last month',
-        trend: 'up' as const,
+        trend: {
+            direction: 'up' as const,
+            delta: '+10.1%',
+            hint: 'vs. last month',
+        },
         action: (
             <InfoTooltip>
                 The KPI card is a component that displays key performance indicators
@@ -29,16 +31,20 @@ export const KPIS = [
     {
         label: 'Active Customers',
         value: '1,203',
-        delta: '+5.4%',
-        hint: 'vs. last month',
-        trend: 'up' as const,
+        trend: {
+            direction: 'up' as const,
+            delta: '+5.4%',
+            hint: 'vs. last month',
+        },
     },
     {
         label: 'Conversion Rate',
         value: '3.62%',
-        delta: '-0.34%',
-        hint: 'vs. last month',
-        trend: 'down' as const,
+        trend: {
+            direction: 'down' as const,
+            delta: '-0.34%',
+            hint: 'vs. last month',
+        },
     },
 ]
 
