@@ -12,6 +12,7 @@ import {
     TableIcon,
     TicketCheckIcon,
 } from 'lucide-react'
+import { parseAsString, useQueryState } from 'nuqs'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
@@ -36,12 +37,12 @@ import {
     formatEventCount,
     formatEventCurrency,
     getReportEvent,
+    REPORT_EVENT_OPTIONS,
     SALES_BY_DAY_COLUMNS,
     SALES_BY_PRICE_COLUMNS,
     SALES_BY_SECTOR_COLUMNS,
     type EventReportChartPoint,
 } from './data'
-import { useEventReportFilters } from './report-utils'
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
@@ -60,16 +61,13 @@ function sumSales(data: EventReportChartPoint[]) {
 }
 
 export function EventReport() {
-    const { eventId } = useEventReportFilters()
+    const [eventId] = useQueryState(
+        'event',
+        parseAsString
+            .withDefault(REPORT_EVENT_OPTIONS[0].id)
+            .withOptions({ clearOnDefault: true }),
+    )
     const event = getReportEvent(eventId)
-
-    if (!event) {
-        return (
-            <div className="text-muted-foreground flex min-h-64 w-full max-w-6xl items-center justify-center text-sm">
-                Select an event to display its report.
-            </div>
-        )
-    }
 
     const salesByDayTotal = sumSales(event.salesByDay)
     const salesByPriceTotal = sumSales(event.salesByPrice)

@@ -210,12 +210,13 @@ function buildSeasonTicketFlow(capacity: number): {
         entered,
         bought,
         data: {
+            // Continuing branches above terminals so flows don't cross upward.
             nodes: [
                 { name: 'Season tickets', fill: 'var(--chart-4)' },
-                { name: 'Entered', fill: 'var(--chart-1)' },
                 { name: 'Absent', fill: 'var(--destructive)' },
-                { name: 'Kept', fill: 'var(--muted-foreground)' },
+                { name: 'Entered', fill: 'var(--chart-1)' },
                 { name: 'Redistributed', fill: 'var(--chart-2)' },
+                { name: 'Kept', fill: 'var(--muted-foreground)' },
                 { name: 'Gifted', fill: 'var(--chart-3)' },
                 { name: 'For resale', fill: 'var(--chart-4)' },
                 { name: 'Gift: entered', fill: 'var(--chart-1)' },
@@ -226,12 +227,12 @@ function buildSeasonTicketFlow(capacity: number): {
                 { name: 'Buyer: absent', fill: 'var(--destructive)' },
             ],
             links: [
-                { source: 0, target: 1, value: entered },
-                { source: 0, target: 2, value: notEntered },
-                { source: 2, target: 3, value: notForwarded },
-                { source: 2, target: 4, value: redistributed },
-                { source: 4, target: 5, value: gifted },
-                { source: 4, target: 6, value: forwardedForSale },
+                { source: 0, target: 1, value: notEntered },
+                { source: 0, target: 2, value: entered },
+                { source: 1, target: 3, value: redistributed },
+                { source: 1, target: 4, value: notForwarded },
+                { source: 3, target: 5, value: gifted },
+                { source: 3, target: 6, value: forwardedForSale },
                 { source: 5, target: 7, value: giftedEntered },
                 { source: 5, target: 8, value: giftedNotEntered },
                 { source: 6, target: 9, value: bought },
@@ -357,5 +358,8 @@ export const REPORT_EVENT_OPTIONS: ReportEventOption[] = REPORT_EVENT_DATA.map(
 )
 
 export function getReportEvent(eventId: string | null | undefined) {
-    return REPORT_EVENT_DATA.find((event) => event.id === eventId)
+    return (
+        REPORT_EVENT_DATA.find((event) => event.id === eventId) ??
+        REPORT_EVENT_DATA[0]
+    )
 }

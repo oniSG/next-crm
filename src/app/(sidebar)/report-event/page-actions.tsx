@@ -1,6 +1,7 @@
 'use client'
 
 import { format } from 'date-fns'
+import { parseAsString, useQueryState } from 'nuqs'
 
 import { ExportButton } from '@/components/custom/statistics/export-button'
 import {
@@ -13,10 +14,14 @@ import {
 } from '@/components/ui/select'
 
 import { REPORT_EVENT_OPTIONS } from './data'
-import { useEventReportFilters } from './report-utils'
 
 export function PageActions() {
-    const { eventId, setEventId } = useEventReportFilters()
+    const [eventId, setEventId] = useQueryState(
+        'event',
+        parseAsString
+            .withDefault(REPORT_EVENT_OPTIONS[0].id)
+            .withOptions({ clearOnDefault: true }),
+    )
     const items = REPORT_EVENT_OPTIONS.map((event) => ({
         value: event.id,
         label: event.name,
