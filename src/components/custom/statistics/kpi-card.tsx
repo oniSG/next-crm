@@ -51,38 +51,46 @@ export function KpiCard({
     className,
 }: KpiCardProps) {
     const TrendIcon = trend?.direction === 'up' ? TrendingUp : TrendingDown
-    const trendColor = trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
+    const trendColor =
+        trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
 
     return (
         <Card className={cn('h-full gap-0', className)}>
-            <CardHeader className={cn(content || metric ? 'pb-2' : 'pb-0')}>
-                <CardTitle className="truncate text-sm font-medium">{label}</CardTitle>
-                {(action || icon) && (
-                    <CardAction>
-                        {action ?? (
-                            <div
-                                className={cn(
-                                    'flex size-9 items-center justify-center rounded-lg',
-                                    iconClassName,
-                                )}
-                            >
-                                {icon}
-                            </div>
-                        )}
-                    </CardAction>
-                )}
+            <CardHeader
+                className={cn(content || metric ? 'pb-2' : 'pb-0')}
+            >
+                <div className="flex min-w-0 items-center gap-2">
+                    {icon && (
+                        <div
+                            className={cn(
+                                'flex size-9 shrink-0 items-center justify-center rounded-lg',
+                                iconClassName,
+                            )}
+                        >
+                            {icon}
+                        </div>
+                    )}
+                    <CardTitle className="truncate text-sm font-medium">
+                        {label}
+                    </CardTitle>
+                </div>
+                {action && <CardAction>{action}</CardAction>}
             </CardHeader>
 
             {value && (
                 <CardContent
                     className={cn(
-                        'flex',
+                        'flex shrink-0',
                         !content && 'flex-1',
                         metric
-                            ? 'items-baseline justify-between gap-4 py-2'
+                            ? cn(
+                                  'items-baseline justify-between gap-4',
+                                  content ? 'py-6' : 'py-2',
+                              )
                             : cn(
                                   'flex-col py-6',
-                                  !content && 'items-center justify-center',
+                                  !content &&
+                                      'items-center justify-center',
                               ),
                     )}
                 >
@@ -98,7 +106,9 @@ export function KpiCard({
                         <div className="text-muted-foreground flex items-baseline gap-1.5 text-sm">
                             <span>{metric.label}</span>
                             <span aria-hidden>—</span>
-                            <span className="tabular-nums">{metric.value}</span>
+                            <span className="tabular-nums">
+                                {metric.value}
+                            </span>
                         </div>
                     )}
                 </CardContent>
@@ -107,9 +117,8 @@ export function KpiCard({
             {content && (
                 <CardContent
                     className={cn(
-                        'space-y-3 py-4',
+                        'flex-1 space-y-1 py-4',
                         value && 'border-t',
-                        !value && 'flex-1',
                     )}
                 >
                     {content.map((item) => (
@@ -132,9 +141,13 @@ export function KpiCard({
                 <CardFooter className="mt-auto">
                     <div className="flex items-center gap-1.5 text-xs">
                         <TrendIcon className={`size-3.5 ${trendColor}`} />
-                        <span className={`font-medium ${trendColor}`}>{trend.delta}</span>
+                        <span className={`font-medium ${trendColor}`}>
+                            {trend.delta}
+                        </span>
                         {trend.hint && (
-                            <span className="text-muted-foreground">{trend.hint}</span>
+                            <span className="text-muted-foreground">
+                                {trend.hint}
+                            </span>
                         )}
                     </div>
                 </CardFooter>

@@ -1,6 +1,5 @@
 'use client'
 
-import type { ReactNode } from 'react'
 import {
     CalendarCheckIcon,
     CalendarRangeIcon,
@@ -17,17 +16,9 @@ import { parseAsString, useQueryState } from 'nuqs'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
-import { Badge } from '@/components/ui/badge'
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
 
 import {
     EVENT_REPORT_CHART_SERIES,
@@ -78,99 +69,72 @@ export function EventReport() {
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <Card className="relative gap-0 overflow-hidden py-0">
-                <CardHeader className="bg-primary/8 gap-3 border-b p-4 sm:grid-cols-[1fr_auto]">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                            <Badge variant="secondary">CRM+ relatoo</Badge>
-                            <span className="text-muted-foreground text-xs">
-                                Event report
-                            </span>
-                        </div>
-                        <CardTitle className="text-2xl sm:text-3xl">
-                            {event.name}
-                        </CardTitle>
-                        <CardDescription className="flex items-center gap-1.5">
-                            <MapPinIcon className="size-3.5" />
-                            {event.venue}
-                        </CardDescription>
-                    </div>
-                    <CardAction className="hidden sm:block">
-                        <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
-                            <CalendarCheckIcon className="size-6" />
-                        </div>
-                    </CardAction>
-                </CardHeader>
-                <CardContent className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <HeaderDetail
-                        icon={<CalendarCheckIcon />}
-                        label="Event date"
-                        value={dateFormatter.format(
-                            new Date(`${event.date}T00:00:00`),
-                        )}
-                    />
-                    <HeaderDetail
-                        icon={<HashIcon />}
-                        label="Event ID"
-                        value={event.id}
-                    />
-                    <HeaderDetail
-                        icon={<TicketCheckIcon />}
-                        label="Capacity"
-                        value={`${formatEventCount(event.capacity)} seats`}
-                    />
-                    <HeaderDetail
-                        icon={<CalendarRangeIcon />}
-                        label="Sales started"
-                        value={dateFormatter.format(
+            <ReportHeaderCard
+                title={event.name}
+                description="Overview of ticket sales, entrances and revenue for this event."
+                icon={<CalendarCheckIcon className="size-6" />}
+                itemsClassName="lg:grid-cols-5"
+                items={[
+                    {
+                        title: 'Event date',
+                        value: dateFormatter.format(new Date(`${event.date}T00:00:00`)),
+                    },
+                    {
+                        title: 'Event ID',
+                        value: event.id,
+                    },
+                    {
+                        title: 'Capacity',
+                        value: `${formatEventCount(event.capacity)} seats`,
+                    },
+                    {
+                        title: 'Sales started',
+                        value: dateFormatter.format(
                             new Date(`${event.startOfSale}T00:00:00`),
-                        )}
-                    />
-                </CardContent>
-            </Card>
+                        ),
+                    },
+                    {
+                        title: 'Venue',
+                        value: event.venue,
+                    },
+                ]}
+            />
 
-            <section
-                className="grid gap-4 md:grid-cols-3"
-                aria-label="Event overview"
-            >
+            <section className="grid gap-4 md:grid-cols-3" aria-label="Event overview">
                 <KpiCard
-                    label="Tickets sold / capacity"
+                    label="Tickets sold"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    value={`${formatEventCount(event.tickets.sold)} / ${formatEventCount(event.tickets.capacity)}`}
+                    value={`${((event.tickets.sold / event.tickets.capacity) * 100).toFixed(1)} %`}
+                    metric={{
+                        label: 'Počet',
+                        value: formatEventCount(event.tickets.sold),
+                    }}
                     content={[
                         {
                             label: 'Paid',
-                            value: `${formatEventCount(event.tickets.paid)} pcs`,
+                            value: formatEventCount(event.tickets.paid),
                         },
                         {
                             label: 'Free',
-                            value: `${formatEventCount(event.tickets.free)} pcs`,
+                            value: formatEventCount(event.tickets.free),
                         },
                     ]}
                 />
                 <KpiCard
-                    label="Total entries incl. season tickets"
+                    label="Total entries"
                     icon={<ScanLineIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
                     value={formatEventCount(event.entrances.total)}
                     content={[
                         {
                             label: 'Tickets',
-                            value: `${formatEventCount(event.entrances.tickets)} pcs`,
+                            value: formatEventCount(event.entrances.tickets),
                         },
                         {
                             label: 'Season tickets',
-                            value: `${formatEventCount(event.entrances.seasonTickets)} pcs`,
+                            value: formatEventCount(event.entrances.seasonTickets),
                         },
-                        ...(event.entrances.unassigned > 0
-                            ? [
-                                  {
-                                      label: 'Unassigned',
-                                      value: `${formatEventCount(event.entrances.unassigned)} pcs`,
-                                  },
-                              ]
-                            : []),
                     ]}
                 />
                 <KpiCard
@@ -227,9 +191,7 @@ export function EventReport() {
                                     footer={[
                                         'Total',
                                         formatEventCount(salesByDayTotal.count),
-                                        formatEventCurrency(
-                                            salesByDayTotal.revenue,
-                                        ),
+                                        formatEventCurrency(salesByDayTotal.revenue),
                                     ]}
                                 />
                             ),
@@ -271,12 +233,8 @@ export function EventReport() {
                                     getRowKey={(row) => String(row.price)}
                                     footer={[
                                         'Total',
-                                        formatEventCount(
-                                            salesByPriceTotal.count,
-                                        ),
-                                        formatEventCurrency(
-                                            salesByPriceTotal.revenue,
-                                        ),
+                                        formatEventCount(salesByPriceTotal.count),
+                                        formatEventCurrency(salesByPriceTotal.revenue),
                                     ]}
                                 />
                             ),
@@ -358,28 +316,6 @@ export function EventReport() {
                     ]}
                 />
             </section>
-        </div>
-    )
-}
-
-function HeaderDetail({
-    icon,
-    label,
-    value,
-}: {
-    icon: ReactNode
-    label: string
-    value: string
-}) {
-    return (
-        <div className="flex items-start gap-3">
-            <span className="text-muted-foreground mt-0.5 [&_svg]:size-4">
-                {icon}
-            </span>
-            <div>
-                <p className="text-muted-foreground text-xs">{label}</p>
-                <p className="mt-1 font-medium tabular-nums">{value}</p>
-            </div>
         </div>
     )
 }
