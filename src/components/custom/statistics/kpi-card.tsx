@@ -63,7 +63,7 @@ export function KpiCard({
     const isTableOnly = !hero && rows.length > 0
 
     return (
-        <Card className={cn('gap-0', className)}>
+        <Card className={cn('h-full gap-0', className)}>
             <CardHeader className={cn(isTableOnly ? 'pb-2' : 'pb-0')}>
                 {isTableOnly ? (
                     <CardTitle className="truncate text-sm font-medium">
@@ -89,7 +89,12 @@ export function KpiCard({
             </CardHeader>
 
             {hero && (
-                <CardContent className="flex flex-col py-6">
+                <CardContent
+                    className={cn(
+                        'flex flex-1 flex-col py-6',
+                        rows.length === 0 && 'items-center justify-center',
+                    )}
+                >
                     <div className="text-center text-3xl font-medium tabular-nums">
                         {hero.value}
                     </div>
@@ -98,7 +103,11 @@ export function KpiCard({
 
             {rows.length > 0 && (
                 <CardContent
-                    className={cn('space-y-3 py-4', hero && 'border-t')}
+                    className={cn(
+                        'space-y-3 py-4',
+                        hero && 'border-t',
+                        !hero && 'flex-1',
+                    )}
                 >
                     {rows.map((item) => (
                         <div
@@ -117,7 +126,7 @@ export function KpiCard({
             )}
 
             {trend && (
-                <CardFooter>
+                <CardFooter className="mt-auto">
                     <KpiTrendFooter trend={trend} />
                 </CardFooter>
             )}
