@@ -2,17 +2,10 @@
 
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
-import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
+import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table'
+import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
     COMMUNICATION_CHANNELS,
@@ -21,6 +14,7 @@ import {
     EMAIL_CAMPAIGN_STATS,
     EMAIL_CAMPAIGN_STATS_CONFIG,
     EMAIL_CAMPAIGN_STATS_SERIES,
+    EVENT_LIST_COLUMNS,
     EVENT_LISTS,
     GDPR_OPTOUT_COUNTS,
     GDPR_OPTOUT_COUNTS_CONFIG,
@@ -36,17 +30,17 @@ import {
 export function NoticeboardMarketing() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-stretch">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-start">
                 <div className="grid grid-cols-1 gap-4">
-                    <OverviewKpiCard
+                    <KpiCard
                         label={NOTICEBOARD_DETAIL.title}
-                        metrics={NOTICEBOARD_DETAIL.rows}
-                        className="h-full"
+                        content={NOTICEBOARD_DETAIL.rows}
+                        trend={NOTICEBOARD_DETAIL.trend}
                     />
-                    <OverviewKpiCard
+                    <KpiCard
                         label={NOTICEBOARD_METRIC.title}
-                        value={NOTICEBOARD_METRIC.value}
-                        className="h-full"
+                        content={[{ value: NOTICEBOARD_METRIC.value }]}
+                        trend={NOTICEBOARD_METRIC.trend}
                     />
                 </div>
 
@@ -57,7 +51,7 @@ export function NoticeboardMarketing() {
                 >
                     <SankeyChart
                         data={EMAIL_CAMPAIGN_FLOW}
-                        className="h-80"
+                        className="h-64"
                         margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
                     />
                 </DataVisulaizationCard>
@@ -135,32 +129,11 @@ export function NoticeboardMarketing() {
             </div>
 
             <DataVisulaizationCard title="Seznamy událostí" queryKey="event-lists">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="pl-0">Jméno seznamu</TableHead>
-                            <TableHead>Události</TableHead>
-                            <TableHead>ID seznamu událostí</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {EVENT_LISTS.map((list) => (
-                            <TableRow key={list.id}>
-                                <TableCell className="pl-0 font-medium">
-                                    {list.name}
-                                </TableCell>
-                                <TableCell className="text-muted-foreground max-w-md truncate">
-                                    {list.events.length > 0
-                                        ? `[${list.events.join(', ')}]`
-                                        : '[]'}
-                                </TableCell>
-                                <TableCell className="font-mono text-xs">
-                                    {list.id}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                <SimpleTable
+                    data={EVENT_LISTS}
+                    columns={EVENT_LIST_COLUMNS}
+                    getRowKey={(row) => row.id}
+                />
             </DataVisulaizationCard>
         </div>
     )

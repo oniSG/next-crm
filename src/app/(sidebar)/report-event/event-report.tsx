@@ -10,7 +10,7 @@ import {
     TicketCheckIcon,
 } from 'lucide-react'
 
-import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
+import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { Badge } from '@/components/ui/badge'
 import {
     Card,
@@ -104,12 +104,14 @@ export function EventReport() {
             </Card>
 
             <section className="grid gap-4 md:grid-cols-3" aria-label="Event overview">
-                <OverviewKpiCard
+                <KpiCard
                     label="Tickets sold / capacity"
-                    value={`${numberFormatter.format(event.tickets.sold)} / ${numberFormatter.format(event.tickets.capacity)}`}
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    metrics={[
+                    content={[
+                        {
+                            value: `${numberFormatter.format(event.tickets.sold)} / ${numberFormatter.format(event.tickets.capacity)}`,
+                        },
                         {
                             label: 'Paid',
                             value: `${numberFormatter.format(event.tickets.paid)} pcs`,
@@ -120,12 +122,14 @@ export function EventReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Total entries incl. season tickets"
-                    value={numberFormatter.format(event.entrances.total)}
                     icon={<ScanLineIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    metrics={[
+                    content={[
+                        {
+                            value: numberFormatter.format(event.entrances.total),
+                        },
                         {
                             label: 'Tickets',
                             value: `${numberFormatter.format(event.entrances.tickets)} pcs`,
@@ -144,12 +148,14 @@ export function EventReport() {
                             : []),
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Total revenue"
-                    value={currencyFormatter.format(event.revenue.total)}
                     icon={<CircleDollarSignIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    metrics={[
+                    content={[
+                        {
+                            value: currencyFormatter.format(event.revenue.total),
+                        },
                         {
                             label: 'Ticket sales',
                             value: currencyFormatter.format(event.revenue.tickets),

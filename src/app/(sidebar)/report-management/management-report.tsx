@@ -11,7 +11,7 @@ import {
     TicketCheckIcon,
 } from 'lucide-react'
 
-import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
+import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { Badge } from '@/components/ui/badge'
 import {
     Card,
@@ -228,12 +228,12 @@ export function ManagementReport() {
             </Card>
 
             <section className="grid gap-4 md:grid-cols-3" aria-label="Report overview">
-                <OverviewKpiCard
+                <KpiCard
                     label="Visitors"
-                    value={numberFormatter.format(currentFanCount)}
                     icon={<ContactRoundIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    metrics={[
+                    content={[
+                        { value: numberFormatter.format(currentFanCount) },
                         {
                             label: 'Net growth',
                             value: `${fanNetGrowth >= 0 ? '+' : ''}${numberFormatter.format(fanNetGrowth)}`,
@@ -244,12 +244,16 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Season tickets"
-                    value={currencyFormatter.format(seasonTicketSummary.revenue)}
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    metrics={[
+                    content={[
+                        {
+                            value: currencyFormatter.format(
+                                seasonTicketSummary.revenue,
+                            ),
+                        },
                         {
                             label: 'Sold',
                             value: `${numberFormatter.format(seasonTicketSummary.sold)} pcs`,
@@ -265,12 +269,14 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Tickets"
-                    value={currencyFormatter.format(ticketSummary.revenue)}
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    metrics={[
+                    content={[
+                        {
+                            value: currencyFormatter.format(ticketSummary.revenue),
+                        },
                         {
                             label: 'Sold',
                             value: `${numberFormatter.format(ticketSummary.sold)} pcs`,
@@ -295,12 +301,14 @@ export function ManagementReport() {
                 className="grid gap-4 md:grid-cols-3"
                 aria-label="Communication overview"
             >
-                <OverviewKpiCard
+                <KpiCard
                     label="E-mail"
-                    value={numberFormatter.format(emailSummary.delivered)}
                     icon={<MailIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    metrics={[
+                    content={[
+                        {
+                            value: numberFormatter.format(emailSummary.delivered),
+                        },
                         {
                             label: 'Uniquely opened',
                             value: `${emailOpenRate.toFixed(1)} %`,
@@ -311,12 +319,14 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Push"
-                    value={numberFormatter.format(pushSummary.delivered)}
                     icon={<SendIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    metrics={[
+                    content={[
+                        {
+                            value: numberFormatter.format(pushSummary.delivered),
+                        },
                         {
                             label: 'Not delivered',
                             value: `${pushFailureRate.toFixed(1)} %`,
@@ -327,12 +337,14 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="SMS"
-                    value={numberFormatter.format(smsSummary.delivered)}
                     icon={<MessageSquareTextIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    metrics={[
+                    content={[
+                        {
+                            value: numberFormatter.format(smsSummary.delivered),
+                        },
                         {
                             label: 'Delivered',
                             value: numberFormatter.format(smsSummary.delivered),
