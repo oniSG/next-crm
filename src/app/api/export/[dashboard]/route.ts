@@ -28,6 +28,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'noticeboard-marketing',
     'data-quality',
     'relatoo-index',
+    'mobile-app',
 ])
 
 const VIEWPORT_WIDTH = 1280

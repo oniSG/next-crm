@@ -199,6 +199,11 @@ const fansGroups: NavGroup[] = [
                         url: '/relatoo-index',
                         icon: <GaugeIcon />,
                     },
+                    {
+                        title: 'Mobile app',
+                        url: '/mobile-app',
+                        icon: <MonitorIcon />,
+                    },
                 ],
             },
         ],
