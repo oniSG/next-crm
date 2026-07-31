@@ -34,21 +34,23 @@ export function PageActions() {
                 value={eventId}
                 onValueChange={(value) => void setEventId(value)}
             >
-                <SelectTrigger className="w-72">
+                <SelectTrigger className="w-auto">
                     <SelectValue placeholder="Select event" />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger={false} align="end">
+                <SelectContent
+                    alignItemWithTrigger={false}
+                    align="end"
+                    className="w-auto"
+                >
                     <SelectGroup>
                         {REPORT_EVENT_OPTIONS.map((event) => (
                             <SelectItem key={event.id} value={event.id}>
-                                <span>{event.name}</span>
-                                <span className="text-muted-foreground text-xs">
+                                <span className="min-w-0 truncate">{event.name}</span>
+                                <span className="text-muted-foreground ml-auto shrink-0 text-xs">
                                     {format(
                                         new Date(`${event.date}T00:00:00`),
                                         'd MMM yyyy',
                                     )}
-                                    {' · '}
-                                    {event.id}
                                 </span>
                             </SelectItem>
                         ))}
