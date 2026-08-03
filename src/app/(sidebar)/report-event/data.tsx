@@ -93,46 +93,44 @@ export const SALES_BY_DAY_COLUMNS: SimpleTableColumn<EventSalesByDayRow>[] = [
     },
 ]
 
-export const SALES_BY_PRICE_COLUMNS: SimpleTableColumn<EventSalesByPriceRow>[] =
-    [
-        {
-            id: 'price',
-            header: 'Price',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'count',
-            header: 'Tickets sold',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.count),
-        },
-        {
-            id: 'revenue',
-            header: 'Revenue',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => currencyFormatter.format(row.revenue ?? 0),
-        },
-    ]
+export const SALES_BY_PRICE_COLUMNS: SimpleTableColumn<EventSalesByPriceRow>[] = [
+    {
+        id: 'price',
+        header: 'Price',
+        cellClassName: 'font-medium',
+        cell: (row) => row.label,
+    },
+    {
+        id: 'count',
+        header: 'Tickets sold',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => numberFormatter.format(row.count),
+    },
+    {
+        id: 'revenue',
+        header: 'Revenue',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => currencyFormatter.format(row.revenue ?? 0),
+    },
+]
 
-export const SALES_BY_SECTOR_COLUMNS: SimpleTableColumn<EventSalesBySectorRow>[] =
-    [
-        {
-            id: 'sector',
-            header: 'Sector',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'count',
-            header: 'Tickets sold',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.count),
-        },
-    ]
+export const SALES_BY_SECTOR_COLUMNS: SimpleTableColumn<EventSalesBySectorRow>[] = [
+    {
+        id: 'sector',
+        header: 'Sector',
+        cellClassName: 'font-medium',
+        cell: (row) => row.label,
+    },
+    {
+        id: 'count',
+        header: 'Tickets sold',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => numberFormatter.format(row.count),
+    },
+]
 
 export function formatEventCount(value: number) {
     return numberFormatter.format(value)
@@ -149,8 +147,5 @@ export const REPORT_EVENT_OPTIONS: ReportEventOption[] = REPORT_EVENT_DATA.map(
 )
 
 export function getReportEvent(eventId: string | null | undefined) {
-    return (
-        REPORT_EVENT_DATA.find((event) => event.id === eventId) ??
-        REPORT_EVENT_DATA[0]
-    )
+    return REPORT_EVENT_DATA.find((event) => event.id === eventId)
 }

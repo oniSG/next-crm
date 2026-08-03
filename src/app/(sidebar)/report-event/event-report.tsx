@@ -1,20 +1,20 @@
 'use client'
 
 import {
+    CalendarCheckIcon,
     ChartColumnIcon,
     CircleDollarSignIcon,
     ScanLineIcon,
     TableIcon,
     TicketCheckIcon,
 } from 'lucide-react'
-import { parseAsString, useQueryState } from 'nuqs'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
-import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     EVENT_REPORT_CHART_SERIES,
@@ -30,6 +30,7 @@ import {
     SALES_BY_SECTOR_COLUMNS,
     type EventReportChartPoint,
 } from './data'
+import { filterEventsByDateRange, useEventReportFilters } from './report-utils'
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
@@ -48,13 +49,59 @@ function sumSales(data: EventReportChartPoint[]) {
 }
 
 export function EventReport() {
-    const [eventId] = useQueryState(
-        'event',
-        parseAsString
-            .withDefault(REPORT_EVENT_OPTIONS[0].id)
-            .withOptions({ clearOnDefault: true }),
-    )
+    const { dateRange, eventId, setEventId } = useEventReportFilters()
     const event = getReportEvent(eventId)
+    const visibleEvents = filterEventsByDateRange(REPORT_EVENT_OPTIONS, dateRange)
+
+    if (!event) {
+        return (
+            <div className="flex w-full max-w-6xl flex-col gap-4">
+                <div>
+                    <h1 className="text-xl font-semibold">Select an event</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">
+                        Choose an event to display its sales and attendance report.
+                    </p>
+                </div>
+
+                {visibleEvents.length > 0 ? (
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {visibleEvents.map((option) => {
+                            const eventData = getReportEvent(option.id)
+
+                            return (
+                                <KpiCard
+                                    key={option.id}
+                                    onClick={() => void setEventId(option.id)}
+                                    ariaLabel={`Open report for ${option.name}`}
+                                    className="min-h-48"
+                                    label={`${dateFormatter.format(new Date(`${option.date}T00:00:00`))} · ${option.id}`}
+                                    value={option.name}
+                                    valueClassName="text-xl leading-snug"
+                                    icon={<CalendarCheckIcon className="size-4" />}
+                                    iconClassName="bg-primary/10 text-primary"
+                                    content={[
+                                        {
+                                            label: 'Venue',
+                                            value:
+                                                eventData?.venue ?? 'Venue not specified',
+                                        },
+                                        {
+                                            label: 'Capacity',
+                                            value: `${formatEventCount(option.capacity)} seats`,
+                                        },
+                                    ]}
+                                />
+                            )
+                        })}
+                    </div>
+                ) : (
+                    <div className="text-muted-foreground flex min-h-48 items-center justify-center rounded-xl border border-dashed text-sm">
+                        No events in the selected period.
+                    </div>
+                )}
+            </div>
+        )
+    }
 
     const salesByDayTotal = sumSales(event.salesByDay)
     const salesByPriceTotal = sumSales(event.salesByPrice)

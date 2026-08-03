@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 
 import {
@@ -37,6 +37,9 @@ export type KpiCardProps = {
     icon?: ReactNode
     iconClassName?: string
     className?: string
+    valueClassName?: string
+    onClick?: () => void
+    ariaLabel?: string
 }
 
 export function KpiCard({
@@ -49,16 +52,34 @@ export function KpiCard({
     icon,
     iconClassName,
     className,
+    valueClassName,
+    onClick,
+    ariaLabel,
 }: KpiCardProps) {
     const TrendIcon = trend?.direction === 'up' ? TrendingUp : TrendingDown
-    const trendColor =
-        trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
+    const trendColor = trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
+
+    function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+        if (!onClick || (event.key !== 'Enter' && event.key !== ' ')) return
+        event.preventDefault()
+        onClick()
+    }
 
     return (
-        <Card className={cn('h-full gap-0', className)}>
-            <CardHeader
-                className={cn(content || metric ? 'pb-2' : 'pb-0')}
-            >
+        <Card
+            className={cn(
+                'h-full gap-0',
+                onClick &&
+                    'hover:bg-muted/40 focus-visible:ring-primary cursor-pointer transition-colors outline-none focus-visible:ring-2',
+                className,
+            )}
+            role={onClick ? 'button' : undefined}
+            tabIndex={onClick ? 0 : undefined}
+            aria-label={ariaLabel}
+            onClick={onClick}
+            onKeyDown={handleKeyDown}
+        >
+            <CardHeader className={cn(content || metric ? 'pb-2' : 'pb-0')}>
                 <div className="flex min-w-0 items-center gap-2">
                     {icon && (
                         <div
@@ -89,8 +110,7 @@ export function KpiCard({
                               )
                             : cn(
                                   'flex-col py-6',
-                                  !content &&
-                                      'items-center justify-center',
+                                  !content && 'items-center justify-center',
                               ),
                     )}
                 >
@@ -98,6 +118,7 @@ export function KpiCard({
                         className={cn(
                             'text-3xl font-medium tabular-nums',
                             !metric && 'text-center',
+                            valueClassName,
                         )}
                     >
                         {value}
@@ -106,21 +127,14 @@ export function KpiCard({
                         <div className="text-muted-foreground flex items-baseline gap-1.5 text-sm">
                             <span>{metric.label}</span>
                             <span aria-hidden>—</span>
-                            <span className="tabular-nums">
-                                {metric.value}
-                            </span>
+                            <span className="tabular-nums">{metric.value}</span>
                         </div>
                     )}
                 </CardContent>
             )}
 
             {content && (
-                <CardContent
-                    className={cn(
-                        'flex-1 space-y-1 py-4',
-                        value && 'border-t',
-                    )}
-                >
+                <CardContent className={cn('flex-1 space-y-1 py-4', value && 'border-t')}>
                     {content.map((item) => (
                         <div
                             key={item.label}
@@ -141,13 +155,9 @@ export function KpiCard({
                 <CardFooter className="mt-auto">
                     <div className="flex items-center gap-1.5 text-xs">
                         <TrendIcon className={`size-3.5 ${trendColor}`} />
-                        <span className={`font-medium ${trendColor}`}>
-                            {trend.delta}
-                        </span>
+                        <span className={`font-medium ${trendColor}`}>{trend.delta}</span>
                         {trend.hint && (
-                            <span className="text-muted-foreground">
-                                {trend.hint}
-                            </span>
+                            <span className="text-muted-foreground">{trend.hint}</span>
                         )}
                     </div>
                 </CardFooter>
