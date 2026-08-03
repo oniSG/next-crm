@@ -1,19 +1,12 @@
 'use client'
 
-import { DetailCard } from '@/components/custom/statistics/detail-card'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
+import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
-import { ValueCard } from '@/components/custom/statistics/value-card'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table'
+import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     COMMUNICATION_CHANNELS,
@@ -22,6 +15,7 @@ import {
     EMAIL_CAMPAIGN_STATS,
     EMAIL_CAMPAIGN_STATS_CONFIG,
     EMAIL_CAMPAIGN_STATS_SERIES,
+    EVENT_LIST_COLUMNS,
     EVENT_LISTS,
     GDPR_OPTOUT_COUNTS,
     GDPR_OPTOUT_COUNTS_CONFIG,
@@ -37,34 +31,38 @@ import {
 export function NoticeboardMarketing() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:items-stretch">
-                <div className="grid grid-cols-1 gap-4">
-                    <DetailCard
-                        title={NOTICEBOARD_DETAIL.title}
-                        rows={NOTICEBOARD_DETAIL.rows}
-                        className="h-full"
+            <ReportHeaderCard
+                title="Noticeboard marketing"
+                description="Přehled noticeboard marketingu."
+            />
+
+            <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+                <div className="flex flex-col gap-4">
+                    <KpiCard
+                        label={NOTICEBOARD_DETAIL.title}
+                        content={NOTICEBOARD_DETAIL.rows}
+                        trend={NOTICEBOARD_DETAIL.trend}
                     />
-                    <ValueCard
-                        title={NOTICEBOARD_METRIC.title}
+                    <KpiCard
+                        label={NOTICEBOARD_METRIC.title}
                         value={NOTICEBOARD_METRIC.value}
-                        className="h-full"
+                        trend={NOTICEBOARD_METRIC.trend}
                     />
                 </div>
 
                 <DataVisulaizationCard
                     title="Flowchart e-mailových kampaní"
-                    className="lg:col-span-3"
+                    className="h-full min-h-0 lg:col-span-3"
                     queryKey="email-campaign-flow"
                 >
                     <SankeyChart
                         data={EMAIL_CAMPAIGN_FLOW}
-                        className="h-80"
-                        margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
+                        className="h-full min-h-0 max-lg:min-h-75"
                     />
                 </DataVisulaizationCard>
-            </div>
+            </section>
 
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
+            <section className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
                 <div className="flex h-full min-h-0 flex-col gap-4 lg:col-span-2">
                     <DataVisulaizationCard
                         title="Statistika e-mailových kampaní"
@@ -133,36 +131,17 @@ export function NoticeboardMarketing() {
                         />
                     </DataVisulaizationCard>
                 </div>
-            </div>
+            </section>
 
-            <DataVisulaizationCard title="Seznamy událostí" queryKey="event-lists">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="pl-0">Jméno seznamu</TableHead>
-                            <TableHead>Události</TableHead>
-                            <TableHead>ID seznamu událostí</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {EVENT_LISTS.map((list) => (
-                            <TableRow key={list.id}>
-                                <TableCell className="pl-0 font-medium">
-                                    {list.name}
-                                </TableCell>
-                                <TableCell className="text-muted-foreground max-w-md truncate">
-                                    {list.events.length > 0
-                                        ? `[${list.events.join(', ')}]`
-                                        : '[]'}
-                                </TableCell>
-                                <TableCell className="font-mono text-xs">
-                                    {list.id}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </DataVisulaizationCard>
+            <section>
+                <DataVisulaizationCard title="Seznamy událostí" queryKey="event-lists">
+                    <SimpleTable
+                        data={EVENT_LISTS}
+                        columns={EVENT_LIST_COLUMNS}
+                        getRowKey={(row) => row.id}
+                    />
+                </DataVisulaizationCard>
+            </section>
         </div>
     )
 }

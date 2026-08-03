@@ -14,12 +14,18 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from '@/components/ui/chart'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { FUNNEL_CHART_CONFIG, FUNNEL_CHART_DATA } from './data'
 
 export function FunnelChartPage() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
+            <ReportHeaderCard
+                title="Funnel chart"
+                description="Přehled konverzního trychtýře od zobrazení po objednávku."
+            />
+
             <section className="grid grid-cols-1 gap-4">
                 <Card className="w-full">
                     <CardHeader>

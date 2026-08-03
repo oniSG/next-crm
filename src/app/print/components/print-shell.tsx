@@ -4,7 +4,7 @@ import './../print.css'
 
 export type PrintPageSettings = {
     title: string
-    description: string
+    description?: string
     body: ReactNode
 }
 
@@ -40,26 +40,19 @@ function TenantMark() {
     )
 }
 
-export function PrintShell({ title, description, body }: PrintPageSettings) {
+export function PrintShell({ title, body }: PrintPageSettings) {
     const now = new Date()
     const year = now.getFullYear()
 
     return (
         <div className="mx-auto flex min-h-svh w-full max-w-6xl flex-col px-10 py-12 font-sans">
-            <header className="mb-16">
-                <div className="mb-14 flex items-start justify-between">
+            <header className="mb-6">
+                <div className="flex items-start justify-between">
                     <TenantMark />
                     <div className="text-muted-foreground text-right text-xs">
                         Report · {formatDate(now)}
                     </div>
                 </div>
-
-                <h1 className="text-5xl leading-[1.02] font-semibold tracking-tight">
-                    {title}
-                </h1>
-                <p className="text-muted-foreground mt-4 max-w-2xl text-sm">
-                    {description}
-                </p>
             </header>
 
             <main className="flex-1">{body}</main>

@@ -1,10 +1,13 @@
 'use client'
 
 import * as React from 'react'
+import { useServerInsertedHTML } from 'next/navigation'
 
 export type Theme = 'light' | 'dark' | 'system'
 
 const STORAGE_KEY = 'theme'
+
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem(${JSON.stringify(STORAGE_KEY)})||"system";var d=t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);if(d)document.documentElement.classList.add("dark")}catch(e){}})()`
 
 type ThemeContextValue = {
     theme: Theme
@@ -27,6 +30,10 @@ function applyTheme(theme: Theme): 'light' | 'dark' {
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setThemeState] = React.useState<Theme>('system')
     const [resolvedTheme, setResolvedTheme] = React.useState<'light' | 'dark'>('light')
+
+    useServerInsertedHTML(() => (
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+    ))
 
     React.useEffect(() => {
         const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? 'system'

@@ -8,6 +8,7 @@ import { NegativeBarChart } from '@/components/custom/statistics/negative-bar-ch
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { RadarChart } from '@/components/custom/statistics/radar-chart'
 import InfoSheet from '@/components/custom/other/info-sheet'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     CATEGORY_CHART_CONFIG,
@@ -33,6 +34,11 @@ import {
 export function ExampleDashboard() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
+            <ReportHeaderCard
+                title="Example Dashboard"
+                description="This is an example dashboard for printing."
+            />
+
             <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 {KPIS.map((kpi) => (
                     <KpiCard key={kpi.label} {...kpi} />

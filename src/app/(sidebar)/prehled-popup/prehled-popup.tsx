@@ -1,11 +1,17 @@
 import { AreaChart } from '@/components/custom/statistics/area-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { POPUP_STATS_BY_MONTH, POPUP_STATS_CHART_CONFIG } from './data'
 
 export function PrehledPopup() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
+            <ReportHeaderCard
+                title="Přehled popup"
+                description="Doručeno po měsících."
+            />
+
             <section className="grid grid-cols-1 gap-4">
                 <DataVisulaizationCard
                     title="Úspěšnost"

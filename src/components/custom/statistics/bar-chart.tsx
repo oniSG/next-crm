@@ -19,6 +19,9 @@ export type BarChartProps = {
     series: string[]
     orientation?: 'vertical' | 'horizontal'
     stacked?: boolean
+    showYAxis?: boolean
+    xAxisLabel?: string
+    yAxisLabel?: string
     className?: string
 }
 
@@ -46,20 +49,28 @@ export function BarChart({
     series,
     orientation = 'vertical',
     stacked = false,
+    showYAxis = false,
+    xAxisLabel,
+    yAxisLabel,
     className,
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
 
     return (
-        <ChartContainer
-            config={config}
-            className={cn('max-h-75 w-full', className)}
-        >
+        <ChartContainer config={config} className={cn('max-h-75 w-full', className)}>
             <RechartsBarChart
                 accessibilityLayer
                 data={data}
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
-                margin={isHorizontal ? { left: -20 } : { left: 12, right: 12 }}
+                margin={
+                    isHorizontal
+                        ? { left: -20 }
+                        : {
+                              left: 12,
+                              right: 12,
+                              bottom: xAxisLabel ? 24 : 0,
+                          }
+                }
             >
                 {isHorizontal ? (
                     <>
@@ -81,25 +92,49 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
+                            label={
+                                xAxisLabel
+                                    ? {
+                                          value: xAxisLabel,
+                                          position: 'insideBottom',
+                                          offset: -4,
+                                      }
+                                    : undefined
+                            }
                         />
+                        {showYAxis && (
+                            <YAxis
+                                allowDecimals={false}
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={8}
+                                width={64}
+                                tickFormatter={(value) =>
+                                    Number(value).toLocaleString('cs-CZ')
+                                }
+                                label={
+                                    yAxisLabel
+                                        ? {
+                                              value: yAxisLabel,
+                                              angle: -90,
+                                              position: 'insideLeft',
+                                              style: { textAnchor: 'middle' },
+                                          }
+                                        : undefined
+                                }
+                            />
+                        )}
                     </>
                 )}
                 <ChartTooltip content={<ChartTooltipContent />} />
-                {series.length > 1 && (
-                    <ChartLegend content={<ChartLegendContent />} />
-                )}
+                {series.length > 1 && <ChartLegend content={<ChartLegendContent />} />}
                 {series.map((key, i) => (
                     <Bar
                         key={key}
                         dataKey={key}
                         fill={`var(--color-${key})`}
                         stackId={stacked ? 'a' : undefined}
-                        radius={getBarRadius(
-                            i,
-                            series.length,
-                            stacked,
-                            orientation,
-                        )}
+                        radius={getBarRadius(i, series.length, stacked, orientation)}
                     />
                 ))}
             </RechartsBarChart>
