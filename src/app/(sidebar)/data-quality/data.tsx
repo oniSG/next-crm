@@ -17,8 +17,8 @@ export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
         percent: '44,01%',
         count: '252 077',
         countLabel: 'Počet',
-        getTooltip: (percent) =>
-            `${percent} uživatelů není přihlášeno.`,
+        getTooltip: () =>
+            'Počet fanoušků, kteří za posledních 90 dní nevykazovali žádnou aktivitu.',
         trend: {
             direction: 'down',
             delta: '-1,2 %',
@@ -31,8 +31,8 @@ export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
         percent: '0,01%',
         count: '51',
         countLabel: 'Počet',
-        getTooltip: (percent) =>
-            `${percent} uživatelů má neplatný e-mail.`,
+        getTooltip: () =>
+            'Počet fanoušků, jejich e-mailové adresy v databázi jsou neplatné (hard bounce při odeslání zprávy).',
         trend: {
             direction: 'down',
             delta: '-0,01 %',
@@ -45,8 +45,8 @@ export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
         percent: '20,65%',
         count: '118 257',
         countLabel: 'Počet',
-        getTooltip: (percent) =>
-            `${percent} uživatelů nemá vyplněné datum narození.`,
+        getTooltip: () =>
+            'Počet fanoušků, u kterých v databázi chybí datum narození.',
         trend: {
             direction: 'up',
             delta: '+0,4 %',
@@ -59,8 +59,8 @@ export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
         percent: '0,32%',
         count: '1 842',
         countLabel: 'Počet',
-        getTooltip: (percent) =>
-            `${percent} uživatelů nemá vyplněné příjmení.`,
+        getTooltip: () =>
+            'Počet fanoušků, kterým v databázi chybí příjmení.',
         trend: {
             direction: 'down',
             delta: '-0,05 %',
@@ -73,8 +73,8 @@ export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
         percent: '0,38%',
         count: '2 156',
         countLabel: 'Počet',
-        getTooltip: (percent) =>
-            `${percent} uživatelů nemá vyplněné jméno.`,
+        getTooltip: () =>
+            'Počet fanoušků, kterým v databázi chybí křestní jméno.',
         trend: {
             direction: 'down',
             delta: '-0,08 %',
@@ -87,8 +87,8 @@ export const DATA_QUALITY_KPIS: DataQualityKpi[] = [
         percent: '94,9%',
         count: '543 587',
         countLabel: 'Počet',
-        getTooltip: (percent) =>
-            `${percent} uživatelů nemá vyplněný telefon.`,
+        getTooltip: () =>
+            'Počet fanoušků, u kterých v databázi chybí telefonní číslo.',
         trend: {
             direction: 'up',
             delta: '+0,3 %',
