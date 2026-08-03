@@ -142,9 +142,60 @@ export function formatEventCurrency(value: number) {
 
 export const REPORT_EVENT_DATA = events as EventReportData[]
 
-export const REPORT_EVENT_OPTIONS: ReportEventOption[] = REPORT_EVENT_DATA.map(
-    ({ id, name, date, capacity }) => ({ id, name, date, capacity }),
+export type ReportEventListRow = ReportEventOption & {
+    venue: string
+}
+
+export const REPORT_EVENT_LIST: ReportEventListRow[] = REPORT_EVENT_DATA.map(
+    ({ id, name, date, capacity, venue }) => ({
+        id,
+        name,
+        date,
+        capacity,
+        venue,
+    }),
 )
+
+const eventDateFormatter = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+})
+
+export const EVENT_LIST_COLUMNS: SimpleTableColumn<ReportEventListRow>[] = [
+    {
+        id: 'date',
+        header: 'Date',
+        cellClassName: 'tabular-nums whitespace-nowrap',
+        cell: (row) =>
+            eventDateFormatter.format(new Date(`${row.date}T00:00:00`)),
+    },
+    {
+        id: 'name',
+        header: 'Event',
+        cellClassName: 'font-medium',
+        cell: (row) => row.name,
+    },
+    {
+        id: 'venue',
+        header: 'Venue',
+        cellClassName: 'text-muted-foreground',
+        cell: (row) => row.venue,
+    },
+    {
+        id: 'capacity',
+        header: 'Capacity',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => `${numberFormatter.format(row.capacity)} seats`,
+    },
+    {
+        id: 'id',
+        header: 'ID',
+        cellClassName: 'font-mono text-xs',
+        cell: (row) => row.id,
+    },
+]
 
 export function getReportEvent(eventId: string | null | undefined) {
     return REPORT_EVENT_DATA.find((event) => event.id === eventId)

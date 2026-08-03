@@ -25,6 +25,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'report-fan-general',
     'report-management',
     'report-event',
+    'report-loyalty-program',
     'noticeboard-marketing',
     'data-quality',
     'relatoo-index',

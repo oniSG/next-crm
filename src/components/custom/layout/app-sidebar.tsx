@@ -160,8 +160,8 @@ const fansGroups: NavGroup[] = [
                         icon: <GlobeIcon />,
                     },
                     {
-                        title: 'Expert insights',
-                        url: '/report-expert',
+                        title: 'Relatoo index',
+                        url: '/relatoo-index',
                         icon: <LightbulbIcon />,
                     },
                     {

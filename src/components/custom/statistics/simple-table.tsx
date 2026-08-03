@@ -1,3 +1,5 @@
+'use client'
+
 import type { ReactNode } from 'react'
 
 import {
@@ -25,6 +27,7 @@ export type SimpleTableProps<T> = {
     getRowKey: (row: T) => string
     className?: string
     footer?: ReactNode[]
+    onRowClick?: (row: T) => void
 }
 
 export function SimpleTable<T>({
@@ -33,6 +36,7 @@ export function SimpleTable<T>({
     getRowKey,
     className,
     footer,
+    onRowClick,
 }: SimpleTableProps<T>) {
     return (
         <Table className={cn(className)}>
@@ -50,7 +54,31 @@ export function SimpleTable<T>({
             </TableHeader>
             <TableBody>
                 {data.map((row) => (
-                    <TableRow key={getRowKey(row)}>
+                    <TableRow
+                        key={getRowKey(row)}
+                        className={
+                            onRowClick
+                                ? 'hover:bg-muted/40 cursor-pointer'
+                                : undefined
+                        }
+                        onClick={onRowClick ? () => onRowClick(row) : undefined}
+                        onKeyDown={
+                            onRowClick
+                                ? (event) => {
+                                      if (
+                                          event.key !== 'Enter' &&
+                                          event.key !== ' '
+                                      ) {
+                                          return
+                                      }
+                                      event.preventDefault()
+                                      onRowClick(row)
+                                  }
+                                : undefined
+                        }
+                        tabIndex={onRowClick ? 0 : undefined}
+                        role={onRowClick ? 'button' : undefined}
+                    >
                         {columns.map((column) => (
                             <TableCell
                                 key={column.id}

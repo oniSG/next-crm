@@ -1,6 +1,4 @@
-'use client'
-
-import type { KeyboardEvent, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 
 import {
@@ -39,9 +37,6 @@ export type KpiCardProps = {
     icon?: ReactNode
     iconClassName?: string
     className?: string
-    valueClassName?: string
-    onClick?: () => void
-    ariaLabel?: string
 }
 
 export function KpiCard({
@@ -54,33 +49,12 @@ export function KpiCard({
     icon,
     iconClassName,
     className,
-    valueClassName,
-    onClick,
-    ariaLabel,
 }: KpiCardProps) {
     const TrendIcon = trend?.direction === 'up' ? TrendingUp : TrendingDown
     const trendColor = trend?.direction === 'up' ? 'text-chart-1' : 'text-chart-3'
 
-    function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-        if (!onClick || (event.key !== 'Enter' && event.key !== ' ')) return
-        event.preventDefault()
-        onClick()
-    }
-
     return (
-        <Card
-            className={cn(
-                'h-full gap-0',
-                onClick &&
-                    'hover:bg-muted/40 focus-visible:ring-primary cursor-pointer transition-colors outline-none focus-visible:ring-2',
-                className,
-            )}
-            role={onClick ? 'button' : undefined}
-            tabIndex={onClick ? 0 : undefined}
-            aria-label={ariaLabel}
-            onClick={onClick}
-            onKeyDown={onClick ? handleKeyDown : undefined}
-        >
+        <Card className={cn('h-full gap-0', className)}>
             <CardHeader className={cn(content || metric ? 'pb-2' : 'pb-0')}>
                 <div className="flex min-w-0 items-center gap-2">
                     {icon && (
@@ -120,7 +94,6 @@ export function KpiCard({
                         className={cn(
                             'text-3xl font-medium tabular-nums',
                             !metric && 'text-center',
-                            valueClassName,
                         )}
                     >
                         {value}

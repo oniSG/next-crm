@@ -43,7 +43,10 @@ export function useEventReportFilters() {
     }
 }
 
-export function filterEventsByDateRange(events: ReportEventOption[], range: DateRange) {
+export function filterEventsByDateRange<T extends ReportEventOption>(
+    events: T[],
+    range: DateRange,
+): T[] {
     const from = format(range.from, 'yyyy-MM-dd')
     const to = format(range.to, 'yyyy-MM-dd')
     return events.filter((event) => event.date >= from && event.date <= to)

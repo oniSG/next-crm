@@ -1,7 +1,6 @@
 'use client'
 
 import {
-    CalendarCheckIcon,
     ChartColumnIcon,
     CircleDollarSignIcon,
     ScanLineIcon,
@@ -17,6 +16,7 @@ import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
+    EVENT_LIST_COLUMNS,
     EVENT_REPORT_CHART_SERIES,
     EVENT_SALES_BY_DAY_CONFIG,
     EVENT_SALES_BY_PRICE_CONFIG,
@@ -24,7 +24,7 @@ import {
     formatEventCount,
     formatEventCurrency,
     getReportEvent,
-    REPORT_EVENT_OPTIONS,
+    REPORT_EVENT_LIST,
     SALES_BY_DAY_COLUMNS,
     SALES_BY_PRICE_COLUMNS,
     SALES_BY_SECTOR_COLUMNS,
@@ -51,49 +51,29 @@ function sumSales(data: EventReportChartPoint[]) {
 export function EventReport() {
     const { dateRange, eventId, setEventId } = useEventReportFilters()
     const event = getReportEvent(eventId)
-    const visibleEvents = filterEventsByDateRange(REPORT_EVENT_OPTIONS, dateRange)
+    const visibleEvents = filterEventsByDateRange(REPORT_EVENT_LIST, dateRange)
 
     if (!event) {
         return (
             <div className="flex w-full max-w-6xl flex-col gap-4">
-                <div>
-                    <h1 className="text-xl font-semibold">Select an event</h1>
-                    <p className="text-muted-foreground mt-1 text-sm">
-                        Choose an event to display its sales and attendance report.
-                    </p>
-                </div>
+                <ReportHeaderCard
+                    title="Select an event"
+                    description="Choose an event to display its sales and attendance report."
+                />
 
                 {visibleEvents.length > 0 ? (
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {visibleEvents.map((option) => {
-                            const eventData = getReportEvent(option.id)
-
-                            return (
-                                <KpiCard
-                                    key={option.id}
-                                    onClick={() => void setEventId(option.id)}
-                                    ariaLabel={`Open report for ${option.name}`}
-                                    className="min-h-48"
-                                    label={`${dateFormatter.format(new Date(`${option.date}T00:00:00`))} · ${option.id}`}
-                                    value={option.name}
-                                    valueClassName="text-xl leading-snug"
-                                    icon={<CalendarCheckIcon className="size-4" />}
-                                    iconClassName="bg-primary/10 text-primary"
-                                    content={[
-                                        {
-                                            label: 'Venue',
-                                            value:
-                                                eventData?.venue ?? 'Venue not specified',
-                                        },
-                                        {
-                                            label: 'Capacity',
-                                            value: `${formatEventCount(option.capacity)} seats`,
-                                        },
-                                    ]}
-                                />
-                            )
-                        })}
-                    </div>
+                    <DataVisulaizationCard
+                        title="Events"
+                        description="Events in the selected period."
+                        queryKey="event-list"
+                    >
+                        <SimpleTable
+                            data={visibleEvents}
+                            columns={EVENT_LIST_COLUMNS}
+                            getRowKey={(row) => row.id}
+                            onRowClick={(row) => void setEventId(row.id)}
+                        />
+                    </DataVisulaizationCard>
                 ) : (
                     <div className="text-muted-foreground flex min-h-48 items-center justify-center rounded-xl border border-dashed text-sm">
                         No events in the selected period.
