@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/sidebar'
 import { markActive, type NavGroup } from '@/components/custom/layout/nav-data'
 import {
-    ActivityIcon,
     AtSignIcon,
     BadgeIcon,
     BlocksIcon,
@@ -37,7 +36,6 @@ import {
     FileIcon,
     FileSignatureIcon,
     FileTextIcon,
-    FilterIcon,
     FolderIcon,
     FootprintsIcon,
     GaugeIcon,
@@ -45,15 +43,12 @@ import {
     GlobeIcon,
     GraduationCapIcon,
     HandshakeIcon,
-    HashIcon,
     HeartHandshakeIcon,
-    HistoryIcon,
     HourglassIcon,
     KeyIcon,
     LayersIcon,
     LayoutDashboardIcon,
     LightbulbIcon,
-    LineChartIcon,
     LockIcon,
     MailIcon,
     MapIcon,
@@ -62,7 +57,6 @@ import {
     MonitorIcon,
     PackageIcon,
     PercentIcon,
-    ReceiptIcon,
     ReplyIcon,
     ScreenShareIcon,
     ScrollIcon,
@@ -75,13 +69,9 @@ import {
     SlidersIcon,
     SquareStackIcon,
     StarIcon,
-    StoreIcon,
     TagIcon,
-    TargetIcon,
     TicketIcon,
     TicketsIcon,
-    TrendingUpIcon,
-    TrophyIcon,
     TvIcon,
     TypeIcon,
     UserIcon,
@@ -107,7 +97,78 @@ const teams: Team[] = [
 const fansGroups: NavGroup[] = [
     {
         items: [
-            { title: 'Dashboard', url: '/fans', icon: <TargetIcon /> },
+            {
+                title: 'Reporty',
+                url: '#',
+                icon: <ChartBarIcon />,
+                sections: [
+                    {
+                        label: 'Marketing',
+                        items: [
+                            {
+                                title: 'Komunikace a akce',
+                                url: '/report-fan-general',
+                                icon: <MegaphoneIcon />,
+                            },
+                            {
+                                title: 'Postřehy relatoo',
+                                url: '/relatoo-index',
+                                icon: <LightbulbIcon />,
+                            },
+                            {
+                                title: 'Globální report',
+                                url: '/global-report',
+                                icon: <GlobeIcon />,
+                            },
+                            {
+                                title: 'Mobilní aplikace',
+                                url: '/mobile-app',
+                                icon: <MonitorIcon />,
+                            },
+                            {
+                                title: 'Věrnostní program',
+                                url: '/vernostni-program',
+                                icon: <StarIcon />,
+                            },
+                            {
+                                title: 'Kvalita dat',
+                                url: '/data-quality',
+                                icon: <ShieldCheckIcon />,
+                            },
+                        ],
+                    },
+                    {
+                        label: 'Finanční analytika',
+                        items: [
+                            {
+                                title: 'Ticketing',
+                                url: '#',
+                                icon: <TicketIcon />,
+                            },
+                            {
+                                title: 'Prodeje',
+                                url: '#',
+                                icon: <CoinsIcon />,
+                            },
+                            {
+                                title: 'Události',
+                                url: '/report-event',
+                                icon: <CalendarCheckIcon />,
+                            },
+                            {
+                                title: 'Business',
+                                url: '#',
+                                icon: <BriefcaseIcon />,
+                            },
+                            {
+                                title: 'Membership',
+                                url: '#',
+                                icon: <CreditCardIcon />,
+                            },
+                        ],
+                    },
+                ],
+            },
             { title: 'Visitors', url: '/fan', icon: <ZapIcon /> },
             { title: 'Segments', url: '/segments', icon: <LayersIcon /> },
             { title: 'Templates', url: '/templates', icon: <LayoutDashboardIcon /> },
@@ -149,43 +210,6 @@ const fansGroups: NavGroup[] = [
                     },
                 ],
             },
-            {
-                title: 'Reports',
-                url: '#',
-                icon: <ChartBarIcon />,
-                items: [
-                    {
-                        title: 'Global analytics',
-                        url: '/report-fan-general',
-                        icon: <GlobeIcon />,
-                    },
-                    {
-                        title: 'Relatoo index',
-                        url: '/relatoo-index',
-                        icon: <LightbulbIcon />,
-                    },
-                    {
-                        title: 'Loyalty program',
-                        url: '/report-loyalty-program',
-                        icon: <StarIcon />,
-                    },
-                    {
-                        title: 'Fan history',
-                        url: '/report-history-fan',
-                        icon: <HistoryIcon />,
-                    },
-                    {
-                        title: 'Event report',
-                        url: '/report-event',
-                        icon: <CalendarCheckIcon />,
-                    },
-                    {
-                        title: 'Management report',
-                        url: '/report-management',
-                        icon: <BriefcaseIcon />,
-                    },
-                ],
-            },
         ],
     },
 ]
@@ -193,7 +217,43 @@ const fansGroups: NavGroup[] = [
 const businessGroups: NavGroup[] = [
     {
         items: [
-            { title: 'Dashboard', url: '/business', icon: <TargetIcon /> },
+            {
+                title: 'Reporty',
+                url: '#',
+                icon: <ChartBarIcon />,
+                sections: [
+                    {
+                        label: 'Finanční analytika',
+                        items: [
+                            {
+                                title: 'Ticketing',
+                                url: '#',
+                                icon: <TicketIcon />,
+                            },
+                            {
+                                title: 'Prodeje',
+                                url: '#',
+                                icon: <CoinsIcon />,
+                            },
+                            {
+                                title: 'Události',
+                                url: '/report-event',
+                                icon: <CalendarCheckIcon />,
+                            },
+                            {
+                                title: 'Business',
+                                url: '#',
+                                icon: <BriefcaseIcon />,
+                            },
+                            {
+                                title: 'Membership',
+                                url: '#',
+                                icon: <CreditCardIcon />,
+                            },
+                        ],
+                    },
+                ],
+            },
             { title: 'Calendar', url: '/calendar', icon: <CalendarIcon /> },
         ],
     },
@@ -281,83 +341,6 @@ const businessGroups: NavGroup[] = [
                 ],
             },
             { title: 'Documents', url: '/document', icon: <FileIcon /> },
-        ],
-    },
-    {
-        items: [
-            {
-                title: 'Reports',
-                url: '#',
-                icon: <ChartBarIcon />,
-                items: [
-                    {
-                        title: 'Opportunities filter',
-                        url: '/report-filter-business-case',
-                        icon: <FilterIcon />,
-                    },
-                    {
-                        title: 'Free spaces filter',
-                        url: '/report-free-advertising-spaces',
-                        icon: <FilterIcon />,
-                    },
-                    {
-                        title: 'Occupied spaces filter',
-                        url: '/report-occupied-advertising-spaces',
-                        icon: <FilterIcon />,
-                    },
-                    {
-                        title: 'Sales funnel',
-                        url: '/report-sales-funnel',
-                        icon: <FilterIcon />,
-                    },
-                    {
-                        title: 'Sales development',
-                        url: '/report-sales-development',
-                        icon: <TrendingUpIcon />,
-                    },
-                    {
-                        title: 'Sales by product',
-                        url: '/report-sales-by-product',
-                        icon: <PackageIcon />,
-                    },
-                    {
-                        title: 'Sales by merchant',
-                        url: '/report-sales-by-merchant',
-                        icon: <StoreIcon />,
-                    },
-                    {
-                        title: 'Success by merchant',
-                        url: '/report-success-by-merchant',
-                        icon: <TrophyIcon />,
-                    },
-                    {
-                        title: 'Number of cases',
-                        url: '/report-number-of-cases',
-                        icon: <HashIcon />,
-                    },
-                    {
-                        title: 'Number of activities',
-                        url: '/report-number-of-activities',
-                        icon: <ActivityIcon />,
-                    },
-                    {
-                        title: 'Profitability of cases',
-                        url: '/report-profitability-of-cases',
-                        icon: <CoinsIcon />,
-                    },
-                    {
-                        title: 'Profit development',
-                        url: '/report-profit-development',
-                        icon: <LineChartIcon />,
-                    },
-                    { title: 'Invoicing', url: '/report-invoice', icon: <ReceiptIcon /> },
-                    {
-                        title: 'Management report',
-                        url: '/report-management',
-                        icon: <BriefcaseIcon />,
-                    },
-                ],
-            },
         ],
     },
     {
