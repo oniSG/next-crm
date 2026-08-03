@@ -1,0 +1,687 @@
+{
+  "meta": {
+    "organizationName": "HC Relatoo Praha",
+    "generatedAt": "2026-07-29T09:30:00+02:00",
+    "currency": "CZK",
+    "period": {
+      "from": "2026-01-01",
+      "to": "2026-06-30",
+      "granularity": "month"
+    }
+  },
+  "fans": {
+    "current": 28746,
+    "blocked": 384,
+    "initial": 24910,
+    "added": 4128,
+    "removed": 292,
+    "netGrowth": 3836,
+    "development": [
+      {
+        "period": "2026-01",
+        "label": "Led",
+        "added": 648,
+        "removed": 38,
+        "netChange": 610,
+        "total": 25520,
+        "blocked": 342
+      },
+      {
+        "period": "2026-02",
+        "label": "Úno",
+        "added": 582,
+        "removed": 42,
+        "netChange": 540,
+        "total": 26060,
+        "blocked": 351
+      },
+      {
+        "period": "2026-03",
+        "label": "Bře",
+        "added": 711,
+        "removed": 47,
+        "netChange": 664,
+        "total": 30000,
+        "blocked": 359
+      },
+      {
+        "period": "2026-04",
+        "label": "Dub",
+        "added": 693,
+        "removed": 51,
+        "netChange": 642,
+        "total": 27366,
+        "blocked": 367
+      },
+      {
+        "period": "2026-05",
+        "label": "Kvě",
+        "added": 782,
+        "removed": 54,
+        "netChange": 728,
+        "total": 28094,
+        "blocked": 376
+      },
+      {
+        "period": "2026-06",
+        "label": "Čer",
+        "added": 712,
+        "removed": 60,
+        "netChange": 652,
+        "total": 25000,
+        "blocked": 384
+      }
+    ]
+  },
+  "seasonTickets": {
+    "sold": 1284,
+    "revenue": 7896400,
+    "development": [
+      {
+        "period": "2026-01",
+        "label": "Led",
+        "sold": 148,
+        "revenue": 910200
+      },
+      {
+        "period": "2026-02",
+        "label": "Úno",
+        "sold": 166,
+        "revenue": 1020900
+      },
+      {
+        "period": "2026-03",
+        "label": "Bře",
+        "sold": 192,
+        "revenue": 1180800
+      },
+      {
+        "period": "2026-04",
+        "label": "Dub",
+        "sold": 214,
+        "revenue": 1316100
+      },
+      {
+        "period": "2026-05",
+        "label": "Kvě",
+        "sold": 268,
+        "revenue": 1648200
+      },
+      {
+        "period": "2026-06",
+        "label": "Čer",
+        "sold": 296,
+        "revenue": 1820200
+      }
+    ]
+  },
+  "tickets": {
+    "sold": 46820,
+    "revenue": 11761300,
+    "eventCount": 18,
+    "development": [
+      {
+        "period": "2026-01",
+        "label": "Led",
+        "online": {
+          "count": 4820,
+          "revenue": 1205000
+        },
+        "boxOffice": {
+          "count": 1120,
+          "revenue": 274400
+        },
+        "administration": {
+          "count": 410,
+          "revenue": 98400
+        },
+        "mobileApp": {
+          "count": 1540,
+          "revenue": 392700
+        },
+        "partner": {
+          "count": 360,
+          "revenue": 84600
+        },
+        "total": {
+          "count": 8250,
+          "revenue": 2055100
+        },
+        "eventCount": 3
+      },
+      {
+        "period": "2026-02",
+        "label": "Úno",
+        "online": {
+          "count": 4310,
+          "revenue": 1077500
+        },
+        "boxOffice": {
+          "count": 1030,
+          "revenue": 252300
+        },
+        "administration": {
+          "count": 380,
+          "revenue": 91200
+        },
+        "mobileApp": {
+          "count": 1420,
+          "revenue": 362100
+        },
+        "partner": {
+          "count": 330,
+          "revenue": 77600
+        },
+        "total": {
+          "count": 7470,
+          "revenue": 1860700
+        },
+        "eventCount": 3
+      },
+      {
+        "period": "2026-03",
+        "label": "Bře",
+        "online": {
+          "count": 5040,
+          "revenue": 1310400
+        },
+        "boxOffice": {
+          "count": 1180,
+          "revenue": 295000
+        },
+        "administration": {
+          "count": 430,
+          "revenue": 107500
+        },
+        "mobileApp": {
+          "count": 1680,
+          "revenue": 436800
+        },
+        "partner": {
+          "count": 390,
+          "revenue": 93600
+        },
+        "total": {
+          "count": 8720,
+          "revenue": 2243300
+        },
+        "eventCount": 4
+      },
+      {
+        "period": "2026-04",
+        "label": "Dub",
+        "online": {
+          "count": 4550,
+          "revenue": 1137500
+        },
+        "boxOffice": {
+          "count": 1050,
+          "revenue": 257300
+        },
+        "administration": {
+          "count": 390,
+          "revenue": 93600
+        },
+        "mobileApp": {
+          "count": 1510,
+          "revenue": 385100
+        },
+        "partner": {
+          "count": 350,
+          "revenue": 82300
+        },
+        "total": {
+          "count": 7850,
+          "revenue": 1955800
+        },
+        "eventCount": 3
+      },
+      {
+        "period": "2026-05",
+        "label": "Kvě",
+        "online": {
+          "count": 4970,
+          "revenue": 1267400
+        },
+        "boxOffice": {
+          "count": 1160,
+          "revenue": 284200
+        },
+        "administration": {
+          "count": 420,
+          "revenue": 100800
+        },
+        "mobileApp": {
+          "count": 1650,
+          "revenue": 420800
+        },
+        "partner": {
+          "count": 380,
+          "revenue": 89300
+        },
+        "total": {
+          "count": 8580,
+          "revenue": 2162500
+        },
+        "eventCount": 3
+      },
+      {
+        "period": "2026-06",
+        "label": "Čer",
+        "online": {
+          "count": 3430,
+          "revenue": 857500
+        },
+        "boxOffice": {
+          "count": 820,
+          "revenue": 200900
+        },
+        "administration": {
+          "count": 310,
+          "revenue": 74400
+        },
+        "mobileApp": {
+          "count": 1150,
+          "revenue": 293300
+        },
+        "partner": {
+          "count": 240,
+          "revenue": 57800
+        },
+        "total": {
+          "count": 5950,
+          "revenue": 1483900
+        },
+        "eventCount": 2
+      }
+    ]
+  },
+  "communication": {
+    "email": {
+      "delivered": 187420,
+      "failed": 4860,
+      "openedUnique": 96580,
+      "clickedUnique": 28340,
+      "openRate": 51.53,
+      "clickRate": 15.12,
+      "development": [
+        {
+          "period": "2026-01",
+          "label": "Led",
+          "delivered": 28600,
+          "failed": 820,
+          "openedUnique": 14780,
+          "clickedUnique": 4120
+        },
+        {
+          "period": "2026-02",
+          "label": "Úno",
+          "delivered": 30240,
+          "failed": 790,
+          "openedUnique": 15410,
+          "clickedUnique": 4380
+        },
+        {
+          "period": "2026-03",
+          "label": "Bře",
+          "delivered": 32180,
+          "failed": 850,
+          "openedUnique": 16640,
+          "clickedUnique": 4720
+        },
+        {
+          "period": "2026-04",
+          "label": "Dub",
+          "delivered": 29940,
+          "failed": 760,
+          "openedUnique": 15260,
+          "clickedUnique": 4410
+        },
+        {
+          "period": "2026-05",
+          "label": "Kvě",
+          "delivered": 34260,
+          "failed": 880,
+          "openedUnique": 17920,
+          "clickedUnique": 5360
+        },
+        {
+          "period": "2026-06",
+          "label": "Čer",
+          "delivered": 32200,
+          "failed": 760,
+          "openedUnique": 16570,
+          "clickedUnique": 5350
+        }
+      ]
+    },
+    "push": {
+      "delivered": 82340,
+      "failed": 3160,
+      "failureRate": 3.7,
+      "development": [
+        {
+          "period": "2026-01",
+          "label": "Led",
+          "delivered": 12420,
+          "failed": 510
+        },
+        {
+          "period": "2026-02",
+          "label": "Úno",
+          "delivered": 13180,
+          "failed": 480
+        },
+        {
+          "period": "2026-03",
+          "label": "Bře",
+          "delivered": 14260,
+          "failed": 560
+        },
+        {
+          "period": "2026-04",
+          "label": "Dub",
+          "delivered": 13540,
+          "failed": 490
+        },
+        {
+          "period": "2026-05",
+          "label": "Kvě",
+          "delivered": 15120,
+          "failed": 610
+        },
+        {
+          "period": "2026-06",
+          "label": "Čer",
+          "delivered": 13820,
+          "failed": 510
+        }
+      ]
+    },
+    "sms": {
+      "delivered": 31760,
+      "failed": 1020,
+      "failureRate": 3.11,
+      "development": [
+        {
+          "period": "2026-01",
+          "label": "Led",
+          "delivered": 4820,
+          "failed": 170
+        },
+        {
+          "period": "2026-02",
+          "label": "Úno",
+          "delivered": 5140,
+          "failed": 160
+        },
+        {
+          "period": "2026-03",
+          "label": "Bře",
+          "delivered": 5460,
+          "failed": 180
+        },
+        {
+          "period": "2026-04",
+          "label": "Dub",
+          "delivered": 4980,
+          "failed": 150
+        },
+        {
+          "period": "2026-05",
+          "label": "Kvě",
+          "delivered": 5720,
+          "failed": 190
+        },
+        {
+          "period": "2026-06",
+          "label": "Čer",
+          "delivered": 5640,
+          "failed": 170
+        }
+      ]
+    }
+  },
+  "business": {
+    "advertisingSpaces": {
+      "occupied": 86,
+      "free": 34,
+      "development": [
+        {
+          "period": "2026-01",
+          "label": "Led",
+          "occupied": 70,
+          "free": 50
+        },
+        {
+          "period": "2026-02",
+          "label": "Úno",
+          "occupied": 73,
+          "free": 47
+        },
+        {
+          "period": "2026-03",
+          "label": "Bře",
+          "occupied": 76,
+          "free": 44
+        },
+        {
+          "period": "2026-04",
+          "label": "Dub",
+          "occupied": 80,
+          "free": 40
+        },
+        {
+          "period": "2026-05",
+          "label": "Kvě",
+          "occupied": 83,
+          "free": 37
+        },
+        {
+          "period": "2026-06",
+          "label": "Čer",
+          "occupied": 86,
+          "free": 34
+        }
+      ]
+    },
+    "plans": [
+      {
+        "id": "plan-2026-h1",
+        "from": "2026-01-01",
+        "to": "2026-06-30",
+        "planned": 12000000,
+        "actual": 10940000,
+        "difference": -1060000,
+        "currency": "CZK"
+      },
+      {
+        "id": "plan-2026",
+        "from": "2026-01-01",
+        "to": "2026-12-31",
+        "planned": 25000000,
+        "actual": 10940000,
+        "difference": -14060000,
+        "currency": "CZK"
+      }
+    ],
+    "planDevelopment": [
+      {
+        "period": "2026-01",
+        "label": "Led",
+        "planned": 2000000,
+        "actual": 1650000
+      },
+      {
+        "period": "2026-02",
+        "label": "Úno",
+        "planned": 2000000,
+        "actual": 1720000
+      },
+      {
+        "period": "2026-03",
+        "label": "Bře",
+        "planned": 2000000,
+        "actual": 1910000
+      },
+      {
+        "period": "2026-04",
+        "label": "Dub",
+        "planned": 2000000,
+        "actual": 1780000
+      },
+      {
+        "period": "2026-05",
+        "label": "Kvě",
+        "planned": 2000000,
+        "actual": 2060000
+      },
+      {
+        "period": "2026-06",
+        "label": "Čer",
+        "planned": 2000000,
+        "actual": 1820000
+      }
+    ],
+    "wonCases": {
+      "count": 49,
+      "value": 8740000,
+      "development": [
+        {
+          "period": "2026-01",
+          "label": "Led",
+          "count": 7,
+          "value": 1120000
+        },
+        {
+          "period": "2026-02",
+          "label": "Úno",
+          "count": 6,
+          "value": 980000
+        },
+        {
+          "period": "2026-03",
+          "label": "Bře",
+          "count": 9,
+          "value": 1540000
+        },
+        {
+          "period": "2026-04",
+          "label": "Dub",
+          "count": 8,
+          "value": 1360000
+        },
+        {
+          "period": "2026-05",
+          "label": "Kvě",
+          "count": 11,
+          "value": 2140000
+        },
+        {
+          "period": "2026-06",
+          "label": "Čer",
+          "count": 8,
+          "value": 1600000
+        }
+      ]
+    },
+    "caseDevelopment": [
+      {
+        "period": "2026-01",
+        "label": "Led",
+        "won": {
+          "count": 7,
+          "value": 1120000
+        },
+        "open": {
+          "count": 18,
+          "value": 3240000
+        },
+        "cancelled": {
+          "count": 3,
+          "value": 420000
+        }
+      },
+      {
+        "period": "2026-02",
+        "label": "Úno",
+        "won": {
+          "count": 6,
+          "value": 980000
+        },
+        "open": {
+          "count": 21,
+          "value": 3680000
+        },
+        "cancelled": {
+          "count": 4,
+          "value": 590000
+        }
+      },
+      {
+        "period": "2026-03",
+        "label": "Bře",
+        "won": {
+          "count": 9,
+          "value": 1540000
+        },
+        "open": {
+          "count": 20,
+          "value": 3520000
+        },
+        "cancelled": {
+          "count": 2,
+          "value": 310000
+        }
+      },
+      {
+        "period": "2026-04",
+        "label": "Dub",
+        "won": {
+          "count": 8,
+          "value": 1360000
+        },
+        "open": {
+          "count": 24,
+          "value": 4180000
+        },
+        "cancelled": {
+          "count": 5,
+          "value": 720000
+        }
+      },
+      {
+        "period": "2026-05",
+        "label": "Kvě",
+        "won": {
+          "count": 11,
+          "value": 2140000
+        },
+        "open": {
+          "count": 23,
+          "value": 4050000
+        },
+        "cancelled": {
+          "count": 3,
+          "value": 460000
+        }
+      },
+      {
+        "period": "2026-06",
+        "label": "Čer",
+        "won": {
+          "count": 8,
+          "value": 1600000
+        },
+        "open": {
+          "count": 26,
+          "value": 4620000
+        },
+        "cancelled": {
+          "count": 4,
+          "value": 610000
+        }
+      }
+    ]
+  }
+}
