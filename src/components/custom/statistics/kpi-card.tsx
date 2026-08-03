@@ -1,3 +1,5 @@
+'use client'
+
 import type { KeyboardEvent, ReactNode } from 'react'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 
@@ -77,7 +79,7 @@ export function KpiCard({
             tabIndex={onClick ? 0 : undefined}
             aria-label={ariaLabel}
             onClick={onClick}
-            onKeyDown={handleKeyDown}
+            onKeyDown={onClick ? handleKeyDown : undefined}
         >
             <CardHeader className={cn(content || metric ? 'pb-2' : 'pb-0')}>
                 <div className="flex min-w-0 items-center gap-2">
