@@ -12,6 +12,7 @@ import {
     createPermissionDefinition,
     filterPermissionCategories,
     getPermissionIds,
+    splitPermissionsIntoColumns,
     type PermissionSettingsCategory,
 } from './temp'
 
@@ -19,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { cn } from '@/lib/utils'
 
 export function PermissionTabs({
     activeTab,
@@ -183,14 +185,89 @@ function PermissionsPanel({
     return (
         <div className="grid items-start gap-5 pt-2 md:grid-cols-2 lg:grid-cols-4">
             {visibleCategories.map((category) => (
-                <section key={category.title} className="space-y-2">
-                    <h2 className="text-muted-foreground px-1 text-[11px] font-semibold tracking-wide uppercase">
-                        {category.title}
-                    </h2>
-                    <div className="divide-y overflow-hidden rounded-xl border">
-                        {category.permissions.map(([id, title, description]) => (
+                <PermissionCategorySection
+                    key={category.title}
+                    category={category}
+                    values={values}
+                    onPermissionChange={onPermissionChange}
+                />
+            ))}
+        </div>
+    )
+}
+
+function PermissionCategorySection({
+    category,
+    values,
+    onPermissionChange,
+}: {
+    category: PermissionSettingsCategory
+    values: Record<string, boolean>
+    onPermissionChange: (id: string, checked: boolean) => void
+}) {
+    const { columnCount, columns } = splitPermissionsIntoColumns(category.permissions)
+    const rowCount = columns[0]?.length ?? 1
+    const cells = columns.flatMap((column) =>
+        Array.from({ length: rowCount }, (_, rowIndex) => column[rowIndex] ?? null),
+    )
+    const gridStartsAt = columnCount === 3 ? 'lg' : columnCount === 2 ? 'md' : null
+
+    return (
+        <section
+            className={cn(
+                'space-y-2',
+                columnCount === 2 && 'md:col-span-2',
+                columnCount === 3 && 'md:col-span-2 lg:col-span-3',
+            )}
+        >
+            <h2 className="text-muted-foreground px-1 text-[11px] font-semibold tracking-wide uppercase">
+                {category.title}
+            </h2>
+            <div
+                className={cn(
+                    'divide-y overflow-hidden rounded-xl border',
+                    columnCount === 2 && 'md:grid md:divide-y-0',
+                    columnCount === 3 && 'lg:grid lg:divide-y-0',
+                )}
+                style={
+                    columnCount > 1
+                        ? {
+                              gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                              gridTemplateRows: `repeat(${rowCount}, auto)`,
+                              gridAutoFlow: 'column',
+                          }
+                        : undefined
+                }
+            >
+                {cells.map((permission, index) => {
+                    const columnIndex = Math.floor(index / rowCount)
+                    const rowIndex = index % rowCount
+                    const borderClasses = cn(
+                        gridStartsAt === 'md' && rowIndex > 0 && 'md:border-t',
+                        gridStartsAt === 'md' && columnIndex > 0 && 'md:border-l',
+                        gridStartsAt === 'lg' && rowIndex > 0 && 'lg:border-t',
+                        gridStartsAt === 'lg' && columnIndex > 0 && 'lg:border-l',
+                    )
+
+                    if (!permission) {
+                        return (
+                            <div
+                                key={`empty-${columnIndex}-${rowIndex}`}
+                                aria-hidden="true"
+                                className={cn(
+                                    borderClasses,
+                                    gridStartsAt === 'md' && 'hidden md:block',
+                                    gridStartsAt === 'lg' && 'hidden lg:block',
+                                )}
+                            />
+                        )
+                    }
+
+                    const [id, title, description] = permission
+
+                    return (
+                        <div key={id} className={borderClasses}>
                             <PermissionItem
-                                key={id}
                                 id={id}
                                 title={title}
                                 description={description}
@@ -199,11 +276,11 @@ function PermissionsPanel({
                                     onPermissionChange(id, checked)
                                 }
                             />
-                        ))}
-                    </div>
-                </section>
-            ))}
-        </div>
+                        </div>
+                    )
+                })}
+            </div>
+        </section>
     )
 }
 
@@ -221,7 +298,7 @@ function PermissionItem({
     onCheckedChange: (checked: boolean) => void
 }) {
     return (
-        <div className="flex items-center justify-between gap-3 p-3">
+        <div className="flex h-full items-center justify-between gap-3 p-3">
             <div className="space-y-0.5">
                 <label htmlFor={id} className="cursor-pointer text-xs font-medium">
                     {title}

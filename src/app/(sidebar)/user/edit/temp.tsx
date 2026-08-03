@@ -121,6 +121,27 @@ export function filterPermissionCategories(
         })
         .filter((category) => category.permissions.length > 0)
 }
+
+export function splitPermissionsIntoColumns(
+    permissions: PermissionSettingsCategory['permissions'],
+    requestedColumnCount?: number,
+) {
+    const columnCount =
+        requestedColumnCount ??
+        (permissions.length >= 15 ? 3 : permissions.length >= 7 ? 2 : 1)
+    const baseSize = Math.floor(permissions.length / columnCount)
+    const remainder = permissions.length % columnCount
+    let offset = 0
+
+    const columns = Array.from({ length: columnCount }, (_, index) => {
+        const size = baseSize + (index < remainder ? 1 : 0)
+        const column = permissions.slice(offset, offset + size)
+        offset += size
+        return column
+    })
+
+    return { columnCount, columns }
+}
 import {
     ALL_PERMISSION_IDS,
     BASIC_PERMISSION_CATEGORIES,
