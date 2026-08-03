@@ -6,6 +6,7 @@ import {
     ChartColumnIcon,
     CircleDollarSignIcon,
     HashIcon,
+    MapPinIcon,
     ScanLineIcon,
     TableIcon,
     TicketCheckIcon,
@@ -150,7 +151,7 @@ export function EventReport() {
 
             {!headerVisible && (
                 <Card className="gap-0">
-                    <CardContent className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <CardContent className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
                         <HeaderDetail
                             icon={<CalendarCheckIcon />}
                             label="Event date"
@@ -177,6 +178,12 @@ export function EventReport() {
                                 new Date(`${event.startOfSale}T00:00:00`),
                             )}
                             className="sm:border-l sm:pl-6"
+                        />
+                        <HeaderDetail
+                            icon={<MapPinIcon />}
+                            label="Venue"
+                            value={event.venue}
+                            className="lg:border-l lg:pl-6"
                         />
                     </CardContent>
                 </Card>

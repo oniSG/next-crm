@@ -197,7 +197,7 @@ export function ManagementReport() {
             {!headerVisible && (
                 <Card className="gap-0">
                     <CardContent className="grid gap-6 sm:grid-cols-3">
-                        <div className="flex items-start gap-3 sm:border-l sm:pl-6">
+                        <div className="flex items-start gap-3">
                             <ContactRoundIcon className="text-muted-foreground mt-0.5 size-4" />
                             <div>
                                 <p className="text-muted-foreground text-xs">
@@ -220,7 +220,7 @@ export function ManagementReport() {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex items-start gap-3">
+                        <div className="flex items-start gap-3 sm:border-l sm:pl-6">
                             <Clock3Icon className="text-muted-foreground mt-0.5 size-4" />
                             <div>
                                 <p className="text-muted-foreground text-xs">Generated</p>
