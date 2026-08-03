@@ -7,6 +7,7 @@ import {
     TableIcon,
     TicketCheckIcon,
 } from 'lucide-react'
+import { parseAsString, useQueryState } from 'nuqs'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
@@ -16,21 +17,18 @@ import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
-    EVENT_LIST_COLUMNS,
     EVENT_REPORT_CHART_SERIES,
     EVENT_SALES_BY_DAY_CONFIG,
     EVENT_SALES_BY_PRICE_CONFIG,
     EVENT_SALES_BY_SECTOR_CONFIG,
     formatEventCount,
     formatEventCurrency,
-    getReportEvent,
-    REPORT_EVENT_LIST,
+    REPORT_EVENT,
     SALES_BY_DAY_COLUMNS,
     SALES_BY_PRICE_COLUMNS,
     SALES_BY_SECTOR_COLUMNS,
     type EventReportChartPoint,
 } from './data'
-import { filterEventsByDateRange, useEventReportFilters } from './report-utils'
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
@@ -49,39 +47,13 @@ function sumSales(data: EventReportChartPoint[]) {
 }
 
 export function EventReport() {
-    const { dateRange, eventId, setEventId } = useEventReportFilters()
-    const event = getReportEvent(eventId)
-    const visibleEvents = filterEventsByDateRange(REPORT_EVENT_LIST, dateRange)
-
-    if (!event) {
-        return (
-            <div className="flex w-full max-w-6xl flex-col gap-4">
-                <ReportHeaderCard
-                    title="Select an event"
-                    description="Choose an event to display its sales and attendance report."
-                />
-
-                {visibleEvents.length > 0 ? (
-                    <DataVisulaizationCard
-                        title="Events"
-                        description="Events in the selected period."
-                        queryKey="event-list"
-                    >
-                        <SimpleTable
-                            data={visibleEvents}
-                            columns={EVENT_LIST_COLUMNS}
-                            getRowKey={(row) => row.id}
-                            onRowClick={(row) => void setEventId(row.id)}
-                        />
-                    </DataVisulaizationCard>
-                ) : (
-                    <div className="text-muted-foreground flex min-h-48 items-center justify-center rounded-xl border border-dashed text-sm">
-                        No events in the selected period.
-                    </div>
-                )}
-            </div>
-        )
-    }
+    useQueryState(
+        'event',
+        parseAsString
+            .withDefault(REPORT_EVENT.id)
+            .withOptions({ clearOnDefault: false }),
+    )
+    const event = REPORT_EVENT
 
     const salesByDayTotal = sumSales(event.salesByDay)
     const salesByPriceTotal = sumSales(event.salesByPrice)

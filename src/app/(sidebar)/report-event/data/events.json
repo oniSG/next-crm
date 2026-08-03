@@ -1,2222 +1,370 @@
-[
+{
+  "id": "EVT-2026-001",
+  "name": "HC Relatoo Praha – Brno",
+  "date": "2026-01-17",
+  "capacity": 13150,
+  "startOfSale": "2025-09-19",
+  "venue": "Relatoo Arena",
+  "currency": "CZK",
+  "tickets": {
+    "sold": 8942,
+    "paid": 8137,
+    "free": 805,
+    "capacity": 13150
+  },
+  "entrances": {
+    "total": 8261,
+    "tickets": 7243,
+    "seasonTickets": 994,
+    "unassigned": 24
+  },
+  "revenue": {
+    "tickets": 2101470,
+    "forwardedSeasonTickets": 105300,
+    "total": 2206770
+  },
+  "salesByDay": [
     {
-        "id": "EVT-2026-001",
-        "name": "HC Relatoo Praha – Brno",
-        "date": "2026-01-17",
-        "capacity": 13150,
-        "startOfSale": "2025-09-19",
-        "venue": "Relatoo Arena",
-        "currency": "CZK",
-        "tickets": {
-            "sold": 8942,
-            "paid": 8137,
-            "free": 805,
-            "capacity": 13150
-        },
-        "entrances": {
-            "total": 8261,
-            "tickets": 7243,
-            "seasonTickets": 994,
-            "unassigned": 24
-        },
-        "revenue": {
-            "tickets": 2101470,
-            "forwardedSeasonTickets": 105300,
-            "total": 2206770
-        },
-        "salesByDay": [
-            {
-                "date": "2026-01-07",
-                "label": "7 Jan",
-                "count": 715,
-                "revenue": 168033
-            },
-            {
-                "date": "2026-01-09",
-                "label": "9 Jan",
-                "count": 984,
-                "revenue": 231251
-            },
-            {
-                "date": "2026-01-11",
-                "label": "11 Jan",
-                "count": 1252,
-                "revenue": 294234
-            },
-            {
-                "date": "2026-01-13",
-                "label": "13 Jan",
-                "count": 1610,
-                "revenue": 378368
-            },
-            {
-                "date": "2026-01-15",
-                "label": "15 Jan",
-                "count": 1967,
-                "revenue": 462267
-            },
-            {
-                "date": "2026-01-17",
-                "label": "17 Jan",
-                "count": 2414,
-                "revenue": 567317
-            }
-        ],
-        "salesByPrice": [
-            {
-                "price": 0,
-                "label": "Free",
-                "count": 805,
-                "revenue": 0
-            },
-            {
-                "price": 150,
-                "label": "150 Kč",
-                "count": 1788,
-                "revenue": 268200
-            },
-            {
-                "price": 220,
-                "label": "220 Kč",
-                "count": 2414,
-                "revenue": 531080
-            },
-            {
-                "price": 290,
-                "label": "290 Kč",
-                "count": 2146,
-                "revenue": 622340
-            },
-            {
-                "price": 350,
-                "label": "350 Kč",
-                "count": 1252,
-                "revenue": 438200
-            },
-            {
-                "price": 450,
-                "label": "450 Kč",
-                "count": 537,
-                "revenue": 241650
-            }
-        ],
-        "salesBySector": [
-            {
-                "sector": "A",
-                "label": "Sector A",
-                "count": 1610
-            },
-            {
-                "sector": "B",
-                "label": "Sector B",
-                "count": 1431
-            },
-            {
-                "sector": "C",
-                "label": "Sector C",
-                "count": 1252
-            },
-            {
-                "sector": "D",
-                "label": "Sector D",
-                "count": 1788
-            },
-            {
-                "sector": "E",
-                "label": "Sector E",
-                "count": 1520
-            },
-            {
-                "sector": "VIP",
-                "label": "Sector VIP",
-                "count": 1341
-            }
-        ],
-        "seasonTicketFlow": {
-            "nodes": [
-                {
-                    "name": "Season tickets",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Redistributed",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Kept",
-                    "fill": "var(--muted-foreground)"
-                },
-                {
-                    "name": "Gifted",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "For resale",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Gift: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Gift: absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Bought",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Unsold",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Buyer: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Buyer: absent",
-                    "fill": "var(--destructive)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 1373
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 994
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 494
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 879
-                },
-                {
-                    "source": 3,
-                    "target": 5,
-                    "value": 188
-                },
-                {
-                    "source": 3,
-                    "target": 6,
-                    "value": 306
-                },
-                {
-                    "source": 5,
-                    "target": 7,
-                    "value": 147
-                },
-                {
-                    "source": 5,
-                    "target": 8,
-                    "value": 41
-                },
-                {
-                    "source": 6,
-                    "target": 9,
-                    "value": 135
-                },
-                {
-                    "source": 6,
-                    "target": 10,
-                    "value": 171
-                },
-                {
-                    "source": 9,
-                    "target": 11,
-                    "value": 113
-                },
-                {
-                    "source": 9,
-                    "target": 12,
-                    "value": 22
-                }
-            ]
-        },
-        "ticketSalesFlow": {
-            "nodes": [
-                {
-                    "name": "All tickets",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Online — paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — paid",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — paid",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — paid",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — paid",
-                    "fill": "oklch(0.65 0.2 35)"
-                },
-                {
-                    "name": "Online — free",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — free",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — free",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — free",
-                    "fill": "oklch(0.65 0.2 35)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 8137
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 805
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 4557
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 1139
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "value": 732
-                },
-                {
-                    "source": 1,
-                    "target": 6,
-                    "value": 1139
-                },
-                {
-                    "source": 1,
-                    "target": 7,
-                    "value": 570
-                },
-                {
-                    "source": 2,
-                    "target": 8,
-                    "value": 282
-                },
-                {
-                    "source": 2,
-                    "target": 9,
-                    "value": 161
-                },
-                {
-                    "source": 2,
-                    "target": 10,
-                    "value": 145
-                },
-                {
-                    "source": 2,
-                    "target": 11,
-                    "value": 137
-                },
-                {
-                    "source": 2,
-                    "target": 12,
-                    "value": 80
-                }
-            ]
-        }
+      "date": "2026-01-07",
+      "label": "7 Jan",
+      "count": 715,
+      "revenue": 168033
     },
     {
-        "id": "EVT-2026-002",
-        "name": "HC Relatoo Praha – Liberec",
-        "date": "2026-02-08",
-        "capacity": 13150,
-        "startOfSale": "2025-10-11",
-        "venue": "Relatoo Arena",
-        "currency": "CZK",
-        "tickets": {
-            "sold": 9271,
-            "paid": 8437,
-            "free": 834,
-            "capacity": 13150
-        },
-        "entrances": {
-            "total": 8504,
-            "tickets": 7510,
-            "seasonTickets": 994,
-            "unassigned": 0
-        },
-        "revenue": {
-            "tickets": 2178960,
-            "forwardedSeasonTickets": 108675,
-            "total": 2287635
-        },
-        "salesByDay": [
-            {
-                "date": "2026-01-29",
-                "label": "29 Jan",
-                "count": 742,
-                "revenue": 174392
-            },
-            {
-                "date": "2026-01-31",
-                "label": "31 Jan",
-                "count": 1020,
-                "revenue": 239730
-            },
-            {
-                "date": "2026-02-02",
-                "label": "2 Feb",
-                "count": 1298,
-                "revenue": 305069
-            },
-            {
-                "date": "2026-02-04",
-                "label": "4 Feb",
-                "count": 1669,
-                "revenue": 392265
-            },
-            {
-                "date": "2026-02-06",
-                "label": "6 Feb",
-                "count": 2040,
-                "revenue": 479461
-            },
-            {
-                "date": "2026-02-08",
-                "label": "8 Feb",
-                "count": 2502,
-                "revenue": 588043
-            }
-        ],
-        "salesByPrice": [
-            {
-                "price": 0,
-                "label": "Free",
-                "count": 834,
-                "revenue": 0
-            },
-            {
-                "price": 150,
-                "label": "150 Kč",
-                "count": 1854,
-                "revenue": 278100
-            },
-            {
-                "price": 220,
-                "label": "220 Kč",
-                "count": 2503,
-                "revenue": 550660
-            },
-            {
-                "price": 290,
-                "label": "290 Kč",
-                "count": 2225,
-                "revenue": 645250
-            },
-            {
-                "price": 350,
-                "label": "350 Kč",
-                "count": 1298,
-                "revenue": 454300
-            },
-            {
-                "price": 450,
-                "label": "450 Kč",
-                "count": 557,
-                "revenue": 250650
-            }
-        ],
-        "salesBySector": [
-            {
-                "sector": "A",
-                "label": "Sector A",
-                "count": 1669
-            },
-            {
-                "sector": "B",
-                "label": "Sector B",
-                "count": 1483
-            },
-            {
-                "sector": "C",
-                "label": "Sector C",
-                "count": 1298
-            },
-            {
-                "sector": "D",
-                "label": "Sector D",
-                "count": 1854
-            },
-            {
-                "sector": "E",
-                "label": "Sector E",
-                "count": 1576
-            },
-            {
-                "sector": "VIP",
-                "label": "Sector VIP",
-                "count": 1391
-            }
-        ],
-        "seasonTicketFlow": {
-            "nodes": [
-                {
-                    "name": "Season tickets",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Redistributed",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Kept",
-                    "fill": "var(--muted-foreground)"
-                },
-                {
-                    "name": "Gifted",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "For resale",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Gift: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Gift: absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Bought",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Unsold",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Buyer: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Buyer: absent",
-                    "fill": "var(--destructive)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 1373
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 994
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 494
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 879
-                },
-                {
-                    "source": 3,
-                    "target": 5,
-                    "value": 188
-                },
-                {
-                    "source": 3,
-                    "target": 6,
-                    "value": 306
-                },
-                {
-                    "source": 5,
-                    "target": 7,
-                    "value": 147
-                },
-                {
-                    "source": 5,
-                    "target": 8,
-                    "value": 41
-                },
-                {
-                    "source": 6,
-                    "target": 9,
-                    "value": 135
-                },
-                {
-                    "source": 6,
-                    "target": 10,
-                    "value": 171
-                },
-                {
-                    "source": 9,
-                    "target": 11,
-                    "value": 113
-                },
-                {
-                    "source": 9,
-                    "target": 12,
-                    "value": 22
-                }
-            ]
-        },
-        "ticketSalesFlow": {
-            "nodes": [
-                {
-                    "name": "All tickets",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Online — paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — paid",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — paid",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — paid",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — paid",
-                    "fill": "oklch(0.65 0.2 35)"
-                },
-                {
-                    "name": "Online — free",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — free",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — free",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — free",
-                    "fill": "oklch(0.65 0.2 35)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 8437
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 834
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 4725
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 1181
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "value": 759
-                },
-                {
-                    "source": 1,
-                    "target": 6,
-                    "value": 1181
-                },
-                {
-                    "source": 1,
-                    "target": 7,
-                    "value": 591
-                },
-                {
-                    "source": 2,
-                    "target": 8,
-                    "value": 292
-                },
-                {
-                    "source": 2,
-                    "target": 9,
-                    "value": 167
-                },
-                {
-                    "source": 2,
-                    "target": 10,
-                    "value": 150
-                },
-                {
-                    "source": 2,
-                    "target": 11,
-                    "value": 142
-                },
-                {
-                    "source": 2,
-                    "target": 12,
-                    "value": 83
-                }
-            ]
-        }
+      "date": "2026-01-09",
+      "label": "9 Jan",
+      "count": 984,
+      "revenue": 231251
     },
     {
-        "id": "EVT-2026-003",
-        "name": "HC Relatoo Praha – Pardubice",
-        "date": "2026-03-21",
-        "capacity": 13150,
-        "startOfSale": "2025-11-21",
-        "venue": "Relatoo Arena",
-        "currency": "CZK",
-        "tickets": {
-            "sold": 9600,
-            "paid": 8736,
-            "free": 864,
-            "capacity": 13150
-        },
-        "entrances": {
-            "total": 8800,
-            "tickets": 7776,
-            "seasonTickets": 994,
-            "unassigned": 30
-        },
-        "revenue": {
-            "tickets": 2256000,
-            "forwardedSeasonTickets": 112050,
-            "total": 2368050
-        },
-        "salesByDay": [
-            {
-                "date": "2026-03-11",
-                "label": "11 Mar",
-                "count": 768,
-                "revenue": 180480
-            },
-            {
-                "date": "2026-03-13",
-                "label": "13 Mar",
-                "count": 1056,
-                "revenue": 248160
-            },
-            {
-                "date": "2026-03-15",
-                "label": "15 Mar",
-                "count": 1344,
-                "revenue": 315840
-            },
-            {
-                "date": "2026-03-17",
-                "label": "17 Mar",
-                "count": 1728,
-                "revenue": 406080
-            },
-            {
-                "date": "2026-03-19",
-                "label": "19 Mar",
-                "count": 2112,
-                "revenue": 496320
-            },
-            {
-                "date": "2026-03-21",
-                "label": "21 Mar",
-                "count": 2592,
-                "revenue": 609120
-            }
-        ],
-        "salesByPrice": [
-            {
-                "price": 0,
-                "label": "Free",
-                "count": 864,
-                "revenue": 0
-            },
-            {
-                "price": 150,
-                "label": "150 Kč",
-                "count": 1920,
-                "revenue": 288000
-            },
-            {
-                "price": 220,
-                "label": "220 Kč",
-                "count": 2592,
-                "revenue": 570240
-            },
-            {
-                "price": 290,
-                "label": "290 Kč",
-                "count": 2304,
-                "revenue": 668160
-            },
-            {
-                "price": 350,
-                "label": "350 Kč",
-                "count": 1344,
-                "revenue": 470400
-            },
-            {
-                "price": 450,
-                "label": "450 Kč",
-                "count": 576,
-                "revenue": 259200
-            }
-        ],
-        "salesBySector": [
-            {
-                "sector": "A",
-                "label": "Sector A",
-                "count": 1728
-            },
-            {
-                "sector": "B",
-                "label": "Sector B",
-                "count": 1536
-            },
-            {
-                "sector": "C",
-                "label": "Sector C",
-                "count": 1344
-            },
-            {
-                "sector": "D",
-                "label": "Sector D",
-                "count": 1920
-            },
-            {
-                "sector": "E",
-                "label": "Sector E",
-                "count": 1632
-            },
-            {
-                "sector": "VIP",
-                "label": "Sector VIP",
-                "count": 1440
-            }
-        ],
-        "seasonTicketFlow": {
-            "nodes": [
-                {
-                    "name": "Season tickets",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Redistributed",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Kept",
-                    "fill": "var(--muted-foreground)"
-                },
-                {
-                    "name": "Gifted",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "For resale",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Gift: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Gift: absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Bought",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Unsold",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Buyer: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Buyer: absent",
-                    "fill": "var(--destructive)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 1373
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 994
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 494
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 879
-                },
-                {
-                    "source": 3,
-                    "target": 5,
-                    "value": 188
-                },
-                {
-                    "source": 3,
-                    "target": 6,
-                    "value": 306
-                },
-                {
-                    "source": 5,
-                    "target": 7,
-                    "value": 147
-                },
-                {
-                    "source": 5,
-                    "target": 8,
-                    "value": 41
-                },
-                {
-                    "source": 6,
-                    "target": 9,
-                    "value": 135
-                },
-                {
-                    "source": 6,
-                    "target": 10,
-                    "value": 171
-                },
-                {
-                    "source": 9,
-                    "target": 11,
-                    "value": 113
-                },
-                {
-                    "source": 9,
-                    "target": 12,
-                    "value": 22
-                }
-            ]
-        },
-        "ticketSalesFlow": {
-            "nodes": [
-                {
-                    "name": "All tickets",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Online — paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — paid",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — paid",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — paid",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — paid",
-                    "fill": "oklch(0.65 0.2 35)"
-                },
-                {
-                    "name": "Online — free",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — free",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — free",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — free",
-                    "fill": "oklch(0.65 0.2 35)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 8736
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 864
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 4892
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 1223
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "value": 786
-                },
-                {
-                    "source": 1,
-                    "target": 6,
-                    "value": 1223
-                },
-                {
-                    "source": 1,
-                    "target": 7,
-                    "value": 612
-                },
-                {
-                    "source": 2,
-                    "target": 8,
-                    "value": 302
-                },
-                {
-                    "source": 2,
-                    "target": 9,
-                    "value": 173
-                },
-                {
-                    "source": 2,
-                    "target": 10,
-                    "value": 156
-                },
-                {
-                    "source": 2,
-                    "target": 11,
-                    "value": 147
-                },
-                {
-                    "source": 2,
-                    "target": 12,
-                    "value": 86
-                }
-            ]
-        }
+      "date": "2026-01-11",
+      "label": "11 Jan",
+      "count": 1252,
+      "revenue": 294234
     },
     {
-        "id": "EVT-2026-004",
-        "name": "HC Relatoo Praha – Třinec",
-        "date": "2026-04-11",
-        "capacity": 13150,
-        "startOfSale": "2025-12-12",
-        "venue": "Relatoo Arena",
-        "currency": "CZK",
-        "tickets": {
-            "sold": 9928,
-            "paid": 9034,
-            "free": 894,
-            "capacity": 13150
-        },
-        "entrances": {
-            "total": 9036,
-            "tickets": 8042,
-            "seasonTickets": 994,
-            "unassigned": 0
-        },
-        "revenue": {
-            "tickets": 2332590,
-            "forwardedSeasonTickets": 115425,
-            "total": 2448015
-        },
-        "salesByDay": [
-            {
-                "date": "2026-04-01",
-                "label": "1 Apr",
-                "count": 794,
-                "revenue": 186551
-            },
-            {
-                "date": "2026-04-03",
-                "label": "3 Apr",
-                "count": 1092,
-                "revenue": 256566
-            },
-            {
-                "date": "2026-04-05",
-                "label": "5 Apr",
-                "count": 1390,
-                "revenue": 326581
-            },
-            {
-                "date": "2026-04-07",
-                "label": "7 Apr",
-                "count": 1787,
-                "revenue": 419857
-            },
-            {
-                "date": "2026-04-09",
-                "label": "9 Apr",
-                "count": 2184,
-                "revenue": 513132
-            },
-            {
-                "date": "2026-04-11",
-                "label": "11 Apr",
-                "count": 2681,
-                "revenue": 629903
-            }
-        ],
-        "salesByPrice": [
-            {
-                "price": 0,
-                "label": "Free",
-                "count": 894,
-                "revenue": 0
-            },
-            {
-                "price": 150,
-                "label": "150 Kč",
-                "count": 1986,
-                "revenue": 297900
-            },
-            {
-                "price": 220,
-                "label": "220 Kč",
-                "count": 2681,
-                "revenue": 589820
-            },
-            {
-                "price": 290,
-                "label": "290 Kč",
-                "count": 2383,
-                "revenue": 691070
-            },
-            {
-                "price": 350,
-                "label": "350 Kč",
-                "count": 1390,
-                "revenue": 486500
-            },
-            {
-                "price": 450,
-                "label": "450 Kč",
-                "count": 594,
-                "revenue": 267300
-            }
-        ],
-        "salesBySector": [
-            {
-                "sector": "A",
-                "label": "Sector A",
-                "count": 1787
-            },
-            {
-                "sector": "B",
-                "label": "Sector B",
-                "count": 1588
-            },
-            {
-                "sector": "C",
-                "label": "Sector C",
-                "count": 1390
-            },
-            {
-                "sector": "D",
-                "label": "Sector D",
-                "count": 1986
-            },
-            {
-                "sector": "E",
-                "label": "Sector E",
-                "count": 1688
-            },
-            {
-                "sector": "VIP",
-                "label": "Sector VIP",
-                "count": 1489
-            }
-        ],
-        "seasonTicketFlow": {
-            "nodes": [
-                {
-                    "name": "Season tickets",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Redistributed",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Kept",
-                    "fill": "var(--muted-foreground)"
-                },
-                {
-                    "name": "Gifted",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "For resale",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Gift: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Gift: absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Bought",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Unsold",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Buyer: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Buyer: absent",
-                    "fill": "var(--destructive)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 1373
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 994
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 494
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 879
-                },
-                {
-                    "source": 3,
-                    "target": 5,
-                    "value": 188
-                },
-                {
-                    "source": 3,
-                    "target": 6,
-                    "value": 306
-                },
-                {
-                    "source": 5,
-                    "target": 7,
-                    "value": 147
-                },
-                {
-                    "source": 5,
-                    "target": 8,
-                    "value": 41
-                },
-                {
-                    "source": 6,
-                    "target": 9,
-                    "value": 135
-                },
-                {
-                    "source": 6,
-                    "target": 10,
-                    "value": 171
-                },
-                {
-                    "source": 9,
-                    "target": 11,
-                    "value": 113
-                },
-                {
-                    "source": 9,
-                    "target": 12,
-                    "value": 22
-                }
-            ]
-        },
-        "ticketSalesFlow": {
-            "nodes": [
-                {
-                    "name": "All tickets",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Online — paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — paid",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — paid",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — paid",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — paid",
-                    "fill": "oklch(0.65 0.2 35)"
-                },
-                {
-                    "name": "Online — free",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — free",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — free",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — free",
-                    "fill": "oklch(0.65 0.2 35)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 9034
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 894
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 5059
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 1265
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "value": 813
-                },
-                {
-                    "source": 1,
-                    "target": 6,
-                    "value": 1265
-                },
-                {
-                    "source": 1,
-                    "target": 7,
-                    "value": 632
-                },
-                {
-                    "source": 2,
-                    "target": 8,
-                    "value": 313
-                },
-                {
-                    "source": 2,
-                    "target": 9,
-                    "value": 179
-                },
-                {
-                    "source": 2,
-                    "target": 10,
-                    "value": 161
-                },
-                {
-                    "source": 2,
-                    "target": 11,
-                    "value": 152
-                },
-                {
-                    "source": 2,
-                    "target": 12,
-                    "value": 89
-                }
-            ]
-        }
+      "date": "2026-01-13",
+      "label": "13 Jan",
+      "count": 1610,
+      "revenue": 378368
     },
     {
-        "id": "EVT-2026-005",
-        "name": "Relatoo Fan Day",
-        "date": "2026-05-23",
-        "capacity": 8500,
-        "startOfSale": "2026-01-23",
-        "venue": "Relatoo Training Center",
-        "currency": "CZK",
-        "tickets": {
-            "sold": 6630,
-            "paid": 6033,
-            "free": 597,
-            "capacity": 8500
-        },
-        "entrances": {
-            "total": 6049,
-            "tickets": 5370,
-            "seasonTickets": 643,
-            "unassigned": 36
-        },
-        "revenue": {
-            "tickets": 1557990,
-            "forwardedSeasonTickets": 76560,
-            "total": 1634550
-        },
-        "salesByDay": [
-            {
-                "date": "2026-05-13",
-                "label": "13 May",
-                "count": 530,
-                "revenue": 124545
-            },
-            {
-                "date": "2026-05-15",
-                "label": "15 May",
-                "count": 729,
-                "revenue": 171308
-            },
-            {
-                "date": "2026-05-17",
-                "label": "17 May",
-                "count": 928,
-                "revenue": 218072
-            },
-            {
-                "date": "2026-05-19",
-                "label": "19 May",
-                "count": 1193,
-                "revenue": 280344
-            },
-            {
-                "date": "2026-05-21",
-                "label": "21 May",
-                "count": 1459,
-                "revenue": 342852
-            },
-            {
-                "date": "2026-05-23",
-                "label": "23 May",
-                "count": 1791,
-                "revenue": 420869
-            }
-        ],
-        "salesByPrice": [
-            {
-                "price": 0,
-                "label": "Free",
-                "count": 597,
-                "revenue": 0
-            },
-            {
-                "price": 150,
-                "label": "150 Kč",
-                "count": 1326,
-                "revenue": 198900
-            },
-            {
-                "price": 220,
-                "label": "220 Kč",
-                "count": 1790,
-                "revenue": 393800
-            },
-            {
-                "price": 290,
-                "label": "290 Kč",
-                "count": 1591,
-                "revenue": 461390
-            },
-            {
-                "price": 350,
-                "label": "350 Kč",
-                "count": 928,
-                "revenue": 324800
-            },
-            {
-                "price": 450,
-                "label": "450 Kč",
-                "count": 398,
-                "revenue": 179100
-            }
-        ],
-        "salesBySector": [
-            {
-                "sector": "A",
-                "label": "Sector A",
-                "count": 1193
-            },
-            {
-                "sector": "B",
-                "label": "Sector B",
-                "count": 1061
-            },
-            {
-                "sector": "C",
-                "label": "Sector C",
-                "count": 928
-            },
-            {
-                "sector": "D",
-                "label": "Sector D",
-                "count": 1326
-            },
-            {
-                "sector": "E",
-                "label": "Sector E",
-                "count": 1127
-            },
-            {
-                "sector": "VIP",
-                "label": "Sector VIP",
-                "count": 995
-            }
-        ],
-        "seasonTicketFlow": {
-            "nodes": [
-                {
-                    "name": "Season tickets",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Redistributed",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Kept",
-                    "fill": "var(--muted-foreground)"
-                },
-                {
-                    "name": "Gifted",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "For resale",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Gift: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Gift: absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Bought",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Unsold",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Buyer: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Buyer: absent",
-                    "fill": "var(--destructive)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 887
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 643
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 319
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 568
-                },
-                {
-                    "source": 3,
-                    "target": 5,
-                    "value": 121
-                },
-                {
-                    "source": 3,
-                    "target": 6,
-                    "value": 198
-                },
-                {
-                    "source": 5,
-                    "target": 7,
-                    "value": 94
-                },
-                {
-                    "source": 5,
-                    "target": 8,
-                    "value": 27
-                },
-                {
-                    "source": 6,
-                    "target": 9,
-                    "value": 87
-                },
-                {
-                    "source": 6,
-                    "target": 10,
-                    "value": 111
-                },
-                {
-                    "source": 9,
-                    "target": 11,
-                    "value": 73
-                },
-                {
-                    "source": 9,
-                    "target": 12,
-                    "value": 14
-                }
-            ]
-        },
-        "ticketSalesFlow": {
-            "nodes": [
-                {
-                    "name": "All tickets",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Online — paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — paid",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — paid",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — paid",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — paid",
-                    "fill": "oklch(0.65 0.2 35)"
-                },
-                {
-                    "name": "Online — free",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — free",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — free",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — free",
-                    "fill": "oklch(0.65 0.2 35)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 6033
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 597
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 3378
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 845
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "value": 543
-                },
-                {
-                    "source": 1,
-                    "target": 6,
-                    "value": 845
-                },
-                {
-                    "source": 1,
-                    "target": 7,
-                    "value": 422
-                },
-                {
-                    "source": 2,
-                    "target": 8,
-                    "value": 209
-                },
-                {
-                    "source": 2,
-                    "target": 9,
-                    "value": 119
-                },
-                {
-                    "source": 2,
-                    "target": 10,
-                    "value": 107
-                },
-                {
-                    "source": 2,
-                    "target": 11,
-                    "value": 101
-                },
-                {
-                    "source": 2,
-                    "target": 12,
-                    "value": 61
-                }
-            ]
-        }
+      "date": "2026-01-15",
+      "label": "15 Jan",
+      "count": 1967,
+      "revenue": 462267
     },
     {
-        "id": "EVT-2026-006",
-        "name": "HC Relatoo Praha – Opening Game",
-        "date": "2026-07-29",
-        "capacity": 13150,
-        "startOfSale": "2026-03-31",
-        "venue": "Relatoo Arena",
-        "currency": "CZK",
-        "tickets": {
-            "sold": 10586,
-            "paid": 9633,
-            "free": 953,
-            "capacity": 13150
-        },
-        "entrances": {
-            "total": 9569,
-            "tickets": 8575,
-            "seasonTickets": 994,
-            "unassigned": 0
-        },
-        "revenue": {
-            "tickets": 2487650,
-            "forwardedSeasonTickets": 122175,
-            "total": 2609825
-        },
-        "salesByDay": [
-            {
-                "date": "2026-07-19",
-                "label": "19 Jul",
-                "count": 847,
-                "revenue": 199040
-            },
-            {
-                "date": "2026-07-21",
-                "label": "21 Jul",
-                "count": 1164,
-                "revenue": 273533
-            },
-            {
-                "date": "2026-07-23",
-                "label": "23 Jul",
-                "count": 1482,
-                "revenue": 348262
-            },
-            {
-                "date": "2026-07-25",
-                "label": "25 Jul",
-                "count": 1905,
-                "revenue": 447664
-            },
-            {
-                "date": "2026-07-27",
-                "label": "27 Jul",
-                "count": 2329,
-                "revenue": 547302
-            },
-            {
-                "date": "2026-07-29",
-                "label": "29 Jul",
-                "count": 2859,
-                "revenue": 671849
-            }
-        ],
-        "salesByPrice": [
-            {
-                "price": 0,
-                "label": "Free",
-                "count": 953,
-                "revenue": 0
-            },
-            {
-                "price": 150,
-                "label": "150 Kč",
-                "count": 2117,
-                "revenue": 317550
-            },
-            {
-                "price": 220,
-                "label": "220 Kč",
-                "count": 2858,
-                "revenue": 628760
-            },
-            {
-                "price": 290,
-                "label": "290 Kč",
-                "count": 2541,
-                "revenue": 736890
-            },
-            {
-                "price": 350,
-                "label": "350 Kč",
-                "count": 1482,
-                "revenue": 518700
-            },
-            {
-                "price": 450,
-                "label": "450 Kč",
-                "count": 635,
-                "revenue": 285750
-            }
-        ],
-        "salesBySector": [
-            {
-                "sector": "A",
-                "label": "Sector A",
-                "count": 1905
-            },
-            {
-                "sector": "B",
-                "label": "Sector B",
-                "count": 1694
-            },
-            {
-                "sector": "C",
-                "label": "Sector C",
-                "count": 1482
-            },
-            {
-                "sector": "D",
-                "label": "Sector D",
-                "count": 2117
-            },
-            {
-                "sector": "E",
-                "label": "Sector E",
-                "count": 1800
-            },
-            {
-                "sector": "VIP",
-                "label": "Sector VIP",
-                "count": 1588
-            }
-        ],
-        "seasonTicketFlow": {
-            "nodes": [
-                {
-                    "name": "Season tickets",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Redistributed",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Kept",
-                    "fill": "var(--muted-foreground)"
-                },
-                {
-                    "name": "Gifted",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "For resale",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Gift: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Gift: absent",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Bought",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Unsold",
-                    "fill": "var(--destructive)"
-                },
-                {
-                    "name": "Buyer: entered",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Buyer: absent",
-                    "fill": "var(--destructive)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 1373
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 994
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 494
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 879
-                },
-                {
-                    "source": 3,
-                    "target": 5,
-                    "value": 188
-                },
-                {
-                    "source": 3,
-                    "target": 6,
-                    "value": 306
-                },
-                {
-                    "source": 5,
-                    "target": 7,
-                    "value": 147
-                },
-                {
-                    "source": 5,
-                    "target": 8,
-                    "value": 41
-                },
-                {
-                    "source": 6,
-                    "target": 9,
-                    "value": 135
-                },
-                {
-                    "source": 6,
-                    "target": 10,
-                    "value": 171
-                },
-                {
-                    "source": 9,
-                    "target": 11,
-                    "value": 113
-                },
-                {
-                    "source": 9,
-                    "target": 12,
-                    "value": 22
-                }
-            ]
-        },
-        "ticketSalesFlow": {
-            "nodes": [
-                {
-                    "name": "All tickets",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Online — paid",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — paid",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — paid",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — paid",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — paid",
-                    "fill": "oklch(0.65 0.2 35)"
-                },
-                {
-                    "name": "Online — free",
-                    "fill": "var(--chart-1)"
-                },
-                {
-                    "name": "Box office — free",
-                    "fill": "var(--chart-2)"
-                },
-                {
-                    "name": "Administration — free",
-                    "fill": "var(--chart-3)"
-                },
-                {
-                    "name": "Mobile app — free",
-                    "fill": "var(--chart-4)"
-                },
-                {
-                    "name": "Partner — free",
-                    "fill": "oklch(0.65 0.2 35)"
-                }
-            ],
-            "links": [
-                {
-                    "source": 0,
-                    "target": 1,
-                    "value": 9633
-                },
-                {
-                    "source": 0,
-                    "target": 2,
-                    "value": 953
-                },
-                {
-                    "source": 1,
-                    "target": 3,
-                    "value": 5394
-                },
-                {
-                    "source": 1,
-                    "target": 4,
-                    "value": 1349
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "value": 867
-                },
-                {
-                    "source": 1,
-                    "target": 6,
-                    "value": 1349
-                },
-                {
-                    "source": 1,
-                    "target": 7,
-                    "value": 674
-                },
-                {
-                    "source": 2,
-                    "target": 8,
-                    "value": 334
-                },
-                {
-                    "source": 2,
-                    "target": 9,
-                    "value": 191
-                },
-                {
-                    "source": 2,
-                    "target": 10,
-                    "value": 172
-                },
-                {
-                    "source": 2,
-                    "target": 11,
-                    "value": 162
-                },
-                {
-                    "source": 2,
-                    "target": 12,
-                    "value": 94
-                }
-            ]
-        }
+      "date": "2026-01-17",
+      "label": "17 Jan",
+      "count": 2414,
+      "revenue": 567317
     }
-]
+  ],
+  "salesByPrice": [
+    {
+      "price": 0,
+      "label": "Free",
+      "count": 805,
+      "revenue": 0
+    },
+    {
+      "price": 150,
+      "label": "150 Kč",
+      "count": 1788,
+      "revenue": 268200
+    },
+    {
+      "price": 220,
+      "label": "220 Kč",
+      "count": 2414,
+      "revenue": 531080
+    },
+    {
+      "price": 290,
+      "label": "290 Kč",
+      "count": 2146,
+      "revenue": 622340
+    },
+    {
+      "price": 350,
+      "label": "350 Kč",
+      "count": 1252,
+      "revenue": 438200
+    },
+    {
+      "price": 450,
+      "label": "450 Kč",
+      "count": 537,
+      "revenue": 241650
+    }
+  ],
+  "salesBySector": [
+    {
+      "sector": "A",
+      "label": "Sector A",
+      "count": 1610
+    },
+    {
+      "sector": "B",
+      "label": "Sector B",
+      "count": 1431
+    },
+    {
+      "sector": "C",
+      "label": "Sector C",
+      "count": 1252
+    },
+    {
+      "sector": "D",
+      "label": "Sector D",
+      "count": 1788
+    },
+    {
+      "sector": "E",
+      "label": "Sector E",
+      "count": 1520
+    },
+    {
+      "sector": "VIP",
+      "label": "Sector VIP",
+      "count": 1341
+    }
+  ],
+  "seasonTicketFlow": {
+    "nodes": [
+      {
+        "name": "Season tickets",
+        "fill": "var(--chart-4)"
+      },
+      {
+        "name": "Absent",
+        "fill": "var(--destructive)"
+      },
+      {
+        "name": "Entered",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Redistributed",
+        "fill": "var(--chart-2)"
+      },
+      {
+        "name": "Kept",
+        "fill": "var(--muted-foreground)"
+      },
+      {
+        "name": "Gifted",
+        "fill": "var(--chart-3)"
+      },
+      {
+        "name": "For resale",
+        "fill": "var(--chart-4)"
+      },
+      {
+        "name": "Gift: entered",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Gift: absent",
+        "fill": "var(--destructive)"
+      },
+      {
+        "name": "Bought",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Unsold",
+        "fill": "var(--destructive)"
+      },
+      {
+        "name": "Buyer: entered",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Buyer: absent",
+        "fill": "var(--destructive)"
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "value": 1373
+      },
+      {
+        "source": 0,
+        "target": 2,
+        "value": 994
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "value": 494
+      },
+      {
+        "source": 1,
+        "target": 4,
+        "value": 879
+      },
+      {
+        "source": 3,
+        "target": 5,
+        "value": 188
+      },
+      {
+        "source": 3,
+        "target": 6,
+        "value": 306
+      },
+      {
+        "source": 5,
+        "target": 7,
+        "value": 147
+      },
+      {
+        "source": 5,
+        "target": 8,
+        "value": 41
+      },
+      {
+        "source": 6,
+        "target": 9,
+        "value": 135
+      },
+      {
+        "source": 6,
+        "target": 10,
+        "value": 171
+      },
+      {
+        "source": 9,
+        "target": 11,
+        "value": 113
+      },
+      {
+        "source": 9,
+        "target": 12,
+        "value": 22
+      }
+    ]
+  },
+  "ticketSalesFlow": {
+    "nodes": [
+      {
+        "name": "All tickets",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Paid",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Free",
+        "fill": "var(--chart-2)"
+      },
+      {
+        "name": "Online — paid",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Box office — paid",
+        "fill": "var(--chart-2)"
+      },
+      {
+        "name": "Administration — paid",
+        "fill": "var(--chart-3)"
+      },
+      {
+        "name": "Mobile app — paid",
+        "fill": "var(--chart-4)"
+      },
+      {
+        "name": "Partner — paid",
+        "fill": "oklch(0.65 0.2 35)"
+      },
+      {
+        "name": "Online — free",
+        "fill": "var(--chart-1)"
+      },
+      {
+        "name": "Box office — free",
+        "fill": "var(--chart-2)"
+      },
+      {
+        "name": "Administration — free",
+        "fill": "var(--chart-3)"
+      },
+      {
+        "name": "Mobile app — free",
+        "fill": "var(--chart-4)"
+      },
+      {
+        "name": "Partner — free",
+        "fill": "oklch(0.65 0.2 35)"
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 1,
+        "value": 8137
+      },
+      {
+        "source": 0,
+        "target": 2,
+        "value": 805
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "value": 4557
+      },
+      {
+        "source": 1,
+        "target": 4,
+        "value": 1139
+      },
+      {
+        "source": 1,
+        "target": 5,
+        "value": 732
+      },
+      {
+        "source": 1,
+        "target": 6,
+        "value": 1139
+      },
+      {
+        "source": 1,
+        "target": 7,
+        "value": 570
+      },
+      {
+        "source": 2,
+        "target": 8,
+        "value": 282
+      },
+      {
+        "source": 2,
+        "target": 9,
+        "value": 161
+      },
+      {
+        "source": 2,
+        "target": 10,
+        "value": 145
+      },
+      {
+        "source": 2,
+        "target": 11,
+        "value": 137
+      },
+      {
+        "source": 2,
+        "target": 12,
+        "value": 80
+      }
+    ]
+  }
+}
