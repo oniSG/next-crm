@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { format } from 'date-fns'
-import { parseAsIsoDate, parseAsString, useQueryState } from 'nuqs'
+import { parseAsBoolean, parseAsIsoDate, parseAsString, useQueryState } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
 
@@ -17,6 +17,10 @@ export function useEventReportFilters() {
     const [from, setFrom] = useQueryState('from', parseAsIsoDate)
     const [to, setTo] = useQueryState('to', parseAsIsoDate)
     const [eventId, setEventId] = useQueryState('event', parseAsString)
+    const [headerVisible] = useQueryState(
+        'headerVisible',
+        parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true }),
+    )
 
     const dateRange: DateRange = {
         from: from ?? defaultFrom,
@@ -41,6 +45,7 @@ export function useEventReportFilters() {
         hasDateFilter: from !== null || to !== null,
         eventId,
         setEventId,
+        headerVisible,
     }
 }
 

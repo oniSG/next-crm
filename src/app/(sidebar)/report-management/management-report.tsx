@@ -2,6 +2,7 @@
 
 import {
     CalendarRangeIcon,
+    CircleDollarSignIcon,
     Clock3Icon,
     ContactRoundIcon,
     MailIcon,
@@ -9,8 +10,10 @@ import {
     SendIcon,
     TicketCheckIcon,
 } from 'lucide-react'
+import { parseAsBoolean, useQueryState } from 'nuqs'
 
-import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
+import { KpiCard } from '@/components/custom/statistics/kpi-card'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { Card, CardContent } from '@/components/ui/card'
 
 import { MANAGEMENT_REPORT_DATA } from './data'
@@ -50,6 +53,10 @@ const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', {
 export function ManagementReport() {
     const { meta, fans, seasonTickets, tickets, communication } = MANAGEMENT_REPORT_DATA
     const { dateRange, periodFrom, periodTo } = useReportPeriod()
+    const [headerVisible] = useQueryState(
+        'headerVisible',
+        parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true }),
+    )
     const periodKey = `${periodFrom}-${periodTo}`
 
     const fanDevelopment = fans.development.filter(
@@ -165,44 +172,74 @@ export function ManagementReport() {
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <Card className="gap-0">
-                <CardContent className="grid gap-6 sm:grid-cols-3">
-                    <div className="flex items-start gap-3">
-                        <ContactRoundIcon className="text-muted-foreground mt-0.5 size-4" />
-                        <div>
-                            <p className="text-muted-foreground text-xs">Organization</p>
-                            <p className="mt-1 font-medium">{meta.organizationName}</p>
+            <ReportHeaderCard
+                exportOnly
+                title="Monthly results overview"
+                description="A concise overview of audience growth and ticketing performance."
+                icon={<CircleDollarSignIcon className="size-6" />}
+                itemsClassName="sm:grid-cols-3"
+                items={[
+                    {
+                        title: 'Organization',
+                        value: meta.organizationName,
+                    },
+                    {
+                        title: 'Report period',
+                        value: `${dateFormatter.format(dateRange.from)} – ${dateFormatter.format(dateRange.to)}`,
+                    },
+                    {
+                        title: 'Generated',
+                        value: dateTimeFormatter.format(new Date(meta.generatedAt)),
+                    },
+                ]}
+            />
+
+            {!headerVisible && (
+                <Card className="gap-0">
+                    <CardContent className="grid gap-6 sm:grid-cols-3">
+                        <div className="flex items-start gap-3 sm:border-l sm:pl-6">
+                            <ContactRoundIcon className="text-muted-foreground mt-0.5 size-4" />
+                            <div>
+                                <p className="text-muted-foreground text-xs">
+                                    Organization
+                                </p>
+                                <p className="mt-1 font-medium">
+                                    {meta.organizationName}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-start gap-3 sm:border-l sm:pl-6">
-                        <CalendarRangeIcon className="text-muted-foreground mt-0.5 size-4" />
-                        <div>
-                            <p className="text-muted-foreground text-xs">Report period</p>
-                            <p className="mt-1 font-medium tabular-nums">
-                                {dateFormatter.format(dateRange.from)} –{' '}
-                                {dateFormatter.format(dateRange.to)}
-                            </p>
+                        <div className="flex items-start gap-3 sm:border-l sm:pl-6">
+                            <CalendarRangeIcon className="text-muted-foreground mt-0.5 size-4" />
+                            <div>
+                                <p className="text-muted-foreground text-xs">
+                                    Report period
+                                </p>
+                                <p className="mt-1 font-medium tabular-nums">
+                                    {dateFormatter.format(dateRange.from)} –{' '}
+                                    {dateFormatter.format(dateRange.to)}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-start gap-3 sm:border-l sm:pl-6">
-                        <Clock3Icon className="text-muted-foreground mt-0.5 size-4" />
-                        <div>
-                            <p className="text-muted-foreground text-xs">Generated</p>
-                            <p className="mt-1 font-medium tabular-nums">
-                                {dateTimeFormatter.format(new Date(meta.generatedAt))}
-                            </p>
+                        <div className="flex items-start gap-3">
+                            <Clock3Icon className="text-muted-foreground mt-0.5 size-4" />
+                            <div>
+                                <p className="text-muted-foreground text-xs">Generated</p>
+                                <p className="mt-1 font-medium tabular-nums">
+                                    {dateTimeFormatter.format(new Date(meta.generatedAt))}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </CardContent>
-            </Card>
+                    </CardContent>
+                </Card>
+            )}
 
             <section className="grid gap-4 md:grid-cols-3" aria-label="Report overview">
-                <OverviewKpiCard
+                <KpiCard
                     label="Visitors"
-                    value={numberFormatter.format(currentFanCount)}
                     icon={<ContactRoundIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    metrics={[
+                    value={numberFormatter.format(currentFanCount)}
+                    content={[
                         {
                             label: 'Net growth',
                             value: `${fanNetGrowth >= 0 ? '+' : ''}${numberFormatter.format(fanNetGrowth)}`,
@@ -213,12 +250,12 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Season tickets"
-                    value={currencyFormatter.format(seasonTicketSummary.revenue)}
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    metrics={[
+                    value={currencyFormatter.format(seasonTicketSummary.revenue)}
+                    content={[
                         {
                             label: 'Sold',
                             value: `${numberFormatter.format(seasonTicketSummary.sold)} pcs`,
@@ -234,12 +271,12 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Tickets"
-                    value={currencyFormatter.format(ticketSummary.revenue)}
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    metrics={[
+                    value={currencyFormatter.format(ticketSummary.revenue)}
+                    content={[
                         {
                             label: 'Sold',
                             value: `${numberFormatter.format(ticketSummary.sold)} pcs`,
@@ -264,12 +301,12 @@ export function ManagementReport() {
                 className="grid gap-4 md:grid-cols-3"
                 aria-label="Communication overview"
             >
-                <OverviewKpiCard
+                <KpiCard
                     label="E-mail"
-                    value={numberFormatter.format(emailSummary.delivered)}
                     icon={<MailIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    metrics={[
+                    value={numberFormatter.format(emailSummary.delivered)}
+                    content={[
                         {
                             label: 'Uniquely opened',
                             value: `${emailOpenRate.toFixed(1)} %`,
@@ -280,12 +317,12 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="Push"
-                    value={numberFormatter.format(pushSummary.delivered)}
                     icon={<SendIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    metrics={[
+                    value={numberFormatter.format(pushSummary.delivered)}
+                    content={[
                         {
                             label: 'Not delivered',
                             value: `${pushFailureRate.toFixed(1)} %`,
@@ -296,12 +333,12 @@ export function ManagementReport() {
                         },
                     ]}
                 />
-                <OverviewKpiCard
+                <KpiCard
                     label="SMS"
-                    value={numberFormatter.format(smsSummary.delivered)}
                     icon={<MessageSquareTextIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    metrics={[
+                    value={numberFormatter.format(smsSummary.delivered)}
+                    content={[
                         {
                             label: 'Delivered',
                             value: numberFormatter.format(smsSummary.delivered),

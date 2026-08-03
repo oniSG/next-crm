@@ -14,7 +14,6 @@ import { cn } from '@/lib/utils'
 export type SankeyNodeData = {
     name: string
     fill?: string
-    labelPosition?: 'left' | 'right' | 'above' | 'hidden'
 }
 
 export type SankeyLinkData = {
@@ -43,7 +42,6 @@ export type SankeyChartProps = {
         left?: number
     }
     className?: string
-    labelSideThreshold?: number
 }
 
 function getNodeFill(node: unknown): string {
@@ -58,43 +56,11 @@ function getNodeFill(node: unknown): string {
     return 'var(--chart-1)'
 }
 
-function getLabelPosition(node: unknown): SankeyNodeData['labelPosition'] {
-    if (!node || typeof node !== 'object' || !('labelPosition' in node)) {
-        return undefined
-    }
-    const position = node.labelPosition
-    return position === 'left' ||
-        position === 'right' ||
-        position === 'above' ||
-        position === 'hidden'
-        ? position
-        : undefined
-}
-
-function SankeyNode({
-    x,
-    y,
-    width,
-    height,
-    payload,
-    labelSideThreshold = 100,
-}: SankeyNodeProps & { labelSideThreshold?: number }) {
+function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
     const name = typeof payload?.name === 'string' ? payload.name : ''
     const value = typeof payload?.value === 'number' ? payload.value : null
     const fill = getNodeFill(payload)
-    const configuredPosition = getLabelPosition(payload)
-    const labelPosition =
-        configuredPosition ?? (x < labelSideThreshold ? 'left' : 'right')
     const label = value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
-    const labelX =
-        labelPosition === 'left'
-            ? x - 8
-            : labelPosition === 'above'
-              ? x + width / 2
-              : x + width + 8
-    const labelY = labelPosition === 'above' ? y - 8 : y + height / 2
-    const textAnchor =
-        labelPosition === 'left' ? 'end' : labelPosition === 'above' ? 'middle' : 'start'
 
     return (
         <Layer>
@@ -107,20 +73,18 @@ function SankeyNode({
                 fillOpacity={0.95}
                 radius={2}
             />
-            {labelPosition !== 'hidden' && (
-                <text
-                    x={labelX}
-                    y={labelY}
-                    textAnchor={textAnchor}
-                    dominantBaseline="middle"
-                    fontSize={12}
-                    fill={fill}
-                    paintOrder="stroke"
-                    style={{ pointerEvents: 'none' }}
-                >
-                    {label}
-                </text>
-            )}
+            <text
+                x={x + width + 8}
+                y={y + height / 2}
+                textAnchor="start"
+                dominantBaseline="middle"
+                fontSize={12}
+                fill={fill}
+                paintOrder="stroke"
+                style={{ pointerEvents: 'none' }}
+            >
+                {label}
+            </text>
         </Layer>
     )
 }
@@ -159,9 +123,8 @@ export function SankeyChart({
     sort = false,
     align = 'left',
     verticalAlign = 'top',
-    margin = { top: 16, right: 180, bottom: 16, left: 140 },
+    margin = { top: 16, right: 180, bottom: 16, left: 16 },
     className,
-    labelSideThreshold = 100,
 }: SankeyChartProps) {
     return (
         <div className={cn('h-140 w-full', className)}>
@@ -176,9 +139,7 @@ export function SankeyChart({
                     iterations={iterations}
                     margin={margin}
                     link={SankeyLink}
-                    node={(props) => (
-                        <SankeyNode {...props} labelSideThreshold={labelSideThreshold} />
-                    )}
+                    node={SankeyNode}
                 />
             </ResponsiveContainer>
         </div>

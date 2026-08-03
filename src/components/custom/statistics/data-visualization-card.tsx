@@ -8,6 +8,7 @@ import {
     CardAction,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
@@ -28,6 +29,7 @@ export type GraphCardProps = {
     queryKey: string
     className?: string
     children?: ReactNode
+    footer?: ReactNode
     tabs?: GraphCardTab[]
 }
 
@@ -38,6 +40,7 @@ export function DataVisulaizationCard({
     queryKey,
     className,
     children,
+    footer,
     tabs,
 }: GraphCardProps) {
     const fallbackValue = tabs?.[0]?.value ?? ''
@@ -82,6 +85,7 @@ export function DataVisulaizationCard({
                             </TabsContent>
                         ))}
                     </CardContent>
+                    {footer && <CardFooter>{footer}</CardFooter>}
                 </Card>
             </Tabs>
         )
@@ -95,6 +99,7 @@ export function DataVisulaizationCard({
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
             <CardContent className="flex min-h-0 flex-1 flex-col">{children}</CardContent>
+            {footer && <CardFooter>{footer}</CardFooter>}
         </Card>
     )
 }

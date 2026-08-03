@@ -20,6 +20,8 @@ export type BarChartProps = {
     orientation?: 'vertical' | 'horizontal'
     stacked?: boolean
     showYAxis?: boolean
+    xAxisLabel?: string
+    yAxisLabel?: string
     className?: string
 }
 
@@ -48,6 +50,8 @@ export function BarChart({
     orientation = 'vertical',
     stacked = false,
     showYAxis = false,
+    xAxisLabel,
+    yAxisLabel,
     className,
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
@@ -58,7 +62,15 @@ export function BarChart({
                 accessibilityLayer
                 data={data}
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
-                margin={isHorizontal ? { left: -20 } : { left: 12, right: 12 }}
+                margin={
+                    isHorizontal
+                        ? { left: -20 }
+                        : {
+                              left: 12,
+                              right: 12,
+                              bottom: xAxisLabel ? 24 : 0,
+                          }
+                }
             >
                 {isHorizontal ? (
                     <>
@@ -80,6 +92,15 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
+                            label={
+                                xAxisLabel
+                                    ? {
+                                          value: xAxisLabel,
+                                          position: 'insideBottom',
+                                          offset: -4,
+                                      }
+                                    : undefined
+                            }
                         />
                         {showYAxis && (
                             <YAxis
@@ -90,6 +111,16 @@ export function BarChart({
                                 width={64}
                                 tickFormatter={(value) =>
                                     Number(value).toLocaleString('cs-CZ')
+                                }
+                                label={
+                                    yAxisLabel
+                                        ? {
+                                              value: yAxisLabel,
+                                              angle: -90,
+                                              position: 'insideLeft',
+                                              style: { textAnchor: 'middle' },
+                                          }
+                                        : undefined
                                 }
                             />
                         )}

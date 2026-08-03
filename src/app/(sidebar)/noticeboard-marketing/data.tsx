@@ -1,4 +1,6 @@
 import type { ChartConfig } from '@/components/ui/chart'
+import type { KpiTrend } from '@/components/custom/statistics/kpi-card'
+import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
 
 import communicationChannels from './data/communication-channels.json'
 import emailCampaignFlow from './data/email-campaign-flow.json'
@@ -11,16 +13,23 @@ import undeliveredEmails from './data/undelivered-emails.json'
 export type NoticeboardMetric = {
     title: string
     value: string
+    trend: KpiTrend
 }
 
 export type NoticeboardDetail = {
     title: string
     rows: { label: string; value: string }[]
+    trend: KpiTrend
 }
 
 export const NOTICEBOARD_METRIC: NoticeboardMetric = {
     title: 'Úspěšnost e-mailů',
     value: '5,76 %',
+    trend: {
+        direction: 'up',
+        delta: '+0,42 %',
+        hint: 'za poslední měsíc',
+    },
 }
 
 export const NOTICEBOARD_DETAIL: NoticeboardDetail = {
@@ -29,6 +38,11 @@ export const NOTICEBOARD_DETAIL: NoticeboardDetail = {
         { label: 'Relatoo index', value: '3,65' },
         { label: 'Stav', value: 'Dobrý' },
     ],
+    trend: {
+        direction: 'up',
+        delta: '+0,18',
+        hint: 'za poslední měsíc',
+    },
 }
 
 export const EMAIL_CAMPAIGN_FLOW = emailCampaignFlow
@@ -93,3 +107,26 @@ export type EventList = {
 }
 
 export const EVENT_LISTS = eventLists as EventList[]
+
+export const EVENT_LIST_COLUMNS: SimpleTableColumn<EventList>[] = [
+    {
+        id: 'name',
+        header: 'Jméno seznamu',
+        headerClassName: 'pl-0',
+        cellClassName: 'pl-0 font-medium',
+        cell: (row) => row.name,
+    },
+    {
+        id: 'events',
+        header: 'Události',
+        cellClassName: 'text-muted-foreground max-w-md truncate',
+        cell: (row) =>
+            row.events.length > 0 ? `[${row.events.join(', ')}]` : '[]',
+    },
+    {
+        id: 'id',
+        header: 'ID seznamu událostí',
+        cellClassName: 'font-mono text-xs',
+        cell: (row) => row.id,
+    },
+]

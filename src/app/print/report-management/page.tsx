@@ -13,6 +13,12 @@ const printPageSettings: PrintPageSettings = {
     ),
 }
 
-export default function PrintManagementReportPage() {
-    return <PrintShell {...printPageSettings} />
+export default async function PrintManagementReportPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ headerVisible?: string }>
+}) {
+    const { headerVisible } = await searchParams
+
+    return <PrintShell {...printPageSettings} showHeading={headerVisible !== 'true'} />
 }

@@ -9,6 +9,12 @@ const printPageSettings: PrintPageSettings = {
     body: <EventReport />,
 }
 
-export default function PrintEventReportPage() {
-    return <PrintShell {...printPageSettings} />
+export default async function PrintEventReportPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ headerVisible?: string }>
+}) {
+    const { headerVisible } = await searchParams
+
+    return <PrintShell {...printPageSettings} showHeading={headerVisible !== 'true'} />
 }
