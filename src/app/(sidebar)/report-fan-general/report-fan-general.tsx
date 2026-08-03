@@ -23,6 +23,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     EMAIL_REPORT_BY_DAY,
@@ -249,6 +250,11 @@ export function ReportFanGeneral() {
 
     return (
         <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
+            <ReportHeaderCard
+                title="Global analytics"
+                description="Přehled metrik e-mailu, SMS a push notifikací."
+            />
+
             <DataVisulaizationCard
                 queryKey="view-email"
                 title="E-mail"

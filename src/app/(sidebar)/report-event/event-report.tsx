@@ -1,12 +1,8 @@
 'use client'
 
 import {
-    CalendarCheckIcon,
-    CalendarRangeIcon,
     ChartColumnIcon,
     CircleDollarSignIcon,
-    HashIcon,
-    MapPinIcon,
     ScanLineIcon,
     TableIcon,
     TicketCheckIcon,
@@ -16,9 +12,9 @@ import { parseAsString, useQueryState } from 'nuqs'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     EVENT_REPORT_CHART_SERIES,
@@ -72,7 +68,6 @@ export function EventReport() {
             <ReportHeaderCard
                 title={event.name}
                 description="Overview of ticket sales, entrances and revenue for this event."
-                icon={<CalendarCheckIcon className="size-6" />}
                 itemsClassName="lg:grid-cols-5"
                 items={[
                     {

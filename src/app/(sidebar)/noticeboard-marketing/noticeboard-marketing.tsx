@@ -1,14 +1,12 @@
 'use client'
 
-import { MegaphoneIcon } from 'lucide-react'
-
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
-import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     COMMUNICATION_CHANNELS,
@@ -34,10 +32,8 @@ export function NoticeboardMarketing() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <ReportHeaderCard
-                exportOnly
                 title="Noticeboard marketing"
                 description="Přehled noticeboard marketingu."
-                icon={<MegaphoneIcon className="size-6" />}
             />
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">

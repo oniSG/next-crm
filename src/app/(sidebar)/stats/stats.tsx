@@ -1,9 +1,16 @@
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
+
 import { SURVEY_QUESTIONS } from './data'
 import { SurveyChart } from './survey-chart'
 
 export function Stats() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
+            <ReportHeaderCard
+                title="Statistiky"
+                description="Výsledky průzkumu — odpovědi respondentů podle otázek."
+            />
+
             <section className="grid grid-cols-1 gap-4">
                 {SURVEY_QUESTIONS.map((question, index) => (
                     <SurveyChart

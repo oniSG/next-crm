@@ -1,9 +1,6 @@
 'use client'
 
 import {
-    CalendarRangeIcon,
-    CircleDollarSignIcon,
-    Clock3Icon,
     ContactRoundIcon,
     MailIcon,
     MessageSquareTextIcon,
@@ -12,15 +9,7 @@ import {
 } from 'lucide-react'
 
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { Badge } from '@/components/ui/badge'
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { MANAGEMENT_REPORT_DATA } from './data'
 import { useReportPeriod } from './report-period-context'
@@ -174,58 +163,25 @@ export function ManagementReport() {
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <Card className="relative gap-0 overflow-hidden py-0">
-                <CardHeader className="bg-primary/8 gap-3 border-b p-4 sm:grid-cols-[1fr_auto]">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                            <Badge variant="secondary">CRM+ relatoo</Badge>
-                            <span className="text-muted-foreground text-xs">
-                                Management report
-                            </span>
-                        </div>
-                        <CardTitle className="text-2xl sm:text-3xl">
-                            Monthly results overview
-                        </CardTitle>
-                        <CardDescription>
-                            A concise overview of audience growth and ticketing
-                            performance.
-                        </CardDescription>
-                    </div>
-                    <CardAction className="hidden sm:block">
-                        <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
-                            <CircleDollarSignIcon className="size-6" />
-                        </div>
-                    </CardAction>
-                </CardHeader>
-                <CardContent className="grid gap-4 p-4 sm:grid-cols-3">
-                    <div className="flex items-start gap-3">
-                        <ContactRoundIcon className="text-muted-foreground mt-0.5 size-4" />
-                        <div>
-                            <p className="text-muted-foreground text-xs">Organization</p>
-                            <p className="mt-1 font-medium">{meta.organizationName}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <CalendarRangeIcon className="text-muted-foreground mt-0.5 size-4" />
-                        <div>
-                            <p className="text-muted-foreground text-xs">Report period</p>
-                            <p className="mt-1 font-medium tabular-nums">
-                                {dateFormatter.format(dateRange.from)} –{' '}
-                                {dateFormatter.format(dateRange.to)}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                        <Clock3Icon className="text-muted-foreground mt-0.5 size-4" />
-                        <div>
-                            <p className="text-muted-foreground text-xs">Generated</p>
-                            <p className="mt-1 font-medium tabular-nums">
-                                {dateTimeFormatter.format(new Date(meta.generatedAt))}
-                            </p>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            <ReportHeaderCard
+                title="Monthly results overview"
+                description="A concise overview of audience growth and ticketing performance."
+                itemsClassName="lg:grid-cols-3"
+                items={[
+                    {
+                        title: 'Organization',
+                        value: meta.organizationName,
+                    },
+                    {
+                        title: 'Report period',
+                        value: `${dateFormatter.format(dateRange.from)} – ${dateFormatter.format(dateRange.to)}`,
+                    },
+                    {
+                        title: 'Generated',
+                        value: dateTimeFormatter.format(new Date(meta.generatedAt)),
+                    },
+                ]}
+            />
 
             <section className="grid gap-4 md:grid-cols-3" aria-label="Report overview">
                 <KpiCard

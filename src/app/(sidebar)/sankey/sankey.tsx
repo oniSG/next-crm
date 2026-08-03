@@ -17,6 +17,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { SANKEY_DATA } from './data'
 
@@ -95,6 +96,11 @@ function SankeyLink({
 export function SankeyPage() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-3">
+            <ReportHeaderCard
+                title="Sankey"
+                description="Tok kampaně od odeslání po konverzi."
+            />
+
             <section className="grid grid-cols-1 gap-4">
                 <Card className="w-full">
                     <CardHeader>

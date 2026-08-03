@@ -4,6 +4,7 @@ import { DataVisulaizationCard } from '@/components/custom/statistics/data-visua
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import InfoTooltip from '@/components/custom/other/info-tooltip'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     MOBILE_APP_ACTIVITY,
@@ -15,6 +16,11 @@ import {
 export function MobileApp() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
+            <ReportHeaderCard
+                title="Mobile app"
+                description="Přehled push notifikací a aktivity v mobilní aplikaci."
+            />
+
             <DataVisulaizationCard
                 title="Flowchart push notifikací"
                 queryKey="push-notification-flow"
