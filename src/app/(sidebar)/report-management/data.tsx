@@ -1,3 +1,6 @@
+import { format } from 'date-fns'
+
+import type { DateRange } from '@/components/custom/filters/date-presets'
 import type { ChartConfig } from '@/components/ui/chart'
 
 import managementReport from './data/management-report.json'
@@ -226,3 +229,53 @@ export const ADVERTISING_SPACES_CONFIG = {
 } satisfies ChartConfig
 
 export const MANAGEMENT_REPORT_DATA = managementReport as ManagementReportData
+
+export function filterByPeriodRange<T extends { period: string }>(
+    data: T[],
+    range: DateRange,
+): T[] {
+    const from = format(range.from, 'yyyy-MM')
+    const to = format(range.to, 'yyyy-MM')
+    return data.filter((row) => row.period >= from && row.period <= to)
+}
+
+export function toTicketRevenueRows(
+    points: TicketSalesPoint[],
+): ReportSectionRow[] {
+    return points.map((point) => ({
+        period: point.period,
+        label: point.label,
+        online: point.online.revenue,
+        boxOffice: point.boxOffice.revenue,
+        administration: point.administration.revenue,
+        mobileApp: point.mobileApp.revenue,
+        partner: point.partner.revenue,
+        total: point.total.revenue,
+    }))
+}
+
+export function toTicketCountRows(points: TicketSalesPoint[]): ReportSectionRow[] {
+    return points.map((point) => ({
+        period: point.period,
+        label: point.label,
+        online: point.online.count,
+        boxOffice: point.boxOffice.count,
+        administration: point.administration.count,
+        mobileApp: point.mobileApp.count,
+        partner: point.partner.count,
+        total: point.total.count,
+    }))
+}
+
+export function toBusinessCaseStatusRows(
+    points: BusinessCasePoint[],
+): ReportSectionRow[] {
+    return points.map((point) => ({
+        period: point.period,
+        label: point.label,
+        won: point.won.count,
+        open: point.open.count,
+        cancelled: point.cancelled.count,
+        total: point.won.count + point.open.count + point.cancelled.count,
+    }))
+}

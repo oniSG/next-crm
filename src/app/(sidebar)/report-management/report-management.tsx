@@ -17,29 +17,27 @@ import {
     type GraphCardTab,
 } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
-import type { ChartConfig } from '@/components/ui/chart'
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table'
+    SimpleTable,
+    type SimpleTableColumn,
+} from '@/components/custom/statistics/simple-table'
+import type { ChartConfig } from '@/components/ui/chart'
 
 import {
     ADVERTISING_SPACES_CONFIG,
     BUSINESS_CASE_STATUS_COLUMNS,
     BUSINESS_CASE_STATUS_SERIES,
     DELIVERED_COLUMNS,
+    filterByPeriodRange,
     MANAGEMENT_REPORT_DATA,
     TICKET_CHANNEL_SERIES,
     TICKET_COUNT_COLUMNS,
     TICKET_REVENUE_COLUMNS,
+    toBusinessCaseStatusRows,
+    toTicketCountRows,
+    toTicketRevenueRows,
     VISITOR_GROWTH_COLUMNS,
     VISITOR_GROWTH_SERIES,
     VISITOR_TOTAL_COLUMNS,
@@ -70,11 +68,18 @@ const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', {
     minute: '2-digit',
 })
 
+const defaultFrom = new Date(2026, 0, 1)
+const defaultTo = new Date(2026, 5, 30)
+
 function formatValue(value: number, format: ReportTableColumn['format']) {
     if (format === 'currency') return currencyFormatter.format(value)
     const formatted = numberFormatter.format(value)
     if (format === 'signed' && value >= 0) return `+${formatted}`
     return formatted
+}
+
+function sumBy<T>(rows: T[], pick: (row: T) => number) {
+    return rows.reduce((sum, row) => sum + pick(row), 0)
 }
 
 function ChartTableSection({
@@ -84,7 +89,6 @@ function ChartTableSection({
     columns,
     series,
     periodKey,
-    chartType = 'bar',
     stacked = false,
     showTotals = true,
     emptyMessage,
@@ -96,7 +100,6 @@ function ChartTableSection({
     columns: ReportTableColumn[]
     series: ReportChartSeries[]
     periodKey: string
-    chartType?: 'bar' | 'line'
     stacked?: boolean
     showTotals?: boolean
     emptyMessage: string
@@ -106,106 +109,70 @@ function ChartTableSection({
         series.map((item) => [item.key, { label: item.label, color: item.color }]),
     ) satisfies ChartConfig
     const totals = columns.reduce<Record<string, number>>((result, column) => {
-        result[column.key] = rows.reduce(
-            (sum, row) => sum + Number(row[column.key] ?? 0),
-            0,
-        )
+        result[column.key] = sumBy(rows, (row) => Number(row[column.key] ?? 0))
         return result
     }, {})
 
     const chart =
         rows.length > 0 ? (
-            chartType === 'line' ? (
-                <LineChart
-                    key={`${queryKey}-chart-${periodKey}`}
-                    data={rows}
-                    config={config}
-                    categoryKey="label"
-                    series={series.map((item) => item.key)}
-                    showYAxis
-                    showDots
-                    className="h-80"
-                />
-            ) : (
-                <BarChart
-                    key={`${queryKey}-chart-${periodKey}`}
-                    data={rows}
-                    config={config}
-                    categoryKey="label"
-                    series={series.map((item) => item.key)}
-                    stacked={stacked}
-                    showYAxis
-                    className="h-80"
-                />
-            )
+            <BarChart
+                key={`${queryKey}-chart-${periodKey}`}
+                data={rows}
+                config={config}
+                categoryKey="label"
+                series={series.map((item) => item.key)}
+                stacked={stacked}
+                showYAxis
+                className="h-80"
+            />
         ) : (
             <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
                 {emptyMessage}
             </div>
         )
 
+    const tableColumns: SimpleTableColumn<ReportSectionRow>[] = [
+        {
+            id: 'label',
+            header: 'Month',
+            cell: (row) => row.label,
+            cellClassName: 'font-medium',
+        },
+        ...columns.map((column) => ({
+            id: column.key,
+            header: column.label,
+            headerClassName: 'text-right',
+            cellClassName: column.emphasize
+                ? 'text-right font-medium tabular-nums'
+                : 'text-right tabular-nums',
+            cell: (row: ReportSectionRow) =>
+                formatValue(Number(row[column.key] ?? 0), column.format),
+        })),
+    ]
+
     const table = (
         <div key={`${queryKey}-table-${periodKey}`}>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Month</TableHead>
-                        {columns.map((column) => (
-                            <TableHead key={column.key} className="text-right">
-                                {column.label}
-                            </TableHead>
-                        ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {rows.length > 0 ? (
-                        rows.map((row) => (
-                            <TableRow key={row.period}>
-                                <TableCell className="font-medium">{row.label}</TableCell>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.key}
-                                        className={
-                                            column.emphasize
-                                                ? 'text-right font-medium tabular-nums'
-                                                : 'text-right tabular-nums'
-                                        }
-                                    >
-                                        {formatValue(
-                                            Number(row[column.key] ?? 0),
-                                            column.format,
-                                        )}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell
-                                colSpan={columns.length + 1}
-                                className="text-muted-foreground h-24 text-center"
-                            >
-                                {emptyMessage}
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-                {showTotals && rows.length > 0 && (
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell>Total</TableCell>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.key}
-                                    className="text-right tabular-nums"
-                                >
-                                    {formatValue(totals[column.key], column.format)}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableFooter>
-                )}
-            </Table>
+            {rows.length > 0 ? (
+                <SimpleTable
+                    data={rows}
+                    columns={tableColumns}
+                    getRowKey={(row) => row.period}
+                    footer={
+                        showTotals
+                            ? [
+                                  'Total',
+                                  ...columns.map((column) =>
+                                      formatValue(totals[column.key], column.format),
+                                  ),
+                              ]
+                            : undefined
+                    }
+                />
+            ) : (
+                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
+                    {emptyMessage}
+                </div>
+            )}
         </div>
     )
 
@@ -234,338 +201,47 @@ function ChartTableSection({
     )
 }
 
-function TicketRevenueSection(props: {
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title="Development of revenue from tickets sold"
-            description="Revenue by sales channel in the selected period."
-            columns={TICKET_REVENUE_COLUMNS}
-            series={TICKET_CHANNEL_SERIES}
-            stacked
-            emptyMessage="No ticket sales data for the selected period."
-            queryKey="management-ticket-revenue-view"
-        />
-    )
-}
-
-function TicketCountSection(props: {
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title="Number of tickets sold"
-            description="Ticket volume by sales channel in the selected period."
-            columns={TICKET_COUNT_COLUMNS}
-            series={TICKET_CHANNEL_SERIES}
-            stacked
-            emptyMessage="No ticket sales data for the selected period."
-            queryKey="management-ticket-count-view"
-        />
-    )
-}
-
-function VisitorTotalSection(props: {
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title="Development of the total number of visitors"
-            description="Total number of visitors at the end of each month in the selected period."
-            columns={VISITOR_TOTAL_COLUMNS}
-            series={VISITOR_TOTAL_SERIES}
-            chartType="line"
-            showTotals={false}
-            emptyMessage="No visitor data for the selected period."
-            queryKey="management-visitor-total-view"
-        />
-    )
-}
-
-function VisitorGrowthSection(props: {
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title="Growth in the number of visitors"
-            description="New and removed visitors in the selected period."
-            columns={VISITOR_GROWTH_COLUMNS}
-            series={VISITOR_GROWTH_SERIES}
-            emptyMessage="No visitor growth data for the selected period."
-            queryKey="management-visitor-growth-view"
-        />
-    )
-}
-
-function DeliveredSection({
-    channel,
-    color,
-    ...props
-}: {
-    channel: 'e-mails' | 'push notifications' | 'SMS'
-    color: string
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title={`Statistics of delivered ${channel}`}
-            description={`Delivered ${channel} in the selected period.`}
-            columns={DELIVERED_COLUMNS}
-            series={[{ key: 'delivered', label: 'Delivered', color }]}
-            emptyMessage={`No ${channel} data for the selected period.`}
-            queryKey={`management-delivered-${channel.replaceAll(' ', '-')}-view`}
-        />
-    )
-}
-
-function DeliveredEmailSection(
-    props: Omit<Parameters<typeof DeliveredSection>[0], 'channel' | 'color'>,
-) {
-    return <DeliveredSection {...props} channel="e-mails" color="var(--chart-1)" />
-}
-
-function DeliveredPushSection(
-    props: Omit<Parameters<typeof DeliveredSection>[0], 'channel' | 'color'>,
-) {
-    return (
-        <DeliveredSection
-            {...props}
-            channel="push notifications"
-            color="var(--chart-2)"
-        />
-    )
-}
-
-function DeliveredSmsSection(
-    props: Omit<Parameters<typeof DeliveredSection>[0], 'channel' | 'color'>,
-) {
-    return <DeliveredSection {...props} channel="SMS" color="var(--chart-3)" />
-}
-
-function WonBusinessCasesSection(props: {
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title="Total volume of business cases won in Kč"
-            description="Value of won business cases in the selected period."
-            columns={WON_BUSINESS_CASE_COLUMNS}
-            series={WON_BUSINESS_CASE_SERIES}
-            emptyMessage="No won business case data for the selected period."
-            queryKey="management-won-business-cases-view"
-        />
-    )
-}
-
-function BusinessCaseStatusSection(props: {
-    rows: ReportSectionRow[]
-    periodKey: string
-}) {
-    return (
-        <ChartTableSection
-            {...props}
-            title="Number of business cases created by status"
-            description="Created business cases grouped by status in the selected period."
-            columns={BUSINESS_CASE_STATUS_COLUMNS}
-            series={BUSINESS_CASE_STATUS_SERIES}
-            emptyMessage="No business case data for the selected period."
-            queryKey="management-business-case-status-view"
-        />
-    )
-}
-
-function AdvertisingSpacesSection({
-    occupied,
-    free,
-    dateLabel,
-    periodKey,
-}: {
-    occupied?: number
-    free?: number
-    dateLabel: string
-    periodKey: string
-}) {
-    const hasData = occupied !== undefined && free !== undefined
-    const data = hasData
-        ? [
-              {
-                  name: 'occupied',
-                  value: occupied,
-                  fill: 'var(--color-occupied)',
-              },
-              {
-                  name: 'free',
-                  value: free,
-                  fill: 'var(--color-free)',
-              },
-          ]
-        : []
-
-    return (
-        <DataVisulaizationCard
-            title="Ratio of available and taken advertising spaces"
-            description={`Current state as of ${dateLabel}.`}
-            queryKey="management-advertising-spaces"
-        >
-            {hasData ? (
-                <PieChart
-                    key={`advertising-spaces-${periodKey}`}
-                    data={data}
-                    config={ADVERTISING_SPACES_CONFIG}
-                    className="max-h-64"
-                    innerRadius={56}
-                />
-            ) : (
-                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                    No advertising space data for the selected period.
-                </div>
-            )}
-        </DataVisulaizationCard>
-    )
-}
-
-function toPeriod(date: Date) {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
-}
-
 export function ReportManagement() {
-    const { meta, fans, seasonTickets, tickets, communication } = MANAGEMENT_REPORT_DATA
-    const [from] = useQueryState(
-        'from',
-        parseAsIsoDate.withDefault(new Date(2026, 0, 1)),
-    )
-    const [to] = useQueryState(
-        'to',
-        parseAsIsoDate.withDefault(new Date(2026, 5, 30)),
-    )
+    const { meta, fans, seasonTickets, tickets, communication, business } =
+        MANAGEMENT_REPORT_DATA
+    const [from] = useQueryState('from', parseAsIsoDate.withDefault(defaultFrom))
+    const [to] = useQueryState('to', parseAsIsoDate.withDefault(defaultTo))
     const dateRange = { from, to }
-    const periodFrom = toPeriod(from)
-    const periodTo = toPeriod(to)
-    const periodKey = `${periodFrom}-${periodTo}`
+    const periodKey = `${from.toISOString()}-${to.toISOString()}`
+    const inRange = <T extends { period: string }>(data: T[]) =>
+        filterByPeriodRange(data, dateRange)
 
-    const fanDevelopment = fans.development.filter(
-        (point) => point.period >= periodFrom && point.period <= periodTo,
-    )
-    const seasonTicketDevelopment = seasonTickets.development.filter(
-        (point) => point.period >= periodFrom && point.period <= periodTo,
-    )
-    const ticketDevelopment = tickets.development.filter(
-        (point) => point.period >= periodFrom && point.period <= periodTo,
-    )
-    const emailDevelopment = communication.email.development.filter(
-        (point) => point.period >= periodFrom && point.period <= periodTo,
-    )
-    const pushDevelopment = communication.push.development.filter(
-        (point) => point.period >= periodFrom && point.period <= periodTo,
-    )
-    const smsDevelopment = communication.sms.development.filter(
-        (point) => point.period >= periodFrom && point.period <= periodTo,
-    )
-    const advertisingDevelopment =
-        MANAGEMENT_REPORT_DATA.business.advertisingSpaces.development.filter(
-            (point) => point.period >= periodFrom && point.period <= periodTo,
-        )
-    const wonBusinessCasesDevelopment =
-        MANAGEMENT_REPORT_DATA.business.wonCases.development.filter(
-            (point) => point.period >= periodFrom && point.period <= periodTo,
-        )
-    const businessCaseDevelopment =
-        MANAGEMENT_REPORT_DATA.business.caseDevelopment.filter(
-            (point) => point.period >= periodFrom && point.period <= periodTo,
-        )
+    const fanDevelopment = inRange(fans.development)
+    const seasonTicketDevelopment = inRange(seasonTickets.development)
+    const ticketDevelopment = inRange(tickets.development)
+    const emailDevelopment = inRange(communication.email.development)
+    const pushDevelopment = inRange(communication.push.development)
+    const smsDevelopment = inRange(communication.sms.development)
+    const advertisingDevelopment = inRange(business.advertisingSpaces.development)
+    const wonBusinessCasesDevelopment = inRange(business.wonCases.development)
+    const businessCaseDevelopment = inRange(business.caseDevelopment)
 
     const lastFanPoint = fanDevelopment.at(-1)
-    const currentFanCount = lastFanPoint?.total ?? 0
-    const blockedFanCount = lastFanPoint?.blocked ?? 0
-    const fanNetGrowth = fanDevelopment.reduce((sum, point) => sum + point.netChange, 0)
-    const seasonTicketSummary = seasonTicketDevelopment.reduce(
-        (summary, point) => ({
-            sold: summary.sold + point.sold,
-            revenue: summary.revenue + point.revenue,
-        }),
-        { sold: 0, revenue: 0 },
-    )
-    const ticketSummary = ticketDevelopment.reduce(
-        (summary, point) => ({
-            sold: summary.sold + point.total.count,
-            revenue: summary.revenue + point.total.revenue,
-            eventCount: summary.eventCount + point.eventCount,
-        }),
-        { sold: 0, revenue: 0, eventCount: 0 },
-    )
-    const ticketRevenueChartData = ticketDevelopment.map((point) => ({
-        period: point.period,
-        label: point.label,
-        online: point.online.revenue,
-        boxOffice: point.boxOffice.revenue,
-        administration: point.administration.revenue,
-        mobileApp: point.mobileApp.revenue,
-        partner: point.partner.revenue,
-        total: point.total.revenue,
-    }))
-    const ticketCountChartData = ticketDevelopment.map((point) => ({
-        period: point.period,
-        label: point.label,
-        online: point.online.count,
-        boxOffice: point.boxOffice.count,
-        administration: point.administration.count,
-        mobileApp: point.mobileApp.count,
-        partner: point.partner.count,
-        total: point.total.count,
-    }))
-    const emailSummary = emailDevelopment.reduce(
-        (summary, point) => ({
-            delivered: summary.delivered + point.delivered,
-            failed: summary.failed + point.failed,
-            openedUnique: summary.openedUnique + (point.openedUnique ?? 0),
-            clickedUnique: summary.clickedUnique + (point.clickedUnique ?? 0),
-        }),
-        { delivered: 0, failed: 0, openedUnique: 0, clickedUnique: 0 },
-    )
-    const pushSummary = pushDevelopment.reduce(
-        (summary, point) => ({
-            delivered: summary.delivered + point.delivered,
-            failed: summary.failed + point.failed,
-        }),
-        { delivered: 0, failed: 0 },
-    )
-    const smsSummary = smsDevelopment.reduce(
-        (summary, point) => ({
-            delivered: summary.delivered + point.delivered,
-            failed: summary.failed + point.failed,
-        }),
-        { delivered: 0, failed: 0 },
-    )
-    const emailOpenRate = emailSummary.delivered
-        ? (emailSummary.openedUnique / emailSummary.delivered) * 100
-        : 0
-    const emailClickRate = emailSummary.delivered
-        ? (emailSummary.clickedUnique / emailSummary.delivered) * 100
-        : 0
-    const pushTotal = pushSummary.delivered + pushSummary.failed
-    const pushFailureRate = pushTotal ? (pushSummary.failed / pushTotal) * 100 : 0
+    const fanNetGrowth = sumBy(fanDevelopment, (point) => point.netChange)
+    const seasonTicketsSold = sumBy(seasonTicketDevelopment, (point) => point.sold)
+    const seasonTicketsRevenue = sumBy(seasonTicketDevelopment, (point) => point.revenue)
+    const ticketsSold = sumBy(ticketDevelopment, (point) => point.total.count)
+    const ticketsRevenue = sumBy(ticketDevelopment, (point) => point.total.revenue)
+    const ticketsEventCount = sumBy(ticketDevelopment, (point) => point.eventCount)
+
+    const emailDelivered = sumBy(emailDevelopment, (point) => point.delivered)
+    const emailOpened = sumBy(emailDevelopment, (point) => point.openedUnique ?? 0)
+    const emailClicked = sumBy(emailDevelopment, (point) => point.clickedUnique ?? 0)
+    const pushDelivered = sumBy(pushDevelopment, (point) => point.delivered)
+    const pushFailed = sumBy(pushDevelopment, (point) => point.failed)
+    const smsDelivered = sumBy(smsDevelopment, (point) => point.delivered)
+    const smsFailed = sumBy(smsDevelopment, (point) => point.failed)
+
+    const emailOpenRate = emailDelivered ? (emailOpened / emailDelivered) * 100 : 0
+    const emailClickRate = emailDelivered ? (emailClicked / emailDelivered) * 100 : 0
+    const pushTotal = pushDelivered + pushFailed
+    const pushFailureRate = pushTotal ? (pushFailed / pushTotal) * 100 : 0
     const currentAdvertisingSpaces = advertisingDevelopment.at(-1)
-    const businessCaseStatusData = businessCaseDevelopment.map((point) => ({
-        period: point.period,
-        label: point.label,
-        won: point.won.count,
-        open: point.open.count,
-        cancelled: point.cancelled.count,
-        total: point.won.count + point.open.count + point.cancelled.count,
-    }))
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -580,7 +256,7 @@ export function ReportManagement() {
                     },
                     {
                         title: 'Report period',
-                        value: `${dateFormatter.format(dateRange.from)} – ${dateFormatter.format(dateRange.to)}`,
+                        value: `${dateFormatter.format(from)} – ${dateFormatter.format(to)}`,
                     },
                     {
                         title: 'Generated',
@@ -594,11 +270,11 @@ export function ReportManagement() {
                     label="Visitors"
                     icon={<ContactRoundIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    value={numberFormatter.format(currentFanCount)}
+                    value={numberFormatter.format(lastFanPoint?.total ?? 0)}
                     content={[
                         {
                             label: 'Blocked',
-                            value: numberFormatter.format(blockedFanCount),
+                            value: numberFormatter.format(lastFanPoint?.blocked ?? 0),
                         },
                     ]}
                     trend={{
@@ -611,18 +287,17 @@ export function ReportManagement() {
                     label="Season tickets"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    value={currencyFormatter.format(seasonTicketSummary.revenue)}
+                    value={currencyFormatter.format(seasonTicketsRevenue)}
                     content={[
                         {
                             label: 'Sold',
-                            value: numberFormatter.format(seasonTicketSummary.sold),
+                            value: numberFormatter.format(seasonTicketsSold),
                         },
                         {
                             label: 'Average price',
                             value: currencyFormatter.format(
-                                seasonTicketSummary.sold
-                                    ? seasonTicketSummary.revenue /
-                                          seasonTicketSummary.sold
+                                seasonTicketsSold
+                                    ? seasonTicketsRevenue / seasonTicketsSold
                                     : 0,
                             ),
                         },
@@ -632,27 +307,66 @@ export function ReportManagement() {
                     label="Tickets"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    value={currencyFormatter.format(ticketSummary.revenue)}
+                    value={currencyFormatter.format(ticketsRevenue)}
                     content={[
                         {
                             label: 'Sold',
-                            value: numberFormatter.format(ticketSummary.sold),
+                            value: numberFormatter.format(ticketsSold),
                         },
                         {
                             label: 'Events',
-                            value: numberFormatter.format(ticketSummary.eventCount),
+                            value: numberFormatter.format(ticketsEventCount),
                         },
                     ]}
                 />
             </section>
 
-            <TicketRevenueSection rows={ticketRevenueChartData} periodKey={periodKey} />
+            <ChartTableSection
+                title="Development of revenue from tickets sold"
+                description="Revenue by sales channel in the selected period."
+                rows={toTicketRevenueRows(ticketDevelopment)}
+                columns={TICKET_REVENUE_COLUMNS}
+                series={TICKET_CHANNEL_SERIES}
+                periodKey={periodKey}
+                stacked
+                emptyMessage="No ticket sales data for the selected period."
+                queryKey="management-ticket-revenue-view"
+            />
 
-            <TicketCountSection rows={ticketCountChartData} periodKey={periodKey} />
+            <ChartTableSection
+                title="Number of tickets sold"
+                description="Ticket volume by sales channel in the selected period."
+                rows={toTicketCountRows(ticketDevelopment)}
+                columns={TICKET_COUNT_COLUMNS}
+                series={TICKET_CHANNEL_SERIES}
+                periodKey={periodKey}
+                stacked
+                emptyMessage="No ticket sales data for the selected period."
+                queryKey="management-ticket-count-view"
+            />
 
-            <VisitorTotalSection rows={fanDevelopment} periodKey={periodKey} />
+            <ChartTableSection
+                title="Development of the total number of visitors"
+                description="Total number of visitors at the end of each month in the selected period."
+                rows={fanDevelopment}
+                columns={VISITOR_TOTAL_COLUMNS}
+                series={VISITOR_TOTAL_SERIES}
+                periodKey={periodKey}
+                showTotals={false}
+                emptyMessage="No visitor data for the selected period."
+                queryKey="management-visitor-total-view"
+            />
 
-            <VisitorGrowthSection rows={fanDevelopment} periodKey={periodKey} />
+            <ChartTableSection
+                title="Growth in the number of visitors"
+                description="New and removed visitors in the selected period."
+                rows={fanDevelopment}
+                columns={VISITOR_GROWTH_COLUMNS}
+                series={VISITOR_GROWTH_SERIES}
+                periodKey={periodKey}
+                emptyMessage="No visitor growth data for the selected period."
+                queryKey="management-visitor-growth-view"
+            />
 
             <section
                 className="grid gap-4 md:grid-cols-3"
@@ -662,7 +376,7 @@ export function ReportManagement() {
                     label="E-mail"
                     icon={<MailIcon className="size-4" />}
                     iconClassName="bg-chart-2/10 text-chart-2"
-                    value={numberFormatter.format(emailSummary.delivered)}
+                    value={numberFormatter.format(emailDelivered)}
                     content={[
                         {
                             label: 'Uniquely opened',
@@ -678,7 +392,7 @@ export function ReportManagement() {
                     label="Push"
                     icon={<SendIcon className="size-4" />}
                     iconClassName="bg-chart-4/10 text-chart-4"
-                    value={numberFormatter.format(pushSummary.delivered)}
+                    value={numberFormatter.format(pushDelivered)}
                     content={[
                         {
                             label: 'Not delivered',
@@ -686,7 +400,7 @@ export function ReportManagement() {
                         },
                         {
                             label: 'Failed',
-                            value: numberFormatter.format(pushSummary.failed),
+                            value: numberFormatter.format(pushFailed),
                         },
                     ]}
                 />
@@ -694,43 +408,110 @@ export function ReportManagement() {
                     label="SMS"
                     icon={<MessageSquareTextIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
-                    value={numberFormatter.format(smsSummary.delivered)}
+                    value={numberFormatter.format(smsDelivered)}
                     content={[
                         {
                             label: 'Delivered',
-                            value: numberFormatter.format(smsSummary.delivered),
+                            value: numberFormatter.format(smsDelivered),
                         },
                         {
                             label: 'Failed',
-                            value: numberFormatter.format(smsSummary.failed),
+                            value: numberFormatter.format(smsFailed),
                         },
                     ]}
                 />
             </section>
 
-            <DeliveredEmailSection rows={emailDevelopment} periodKey={periodKey} />
-
-            <DeliveredPushSection rows={pushDevelopment} periodKey={periodKey} />
-
-            <DeliveredSmsSection rows={smsDevelopment} periodKey={periodKey} />
-
-            <AdvertisingSpacesSection
-                occupied={currentAdvertisingSpaces?.occupied}
-                free={currentAdvertisingSpaces?.free}
-                dateLabel={dateFormatter.format(dateRange.to)}
+            <ChartTableSection
+                title="Statistics of delivered e-mails"
+                description="Delivered e-mails in the selected period."
+                rows={emailDevelopment}
+                columns={DELIVERED_COLUMNS}
+                series={[
+                    { key: 'delivered', label: 'Delivered', color: 'var(--chart-1)' },
+                ]}
                 periodKey={periodKey}
+                emptyMessage="No e-mails data for the selected period."
+                queryKey="management-delivered-e-mails-view"
             />
 
-            {/* Fulfillment of business plans remains intentionally hidden. */}
+            <ChartTableSection
+                title="Statistics of delivered push notifications"
+                description="Delivered push notifications in the selected period."
+                rows={pushDevelopment}
+                columns={DELIVERED_COLUMNS}
+                series={[
+                    { key: 'delivered', label: 'Delivered', color: 'var(--chart-2)' },
+                ]}
+                periodKey={periodKey}
+                emptyMessage="No push notifications data for the selected period."
+                queryKey="management-delivered-push-notifications-view"
+            />
 
-            <WonBusinessCasesSection
+            <ChartTableSection
+                title="Statistics of delivered SMS"
+                description="Delivered SMS in the selected period."
+                rows={smsDevelopment}
+                columns={DELIVERED_COLUMNS}
+                series={[
+                    { key: 'delivered', label: 'Delivered', color: 'var(--chart-3)' },
+                ]}
+                periodKey={periodKey}
+                emptyMessage="No SMS data for the selected period."
+                queryKey="management-delivered-SMS-view"
+            />
+
+            <DataVisulaizationCard
+                title="Ratio of available and taken advertising spaces"
+                description={`Current state as of ${dateFormatter.format(to)}.`}
+                queryKey="management-advertising-spaces"
+            >
+                {currentAdvertisingSpaces ? (
+                    <PieChart
+                        key={`advertising-spaces-${periodKey}`}
+                        data={[
+                            {
+                                name: 'occupied',
+                                value: currentAdvertisingSpaces.occupied,
+                                fill: 'var(--color-occupied)',
+                            },
+                            {
+                                name: 'free',
+                                value: currentAdvertisingSpaces.free,
+                                fill: 'var(--color-free)',
+                            },
+                        ]}
+                        config={ADVERTISING_SPACES_CONFIG}
+                        className="max-h-64"
+                        innerRadius={56}
+                    />
+                ) : (
+                    <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
+                        No advertising space data for the selected period.
+                    </div>
+                )}
+            </DataVisulaizationCard>
+
+            <ChartTableSection
+                title="Total volume of business cases won in Kč"
+                description="Value of won business cases in the selected period."
                 rows={wonBusinessCasesDevelopment}
+                columns={WON_BUSINESS_CASE_COLUMNS}
+                series={WON_BUSINESS_CASE_SERIES}
                 periodKey={periodKey}
+                emptyMessage="No won business case data for the selected period."
+                queryKey="management-won-business-cases-view"
             />
 
-            <BusinessCaseStatusSection
-                rows={businessCaseStatusData}
+            <ChartTableSection
+                title="Number of business cases created by status"
+                description="Created business cases grouped by status in the selected period."
+                rows={toBusinessCaseStatusRows(businessCaseDevelopment)}
+                columns={BUSINESS_CASE_STATUS_COLUMNS}
+                series={BUSINESS_CASE_STATUS_SERIES}
                 periodKey={periodKey}
+                emptyMessage="No business case data for the selected period."
+                queryKey="management-business-case-status-view"
             />
         </div>
     )
