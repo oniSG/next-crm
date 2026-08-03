@@ -1,15 +1,17 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import {
     ChevronsUpDownIcon,
     KeyRoundIcon,
+    Loader2Icon,
     ShieldCheckIcon,
-    UploadIcon,
 } from 'lucide-react'
 
 import { TAG_OPTIONS } from './data'
 
+import { FileInput } from '@/components/custom/inputs/file-input'
+import { PhoneNumberInput } from '@/components/custom/inputs/phone-number-input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,6 +28,7 @@ import {
     CommandItem,
     CommandList,
 } from '@/components/ui/command'
+import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
@@ -41,7 +44,7 @@ export function BaseSettings() {
     )
 }
 
-export function ContactInformationCard() {
+function ContactInformationCard() {
     return (
         <Card>
             <CardHeader>
@@ -51,35 +54,37 @@ export function ContactInformationCard() {
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-5">
-                <FormField label="Name" htmlFor="user-name">
+                <Field>
+                    <FieldLabel htmlFor="user-name">Name</FieldLabel>
                     <Input id="user-name" name="name" defaultValue="Petr" />
-                </FormField>
-                <FormField label="Surname" htmlFor="user-surname">
+                </Field>
+                <Field>
+                    <FieldLabel htmlFor="user-surname">Surname</FieldLabel>
                     <Input id="user-surname" name="surname" defaultValue="Novák" />
-                </FormField>
-                <FormField label="Email" htmlFor="user-email">
+                </Field>
+                <Field>
+                    <FieldLabel htmlFor="user-email">Email</FieldLabel>
                     <Input
                         id="user-email"
                         name="email"
                         type="email"
                         defaultValue="petr.novak@relatoo.cz"
                     />
-                </FormField>
-                <FormField label="Phone number" htmlFor="user-phone">
-                    <Input
+                </Field>
+                <Field>
+                    <FieldLabel htmlFor="user-phone">Phone number</FieldLabel>
+                    <PhoneNumberInput
                         id="user-phone"
                         name="phoneNumber"
-                        type="tel"
                         defaultValue="+420 777 123 456"
                     />
-                </FormField>
+                </Field>
             </CardContent>
         </Card>
     )
 }
 
-export function RoleAppearanceCard() {
-    const fileInputRef = useRef<HTMLInputElement>(null)
+function RoleAppearanceCard() {
     const [tags, setTags] = useState<string[]>(['Sales', 'Management'])
     const [tagsOpen, setTagsOpen] = useState(false)
 
@@ -102,18 +107,42 @@ export function RoleAppearanceCard() {
 
             <CardContent className="space-y-6">
                 <div className="space-y-3">
-                    <SwitchField id="sales-representative" label="Sales representative" />
-                    <SwitchField id="active" label="Active" defaultChecked />
-                    <SwitchField
-                        id="managerial-report"
-                        label="Receive a managerial report"
-                        defaultChecked
-                    />
+                    <Field orientation="horizontal" className="py-1">
+                        <FieldLabel htmlFor="sales-representative">
+                            Sales representative
+                        </FieldLabel>
+                        <Switch
+                            id="sales-representative"
+                            name="sales-representative"
+                            aria-label="Sales representative"
+                        />
+                    </Field>
+                    <Field orientation="horizontal" className="py-1">
+                        <FieldLabel htmlFor="active">Active</FieldLabel>
+                        <Switch
+                            id="active"
+                            name="active"
+                            aria-label="Active"
+                            defaultChecked
+                        />
+                    </Field>
+                    <Field orientation="horizontal" className="py-1">
+                        <FieldLabel htmlFor="managerial-report">
+                            Receive a managerial report
+                        </FieldLabel>
+                        <Switch
+                            id="managerial-report"
+                            name="managerial-report"
+                            aria-label="Receive a managerial report"
+                            defaultChecked
+                        />
+                    </Field>
                 </div>
 
                 <Separator />
 
-                <FormField label="Tags" htmlFor="user-tags">
+                <Field>
+                    <FieldLabel htmlFor="user-tags">Tags</FieldLabel>
                     <Popover open={tagsOpen} onOpenChange={setTagsOpen}>
                         <PopoverTrigger
                             render={
@@ -162,34 +191,36 @@ export function RoleAppearanceCard() {
                             </Command>
                         </PopoverContent>
                     </Popover>
-                </FormField>
+                </Field>
 
                 <Separator />
 
-                <FormField label="Banner" htmlFor="user-banner">
-                    <input
-                        ref={fileInputRef}
+                <Field>
+                    <FieldLabel htmlFor="user-banner">Banner</FieldLabel>
+                    <FileInput
                         id="user-banner"
                         name="banner"
-                        type="file"
                         accept="image/png,image/jpeg,image/webp"
-                        className="sr-only"
                     />
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        <UploadIcon />
-                        Choose file
-                    </Button>
-                </FormField>
+                </Field>
             </CardContent>
         </Card>
     )
 }
 
-export function SecurityCard() {
+function SecurityCard() {
+    const [loadingActions, setLoadingActions] = useState({
+        enforce: false,
+        cancelAuthentication: false,
+        enforcePasswordChange: false,
+    })
+
+    async function runSecurityAction(action: keyof typeof loadingActions) {
+        setLoadingActions((current) => ({ ...current, [action]: true }))
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        setLoadingActions((current) => ({ ...current, [action]: false }))
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -200,23 +231,54 @@ export function SecurityCard() {
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="space-y-3">
-                    <SwitchField
-                        id="two-factor-status"
-                        label="Two-factor authentication status"
-                        defaultChecked
-                    />
-                    <SwitchField
-                        id="two-factor-required"
-                        label="Two-factor authentication required"
-                    />
+                    <Field orientation="horizontal" className="py-1">
+                        <FieldLabel htmlFor="two-factor-status">
+                            Two-factor authentication status
+                        </FieldLabel>
+                        <Switch
+                            id="two-factor-status"
+                            name="two-factor-status"
+                            aria-label="Two-factor authentication status"
+                            defaultChecked
+                        />
+                    </Field>
+                    <Field orientation="horizontal" className="py-1">
+                        <FieldLabel htmlFor="two-factor-required">
+                            Two-factor authentication required
+                        </FieldLabel>
+                        <Switch
+                            id="two-factor-required"
+                            name="two-factor-required"
+                            aria-label="Two-factor authentication required"
+                        />
+                    </Field>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                    <Button type="button" variant="outline">
-                        <ShieldCheckIcon />
+                    <Button
+                        type="button"
+                        variant="outline"
+                        disabled={loadingActions.enforce}
+                        aria-busy={loadingActions.enforce}
+                        onClick={() => runSecurityAction('enforce')}
+                    >
+                        {loadingActions.enforce ? (
+                            <Loader2Icon className="animate-spin" />
+                        ) : (
+                            <ShieldCheckIcon />
+                        )}
                         Enforce
                     </Button>
-                    <Button type="button" variant="destructive">
+                    <Button
+                        type="button"
+                        variant="destructive"
+                        disabled={loadingActions.cancelAuthentication}
+                        aria-busy={loadingActions.cancelAuthentication}
+                        onClick={() => runSecurityAction('cancelAuthentication')}
+                    >
+                        {loadingActions.cancelAuthentication && (
+                            <Loader2Icon className="animate-spin" />
+                        )}
                         Cancel authentication
                     </Button>
                 </div>
@@ -230,55 +292,22 @@ export function SecurityCard() {
                             Require the user to choose a new password at the next sign-in.
                         </p>
                     </div>
-                    <Button type="button" variant="outline">
-                        <KeyRoundIcon />
+                    <Button
+                        type="button"
+                        variant="outline"
+                        disabled={loadingActions.enforcePasswordChange}
+                        aria-busy={loadingActions.enforcePasswordChange}
+                        onClick={() => runSecurityAction('enforcePasswordChange')}
+                    >
+                        {loadingActions.enforcePasswordChange ? (
+                            <Loader2Icon className="animate-spin" />
+                        ) : (
+                            <KeyRoundIcon />
+                        )}
                         Enforce password change
                     </Button>
                 </div>
             </CardContent>
         </Card>
-    )
-}
-
-function FormField({
-    label,
-    htmlFor,
-    children,
-}: {
-    label: string
-    htmlFor: string
-    children: React.ReactNode
-}) {
-    return (
-        <div className="space-y-2">
-            <label htmlFor={htmlFor} className="block text-sm font-medium">
-                {label}
-            </label>
-            {children}
-        </div>
-    )
-}
-
-function SwitchField({
-    id,
-    label,
-    defaultChecked = false,
-}: {
-    id: string
-    label: string
-    defaultChecked?: boolean
-}) {
-    return (
-        <div className="flex items-center justify-between gap-4 py-1">
-            <label htmlFor={id} className="cursor-pointer text-sm font-medium">
-                {label}
-            </label>
-            <Switch
-                id={id}
-                name={id}
-                aria-label={label}
-                defaultChecked={defaultChecked}
-            />
-        </div>
     )
 }
