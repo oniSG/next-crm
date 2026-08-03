@@ -23,7 +23,7 @@ export function ReportHeaderCard({
     className,
 }: ReportHeaderCardProps) {
     return (
-        <div className={cn('flex flex-col gap-4', className)}>
+        <div className={cn('mt-3 mb-2 flex flex-col gap-6', className)}>
             <div className="space-y-1">
                 <h2 className="text-2xl font-medium sm:text-3xl">{title}</h2>
                 {description && (
