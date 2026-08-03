@@ -5,23 +5,15 @@ import {
     CalendarRangeIcon,
     CircleDollarSignIcon,
     HashIcon,
-    MapPinIcon,
     ScanLineIcon,
     TicketCheckIcon,
 } from 'lucide-react'
 
 import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
-import { Badge } from '@/components/ui/badge'
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
-import { getReportEvent } from './data'
+import { getReportEvent, REPORT_EVENT_OPTIONS } from './data'
 import {
     SalesByDaySection,
     SalesByPriceSection,
@@ -29,7 +21,7 @@ import {
     SeasonTicketOverviewSection,
     TicketSalesOverviewSection,
 } from './event-report-sections'
-import { useEventReportFilters } from './report-utils'
+import { filterEventsByDateRange, useEventReportFilters } from './report-utils'
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
@@ -45,53 +37,79 @@ const currencyFormatter = new Intl.NumberFormat('cs-CZ', {
 })
 
 export function EventReport() {
-    const { eventId } = useEventReportFilters()
+    const { dateRange, eventId, setEventId } = useEventReportFilters()
     const event = getReportEvent(eventId)
+    const visibleEvents = filterEventsByDateRange(REPORT_EVENT_OPTIONS, dateRange)
 
     if (!event) {
         return (
-            <div className="text-muted-foreground flex min-h-64 w-full max-w-6xl items-center justify-center text-sm">
-                Select an event to display its report.
+            <div className="flex w-full max-w-6xl flex-col gap-4">
+                <div>
+                    <h1 className="text-xl font-semibold">Select an event</h1>
+                    <p className="text-muted-foreground mt-1 text-sm">
+                        Choose an event to display its sales and attendance report.
+                    </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {visibleEvents.map((option) => {
+                        const eventData = getReportEvent(option.id)
+
+                        return (
+                            <OverviewKpiCard
+                                key={option.id}
+                                onClick={() => void setEventId(option.id)}
+                                ariaLabel={`Open report for ${option.name}`}
+                                className="min-h-48"
+                                label={`${dateFormatter.format(new Date(`${option.date}T00:00:00`))} · ${option.id}`}
+                                value={option.name}
+                                valueClassName="text-xl leading-snug"
+                                icon={<CalendarCheckIcon className="size-4" />}
+                                iconClassName="bg-primary/10 text-primary"
+                                metrics={[
+                                    {
+                                        label: 'Venue',
+                                        value: eventData?.venue ?? 'Venue not specified',
+                                    },
+                                    {
+                                        label: 'Capacity',
+                                        value: `${numberFormatter.format(option.capacity)} seats`,
+                                    },
+                                ]}
+                            />
+                        )
+                    })}
+                </div>
+
+                {visibleEvents.length === 0 && (
+                    <div className="text-muted-foreground flex min-h-48 items-center justify-center rounded-xl border border-dashed text-sm">
+                        No events in the selected period.
+                    </div>
+                )}
             </div>
         )
     }
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <Card className="relative gap-0 overflow-hidden py-0">
-                <CardHeader className="bg-primary/8 gap-3 border-b p-4 sm:grid-cols-[1fr_auto]">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                            <Badge variant="secondary">CRM+ relatoo</Badge>
-                            <span className="text-muted-foreground text-xs">
-                                Event report
-                            </span>
-                        </div>
-                        <CardTitle className="text-2xl sm:text-3xl">
-                            {event.name}
-                        </CardTitle>
-                        <CardDescription className="flex items-center gap-1.5">
-                            <MapPinIcon className="size-3.5" />
-                            {event.venue}
-                        </CardDescription>
-                    </div>
-                    <CardAction className="hidden sm:block">
-                        <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
-                            <CalendarCheckIcon className="size-6" />
-                        </div>
-                    </CardAction>
-                </CardHeader>
-                <CardContent className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="gap-0">
+                <CardContent className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     <HeaderDetail
                         icon={<CalendarCheckIcon />}
                         label="Event date"
                         value={dateFormatter.format(new Date(`${event.date}T00:00:00`))}
                     />
-                    <HeaderDetail icon={<HashIcon />} label="Event ID" value={event.id} />
+                    <HeaderDetail
+                        icon={<HashIcon />}
+                        label="Event ID"
+                        value={event.id}
+                        className="sm:border-l sm:pl-6"
+                    />
                     <HeaderDetail
                         icon={<TicketCheckIcon />}
                         label="Capacity"
                         value={`${numberFormatter.format(event.capacity)} seats`}
+                        className="lg:border-l lg:pl-6"
                     />
                     <HeaderDetail
                         icon={<CalendarRangeIcon />}
@@ -99,6 +117,7 @@ export function EventReport() {
                         value={dateFormatter.format(
                             new Date(`${event.startOfSale}T00:00:00`),
                         )}
+                        className="sm:border-l sm:pl-6"
                     />
                 </CardContent>
             </Card>
@@ -184,13 +203,15 @@ function HeaderDetail({
     icon,
     label,
     value,
+    className,
 }: {
     icon: React.ReactNode
     label: string
     value: string
+    className?: string
 }) {
     return (
-        <div className="flex items-start gap-3">
+        <div className={cn('flex items-start gap-3', className)}>
             <span className="text-muted-foreground mt-0.5 [&_svg]:size-4">{icon}</span>
             <div>
                 <p className="text-muted-foreground text-xs">{label}</p>

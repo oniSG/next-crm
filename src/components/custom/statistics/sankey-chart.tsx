@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 export type SankeyNodeData = {
     name: string
     fill?: string
+    labelPosition?: 'left' | 'right' | 'above' | 'hidden'
 }
 
 export type SankeyLinkData = {
@@ -57,6 +58,19 @@ function getNodeFill(node: unknown): string {
     return 'var(--chart-1)'
 }
 
+function getLabelPosition(node: unknown): SankeyNodeData['labelPosition'] {
+    if (!node || typeof node !== 'object' || !('labelPosition' in node)) {
+        return undefined
+    }
+    const position = node.labelPosition
+    return position === 'left' ||
+        position === 'right' ||
+        position === 'above' ||
+        position === 'hidden'
+        ? position
+        : undefined
+}
+
 function SankeyNode({
     x,
     y,
@@ -68,8 +82,19 @@ function SankeyNode({
     const name = typeof payload?.name === 'string' ? payload.name : ''
     const value = typeof payload?.value === 'number' ? payload.value : null
     const fill = getNodeFill(payload)
-    const isLeft = x < labelSideThreshold
+    const configuredPosition = getLabelPosition(payload)
+    const labelPosition =
+        configuredPosition ?? (x < labelSideThreshold ? 'left' : 'right')
     const label = value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
+    const labelX =
+        labelPosition === 'left'
+            ? x - 8
+            : labelPosition === 'above'
+              ? x + width / 2
+              : x + width + 8
+    const labelY = labelPosition === 'above' ? y - 8 : y + height / 2
+    const textAnchor =
+        labelPosition === 'left' ? 'end' : labelPosition === 'above' ? 'middle' : 'start'
 
     return (
         <Layer>
@@ -82,18 +107,20 @@ function SankeyNode({
                 fillOpacity={0.95}
                 radius={2}
             />
-            <text
-                x={isLeft ? x - 8 : x + width + 8}
-                y={y + height / 2}
-                textAnchor={isLeft ? 'end' : 'start'}
-                dominantBaseline="middle"
-                fontSize={12}
-                fill={fill}
-                paintOrder="stroke"
-                style={{ pointerEvents: 'none' }}
-            >
-                {label}
-            </text>
+            {labelPosition !== 'hidden' && (
+                <text
+                    x={labelX}
+                    y={labelY}
+                    textAnchor={textAnchor}
+                    dominantBaseline="middle"
+                    fontSize={12}
+                    fill={fill}
+                    paintOrder="stroke"
+                    style={{ pointerEvents: 'none' }}
+                >
+                    {label}
+                </text>
+            )}
         </Layer>
     )
 }

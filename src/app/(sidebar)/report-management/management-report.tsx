@@ -2,7 +2,6 @@
 
 import {
     CalendarRangeIcon,
-    CircleDollarSignIcon,
     Clock3Icon,
     ContactRoundIcon,
     MailIcon,
@@ -12,15 +11,7 @@ import {
 } from 'lucide-react'
 
 import { OverviewKpiCard } from '@/components/custom/statistics/overview-kpi-card'
-import { Badge } from '@/components/ui/badge'
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 
 import { MANAGEMENT_REPORT_DATA } from './data'
 import { useReportPeriod } from './report-period-context'
@@ -174,30 +165,8 @@ export function ManagementReport() {
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
-            <Card className="relative gap-0 overflow-hidden py-0">
-                <CardHeader className="bg-primary/8 gap-3 border-b p-4 sm:grid-cols-[1fr_auto]">
-                    <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                            <Badge variant="secondary">CRM+ relatoo</Badge>
-                            <span className="text-muted-foreground text-xs">
-                                Management report
-                            </span>
-                        </div>
-                        <CardTitle className="text-2xl sm:text-3xl">
-                            Monthly results overview
-                        </CardTitle>
-                        <CardDescription>
-                            A concise overview of audience growth and ticketing
-                            performance.
-                        </CardDescription>
-                    </div>
-                    <CardAction className="hidden sm:block">
-                        <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-xl">
-                            <CircleDollarSignIcon className="size-6" />
-                        </div>
-                    </CardAction>
-                </CardHeader>
-                <CardContent className="grid gap-4 p-4 sm:grid-cols-3">
+            <Card className="gap-0">
+                <CardContent className="grid gap-6 sm:grid-cols-3">
                     <div className="flex items-start gap-3">
                         <ContactRoundIcon className="text-muted-foreground mt-0.5 size-4" />
                         <div>
@@ -205,7 +174,7 @@ export function ManagementReport() {
                             <p className="mt-1 font-medium">{meta.organizationName}</p>
                         </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-3 sm:border-l sm:pl-6">
                         <CalendarRangeIcon className="text-muted-foreground mt-0.5 size-4" />
                         <div>
                             <p className="text-muted-foreground text-xs">Report period</p>
@@ -215,7 +184,7 @@ export function ManagementReport() {
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-3 sm:border-l sm:pl-6">
                         <Clock3Icon className="text-muted-foreground mt-0.5 size-4" />
                         <div>
                             <p className="text-muted-foreground text-xs">Generated</p>

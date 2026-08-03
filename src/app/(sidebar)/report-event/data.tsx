@@ -127,19 +127,71 @@ function buildSeasonTicketFlow(capacity: number): {
         bought,
         data: {
             nodes: [
-                { name: 'Season tickets', fill: 'var(--chart-4)' },
-                { name: 'Entered', fill: 'var(--chart-1)' },
-                { name: 'Absent', fill: 'var(--destructive)' },
-                { name: 'Kept', fill: 'var(--muted-foreground)' },
-                { name: 'Redistributed', fill: 'var(--chart-2)' },
-                { name: 'Gifted', fill: 'var(--chart-3)' },
-                { name: 'For resale', fill: 'var(--chart-4)' },
-                { name: 'Gift: entered', fill: 'var(--chart-1)' },
-                { name: 'Gift: absent', fill: 'var(--destructive)' },
-                { name: 'Bought', fill: 'var(--chart-1)' },
-                { name: 'Unsold', fill: 'var(--destructive)' },
-                { name: 'Buyer: entered', fill: 'var(--chart-1)' },
-                { name: 'Buyer: absent', fill: 'var(--destructive)' },
+                {
+                    name: 'Season tickets',
+                    fill: 'var(--chart-4)',
+                    labelPosition: 'hidden',
+                },
+                {
+                    name: 'Entered',
+                    fill: 'var(--chart-1)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Absent',
+                    fill: 'var(--destructive)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Kept',
+                    fill: 'var(--muted-foreground)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Redistributed',
+                    fill: 'var(--chart-2)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Gifted',
+                    fill: 'var(--chart-3)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'For resale',
+                    fill: 'var(--chart-4)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Gift: entered',
+                    fill: 'var(--chart-1)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Gift: absent',
+                    fill: 'var(--destructive)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Bought',
+                    fill: 'var(--chart-1)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Unsold',
+                    fill: 'var(--destructive)',
+                    labelPosition: 'above',
+                },
+                {
+                    name: 'Buyer: entered',
+                    fill: 'var(--chart-1)',
+                    labelPosition: 'right',
+                },
+                {
+                    name: 'Buyer: absent',
+                    fill: 'var(--destructive)',
+                    labelPosition: 'right',
+                },
             ],
             links: [
                 { source: 0, target: 1, value: entered },
@@ -165,9 +217,13 @@ function buildTicketSalesFlow(paid: number, free: number): SankeyChartData {
 
     return {
         nodes: [
-            { name: 'All tickets', fill: 'var(--chart-1)' },
-            { name: 'Paid', fill: 'var(--chart-1)' },
-            { name: 'Free', fill: 'var(--chart-2)' },
+            {
+                name: 'All tickets',
+                fill: 'var(--chart-1)',
+                labelPosition: 'left',
+            },
+            { name: 'Paid', fill: 'var(--chart-1)', labelPosition: 'above' },
+            { name: 'Free', fill: 'var(--chart-2)', labelPosition: 'above' },
             { name: 'Online — paid', fill: 'var(--chart-1)' },
             { name: 'Box office — paid', fill: 'var(--chart-2)' },
             { name: 'Administration — paid', fill: 'var(--chart-3)' },

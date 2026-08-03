@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 
 import {
     Card,
@@ -22,6 +22,9 @@ export type OverviewKpiCardProps = {
     iconClassName?: string
     metrics: OverviewKpiMetric[]
     className?: string
+    valueClassName?: string
+    onClick?: () => void
+    ariaLabel?: string
 }
 
 export function OverviewKpiCard({
@@ -31,12 +34,32 @@ export function OverviewKpiCard({
     iconClassName,
     metrics,
     className,
+    valueClassName,
+    onClick,
+    ariaLabel,
 }: OverviewKpiCardProps) {
+    function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+        if (!onClick || (event.key !== 'Enter' && event.key !== ' ')) return
+        event.preventDefault()
+        onClick()
+    }
+
     return (
-        <Card className={className}>
+        <Card
+            className={cn(
+                onClick &&
+                    'hover:bg-muted/40 focus-visible:ring-primary cursor-pointer transition-colors outline-none focus-visible:ring-2',
+                className,
+            )}
+            role={onClick ? 'button' : undefined}
+            tabIndex={onClick ? 0 : undefined}
+            aria-label={ariaLabel}
+            onClick={onClick}
+            onKeyDown={handleKeyDown}
+        >
             <CardHeader>
                 <CardDescription>{label}</CardDescription>
-                <CardTitle className="text-3xl tabular-nums">
+                <CardTitle className={cn('text-3xl tabular-nums', valueClassName)}>
                     {value}
                 </CardTitle>
                 <CardAction>
@@ -56,12 +79,8 @@ export function OverviewKpiCard({
                         key={metric.label}
                         className="flex items-center justify-between gap-4"
                     >
-                        <span className="text-muted-foreground">
-                            {metric.label}
-                        </span>
-                        <span className="font-medium tabular-nums">
-                            {metric.value}
-                        </span>
+                        <span className="text-muted-foreground">{metric.label}</span>
+                        <span className="font-medium tabular-nums">{metric.value}</span>
                     </div>
                 ))}
             </CardContent>

@@ -266,6 +266,8 @@ export function SeasonTicketOverviewSection({
                     data={data}
                     className="h-160"
                     nodePadding={48}
+                    align="justify"
+                    sort
                     labelSideThreshold={200}
                     margin={{ top: 16, right: 180, bottom: 16, left: 140 }}
                 />
