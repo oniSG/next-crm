@@ -38,7 +38,7 @@ export function PermissionMaskSettings({
 }) {
     return (
         <Card>
-            <CardContent className="flex flex-col gap-4 py-4 lg:flex-row lg:items-center lg:justify-between">
+            <CardContent className="flex flex-col gap-4 py-4 lg:flex-row lg:items-start lg:justify-between">
                 <div className="space-y-2">
                     <div className="space-y-0.5">
                         <label
