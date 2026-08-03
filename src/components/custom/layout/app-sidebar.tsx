@@ -175,11 +175,6 @@ const fansGroups: NavGroup[] = [
                         icon: <HistoryIcon />,
                     },
                     {
-                        title: 'GDPR changes',
-                        url: '/report-gdpr-change',
-                        icon: <ShieldCheckIcon />,
-                    },
-                    {
                         title: 'Event report',
                         url: '/report-event',
                         icon: <CalendarCheckIcon />,

@@ -191,14 +191,15 @@ export function ManagementReport() {
                     value={numberFormatter.format(currentFanCount)}
                     content={[
                         {
-                            label: 'Net growth',
-                            value: `${fanNetGrowth >= 0 ? '+' : ''}${numberFormatter.format(fanNetGrowth)}`,
-                        },
-                        {
                             label: 'Blocked',
                             value: numberFormatter.format(blockedFanCount),
                         },
                     ]}
+                    trend={{
+                        direction: fanNetGrowth >= 0 ? 'up' : 'down',
+                        delta: `${fanNetGrowth >= 0 ? '+' : ''}${numberFormatter.format(fanNetGrowth)}`,
+                        hint: 'Net growth',
+                    }}
                 />
                 <KpiCard
                     label="Season tickets"
@@ -208,7 +209,7 @@ export function ManagementReport() {
                     content={[
                         {
                             label: 'Sold',
-                            value: `${numberFormatter.format(seasonTicketSummary.sold)} pcs`,
+                            value: numberFormatter.format(seasonTicketSummary.sold),
                         },
                         {
                             label: 'Average price',
@@ -229,7 +230,7 @@ export function ManagementReport() {
                     content={[
                         {
                             label: 'Sold',
-                            value: `${numberFormatter.format(ticketSummary.sold)} pcs`,
+                            value: numberFormatter.format(ticketSummary.sold),
                         },
                         {
                             label: 'Events',
