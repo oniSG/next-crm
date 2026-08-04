@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
 import { WAIT_INTERVAL_UNITS } from '../shared/constants'
-import { FieldError, FieldLabel, FieldSelect } from '../shared/form-ui'
+import { FieldError, FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

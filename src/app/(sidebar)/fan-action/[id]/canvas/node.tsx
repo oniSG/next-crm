@@ -6,6 +6,8 @@ import {
     type Node,
     type NodeProps,
 } from '@xyflow/react'
+import { ChevronRightIcon, MailIcon } from 'lucide-react'
+
 import { cn } from '@/lib/utils'
 
 import { useFanActionEditor } from '../context'
@@ -16,7 +18,6 @@ import {
     workflowConditionNodeBox,
     workflowNodeBoxRect,
     workflowNodeBoxShapeStyles,
-    workflowNodeEditingBorderClass,
     workflowNodeIconClass,
     workflowNodeLabelOffset,
     workflowTriggerNodeBox,
@@ -24,8 +25,7 @@ import {
     workflowTriggerShapeStyles,
 } from '../shared/node-styles'
 import {
-    workflowItemIcon,
-    workflowItemIconModifier,
+    workflowItemDefinition,
     workflowItemLabel,
 } from '../shared/workflow-catalog'
 
@@ -46,42 +46,29 @@ const handleYesClass = cn(handlePortBase, '!bg-success')
 /** Condition "no" / false branch port. */
 const handleNoClass = cn(handlePortBase, '!bg-destructive')
 
+/** Catalog icon for the current workflow block (color from variant/section). */
 function WorkflowNodeIcon({
     itemId,
     variant,
-    className,
 }: {
     itemId: string
     variant: FanActionWorkflowNodeData['variant']
-    className?: string
 }) {
-    const Icon = workflowItemIcon(itemId)
+    const item = workflowItemDefinition(itemId)
+    const Icon = item?.icon ?? MailIcon
+
     return (
         <Icon
             className={cn(
+                'size-[1.875rem]',
                 workflowNodeIconClass(itemId, variant),
-                workflowItemIconModifier(itemId),
-                className,
+                item?.iconModifier,
             )}
         />
     )
 }
 
-function HandleChevron() {
-    return (
-        <svg
-            aria-hidden
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            className="size-2.5"
-        >
-            <path d="m9 18 6-6-6-6" />
-        </svg>
-    )
-}
-
+/** React Flow custom node: trigger (chevron), condition (diamond), or action (square). */
 export function WorkflowNode({
     id,
     data,
@@ -96,7 +83,7 @@ export function WorkflowNode({
     )
     const triggerShapeStyles = workflowTriggerShapeStyles(isEditing)
     const editingBorderClass = isEditing
-        ? workflowNodeEditingBorderClass
+        ? 'workflow-node-editing-border'
         : undefined
     const conditionRect = workflowNodeBoxRect(
         workflowConditionNodeBox.size,
@@ -107,6 +94,7 @@ export function WorkflowNode({
         workflowActionNodeBox.stroke,
     )
 
+    /** Open (or toggle) the node config panel for this node. */
     function openSettings(event: React.MouseEvent) {
         event.stopPropagation()
         configureNode(id)
@@ -158,7 +146,6 @@ export function WorkflowNode({
                             <WorkflowNodeIcon
                                 itemId={data.itemId}
                                 variant={data.variant}
-                                className="size-[1.875rem]"
                             />
                         </div>
                     </button>
@@ -167,7 +154,10 @@ export function WorkflowNode({
                         position={Position.Right}
                         type="source"
                     >
-                        <HandleChevron />
+                        <ChevronRightIcon
+                            className="size-2.5"
+                            strokeWidth={2.5}
+                        />
                     </Handle>
                 </div>
                 <NodeLabel
@@ -228,7 +218,6 @@ export function WorkflowNode({
                         <WorkflowNodeIcon
                             itemId={data.itemId}
                             variant={data.variant}
-                            className="size-[1.875rem]"
                         />
                     </div>
                     <Handle
@@ -236,7 +225,10 @@ export function WorkflowNode({
                         position={Position.Left}
                         type="target"
                     >
-                        <HandleChevron />
+                        <ChevronRightIcon
+                            className="size-2.5"
+                            strokeWidth={2.5}
+                        />
                     </Handle>
                     <Handle
                         id="yes"
@@ -270,74 +262,84 @@ export function WorkflowNode({
         )
     }
 
-    return (
-        <div className="relative">
-            <div className="relative z-20 mx-auto w-20">
-                <button
-                    type="button"
-                    className="relative size-20 cursor-pointer border-0 bg-transparent p-0"
-                    aria-label={label}
-                    onClick={openSettings}
-                >
-                    <svg
-                        className="size-full"
-                        viewBox={`0 0 ${workflowActionNodeBox.size} ${workflowActionNodeBox.size}`}
-                        aria-hidden
+    if (data.variant === 'action') {
+        return (
+            <div className="relative">
+                <div className="relative z-20 mx-auto w-20">
+                    <button
+                        type="button"
+                        className="relative size-20 cursor-pointer border-0 bg-transparent p-0"
+                        aria-label={label}
+                        onClick={openSettings}
                     >
-                        <rect
-                            {...actionRect}
-                            rx={workflowActionNodeBox.radius}
-                            fill={boxShapeStyles.backgroundFill}
-                            stroke="none"
+                        <svg
+                            className="size-full"
+                            viewBox={`0 0 ${workflowActionNodeBox.size} ${workflowActionNodeBox.size}`}
+                            aria-hidden
+                        >
+                            <rect
+                                {...actionRect}
+                                rx={workflowActionNodeBox.radius}
+                                fill={boxShapeStyles.backgroundFill}
+                                stroke="none"
+                            />
+                            <rect
+                                {...actionRect}
+                                rx={workflowActionNodeBox.radius}
+                                fill={boxShapeStyles.tintFill}
+                                fillOpacity={boxShapeStyles.tintOpacity}
+                                stroke="none"
+                            />
+                            <rect
+                                {...actionRect}
+                                rx={workflowActionNodeBox.radius}
+                                className={editingBorderClass}
+                                fill="none"
+                                stroke={boxShapeStyles.stroke}
+                                strokeWidth={workflowActionNodeBox.stroke}
+                            />
+                        </svg>
+                        <div className="pointer-events-none absolute inset-0 m-auto flex items-center justify-center">
+                            <WorkflowNodeIcon
+                                itemId={data.itemId}
+                                variant={data.variant}
+                            />
+                        </div>
+                    </button>
+                    <Handle
+                        className={handleFlowInputClass}
+                        position={Position.Left}
+                        type="target"
+                    >
+                        <ChevronRightIcon
+                            className="size-2.5"
+                            strokeWidth={2.5}
                         />
-                        <rect
-                            {...actionRect}
-                            rx={workflowActionNodeBox.radius}
-                            fill={boxShapeStyles.tintFill}
-                            fillOpacity={boxShapeStyles.tintOpacity}
-                            stroke="none"
+                    </Handle>
+                    <Handle
+                        className={handleFlowOutputClass}
+                        position={Position.Right}
+                        type="source"
+                    >
+                        <ChevronRightIcon
+                            className="size-2.5"
+                            strokeWidth={2.5}
                         />
-                        <rect
-                            {...actionRect}
-                            rx={workflowActionNodeBox.radius}
-                            className={editingBorderClass}
-                            fill="none"
-                            stroke={boxShapeStyles.stroke}
-                            strokeWidth={workflowActionNodeBox.stroke}
-                        />
-                    </svg>
-                    <div className="pointer-events-none absolute inset-0 m-auto flex items-center justify-center">
-                        <WorkflowNodeIcon
-                            itemId={data.itemId}
-                            variant={data.variant}
-                            className="size-[2.1875rem]"
-                        />
-                    </div>
-                </button>
-                <Handle
-                    className={handleFlowInputClass}
-                    position={Position.Left}
-                    type="target"
-                >
-                    <HandleChevron />
-                </Handle>
-                <Handle
-                    className={handleFlowOutputClass}
-                    position={Position.Right}
-                    type="source"
-                >
-                    <HandleChevron />
-                </Handle>
+                    </Handle>
+                </div>
+                <NodeLabel
+                    label={label}
+                    incomplete={data.incomplete}
+                    onClick={openSettings}
+                />
             </div>
-            <NodeLabel
-                label={label}
-                incomplete={data.incomplete}
-                onClick={openSettings}
-            />
-        </div>
-    )
+        )
+    }
+
+    return null
 }
 
+/** Caption under the node shape; shows incomplete warning when needed. */
 function NodeLabel({
     label,
     incomplete,

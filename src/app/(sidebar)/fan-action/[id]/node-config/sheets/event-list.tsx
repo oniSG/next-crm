@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import { FAN_ACTION_OPTIONS } from '../../data'
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

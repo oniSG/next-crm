@@ -8,7 +8,7 @@ import { Switch } from '@/components/ui/switch'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
 import { EMAIL_TEMPLATES } from '../shared/constants'
-import { FieldError, FieldLabel, FieldSelect } from '../shared/form-ui'
+import { FieldError, FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     boolConfig,
     stringConfig,

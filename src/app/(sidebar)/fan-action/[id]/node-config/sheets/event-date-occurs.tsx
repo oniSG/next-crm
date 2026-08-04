@@ -8,7 +8,7 @@ import { Switch } from '@/components/ui/switch'
 import { FAN_ACTION_OPTIONS } from '../../data'
 import type { WorkflowDrawerContentProps } from '../../shared/types'
 import { DAY_OFFSET_OPERATORS } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     boolConfig,
     stringConfig,

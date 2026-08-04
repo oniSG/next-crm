@@ -48,8 +48,6 @@ export type TriggerShapeStyles = {
     stroke: string
 }
 
-export const workflowNodeEditingBorderClass = 'workflow-node-editing-border'
-
 export function workflowNodeBoxShapeStyles(
     itemId: string,
     variant: WorkflowNodeVariant,

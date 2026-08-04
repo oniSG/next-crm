@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
 import { LOYALTY_CREDIT_TYPES } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

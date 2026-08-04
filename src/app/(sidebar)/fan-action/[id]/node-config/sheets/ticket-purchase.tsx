@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch'
 
 import { FAN_ACTION_OPTIONS } from '../../data'
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-components'
 import {
     boolConfig,
     stringConfig,

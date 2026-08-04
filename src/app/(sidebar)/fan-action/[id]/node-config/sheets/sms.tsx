@@ -15,7 +15,7 @@ import {
     tagChipClass,
     workflowMergeTags,
 } from '../shared/constants'
-import { FieldLabel } from '../shared/form-ui'
+import { FieldLabel } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

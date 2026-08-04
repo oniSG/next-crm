@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
 import { TAG_OPTIONS } from '../shared/constants'
-import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

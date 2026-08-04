@@ -8,7 +8,7 @@ import { Switch } from '@/components/ui/switch'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
 import { DATA_CHANGE_FIELDS } from '../shared/constants'
-import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-components'
 import {
     boolConfig,
     stringConfig,

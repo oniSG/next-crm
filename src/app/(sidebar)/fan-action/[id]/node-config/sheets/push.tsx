@@ -15,7 +15,7 @@ import {
     uploadButtonClass,
     workflowMergeTags,
 } from '../shared/constants'
-import { FieldLabel, FieldLabelWithInfo } from '../shared/form-ui'
+import { FieldLabel, FieldLabelWithInfo } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

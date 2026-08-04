@@ -5,7 +5,7 @@ import * as React from 'react'
 import { Input } from '@/components/ui/input'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel } from '../shared/form-ui'
+import { FieldLabel } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,

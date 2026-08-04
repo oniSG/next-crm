@@ -9,7 +9,7 @@ import {
     DATE_PROPERTIES,
     DAY_OFFSET_OPERATORS,
 } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-ui'
+import { FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,
