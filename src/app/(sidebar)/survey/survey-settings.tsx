@@ -17,14 +17,17 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import type { SurveyFormData } from './temp'
 
 export function SurveySettings({
+    initialData,
     expireDate,
     sharePublicly,
     onExpireDateChange,
     onSharePubliclyChange,
     onSurveyColorChange,
 }: {
+    initialData: SurveyFormData
     expireDate: string
     sharePublicly: boolean
     onExpireDateChange: (value: string) => void
@@ -33,19 +36,23 @@ export function SurveySettings({
 }) {
     return (
         <div className="grid grid-cols-3 gap-5">
-            <BasicSettingsCard />
+            <BasicSettingsCard initialData={initialData} />
             <ExpirationSettingsCard
+                initialData={initialData}
                 expireDate={expireDate}
                 sharePublicly={sharePublicly}
                 onExpireDateChange={onExpireDateChange}
                 onSharePubliclyChange={onSharePubliclyChange}
             />
-            <ThemeSettingsCard onSurveyColorChange={onSurveyColorChange} />
+            <ThemeSettingsCard
+                initialData={initialData}
+                onSurveyColorChange={onSurveyColorChange}
+            />
         </div>
     )
 }
 
-function BasicSettingsCard() {
+function BasicSettingsCard({ initialData }: { initialData: SurveyFormData }) {
     return (
         <Card>
             <CardHeader>
@@ -55,13 +62,14 @@ function BasicSettingsCard() {
             <CardContent className="space-y-5">
                 <Field>
                     <FieldLabel htmlFor="survey-name">Name</FieldLabel>
-                    <Input id="survey-name" name="name" defaultValue="Untitled survey" />
+                    <Input id="survey-name" name="name" defaultValue={initialData.name} />
                 </Field>
                 <Field>
                     <FieldLabel htmlFor="survey-description">Description</FieldLabel>
                     <Textarea
                         id="survey-description"
                         name="description"
+                        defaultValue={initialData.description}
                         placeholder="Survey description"
                     />
                 </Field>
@@ -72,6 +80,7 @@ function BasicSettingsCard() {
                     <Textarea
                         id="survey-thank-you-message"
                         name="thank-you-message"
+                        defaultValue={initialData.thankYouMessage}
                         placeholder="Message shown after the survey is submitted"
                     />
                 </Field>
@@ -81,11 +90,13 @@ function BasicSettingsCard() {
 }
 
 function ExpirationSettingsCard({
+    initialData,
     expireDate,
     sharePublicly,
     onExpireDateChange,
     onSharePubliclyChange,
 }: {
+    initialData: SurveyFormData
     expireDate: string
     sharePublicly: boolean
     onExpireDateChange: (value: string) => void
@@ -106,6 +117,7 @@ function ExpirationSettingsCard({
                         id="survey-expire-date"
                         name="expire-date"
                         type="date"
+                        defaultValue={initialData.expireDate}
                         onChange={(event) => onExpireDateChange(event.target.value)}
                     />
                 </Field>
@@ -133,7 +145,7 @@ function ExpirationSettingsCard({
                                 id="survey-link-validity"
                                 name="link-validity"
                                 type="number"
-                                placeholder="30"
+                                defaultValue={initialData.linkValidity}
                             />
                         </Field>
                         <Field>
@@ -143,6 +155,7 @@ function ExpirationSettingsCard({
                             <EmailTagsInput
                                 id="survey-share-emails"
                                 name="share-emails"
+                                defaultValue={initialData.shareEmails}
                             />
                         </Field>
                     </>
@@ -153,8 +166,10 @@ function ExpirationSettingsCard({
 }
 
 function ThemeSettingsCard({
+    initialData,
     onSurveyColorChange,
 }: {
+    initialData: SurveyFormData
     onSurveyColorChange: (value: string) => void
 }) {
     return (
@@ -169,7 +184,7 @@ function ThemeSettingsCard({
                     <HexColorInput
                         id="survey-color"
                         name="customColor"
-                        defaultValue="#7EC71E"
+                        defaultValue={initialData.color}
                         onValueChange={(value) => {
                             const normalizedColor = normalizeHexColor(value)
                             if (normalizedColor) onSurveyColorChange(normalizedColor)
@@ -184,6 +199,7 @@ function ThemeSettingsCard({
                         id="survey-multiple"
                         name="multiple"
                         aria-label="Multiple filling possible"
+                        defaultChecked={initialData.multiple}
                     />
                 </Field>
                 <Field orientation="horizontal">
@@ -192,6 +208,7 @@ function ThemeSettingsCard({
                         id="survey-show-logo"
                         name="show-logo"
                         aria-label="Show logo"
+                        defaultChecked={initialData.showLogo}
                     />
                 </Field>
             </CardContent>

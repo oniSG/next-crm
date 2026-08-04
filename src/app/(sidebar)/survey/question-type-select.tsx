@@ -14,17 +14,20 @@ export function QuestionTypeSelect({
     id,
     name,
     value,
+    disabled,
     onValueChange,
 }: {
     id: string
     name: string
     value: QuestionType
+    disabled?: boolean
     onValueChange: (value: QuestionType) => void
 }) {
     return (
         <Select
             value={value}
             name={name}
+            disabled={disabled}
             onValueChange={(nextValue) => {
                 if (nextValue) onValueChange(nextValue as QuestionType)
             }}

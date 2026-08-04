@@ -26,6 +26,9 @@ export type SelectionOption = {
 
 export type SurveyQuestion = {
     id: string
+    isNew?: boolean
+    name: string
+    description: string
     type: QuestionType
     required: boolean
     starCount: number
@@ -40,6 +43,22 @@ export type SurveyQuestion = {
 
 export type SurveySection = {
     id: string
+    name: string
+    questions: SurveyQuestion[]
+}
+
+export type SurveyFormData = {
+    name: string
+    description: string
+    thankYouMessage: string
+    expireDate: string
+    sharePublicly: boolean
+    linkValidity: number
+    shareEmails: string[]
+    color: string
+    multiple: boolean
+    showLogo: boolean
+    sections: SurveySection[]
 }
 
 export const QUESTION_TYPE_OPTIONS: QuestionTypeOption[] = [

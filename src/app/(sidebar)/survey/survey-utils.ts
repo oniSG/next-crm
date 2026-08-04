@@ -1,4 +1,4 @@
-import type { SurveyQuestion, SurveySection } from './temp'
+import type { SurveyFormData, SurveyQuestion, SurveySection } from './temp'
 
 export function createDefaultSelectionOptions(): SurveyQuestion['selectionOptions'] {
     return [
@@ -17,9 +17,12 @@ export function createDefaultSelectionOptions(): SurveyQuestion['selectionOption
     ]
 }
 
-export function createDefaultQuestion(id = 'question-1'): SurveyQuestion {
+export function createDefaultQuestion(id = 'question-1', isNew = false): SurveyQuestion {
     return {
         id,
+        isNew,
+        name: '',
+        description: '',
         type: 'text',
         required: false,
         starCount: 5,
@@ -34,5 +37,25 @@ export function createDefaultQuestion(id = 'question-1'): SurveyQuestion {
 }
 
 export function createDefaultSection(id = 'section-1'): SurveySection {
-    return { id }
+    return {
+        id,
+        name: '',
+        questions: [createDefaultQuestion()],
+    }
+}
+
+export function createDefaultSurveyData(): SurveyFormData {
+    return {
+        name: 'Untitled survey',
+        description: '',
+        thankYouMessage: '',
+        expireDate: '',
+        sharePublicly: false,
+        linkValidity: 30,
+        shareEmails: [],
+        color: '#7EC71E',
+        multiple: false,
+        showLogo: false,
+        sections: [createDefaultSection()],
+    }
 }

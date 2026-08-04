@@ -7,11 +7,11 @@ import type { DragEndEvent } from '@dnd-kit/core'
 import { createDefaultSection } from './survey-utils'
 import type { SurveySection } from './temp'
 
-export function useSurveyBuilder() {
-    const sectionId = useRef(1)
-    const [sections, setSections] = useState<SurveySection[]>([createDefaultSection()])
+export function useSurveyBuilder(initialSections: SurveySection[]) {
+    const sectionId = useRef(initialSections.length)
+    const [sections, setSections] = useState<SurveySection[]>(initialSections)
     const [openSectionIds, setOpenSectionIds] = useState<Set<string>>(
-        () => new Set(['section-1']),
+        () => new Set(initialSections.map((section) => section.id)),
     )
 
     function addSection() {

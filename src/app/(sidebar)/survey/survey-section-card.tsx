@@ -47,6 +47,7 @@ export function SurveySectionCard({
     index: sectionIndex,
     sectionCount,
     surveyColor,
+    lockQuestionType,
     open,
     onOpenChange,
     onRemove,
@@ -55,6 +56,7 @@ export function SurveySectionCard({
     index: number
     sectionCount: number
     surveyColor: string
+    lockQuestionType: boolean
     open: boolean
     onOpenChange: (open: boolean) => void
     onRemove: (sectionId: string) => void
@@ -68,10 +70,8 @@ export function SurveySectionCard({
         transition,
         isDragging,
     } = useSortable({ id: section.id })
-    const questionId = useRef(1)
-    const [questions, setQuestions] = useState<SurveyQuestion[]>([
-        createDefaultQuestion(),
-    ])
+    const questionId = useRef(section.questions.length)
+    const [questions, setQuestions] = useState<SurveyQuestion[]>(section.questions)
     const questionSensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -81,7 +81,7 @@ export function SurveySectionCard({
         questionId.current += 1
         setQuestions((current) => [
             ...current,
-            createDefaultQuestion(`question-${questionId.current}`),
+            createDefaultQuestion(`question-${questionId.current}`, true),
         ])
     }
 
@@ -136,6 +136,7 @@ export function SurveySectionCard({
                             <Input
                                 id={`${section.id}-name`}
                                 name={`sections[${sectionIndex}][name]`}
+                                defaultValue={section.name}
                                 placeholder="Untitled section"
                             />
                         </CardTitle>
@@ -203,6 +204,9 @@ export function SurveySectionCard({
                                                 question={question}
                                                 index={index}
                                                 questionCount={questions.length}
+                                                lockQuestionType={
+                                                    lockQuestionType && !question.isNew
+                                                }
                                                 onChange={changeQuestion}
                                                 onRemove={removeQuestion}
                                             />

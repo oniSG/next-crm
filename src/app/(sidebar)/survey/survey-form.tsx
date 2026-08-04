@@ -6,12 +6,15 @@ import { Button } from '@/components/ui/button'
 
 import { SurveySectionsEditor } from './survey-sections-editor'
 import { SurveySettings } from './survey-settings'
+import { createDefaultSurveyData } from './survey-utils'
+import type { SurveyFormData } from './temp'
 import { useSurveyBuilder } from './use-survey-builder'
 
-export default function SurveyForm() {
-    const [expireDate, setExpireDate] = useState('')
-    const [sharePublicly, setSharePublicly] = useState(false)
-    const [surveyColor, setSurveyColor] = useState('#7EC71E')
+export default function SurveyForm({ initialData }: { initialData?: SurveyFormData }) {
+    const data = initialData ?? createDefaultSurveyData()
+    const [expireDate, setExpireDate] = useState(data.expireDate)
+    const [sharePublicly, setSharePublicly] = useState(data.sharePublicly)
+    const [surveyColor, setSurveyColor] = useState(data.color)
     const {
         sections,
         openSectionIds,
@@ -20,7 +23,7 @@ export default function SurveyForm() {
         setSectionOpen,
         closeSections,
         reorderSections,
-    } = useSurveyBuilder()
+    } = useSurveyBuilder(data.sections)
 
     function changeExpireDate(value: string) {
         setExpireDate(value)
@@ -30,6 +33,7 @@ export default function SurveyForm() {
     return (
         <div className="flex w-full flex-col gap-10">
             <SurveySettings
+                initialData={data}
                 expireDate={expireDate}
                 sharePublicly={sharePublicly}
                 onExpireDateChange={changeExpireDate}
@@ -40,14 +44,15 @@ export default function SurveyForm() {
                 sections={sections}
                 openSectionIds={openSectionIds}
                 surveyColor={surveyColor}
+                lockQuestionType={Boolean(initialData)}
                 onAdd={addSection}
                 onRemove={removeSection}
                 onOpenChange={setSectionOpen}
                 onDragStart={closeSections}
                 onDragEnd={reorderSections}
             />
-            <div className="flex gap-2">
-                <Button>Create</Button>
+            <div className="flex justify-end gap-2">
+                <Button>{initialData ? 'Save changes' : 'Create'}</Button>
                 <Button variant="outline">Cancel</Button>
             </div>
         </div>

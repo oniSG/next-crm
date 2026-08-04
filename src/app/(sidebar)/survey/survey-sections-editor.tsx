@@ -26,6 +26,7 @@ export function SurveySectionsEditor({
     sections,
     openSectionIds,
     surveyColor,
+    lockQuestionType,
     onAdd,
     onRemove,
     onOpenChange,
@@ -35,6 +36,7 @@ export function SurveySectionsEditor({
     sections: SurveySection[]
     openSectionIds: Set<string>
     surveyColor: string
+    lockQuestionType: boolean
     onAdd: () => void
     onRemove: (sectionId: string) => void
     onOpenChange: (sectionId: string, open: boolean) => void
@@ -71,6 +73,7 @@ export function SurveySectionsEditor({
                                 index={index}
                                 sectionCount={sections.length}
                                 surveyColor={surveyColor}
+                                lockQuestionType={lockQuestionType}
                                 open={openSectionIds.has(section.id)}
                                 onOpenChange={(open) => onOpenChange(section.id, open)}
                                 onRemove={onRemove}

@@ -22,6 +22,7 @@ export function SurveyQuestionItem({
     question,
     index,
     questionCount,
+    lockQuestionType,
     onChange,
     onRemove,
 }: {
@@ -30,6 +31,7 @@ export function SurveyQuestionItem({
     question: SurveyQuestion
     index: number
     questionCount: number
+    lockQuestionType: boolean
     onChange: (questionId: string, values: Partial<SurveyQuestion>) => void
     onRemove: (questionId: string) => void
 }) {
@@ -78,6 +80,7 @@ export function SurveyQuestionItem({
                     <Input
                         id={`${questionDomId}-name`}
                         name={`${questionFieldName}[name]`}
+                        defaultValue={question.name}
                         placeholder="Untitled question"
                     />
                 </Field>
@@ -89,6 +92,7 @@ export function SurveyQuestionItem({
                         id={`${questionDomId}-type`}
                         name={`${questionFieldName}[type]`}
                         value={question.type}
+                        disabled={lockQuestionType}
                         onValueChange={changeType}
                     />
                 </Field>
@@ -137,6 +141,7 @@ export function SurveyQuestionItem({
                 <Textarea
                     id={`${questionDomId}-description`}
                     name={`${questionFieldName}[description]`}
+                    defaultValue={question.description}
                     placeholder="Optional question description"
                     className="min-h-16 resize-y"
                 />
