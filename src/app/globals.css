@@ -39,6 +39,10 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
+    --color-workflow-trigger: var(--workflow-color-trigger);
+    --color-workflow-action: var(--workflow-color-action);
+    --color-workflow-operator: var(--workflow-color-operator);
+    --color-success: var(--success);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -78,6 +82,10 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --workflow-color-trigger: oklch(0.623 0.214 250);
+    --workflow-color-action: oklch(0.723 0.219 149.579);
+    --workflow-color-operator: oklch(0.705 0.191 55);
+    --success: oklch(0.723 0.219 149.579);
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
 }
@@ -113,6 +121,10 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    --workflow-color-trigger: oklch(0.623 0.214 250);
+    --workflow-color-action: oklch(0.723 0.219 149.579);
+    --workflow-color-operator: oklch(0.705 0.191 55);
+    --success: oklch(0.723 0.219 149.579);
 }
 
 @layer base {
@@ -125,5 +137,41 @@
     html,
     body {
         @apply overscroll-none font-sans;
+    }
+}
+
+@keyframes workflow-border-flow {
+    to {
+        stroke-dashoffset: -18;
+    }
+}
+
+@keyframes workflow-edge-flow {
+    to {
+        stroke-dashoffset: -24;
+    }
+}
+
+@utility workflow-node-editing-border {
+    animation: workflow-border-flow 0.9s linear infinite;
+    stroke-dasharray: 5 4;
+}
+
+@layer components {
+    .workflow-flow .react-flow__edge-path {
+        stroke-dasharray: 6 6;
+        animation: workflow-edge-flow 1.6s linear infinite;
+    }
+
+    .workflow-flow-running .react-flow__edge-path {
+        animation: workflow-edge-flow 0.7s linear infinite;
+    }
+
+    .workflow-flow .react-flow__node {
+        @apply cursor-grab;
+    }
+
+    .workflow-flow .react-flow__handle {
+        @apply border-0;
     }
 }

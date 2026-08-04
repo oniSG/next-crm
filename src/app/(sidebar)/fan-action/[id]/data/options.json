@@ -1,0 +1,61 @@
+{
+    "allTags": [
+        "VIP-gold",
+        "VIP-silver",
+        "normal",
+        "premium",
+        "denis"
+    ],
+    "allEventLists": [
+        "Seznam Zuza",
+        "Seznam Hlavní",
+        "Sezónní akce",
+        "VIP události",
+        "Veřejné akce"
+    ],
+    "allMembershipStatuses": [
+        "Aktivní",
+        "Neaktivní",
+        "Zrušené",
+        "Pozastavené",
+        "Vypršelé"
+    ],
+    "allQuestionnaires": [
+        "Validace otázky",
+        "Spokojenost s akcí",
+        "Registrace fanouška",
+        "Zpětná vazba po nákupu"
+    ],
+    "allWebForms": [
+        "test v4",
+        "Registrace fanouška",
+        "Kontaktní formulář",
+        "Newsletter signup"
+    ],
+    "allCreators": [
+        "Budina Tomáš",
+        "Novák Petr",
+        "Svoboda Jan",
+        "Dvořák Martin",
+        "Černý Jakub",
+        "Procházka Ondřej",
+        "Kučera Lukáš",
+        "Veselý Michal",
+        "Horáček Filip",
+        "Pospíšil Radek",
+        "Blažek Vojtěch",
+        "Kratochvíl Marek",
+        "Fiala Zdeněk",
+        "Sedláček Pavel",
+        "Musil Daniel",
+        "Hájek Roman",
+        "Kopecký Stanislav",
+        "Kolář Miroslav",
+        "Růžička Tomáš",
+        "Novotný Karel",
+        "Marková Eva",
+        "Horáková Jana",
+        "Nováková Lucie",
+        "Dvořáková Petra"
+    ]
+}

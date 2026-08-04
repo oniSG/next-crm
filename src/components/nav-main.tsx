@@ -28,18 +28,12 @@ export type NavSubItem = {
     items?: NavSubItem[]
 }
 
-export type NavSection = {
-    label: string
-    items: NavSubItem[]
-}
-
 export type NavItem = {
     title: string
     url: string
     icon?: React.ReactNode
     isActive?: boolean
     items?: NavSubItem[]
-    sections?: NavSection[]
 }
 
 function SubNavLink({ item }: { item: NavSubItem }) {
@@ -78,9 +72,7 @@ function NestedCollapsibleSubItem({ item }: { item: NavSubItem }) {
         >
             <CollapsibleTrigger
                 nativeButton={false}
-                render={
-                    <SidebarMenuSubButton isActive={item.isActive} />
-                }
+                render={<SidebarMenuSubButton isActive={item.isActive} />}
             >
                 {item.icon}
                 <span>{item.title}</span>
@@ -127,22 +119,7 @@ function CollapsibleNavItem({ item }: { item: NavItem }) {
                 <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
             </CollapsibleTrigger>
             <CollapsibleContent>
-                {item.sections ? (
-                    <div className="ml-3.5 flex translate-x-px flex-col gap-2 border-l border-sidebar-border px-2.5 py-1">
-                        {item.sections.map((section) => (
-                            <div key={section.label} className="flex flex-col gap-0.5">
-                                <span className="text-muted-foreground px-2 pt-1 pb-0.5 text-xs font-medium">
-                                    {section.label}
-                                </span>
-                                <SidebarMenuSub className="mx-0 translate-x-0 border-l-0 px-0 py-0">
-                                    {renderSubItems(section.items)}
-                                </SidebarMenuSub>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <SidebarMenuSub>{renderSubItems(item.items ?? [])}</SidebarMenuSub>
-                )}
+                <SidebarMenuSub>{renderSubItems(item.items ?? [])}</SidebarMenuSub>
             </CollapsibleContent>
         </Collapsible>
     )
@@ -154,9 +131,7 @@ export function NavMain({ label, items }: { label?: string; items: NavItem[] }) 
             {label ? <SidebarGroupLabel>{label}</SidebarGroupLabel> : null}
             <SidebarMenu>
                 {items.map((item) => {
-                    const hasChildren =
-                        (!!item.items && item.items.length > 0) ||
-                        (!!item.sections && item.sections.length > 0)
+                    const hasChildren = !!item.items && item.items.length > 0
 
                     if (hasChildren) {
                         return <CollapsibleNavItem key={item.title} item={item} />

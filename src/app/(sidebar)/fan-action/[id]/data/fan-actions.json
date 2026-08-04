@@ -1,0 +1,2469 @@
+[
+    {
+        "id": 1,
+        "event": "Uvítací e-mail",
+        "tags": [
+            "VIP-gold"
+        ],
+        "description": "Automatický e-mail odeslaný nově registrovaným fanouškům.",
+        "created_at": "2024-01-01",
+        "created_by": "Budina Tomáš",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                },
+                {
+                    "id": "wait-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 280,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "wait",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 520,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 760,
+                        "y": 40
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 760,
+                        "y": 200
+                    },
+                    "data": {
+                        "itemId": "tag",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "id": "e-1-2",
+                    "source": "trigger-1",
+                    "target": "wait-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-2-3",
+                    "source": "wait-1",
+                    "target": "condition-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-3-4-yes",
+                    "source": "condition-1",
+                    "sourceHandle": "yes",
+                    "target": "action-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-3-4-no",
+                    "source": "condition-1",
+                    "sourceHandle": "no",
+                    "target": "action-2",
+                    "type": "workflow"
+                }
+            ]
+        }
+    },
+    {
+        "id": 2,
+        "event": "Narozeninové přání",
+        "tags": [
+            "normal"
+        ],
+        "description": "Personalizovaná gratulace k narozeninám fanouška.",
+        "created_at": "2024-02-02",
+        "created_by": "Novák Petr",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 3,
+        "event": "Odpověď po nákupu",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Poděkování za nákup vstupenky a doporučení dalších akcí.",
+        "created_at": "2024-03-03",
+        "created_by": "Svoboda Jan",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 4,
+        "event": "VIP nabídka",
+        "tags": [
+            "premium"
+        ],
+        "description": "Exkluzivní sleva a výhody pro VIP segment fanoušků.",
+        "created_at": "2024-04-04",
+        "created_by": "Dvořák Martin",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 30
+                    },
+                    "data": {
+                        "itemId": "ticket-purchase",
+                        "variant": "trigger",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 300,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 540,
+                        "y": 210
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 780,
+                        "y": 30
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 780,
+                        "y": 210
+                    },
+                    "data": {
+                        "itemId": "push",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-3",
+                    "type": "workflow",
+                    "position": {
+                        "x": 540,
+                        "y": 360
+                    },
+                    "data": {
+                        "itemId": "tag",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "id": "e-trigger-condition-1",
+                    "source": "trigger-1",
+                    "target": "condition-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-1-yes-action-1",
+                    "source": "condition-1",
+                    "sourceHandle": "yes",
+                    "target": "action-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-1-no-2",
+                    "source": "condition-1",
+                    "sourceHandle": "no",
+                    "target": "condition-2",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-2-yes-action-2",
+                    "source": "condition-2",
+                    "sourceHandle": "yes",
+                    "target": "action-2",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-2-no-action-3",
+                    "source": "condition-2",
+                    "sourceHandle": "no",
+                    "target": "action-3",
+                    "type": "workflow"
+                }
+            ]
+        }
+    },
+    {
+        "id": 5,
+        "event": "Push: domácí zápas",
+        "tags": [
+            "VIP-gold",
+            "premium"
+        ],
+        "description": "Push notifikace 48 hodin před domácím utkáním.",
+        "created_at": "2024-05-05",
+        "created_by": "Černý Jakub",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 6,
+        "event": "SMS připomínka",
+        "tags": [
+            "normal"
+        ],
+        "description": "Krátká SMS 24 hodin před začátkem akce.",
+        "created_at": "2024-06-06",
+        "created_by": "Procházka Ondřej",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 7,
+        "event": "Reaktivace fanoušků",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Kampaň pro fanoušky bez aktivity déle než 90 dní.",
+        "created_at": "2024-07-07",
+        "created_by": "Kučera Lukáš",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 8,
+        "event": "Dotazník spokojenosti",
+        "tags": [
+            "premium",
+            "VIP-gold"
+        ],
+        "description": "Krátký průzkum spokojenosti po návštěvě akce.",
+        "created_at": "2024-08-08",
+        "created_by": "Veselý Michal",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 9,
+        "event": "Měsíční newsletter",
+        "tags": [
+            "denis"
+        ],
+        "description": "Přehled novinek, výsledků a nadcházejících událostí.",
+        "created_at": "2024-09-09",
+        "created_by": "Horáček Filip",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 10,
+        "event": "Sleva pro stálé zákazníky",
+        "tags": [
+            "normal",
+            "premium"
+        ],
+        "description": "Odměna za opakované nákupy vstupenek a merchandisingu.",
+        "created_at": "2024-10-10",
+        "created_by": "Pospíšil Radek",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "ticket-purchase",
+                        "variant": "trigger",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "ab-test-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 280,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "ab-test",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 520,
+                        "y": 40
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 520,
+                        "y": 200
+                    },
+                    "data": {
+                        "itemId": "push",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-3",
+                    "type": "workflow",
+                    "position": {
+                        "x": 760,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "reward-conversion",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "id": "e-trigger-ab",
+                    "source": "trigger-1",
+                    "target": "ab-test-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-ab-email",
+                    "source": "ab-test-1",
+                    "sourceHandle": "a",
+                    "target": "action-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-ab-push",
+                    "source": "ab-test-1",
+                    "sourceHandle": "b",
+                    "target": "action-2",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-email-reward",
+                    "source": "action-1",
+                    "target": "action-3",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-push-reward",
+                    "source": "action-2",
+                    "target": "action-3",
+                    "type": "workflow"
+                }
+            ]
+        }
+    },
+    {
+        "id": 11,
+        "event": "Cross-sell merchandising",
+        "tags": [
+            "VIP-gold",
+            "VIP-silver"
+        ],
+        "description": "Doporučení produktů z fanshopu po nákupu vstupenky.",
+        "created_at": "2024-11-11",
+        "created_by": "Blažek Vojtěch",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 12,
+        "event": "Pozvánka na fanshop",
+        "tags": [
+            "VIP-silver",
+            "normal"
+        ],
+        "description": "Speciální akce ve fanshopu pro registrované fanoušky.",
+        "created_at": "2024-12-12",
+        "created_by": "Kratochvíl Marek",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 13,
+        "event": "Early bird vstupenky",
+        "tags": [
+            "VIP-gold"
+        ],
+        "description": "Přednostní prodej vstupenek pro členy fan klubu.",
+        "created_at": "2024-01-13",
+        "created_by": "Fiala Zdeněk",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 14,
+        "event": "Soutěž o VIP lístky",
+        "tags": [
+            "normal"
+        ],
+        "description": "Soutěžní kampaň s výhrou VIP zážitku na utkání.",
+        "created_at": "2024-02-14",
+        "created_by": "Sedláček Pavel",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 15,
+        "event": "Sezónní přehled",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Rekapitulace sezóny a plány na další ročník.",
+        "created_at": "2024-03-15",
+        "created_by": "Musil Daniel",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 16,
+        "event": "Push: výsledky zápasu",
+        "tags": [
+            "premium"
+        ],
+        "description": "Notifikace s výsledkem hned po skončení utkání.",
+        "created_at": "2024-04-16",
+        "created_by": "Hájek Roman",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 17,
+        "event": "E-mail: opuštěný košík",
+        "tags": [
+            "VIP-gold",
+            "premium"
+        ],
+        "description": "Připomínka nedokončené objednávky vstupenek.",
+        "created_at": "2024-05-17",
+        "created_by": "Kopecký Stanislav",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 18,
+        "event": "Segmentace nových fanoušků",
+        "tags": [
+            "normal"
+        ],
+        "description": "Automatické zařazení do segmentů podle chování.",
+        "created_at": "2024-06-18",
+        "created_by": "Kolář Miroslav",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 19,
+        "event": "Kampaň pro studenty",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Zvýhodněné vstupenky pro držitele ISIC.",
+        "created_at": "2024-07-19",
+        "created_by": "Růžička Tomáš",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 20,
+        "event": "Rodinná akce",
+        "tags": [
+            "premium",
+            "VIP-gold"
+        ],
+        "description": "Nabídka vstupenek a balíčků pro rodiny s dětmi.",
+        "created_at": "2024-08-20",
+        "created_by": "Novotný Karel",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "event-date-occurs",
+                        "variant": "trigger",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "wait-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 280,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "wait",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 520,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "sms",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 760,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-3",
+                    "type": "workflow",
+                    "position": {
+                        "x": 1000,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "push",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "id": "e-trigger-wait",
+                    "source": "trigger-1",
+                    "target": "wait-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-wait-sms",
+                    "source": "wait-1",
+                    "target": "action-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-sms-email",
+                    "source": "action-1",
+                    "target": "action-2",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-email-push",
+                    "source": "action-2",
+                    "target": "action-3",
+                    "type": "workflow"
+                }
+            ]
+        }
+    },
+    {
+        "id": 21,
+        "event": "Win-back kampaň",
+        "tags": [
+            "denis"
+        ],
+        "description": "Návratová nabídka pro fanoušky, kteří dlouho nenavštívili akci.",
+        "created_at": "2024-09-21",
+        "created_by": "Marková Eva",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 22,
+        "event": "Referral program",
+        "tags": [
+            "normal",
+            "premium"
+        ],
+        "description": "Odměna za doporučení nového fanouška do klubu.",
+        "created_at": "2024-10-22",
+        "created_by": "Horáková Jana",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 23,
+        "event": "Push: předprodej",
+        "tags": [
+            "VIP-gold",
+            "VIP-silver"
+        ],
+        "description": "Upozornění na start předprodeje vstupenek na novou sezónu.",
+        "created_at": "2024-11-23",
+        "created_by": "Nováková Lucie",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 24,
+        "event": "E-mail: matchday info",
+        "tags": [
+            "VIP-silver",
+            "normal"
+        ],
+        "description": "Praktické informace k dni utkání včetně dopravy a vstupu.",
+        "created_at": "2024-12-24",
+        "created_by": "Dvořáková Petra",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 25,
+        "event": "Uvítací e-mail 2",
+        "tags": [
+            "VIP-gold"
+        ],
+        "description": "Automatický e-mail odeslaný nově registrovaným fanouškům.",
+        "created_at": "2025-01-25",
+        "created_by": "Budina Tomáš",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 26,
+        "event": "Narozeninové přání 2",
+        "tags": [
+            "normal"
+        ],
+        "description": "Personalizovaná gratulace k narozeninám fanouška.",
+        "created_at": "2025-02-26",
+        "created_by": "Novák Petr",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 27,
+        "event": "Odpověď po nákupu 2",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Poděkování za nákup vstupenky a doporučení dalších akcí.",
+        "created_at": "2025-03-27",
+        "created_by": "Svoboda Jan",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 28,
+        "event": "VIP nabídka 2",
+        "tags": [
+            "premium"
+        ],
+        "description": "Exkluzivní sleva a výhody pro VIP segment fanoušků.",
+        "created_at": "2025-04-28",
+        "created_by": "Dvořák Martin",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 29,
+        "event": "Push: domácí zápas 2",
+        "tags": [
+            "VIP-gold",
+            "premium"
+        ],
+        "description": "Push notifikace 48 hodin před domácím utkáním.",
+        "created_at": "2025-05-01",
+        "created_by": "Černý Jakub",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 30,
+        "event": "SMS připomínka 2",
+        "tags": [
+            "normal"
+        ],
+        "description": "Krátká SMS 24 hodin před začátkem akce.",
+        "created_at": "2025-06-02",
+        "created_by": "Procházka Ondřej",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "scheduled-sending",
+                        "variant": "trigger",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "wait-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 280,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "wait",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 520,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 760,
+                        "y": 40
+                    },
+                    "data": {
+                        "itemId": "sms",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 760,
+                        "y": 200
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "id": "e-trigger-wait",
+                    "source": "trigger-1",
+                    "target": "wait-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-wait-condition",
+                    "source": "wait-1",
+                    "target": "condition-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-sms",
+                    "source": "condition-1",
+                    "sourceHandle": "yes",
+                    "target": "action-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-email",
+                    "source": "condition-1",
+                    "sourceHandle": "no",
+                    "target": "action-2",
+                    "type": "workflow"
+                }
+            ]
+        }
+    },
+    {
+        "id": 31,
+        "event": "Reaktivace fanoušků 2",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Kampaň pro fanoušky bez aktivity déle než 90 dní.",
+        "created_at": "2025-07-03",
+        "created_by": "Kučera Lukáš",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 32,
+        "event": "Dotazník spokojenosti 2",
+        "tags": [
+            "premium",
+            "VIP-gold"
+        ],
+        "description": "Krátký průzkum spokojenosti po návštěvě akce.",
+        "created_at": "2025-08-04",
+        "created_by": "Veselý Michal",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 33,
+        "event": "Měsíční newsletter 2",
+        "tags": [
+            "denis"
+        ],
+        "description": "Přehled novinek, výsledků a nadcházejících událostí.",
+        "created_at": "2025-09-05",
+        "created_by": "Horáček Filip",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 34,
+        "event": "Sleva pro stálé zákazníky 2",
+        "tags": [
+            "normal",
+            "premium"
+        ],
+        "description": "Odměna za opakované nákupy vstupenek a merchandisingu.",
+        "created_at": "2025-10-06",
+        "created_by": "Pospíšil Radek",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 35,
+        "event": "Cross-sell merchandising 2",
+        "tags": [
+            "VIP-gold",
+            "VIP-silver"
+        ],
+        "description": "Doporučení produktů z fanshopu po nákupu vstupenky.",
+        "created_at": "2025-11-07",
+        "created_by": "Blažek Vojtěch",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 36,
+        "event": "Pozvánka na fanshop 2",
+        "tags": [
+            "VIP-silver",
+            "normal"
+        ],
+        "description": "Speciální akce ve fanshopu pro registrované fanoušky.",
+        "created_at": "2025-12-08",
+        "created_by": "Kratochvíl Marek",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 37,
+        "event": "Early bird vstupenky 2",
+        "tags": [
+            "VIP-gold"
+        ],
+        "description": "Přednostní prodej vstupenek pro členy fan klubu.",
+        "created_at": "2025-01-09",
+        "created_by": "Fiala Zdeněk",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 38,
+        "event": "Soutěž o VIP lístky 2",
+        "tags": [
+            "normal"
+        ],
+        "description": "Soutěžní kampaň s výhrou VIP zážitku na utkání.",
+        "created_at": "2025-02-10",
+        "created_by": "Sedláček Pavel",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 39,
+        "event": "Sezónní přehled 2",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Rekapitulace sezóny a plány na další ročník.",
+        "created_at": "2025-03-11",
+        "created_by": "Musil Daniel",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 40,
+        "event": "Push: výsledky zápasu 2",
+        "tags": [
+            "premium"
+        ],
+        "description": "Notifikace s výsledkem hned po skončení utkání.",
+        "created_at": "2025-04-12",
+        "created_by": "Hájek Roman",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 41,
+        "event": "E-mail: opuštěný košík 2",
+        "tags": [
+            "VIP-gold",
+            "premium"
+        ],
+        "description": "Připomínka nedokončené objednávky vstupenek.",
+        "created_at": "2025-05-13",
+        "created_by": "Kopecký Stanislav",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 42,
+        "event": "Segmentace nových fanoušků 2",
+        "tags": [
+            "normal"
+        ],
+        "description": "Automatické zařazení do segmentů podle chování.",
+        "created_at": "2025-06-14",
+        "created_by": "Kolář Miroslav",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 43,
+        "event": "Kampaň pro studenty 2",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Zvýhodněné vstupenky pro držitele ISIC.",
+        "created_at": "2025-07-15",
+        "created_by": "Růžička Tomáš",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 44,
+        "event": "Rodinná akce 2",
+        "tags": [
+            "premium",
+            "VIP-gold"
+        ],
+        "description": "Nabídka vstupenek a balíčků pro rodiny s dětmi.",
+        "created_at": "2025-08-16",
+        "created_by": "Novotný Karel",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 45,
+        "event": "Win-back kampaň 2",
+        "tags": [
+            "denis"
+        ],
+        "description": "Návratová nabídka pro fanoušky, kteří dlouho nenavštívili akci.",
+        "created_at": "2025-09-17",
+        "created_by": "Marková Eva",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 46,
+        "event": "Referral program 2",
+        "tags": [
+            "normal",
+            "premium"
+        ],
+        "description": "Odměna za doporučení nového fanouška do klubu.",
+        "created_at": "2025-10-18",
+        "created_by": "Horáková Jana",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 47,
+        "event": "Push: předprodej 2",
+        "tags": [
+            "VIP-gold",
+            "VIP-silver"
+        ],
+        "description": "Upozornění na start předprodeje vstupenek na novou sezónu.",
+        "created_at": "2025-11-19",
+        "created_by": "Nováková Lucie",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 48,
+        "event": "E-mail: matchday info 2",
+        "tags": [
+            "VIP-silver",
+            "normal"
+        ],
+        "description": "Praktické informace k dni utkání včetně dopravy a vstupu.",
+        "created_at": "2025-12-20",
+        "created_by": "Dvořáková Petra",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 49,
+        "event": "Uvítací e-mail 3",
+        "tags": [
+            "VIP-gold"
+        ],
+        "description": "Automatický e-mail odeslaný nově registrovaným fanouškům.",
+        "created_at": "2026-01-21",
+        "created_by": "Budina Tomáš",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 30
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                },
+                {
+                    "id": "action-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 280,
+                        "y": 30
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "wait-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 520,
+                        "y": 30
+                    },
+                    "data": {
+                        "itemId": "wait",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 300,
+                        "y": 200
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 540,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "condition-3",
+                    "type": "workflow",
+                    "position": {
+                        "x": 540,
+                        "y": 280
+                    },
+                    "data": {
+                        "itemId": "condition",
+                        "variant": "condition",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-2",
+                    "type": "workflow",
+                    "position": {
+                        "x": 780,
+                        "y": 80
+                    },
+                    "data": {
+                        "itemId": "reward-conversion",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-3",
+                    "type": "workflow",
+                    "position": {
+                        "x": 780,
+                        "y": 220
+                    },
+                    "data": {
+                        "itemId": "tag",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                },
+                {
+                    "id": "action-4",
+                    "type": "workflow",
+                    "position": {
+                        "x": 780,
+                        "y": 360
+                    },
+                    "data": {
+                        "itemId": "email",
+                        "variant": "action",
+                        "incomplete": true
+                    }
+                }
+            ],
+            "edges": [
+                {
+                    "id": "e-trigger-email",
+                    "source": "trigger-1",
+                    "target": "action-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-email-wait",
+                    "source": "action-1",
+                    "target": "wait-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-wait-condition-1",
+                    "source": "wait-1",
+                    "target": "condition-1",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-1-yes-2",
+                    "source": "condition-1",
+                    "sourceHandle": "yes",
+                    "target": "condition-2",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-1-no-3",
+                    "source": "condition-1",
+                    "sourceHandle": "no",
+                    "target": "condition-3",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-2-yes-reward",
+                    "source": "condition-2",
+                    "sourceHandle": "yes",
+                    "target": "action-2",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-2-no-tag",
+                    "source": "condition-2",
+                    "sourceHandle": "no",
+                    "target": "action-3",
+                    "type": "workflow"
+                },
+                {
+                    "id": "e-condition-3-yes-email",
+                    "source": "condition-3",
+                    "sourceHandle": "yes",
+                    "target": "action-4",
+                    "type": "workflow"
+                }
+            ]
+        }
+    },
+    {
+        "id": 50,
+        "event": "Narozeninové přání 3",
+        "tags": [
+            "normal"
+        ],
+        "description": "Personalizovaná gratulace k narozeninám fanouška.",
+        "created_at": "2026-02-22",
+        "created_by": "Novák Petr",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 51,
+        "event": "Odpověď po nákupu 3",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Poděkování za nákup vstupenky a doporučení dalších akcí.",
+        "created_at": "2026-03-23",
+        "created_by": "Svoboda Jan",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 52,
+        "event": "VIP nabídka 3",
+        "tags": [
+            "premium"
+        ],
+        "description": "Exkluzivní sleva a výhody pro VIP segment fanoušků.",
+        "created_at": "2026-04-24",
+        "created_by": "Dvořák Martin",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 53,
+        "event": "Push: domácí zápas 3",
+        "tags": [
+            "VIP-gold",
+            "premium"
+        ],
+        "description": "Push notifikace 48 hodin před domácím utkáním.",
+        "created_at": "2026-05-25",
+        "created_by": "Černý Jakub",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 54,
+        "event": "SMS připomínka 3",
+        "tags": [
+            "normal"
+        ],
+        "description": "Krátká SMS 24 hodin před začátkem akce.",
+        "created_at": "2026-06-26",
+        "created_by": "Procházka Ondřej",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 55,
+        "event": "Reaktivace fanoušků 3",
+        "tags": [
+            "VIP-silver"
+        ],
+        "description": "Kampaň pro fanoušky bez aktivity déle než 90 dní.",
+        "created_at": "2026-07-27",
+        "created_by": "Kučera Lukáš",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 56,
+        "event": "Dotazník spokojenosti 3",
+        "tags": [
+            "premium",
+            "VIP-gold"
+        ],
+        "description": "Krátký průzkum spokojenosti po návštěvě akce.",
+        "created_at": "2026-08-28",
+        "created_by": "Veselý Michal",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 57,
+        "event": "Měsíční newsletter 3",
+        "tags": [
+            "denis"
+        ],
+        "description": "Přehled novinek, výsledků a nadcházejících událostí.",
+        "created_at": "2026-09-01",
+        "created_by": "Horáček Filip",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 58,
+        "event": "Sleva pro stálé zákazníky 3",
+        "tags": [
+            "normal",
+            "premium"
+        ],
+        "description": "Odměna za opakované nákupy vstupenek a merchandisingu.",
+        "created_at": "2026-10-02",
+        "created_by": "Pospíšil Radek",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 59,
+        "event": "Cross-sell merchandising 3",
+        "tags": [
+            "VIP-gold",
+            "VIP-silver"
+        ],
+        "description": "Doporučení produktů z fanshopu po nákupu vstupenky.",
+        "created_at": "2026-11-03",
+        "created_by": "Blažek Vojtěch",
+        "active": false,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    },
+    {
+        "id": 60,
+        "event": "Pozvánka na fanshop 3",
+        "tags": [
+            "VIP-silver",
+            "normal"
+        ],
+        "description": "Speciální akce ve fanshopu pro registrované fanoušky.",
+        "created_at": "2026-12-04",
+        "created_by": "Kratochvíl Marek",
+        "active": true,
+        "transactionActions": false,
+        "automaticStop": false,
+        "plannedRunOut": false,
+        "workflow": {
+            "nodes": [
+                {
+                    "id": "trigger-1",
+                    "type": "workflow",
+                    "position": {
+                        "x": 40,
+                        "y": 120
+                    },
+                    "data": {
+                        "itemId": "start-now",
+                        "variant": "trigger"
+                    }
+                }
+            ],
+            "edges": []
+        }
+    }
+]

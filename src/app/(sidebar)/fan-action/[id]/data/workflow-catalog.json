@@ -1,0 +1,532 @@
+{
+    "triggerCategories": [
+        {
+            "id": "common",
+            "label": "Nejčastější"
+        },
+        {
+            "id": "time",
+            "label": "Časový"
+        },
+        {
+            "id": "ticketing",
+            "label": "Ticketing"
+        },
+        {
+            "id": "eshop",
+            "label": "E-shop"
+        },
+        {
+            "id": "call-center",
+            "label": "Call centrum"
+        },
+        {
+            "id": "mobile-app",
+            "label": "Mobilní aplikace"
+        },
+        {
+            "id": "other",
+            "label": "Ostatní"
+        }
+    ],
+    "items": [
+        {
+            "id": "start-now",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ChevronsRight",
+            "label": "Spustit nyní",
+            "description": "Akce bude spuštěna jednorázově.",
+            "category": "common"
+        },
+        {
+            "id": "scheduled-sending",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CalendarClock",
+            "label": "Naplánované odeslání",
+            "description": "Plánované spouštění",
+            "incomplete": true,
+            "category": "time"
+        },
+        {
+            "id": "exact-date",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CalendarDays",
+            "label": "Nastavení přesného data",
+            "description": "Spouští se každý den podle času kontroly.",
+            "incomplete": true,
+            "category": "time"
+        },
+        {
+            "id": "event-date-occurs",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CalendarDays",
+            "label": "Nastane datum události",
+            "description": "Datum události se spouští s každým začátkem události a je možné přičíst/odečíst určitý počet dnů nebo hodin.",
+            "incomplete": true,
+            "category": "time"
+        },
+        {
+            "id": "ticket-purchase",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ShoppingCart",
+            "label": "Nákup vstupenky",
+            "description": "Automatizace se spustí ve chvíli, kdy zákazník zakoupí vstupenku.",
+            "incomplete": true,
+            "category": "common"
+        },
+        {
+            "id": "time-slot-purchase",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ShoppingCart",
+            "label": "Nákup časového slotu",
+            "description": "Spustí akci po nákupu časového slotu.",
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-purchase",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ShoppingCart",
+            "label": "Nákup permanentky",
+            "description": "Spustí akci po nákupu permanentky.",
+            "category": "ticketing"
+        },
+        {
+            "id": "event-entry",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "LogIn",
+            "label": "Vstup na událost",
+            "description": "Automatizace se spustí ve chvíli, kdy zákazník vstoupí na událost.",
+            "incomplete": true,
+            "category": "common"
+        },
+        {
+            "id": "ticket-cancellation",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CircleMinus",
+            "label": "Storno vstupenek",
+            "description": "Spustí akci po stornu vstupenek.",
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-cancellation",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CircleMinus",
+            "label": "Storno permanentek",
+            "description": "Spustí akci po stornu permanentek.",
+            "category": "ticketing"
+        },
+        {
+            "id": "ticket-barcode-change",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "RefreshCw",
+            "label": "Změna barcode vstupenky",
+            "description": "Spustí akci po změně barcode vstupenky.",
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-barcode-change",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "RefreshCw",
+            "label": "Změna barcode u permanentky",
+            "description": "Spustí akci po změně barcode permanentky.",
+            "category": "ticketing"
+        },
+        {
+            "id": "cart-auto-emptied",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Frown",
+            "label": "Automaticky vyprázdněný košík",
+            "description": "Automatizace se spustí ve chvíli, kdy zákazník opustí nákupní košík a vyprší časový limit (nedokončený nákup).",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "membership-purchased",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ShoppingCart",
+            "label": "Zakoupené členství",
+            "description": "Spustí akci po zakoupení členství.",
+            "category": "ticketing"
+        },
+        {
+            "id": "specific-membership-purchase",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ShoppingCart",
+            "label": "Nákup určitého členství",
+            "description": "Spustí akci po nákupu vybraného členství.",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "membership-cancelled",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "UserX",
+            "label": "Zrušené členství",
+            "description": "Spustí akci po zrušení členství.",
+            "category": "ticketing"
+        },
+        {
+            "id": "membership-payment-failed",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CircleX",
+            "label": "Neúspěšná platba členství",
+            "description": "Spustí akci po neúspěšné platbě členství.",
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-transfer",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ArrowLeftRight",
+            "label": "Převod permanentek",
+            "description": "Spustí akci po převodu permanentek.",
+            "category": "ticketing"
+        },
+        {
+            "id": "ticket-transfer",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ArrowLeftRight",
+            "label": "Převod vstupenek",
+            "description": "Automatizace se spustí ve chvíli, kdy návštěvník přepošle vstupenku.",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "membership-transfer",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ArrowLeftRight",
+            "label": "Převod členství",
+            "description": "Spustí akci po převodu členství.",
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-release",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Gift",
+            "label": "Uvolnění permanentky",
+            "description": "Automatizace se spustí ve chvíli, kdy návštěvník uvolní permanentku do prodeje.",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-forward",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Gift",
+            "label": "Přeposlání permanentky",
+            "description": "Automatizace se spustí ve chvíli, kdy návštěvník přepošle permanentku jinému návštěvníkovi.",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "membership-recurring-payment",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Wallet",
+            "label": "Opakovaná platba členství",
+            "description": "Spustí akci po opakované platbě členství.",
+            "category": "ticketing"
+        },
+        {
+            "id": "membership-status-change",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "UserCheck",
+            "label": "Změna stavu členství",
+            "description": "Automatizace se spustí ve chvíli, kdy dojde ke změně stavu vybraného členství.",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "season-ticket-bulk-forward",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Gift",
+            "label": "Hromadné přeposlání permanentky",
+            "description": "Automatizace se spustí ve chvíli, kdy návštěvník hromadně přepošle permanentku jinému návštěvníkovi.",
+            "incomplete": true,
+            "category": "ticketing"
+        },
+        {
+            "id": "eshop-purchase",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "ShoppingCart",
+            "label": "Nákup na e-shopu",
+            "description": "Spustí akci po nákupu na e-shopu.",
+            "category": "common"
+        },
+        {
+            "id": "package-purchase",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Package",
+            "label": "Nákup balíčku",
+            "description": "Spustí akci po nákupu balíčku.",
+            "category": "eshop"
+        },
+        {
+            "id": "order-cancellation",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CircleMinus",
+            "label": "Storno objednávky",
+            "description": "Spustí akci po stornu objednávky.",
+            "category": "eshop"
+        },
+        {
+            "id": "support-call",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Phone",
+            "label": "Telefonát na podporu",
+            "description": "Spustí akci po telefonátu na podporu.",
+            "category": "call-center"
+        },
+        {
+            "id": "push-notifications-enabled",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "CircleCheck",
+            "label": "Povolení push notifikací",
+            "description": "Spustí akci po povolení push notifikací.",
+            "category": "mobile-app"
+        },
+        {
+            "id": "app-login-open",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "LogIn",
+            "label": "Přihlášení/otevření aplikace",
+            "description": "Spustí akci po přihlášení nebo otevření aplikace.",
+            "category": "mobile-app"
+        },
+        {
+            "id": "cube-message-sent",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "MonitorUp",
+            "label": "Odeslání vzkazu na kostku",
+            "description": "Spustí akci po odeslání vzkazu na kostku.",
+            "category": "mobile-app"
+        },
+        {
+            "id": "bulletin-opened",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Smartphone",
+            "label": "Otevření bulletinu",
+            "description": "Spustí akci po otevření bulletinu.",
+            "category": "mobile-app"
+        },
+        {
+            "id": "credit-top-up",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Wallet",
+            "label": "Dobití kreditu",
+            "description": "Automatizace se spustí ve chvíli, kdy zákazník dobil kredit.",
+            "category": "other"
+        },
+        {
+            "id": "loyalty-points-added",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Star",
+            "iconModifier": "fill-current",
+            "label": "Přidání věrnostních bodů",
+            "description": "Spustí akci po přidání věrnostních bodů.",
+            "category": "other"
+        },
+        {
+            "id": "loyalty-points-by-type",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Star",
+            "iconModifier": "fill-current",
+            "label": "Přidání věrnostních bodů dle typu",
+            "description": "Automatizace se spustí ve chvíli, kdy jsou přidány věrnostní body vybraného typu.",
+            "incomplete": true,
+            "category": "other"
+        },
+        {
+            "id": "loyalty-points-reached",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "Award",
+            "label": "Dosaženo věrnostních bodů",
+            "description": "Automatizace se spustí ve chvíli, kdy fanoušek dosáhne zadaného počtu věrnostních bodů.",
+            "incomplete": true,
+            "category": "other"
+        },
+        {
+            "id": "id-registration",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "UserPlus",
+            "label": "Registrace ID",
+            "description": "Automatizace se spustí ve chvíli, kdy se návštěvník zaregistruje do ID.",
+            "category": "common"
+        },
+        {
+            "id": "newsletter-subscription",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "UserPlus",
+            "label": "Odběr newsletteru",
+            "description": "Automatizace se spustí ve chvíli, kdy se návštěvník přihlásí pro odběr newsletteru.",
+            "category": "common"
+        },
+        {
+            "id": "questionnaire-completed",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "FileText",
+            "label": "Dokončení dotazníku",
+            "description": "Automatizace se spustí ve chvíli, kdy fanoušek dokončí vybraný dotazník.",
+            "incomplete": true,
+            "category": "other"
+        },
+        {
+            "id": "data-change",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "UserPen",
+            "label": "Změna údajů",
+            "description": "Automatizace se spustí ve chvíli, kdy dojde ke změně vybraného údaje fanouška.",
+            "incomplete": true,
+            "category": "other"
+        },
+        {
+            "id": "form-completed",
+            "variant": "trigger",
+            "paletteSection": "triggers",
+            "icon": "List",
+            "label": "Dokončení formuláře",
+            "description": "Automatizace se spustí ve chvíli, kdy fanoušek dokončí vybraný webový formulář.",
+            "incomplete": true,
+            "category": "other"
+        },
+        {
+            "id": "condition",
+            "variant": "condition",
+            "paletteSection": "operators",
+            "icon": "GitFork",
+            "label": "Přidat podmínku",
+            "description": "Rozvětví scénář podle splnění podmínky.",
+            "drawerTitle": "Podmínka",
+            "incomplete": true
+        },
+        {
+            "id": "wait",
+            "variant": "action",
+            "paletteSection": "operators",
+            "icon": "Clock",
+            "label": "Počkat",
+            "description": "Pozastaví scénář na zadanou dobu před dalším krokem.",
+            "drawerTitle": "Počkat",
+            "incomplete": true
+        },
+        {
+            "id": "ab-test",
+            "variant": "action",
+            "paletteSection": "operators",
+            "icon": "Gauge",
+            "label": "A/B test",
+            "description": "Rozdělí fanoušky do větví A/B testu.",
+            "incomplete": true
+        },
+        {
+            "id": "end-branch",
+            "variant": "action",
+            "paletteSection": "operators",
+            "icon": "X",
+            "label": "Konec větve",
+            "description": "Ukončí aktuální větev scénáře.",
+            "incomplete": true
+        },
+        {
+            "id": "email",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "Mail",
+            "label": "Poslat E-mail",
+            "description": "Odešle marketingový nebo transakční e-mail vybraným fanouškům.",
+            "incomplete": true
+        },
+        {
+            "id": "sms",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "MessageSquare",
+            "label": "Poslat SMS",
+            "description": "Odešle SMS zprávu vybraným fanouškům.",
+            "incomplete": true
+        },
+        {
+            "id": "push",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "Smartphone",
+            "label": "Odeslat push notifikaci",
+            "description": "Odešle push notifikaci do mobilní aplikace.",
+            "incomplete": true
+        },
+        {
+            "id": "tag",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "Tag",
+            "label": "Přidat štítek",
+            "description": "Přiřadí fanouškovi jeden nebo více štítků.",
+            "incomplete": true
+        },
+        {
+            "id": "remove-tag",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "Tags",
+            "label": "Odebrat štítek",
+            "description": "Odebere fanouškovi vybrané štítky.",
+            "incomplete": true
+        },
+        {
+            "id": "custom-attribute",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "List",
+            "label": "Vyplnit vlastní pole",
+            "description": "Nastaví nebo upraví vlastní atribut fanouška.",
+            "incomplete": true
+        },
+        {
+            "id": "reward-conversion",
+            "variant": "action",
+            "paletteSection": "actions",
+            "icon": "Gift",
+            "label": "Převést odměny",
+            "description": "Zpracuje konverzi odměn ve věrnostním programu.",
+            "incomplete": true
+        }
+    ]
+}

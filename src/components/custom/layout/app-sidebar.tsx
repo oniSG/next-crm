@@ -101,71 +101,61 @@ const fansGroups: NavGroup[] = [
                 title: 'Reporty',
                 url: '#',
                 icon: <ChartBarIcon />,
-                sections: [
+                items: [
                     {
-                        label: 'Marketing',
-                        items: [
-                            {
-                                title: 'Komunikace a akce',
-                                url: '/report-fan-general',
-                                icon: <MegaphoneIcon />,
-                            },
-                            {
-                                title: 'Postřehy relatoo',
-                                url: '/relatoo-index',
-                                icon: <LightbulbIcon />,
-                            },
-                            {
-                                title: 'Globální report',
-                                url: '/global-report',
-                                icon: <GlobeIcon />,
-                            },
-                            {
-                                title: 'Mobilní aplikace',
-                                url: '/mobile-app',
-                                icon: <MonitorIcon />,
-                            },
-                            {
-                                title: 'Věrnostní program',
-                                url: '/vernostni-program',
-                                icon: <StarIcon />,
-                            },
-                            {
-                                title: 'Kvalita dat',
-                                url: '/data-quality',
-                                icon: <ShieldCheckIcon />,
-                            },
-                        ],
+                        title: 'Komunikace a akce',
+                        url: '/report-fan-general',
+                        icon: <MegaphoneIcon />,
                     },
                     {
-                        label: 'Finanční analytika',
-                        items: [
-                            {
-                                title: 'Ticketing',
-                                url: '#',
-                                icon: <TicketIcon />,
-                            },
-                            {
-                                title: 'Prodeje',
-                                url: '#',
-                                icon: <CoinsIcon />,
-                            },
-                            {
-                                title: 'Události',
-                                url: '/report-event',
-                                icon: <CalendarCheckIcon />,
-                            },
-                            {
-                                title: 'Business',
-                                url: '#',
-                                icon: <BriefcaseIcon />,
-                            },
-                            {
-                                title: 'Membership',
-                                url: '#',
-                                icon: <CreditCardIcon />,
-                            },
-                        ],
+                        title: 'Postřehy relatoo',
+                        url: '/relatoo-index',
+                        icon: <LightbulbIcon />,
+                    },
+                    {
+                        title: 'Globální report',
+                        url: '/global-report',
+                        icon: <GlobeIcon />,
+                    },
+                    {
+                        title: 'Mobilní aplikace',
+                        url: '/mobile-app',
+                        icon: <MonitorIcon />,
+                    },
+                    {
+                        title: 'Věrnostní program',
+                        url: '/vernostni-program',
+                        icon: <StarIcon />,
+                    },
+                    {
+                        title: 'Kvalita dat',
+                        url: '/data-quality',
+                        icon: <ShieldCheckIcon />,
+                    },
+                    {
+                        title: 'Ticketing',
+                        url: '#',
+                        icon: <TicketIcon />,
+                    },
+                    {
+                        title: 'Prodeje',
+                        url: '#',
+                        icon: <CoinsIcon />,
+                    },
+                    {
+                        title: 'Události',
+                        url: '/report-event',
+                        icon: <CalendarCheckIcon />,
+                    },
+                    {
+                        title: 'Business',
+                        url: '#',
+                        icon: <BriefcaseIcon />,
+                    },
+                    {
+                        title: 'Membership',
+                        url: '#',
+                        icon: <CreditCardIcon />,
                     },
                 ],
             },
@@ -221,36 +211,31 @@ const businessGroups: NavGroup[] = [
                 title: 'Reporty',
                 url: '#',
                 icon: <ChartBarIcon />,
-                sections: [
+                items: [
                     {
-                        label: 'Finanční analytika',
-                        items: [
-                            {
-                                title: 'Ticketing',
-                                url: '#',
-                                icon: <TicketIcon />,
-                            },
-                            {
-                                title: 'Prodeje',
-                                url: '#',
-                                icon: <CoinsIcon />,
-                            },
-                            {
-                                title: 'Události',
-                                url: '/report-event',
-                                icon: <CalendarCheckIcon />,
-                            },
-                            {
-                                title: 'Business',
-                                url: '#',
-                                icon: <BriefcaseIcon />,
-                            },
-                            {
-                                title: 'Membership',
-                                url: '#',
-                                icon: <CreditCardIcon />,
-                            },
-                        ],
+                        title: 'Ticketing',
+                        url: '#',
+                        icon: <TicketIcon />,
+                    },
+                    {
+                        title: 'Prodeje',
+                        url: '#',
+                        icon: <CoinsIcon />,
+                    },
+                    {
+                        title: 'Události',
+                        url: '/report-event',
+                        icon: <CalendarCheckIcon />,
+                    },
+                    {
+                        title: 'Business',
+                        url: '#',
+                        icon: <BriefcaseIcon />,
+                    },
+                    {
+                        title: 'Membership',
+                        url: '#',
+                        icon: <CreditCardIcon />,
                     },
                 ],
             },
