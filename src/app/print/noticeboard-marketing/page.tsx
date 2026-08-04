@@ -1,13 +1,21 @@
 import { NoticeboardMarketing } from '@/app/(sidebar)/noticeboard-marketing/noticeboard-marketing'
 
-import { PrintShell, type PrintPageSettings } from '../components/print-shell'
+import { PrintShell } from '../components/print-shell'
 
-const printPageSettings: PrintPageSettings = {
-    title: 'Noticeboard marketing',
-    description: 'Přehled noticeboard marketingu.',
-    body: <NoticeboardMarketing />,
-}
+export default async function PrintNoticeboardMarketingPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ headerVisible?: string }>
+}) {
+    const { headerVisible } = await searchParams
+    const showReportHeader = headerVisible === 'true'
 
-export default function PrintNoticeboardMarketingPage() {
-    return <PrintShell {...printPageSettings} />
+    return (
+        <PrintShell
+            title="Noticeboard marketing"
+            description="Přehled noticeboard marketingu."
+            showHeading={!showReportHeader}
+            body={<NoticeboardMarketing />}
+        />
+    )
 }

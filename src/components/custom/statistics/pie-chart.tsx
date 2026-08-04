@@ -14,18 +14,16 @@ export type PieChartProps = {
     data: { name: string; value: number; fill: string }[]
     config: ChartConfig
     className?: string
+    innerRadius?: number
 }
 
-export function PieChart({ data, config, className }: PieChartProps) {
+export function PieChart({ data, config, className, innerRadius }: PieChartProps) {
     const total = data.reduce((sum, item) => sum + item.value, 0)
 
     return (
         <ChartContainer
             config={config}
-            className={cn(
-                'mx-auto aspect-square max-h-[250px] w-full px-0',
-                className,
-            )}
+            className={cn('mx-auto aspect-square max-h-[250px] w-full px-0', className)}
         >
             <RechartsPieChart>
                 <ChartTooltip
@@ -40,8 +38,7 @@ export function PieChart({ data, config, className }: PieChartProps) {
                             typeof item.value === 'number'
                                 ? item.value
                                 : Number(item.value)
-                        const percent =
-                            total > 0 ? Math.round((num / total) * 100) : 0
+                        const percent = total > 0 ? Math.round((num / total) * 100) : 0
 
                         return (
                             <ChartTooltipContent
@@ -70,14 +67,12 @@ export function PieChart({ data, config, className }: PieChartProps) {
                     data={data}
                     dataKey="value"
                     nameKey="name"
+                    innerRadius={innerRadius}
                     labelLine={false}
                     label={({ payload, ...props }) => {
                         const value =
-                            typeof payload?.value === 'number'
-                                ? payload.value
-                                : 0
-                        const percent =
-                            total > 0 ? Math.round((value / total) * 100) : 0
+                            typeof payload?.value === 'number' ? payload.value : 0
+                        const percent = total > 0 ? Math.round((value / total) * 100) : 0
 
                         return (
                             <text

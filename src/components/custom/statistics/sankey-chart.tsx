@@ -123,7 +123,7 @@ export function SankeyChart({
     sort = false,
     align = 'left',
     verticalAlign = 'top',
-    margin = { top: 16, right: 180, bottom: 16, left: 140 },
+    margin = { top: 16, right: 180, bottom: 16, left: 16 },
     className,
 }: SankeyChartProps) {
     return (

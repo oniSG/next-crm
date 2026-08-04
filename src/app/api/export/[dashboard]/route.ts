@@ -23,7 +23,12 @@ const ALLOWED_DASHBOARDS = new Set([
     'sankey',
     'funnel-chart',
     'report-fan-general',
+    'report-management',
+    'report-event',
     'noticeboard-marketing',
+    'data-quality',
+    'relatoo-index',
+    'mobile-app',
 ])
 
 const VIEWPORT_WIDTH = 1280
@@ -40,7 +45,9 @@ export async function GET(
     }
 
     const requestUrl = new URL(request.url)
-    const printUrl = `${requestUrl.origin}/print/${dashboard}${requestUrl.search}`
+    const searchParams = new URLSearchParams(requestUrl.search)
+    searchParams.set('headerVisible', 'true')
+    const printUrl = `${requestUrl.origin}/print/${dashboard}?${searchParams.toString()}`
 
     let browser: Browser | undefined
     try {

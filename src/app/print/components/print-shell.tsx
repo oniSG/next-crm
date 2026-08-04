@@ -4,8 +4,9 @@ import './../print.css'
 
 export type PrintPageSettings = {
     title: string
-    description: string
+    description?: string
     body: ReactNode
+    showHeading?: boolean
 }
 
 const TENANT = {
@@ -40,7 +41,12 @@ function TenantMark() {
     )
 }
 
-export function PrintShell({ title, description, body }: PrintPageSettings) {
+export function PrintShell({
+    title,
+    description,
+    body,
+    showHeading = true,
+}: PrintPageSettings) {
     const now = new Date()
     const year = now.getFullYear()
 
@@ -54,12 +60,18 @@ export function PrintShell({ title, description, body }: PrintPageSettings) {
                     </div>
                 </div>
 
-                <h1 className="text-5xl leading-[1.02] font-semibold tracking-tight">
-                    {title}
-                </h1>
-                <p className="text-muted-foreground mt-4 max-w-2xl text-sm">
-                    {description}
-                </p>
+                {showHeading && (
+                    <>
+                        <h1 className="text-5xl leading-[1.02] font-semibold tracking-tight">
+                            {title}
+                        </h1>
+                        {description && (
+                            <p className="text-muted-foreground mt-4 max-w-2xl text-sm">
+                                {description}
+                            </p>
+                        )}
+                    </>
+                )}
             </header>
 
             <main className="flex-1">{body}</main>
