@@ -1,10 +1,17 @@
 'use client'
 
 import * as React from 'react'
+import { InfoIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from '@/components/ui/hover-card'
 import { cn } from '@/lib/utils'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
@@ -15,7 +22,6 @@ import {
     uploadButtonClass,
     workflowMergeTags,
 } from '../shared/constants'
-import { FieldLabel, FieldLabelWithInfo } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,
@@ -140,9 +146,9 @@ export function PushContent({
             </section>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="push-note">
+                <Label htmlFor="push-note">
                     Poznámka pod názvem v diagramu
-                </FieldLabel>
+                </Label>
                 <Input
                     id="push-note"
                     className={roundedFieldClass}
@@ -153,9 +159,9 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="push-title" required>
+                <Label htmlFor="push-title">
                     Titulek
-                </FieldLabel>
+                </Label>
                 <Input
                     id="push-title"
                     className={roundedFieldClass}
@@ -166,7 +172,7 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="push-subtitle">Podtitulek</FieldLabel>
+                <Label htmlFor="push-subtitle">Podtitulek</Label>
                 <Input
                     id="push-subtitle"
                     className={roundedFieldClass}
@@ -177,7 +183,7 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="push-link">Odkaz</FieldLabel>
+                <Label htmlFor="push-link">Odkaz</Label>
                 <Input
                     id="push-link"
                     type="url"
@@ -189,9 +195,9 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="push-body" required>
+                <Label htmlFor="push-body">
                     Text notifikace
-                </FieldLabel>
+                </Label>
                 <Textarea
                     id="push-body"
                     className={cn('min-h-28 resize-y', roundedFieldClass)}
@@ -202,10 +208,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="Náhledový obrázek"
-                    description="Obrázek, který se zobrazí v rozšířeném zobrazení."
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label>Náhledový obrázek</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">Náhledový obrázek</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">Náhledový obrázek</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    Obrázek, který se zobrazí v rozšířeném zobrazení.
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <input
                     ref={previewImageInputRef}
                     id="push-image"
@@ -234,11 +260,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="Malá ikona"
-                    description="Android - ikona zobrazená ve stavovém řádku a v levém horním rohu oznámení. Nastavte název ikony bez přípony souboru. Pokud není nastaveno, použije se ikona zvonku nebo ic_stat_onesignal_default, pokud jste tento název prostředku nastavili."
-                    htmlFor="push-small-icon"
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label htmlFor={"push-small-icon"}>Malá ikona</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">Malá ikona</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">Malá ikona</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    Android - ikona zobrazená ve stavovém řádku a v levém horním rohu oznámení. Nastavte název ikony bez přípony souboru. Pokud není nastaveno, použije se ikona zvonku nebo ic_stat_onesignal_default, pokud jste tento název prostředku nastavili.
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <Input
                     id="push-small-icon"
                     className={roundedFieldClass}
@@ -249,10 +294,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="Velká ikona"
-                    description="Android - Ikona zobrazená ve stavovém řádku vpravo."
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label>Velká ikona</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">Velká ikona</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">Velká ikona</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    Android - Ikona zobrazená ve stavovém řádku vpravo.
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <input
                     ref={largeIconInputRef}
                     id="push-large-icon"
@@ -281,11 +346,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="Zvuk notifikace iOS"
-                    description="iOS - Zvukový soubor iOS, který je součástí vaší aplikace a který se přehrává místo výchozího zvuku oznámení zařízení. Předejte nil pro vypnutí vibrací a zvuku pro oznámení. Příklad: notification.wav"
-                    htmlFor="push-ios-sound"
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label htmlFor={"push-ios-sound"}>Zvuk notifikace iOS</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">Zvuk notifikace iOS</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">Zvuk notifikace iOS</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    iOS - Zvukový soubor iOS, který je součástí vaší aplikace a který se přehrává místo výchozího zvuku oznámení zařízení. Předejte nil pro vypnutí vibrací a zvuku pro oznámení. Příklad: notification.wav
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <Input
                     id="push-ios-sound"
                     className={roundedFieldClass}
@@ -296,11 +380,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="Android kanál"
-                    description="Android - Kategorie oznámení, pod kterou chcete oznámení odeslat."
-                    htmlFor="push-android-channel"
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label htmlFor={"push-android-channel"}>Android kanál</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">Android kanál</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">Android kanál</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    Android - Kategorie oznámení, pod kterou chcete oznámení odeslat.
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <Input
                     id="push-android-channel"
                     className={roundedFieldClass}
@@ -311,11 +414,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="Android skupina"
-                    description="Android - Oznámení se stejnou skupinou budou poskládána na sebe pomocí funkce seskupování oznámení systému Android."
-                    htmlFor="push-android-group"
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label htmlFor={"push-android-group"}>Android skupina</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">Android skupina</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">Android skupina</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    Android - Oznámení se stejnou skupinou budou poskládána na sebe pomocí funkce seskupování oznámení systému Android.
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <Input
                     id="push-android-group"
                     className={roundedFieldClass}
@@ -326,11 +448,30 @@ export function PushContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabelWithInfo
-                    label="iOS skupina"
-                    description="iOS 12+ - Tento parametr je podporován v systému iOS 12 a novějším. Umožňuje seskupovat související oznámení dohromady. Pokud mají dvě oznámení stejné thread-id, budou obě přidána do stejné skupiny."
-                    htmlFor="push-ios-group"
-                />
+                <div className="flex items-center gap-1.5">
+                    <Label htmlFor={"push-ios-group"}>iOS skupina</Label>
+                    <HoverCard>
+                        <HoverCardTrigger
+                            render={
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                />
+                            }
+                        >
+                            <InfoIcon className="size-3.5" />
+                            <span className="sr-only">iOS skupina</span>
+                        </HoverCardTrigger>
+                        <HoverCardContent side="left" className="w-56">
+                            <div className="space-y-1">
+                                <h4 className="text-sm font-semibold">iOS skupina</h4>
+                                <p className="text-sm text-muted-foreground">
+                                    iOS 12+ - Tento parametr je podporován v systému iOS 12 a novějším. Umožňuje seskupovat související oznámení dohromady. Pokud mají dvě oznámení stejné thread-id, budou obě přidána do stejné skupiny.
+                                </p>
+                            </div>
+                        </HoverCardContent>
+                    </HoverCard>
+                </div>
                 <Input
                     id="push-ios-group"
                     className={roundedFieldClass}

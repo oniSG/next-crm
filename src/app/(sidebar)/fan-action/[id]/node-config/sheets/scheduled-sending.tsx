@@ -3,9 +3,10 @@
 import * as React from 'react'
 
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel } from '../shared/form-components'
+
 import {
     stringConfig,
     useNodeConfigSave,
@@ -37,7 +38,7 @@ export function ScheduledSendingContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel required>Datum a čas odeslání</FieldLabel>
+                <Label>Datum a čas odeslání</Label>
                 <div className="grid grid-cols-2 gap-2">
                     <Input
                         id="scheduled-sending-date"

@@ -1,14 +1,27 @@
 'use client'
 
 import * as React from 'react'
-import { ArrowRightIcon, CircleAlertIcon } from 'lucide-react'
+import { ArrowRightIcon, CircleAlertIcon, InfoIcon } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from '@/components/ui/hover-card'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { DATA_CHANGE_FIELDS } from '../shared/constants'
-import { FieldLabel, FieldLabelWithInfo, FieldSelect } from '../shared/form-components'
+import { DATA_CHANGE_FIELDS, toSelectItems } from '../shared/constants'
 import {
     boolConfig,
     stringConfig,
@@ -63,19 +76,35 @@ export function DataChangeContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel required>Vyberte pole</FieldLabel>
-                <FieldSelect
-                    value={field}
-                    onValueChange={setField}
-                    options={DATA_CHANGE_FIELDS}
-                    placeholder="Vyberte pole"
-                />
+                <Label>Vyberte pole</Label>
+                <Select
+                    items={toSelectItems(DATA_CHANGE_FIELDS)}
+                    value={field || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== field) {
+                            setField(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte pole"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(DATA_CHANGE_FIELDS).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="flex items-center justify-between gap-2">
-                <FieldLabel htmlFor="data-change-track-specific">
+                <Label htmlFor="data-change-track-specific">
                     Sledovat konkrétní změny
-                </FieldLabel>
+                </Label>
                 <Switch
                     id="data-change-track-specific"
                     checked={trackSpecificChanges}
@@ -87,11 +116,30 @@ export function DataChangeContent({
             {trackSpecificChanges ? (
                 <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-2">
                     <div className="space-y-2">
-                        <FieldLabelWithInfo
-                            label="Z hodnoty"
-                            description="Ponechte prázdné pro sledování jakékoli změny z původní hodnoty."
-                            htmlFor="data-change-from-value"
-                        />
+                        <div className="flex items-center gap-1.5">
+                            <Label htmlFor={"data-change-from-value"}>Z hodnoty</Label>
+                            <HoverCard>
+                                <HoverCardTrigger
+                                    render={
+                                        <button
+                                            type="button"
+                                            className="inline-flex shrink-0 cursor-pointer rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                                        />
+                                    }
+                                >
+                                    <InfoIcon className="size-3.5" />
+                                    <span className="sr-only">Z hodnoty</span>
+                                </HoverCardTrigger>
+                                <HoverCardContent side="left" className="w-56">
+                                    <div className="space-y-1">
+                                        <h4 className="text-sm font-semibold">Z hodnoty</h4>
+                                        <p className="text-sm text-muted-foreground">
+                                            Ponechte prázdné pro sledování jakékoli změny z původní hodnoty.
+                                        </p>
+                                    </div>
+                                </HoverCardContent>
+                            </HoverCard>
+                        </div>
                         <Input
                             id="data-change-from-value"
                             className="bg-background"
@@ -109,9 +157,9 @@ export function DataChangeContent({
                     />
 
                     <div className="space-y-2">
-                        <FieldLabel htmlFor="data-change-to-value" required>
+                        <Label htmlFor="data-change-to-value">
                             Na hodnotu
-                        </FieldLabel>
+                        </Label>
                         <Input
                             id="data-change-to-value"
                             className="bg-background"

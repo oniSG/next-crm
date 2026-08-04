@@ -2,9 +2,18 @@
 
 import * as React from 'react'
 
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
+
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { LOYALTY_CREDIT_TYPES } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
+import { LOYALTY_CREDIT_TYPES, toSelectItems } from '../shared/constants'
 import {
     stringConfig,
     useNodeConfigSave,
@@ -32,13 +41,29 @@ export function LoyaltyPointsByTypeContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel required>Typ přičtení</FieldLabel>
-                <FieldSelect
-                    value={creditType}
-                    onValueChange={setCreditType}
-                    options={LOYALTY_CREDIT_TYPES}
-                    placeholder="Vyberte typ přičtení"
-                />
+                <Label>Typ přičtení</Label>
+                <Select
+                    items={toSelectItems(LOYALTY_CREDIT_TYPES)}
+                    value={creditType || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== creditType) {
+                            setCreditType(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte typ přičtení"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(LOYALTY_CREDIT_TYPES).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
         </div>
     )

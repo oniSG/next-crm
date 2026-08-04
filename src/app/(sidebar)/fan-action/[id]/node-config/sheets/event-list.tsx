@@ -2,13 +2,23 @@
 
 import * as React from 'react'
 
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
+
 import { FAN_ACTION_OPTIONS } from '../../data'
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,
 } from '../shared/use-node-config-save'
+import { toSelectItems } from '../shared/constants'
 
 export function EventListContent({
     nodeId,
@@ -32,13 +42,29 @@ export function EventListContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel>Seznamy událostí</FieldLabel>
-                <FieldSelect
-                    value={eventList}
-                    onValueChange={setEventList}
-                    options={FAN_ACTION_OPTIONS.allEventLists}
-                    placeholder="Vyberte seznam událostí"
-                />
+                <Label>Seznamy událostí</Label>
+                <Select
+                    items={toSelectItems(FAN_ACTION_OPTIONS.allEventLists)}
+                    value={eventList || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== eventList) {
+                            setEventList(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte seznam událostí"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(FAN_ACTION_OPTIONS.allEventLists).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
         </div>
     )

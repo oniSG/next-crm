@@ -2,13 +2,23 @@
 
 import * as React from 'react'
 
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
+
 import { FAN_ACTION_OPTIONS } from '../../data'
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
 import {
     stringConfig,
     useNodeConfigSave,
 } from '../shared/use-node-config-save'
+import { toSelectItems } from '../shared/constants'
 
 export function QuestionnaireCompletedContent({
     nodeId,
@@ -32,13 +42,29 @@ export function QuestionnaireCompletedContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel required>Vyberte dotazník</FieldLabel>
-                <FieldSelect
-                    value={questionnaire}
-                    onValueChange={setQuestionnaire}
-                    options={FAN_ACTION_OPTIONS.allQuestionnaires}
-                    placeholder="Vyberte dotazník"
-                />
+                <Label>Vyberte dotazník</Label>
+                <Select
+                    items={toSelectItems(FAN_ACTION_OPTIONS.allQuestionnaires)}
+                    value={questionnaire || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== questionnaire) {
+                            setQuestionnaire(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte dotazník"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(FAN_ACTION_OPTIONS.allQuestionnaires).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
         </div>
     )

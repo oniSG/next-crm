@@ -5,6 +5,7 @@ import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
@@ -15,7 +16,7 @@ import {
     tagChipClass,
     workflowMergeTags,
 } from '../shared/constants'
-import { FieldLabel } from '../shared/form-components'
+
 import {
     stringConfig,
     useNodeConfigSave,
@@ -100,9 +101,9 @@ export function SmsContent({
             </section>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="sms-note">
+                <Label htmlFor="sms-note">
                     Poznámka pod názvem v diagramu
-                </FieldLabel>
+                </Label>
                 <Input
                     id="sms-note"
                     className={roundedFieldClass}
@@ -113,7 +114,7 @@ export function SmsContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="sms-sender">Odesílatel zprávy</FieldLabel>
+                <Label htmlFor="sms-sender">Odesílatel zprávy</Label>
                 <Input
                     id="sms-sender"
                     className={roundedFieldClass}
@@ -125,9 +126,9 @@ export function SmsContent({
 
             <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2">
-                    <FieldLabel htmlFor="sms-message" required>
+                    <Label htmlFor="sms-message">
                         Text zprávy
-                    </FieldLabel>
+                    </Label>
                     <span
                         className={cn(
                             'text-xs tabular-nums',

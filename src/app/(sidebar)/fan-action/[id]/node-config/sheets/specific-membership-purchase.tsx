@@ -3,9 +3,10 @@
 import * as React from 'react'
 
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel } from '../shared/form-components'
+
 import {
     stringConfig,
     useNodeConfigSave,
@@ -45,9 +46,9 @@ export function SpecificMembershipPurchaseContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel htmlFor="specific-membership-id" required>
+                <Label htmlFor="specific-membership-id">
                     ID členství
-                </FieldLabel>
+                </Label>
                 <p className="text-sm text-muted-foreground">
                     Jedná se o ID členství v ticketing systému
                 </p>

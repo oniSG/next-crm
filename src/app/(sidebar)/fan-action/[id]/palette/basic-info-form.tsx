@@ -12,34 +12,11 @@ import {
 } from '@/components/ui/popover'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 
 import { useFanActionEditor } from '../context'
 import { FAN_ACTION_OPTIONS } from '../data'
-
-function FieldLabel({
-    htmlFor,
-    children,
-    required,
-}: {
-    htmlFor?: string
-    children: React.ReactNode
-    required?: boolean
-}) {
-    return (
-        <label
-            htmlFor={htmlFor}
-            className="text-sm font-medium text-muted-foreground"
-        >
-            {children}
-            {required ? (
-                <span className="text-destructive" aria-hidden>
-                    *
-                </span>
-            ) : null}
-        </label>
-    )
-}
 
 function TagsMultiSelect({
     value,
@@ -181,9 +158,9 @@ export function BasicInfoForm() {
             noValidate
         >
             <div className="space-y-1.5">
-                <FieldLabel htmlFor="action-name" required>
+                <Label htmlFor="action-name">
                     Název
-                </FieldLabel>
+                </Label>
                 <Input
                     id="action-name"
                     value={name}
@@ -198,9 +175,9 @@ export function BasicInfoForm() {
             </div>
 
             <div className="space-y-1.5">
-                <FieldLabel htmlFor="action-description" required>
+                <Label htmlFor="action-description">
                     Popis
-                </FieldLabel>
+                </Label>
                 <Textarea
                     id="action-description"
                     value={description}
@@ -217,9 +194,9 @@ export function BasicInfoForm() {
             </div>
 
             <div className="flex items-center justify-between gap-2">
-                <FieldLabel htmlFor="transaction-actions">
+                <Label htmlFor="transaction-actions">
                     Transakční akce
-                </FieldLabel>
+                </Label>
                 <Switch
                     id="transaction-actions"
                     checked={transactionActions}
@@ -228,7 +205,7 @@ export function BasicInfoForm() {
             </div>
 
             <div className="space-y-1.5">
-                <FieldLabel>Štítky</FieldLabel>
+                <Label>Štítky</Label>
                 <TagsMultiSelect
                     value={tags}
                     onChange={setTags}

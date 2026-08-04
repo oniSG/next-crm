@@ -1,6 +1,4 @@
 /** Shared Tailwind classes for node-config form fields. */
-export const labelClass = 'text-sm font-medium text-muted-foreground'
-export const selectTriggerClass = 'w-full border border-border bg-background'
 export const sectionTitleClass = 'text-sm font-semibold text-foreground'
 export const roundedFieldClass =
     'rounded-3xl border border-border bg-background'
@@ -142,4 +140,15 @@ export function workflowMergeTags(): WorkflowMergeTag[] {
         { token: '{{current_points}}', label: 'Aktuální počet bodů' },
         { token: '{{credited_points}}', label: 'Počet připsaných bodů' },
     ]
+}
+
+/** Normalize string[] or {value,label}[] for Base UI Select `items`. */
+export function toSelectItems(
+    options: readonly string[] | readonly { value: string; label: string }[],
+): { value: string; label: string }[] {
+    return options.map((option) =>
+        typeof option === 'string'
+            ? { value: option, label: option }
+            : option,
+    )
 }

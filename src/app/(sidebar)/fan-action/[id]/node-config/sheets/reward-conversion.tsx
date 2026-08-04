@@ -3,10 +3,18 @@
 import * as React from 'react'
 
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { REWARD_TRANSFER_TYPES } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
+import { REWARD_TRANSFER_TYPES, toSelectItems } from '../shared/constants'
 import {
     boolConfig,
     stringConfig,
@@ -39,19 +47,35 @@ export function RewardConversionContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel>Typ převodu</FieldLabel>
-                <FieldSelect
-                    value={transferType}
-                    onValueChange={setTransferType}
-                    options={REWARD_TRANSFER_TYPES}
-                    placeholder="Vyberte pole"
-                />
+                <Label>Typ převodu</Label>
+                <Select
+                    items={toSelectItems(REWARD_TRANSFER_TYPES)}
+                    value={transferType || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== transferType) {
+                            setTransferType(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte pole"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(REWARD_TRANSFER_TYPES).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="flex items-center justify-between gap-2">
-                <FieldLabel htmlFor="reward-conversion-webhook">
+                <Label htmlFor="reward-conversion-webhook">
                     Odeslat webhook
-                </FieldLabel>
+                </Label>
                 <Switch
                     id="reward-conversion-webhook"
                     checked={sendWebhook}

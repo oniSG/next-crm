@@ -3,10 +3,18 @@
 import * as React from 'react'
 
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { WAIT_INTERVAL_UNITS } from '../shared/constants'
-import { FieldError, FieldLabel, FieldSelect } from '../shared/form-components'
+import { WAIT_INTERVAL_UNITS, toSelectItems } from '../shared/constants'
 import {
     stringConfig,
     useNodeConfigSave,
@@ -56,9 +64,9 @@ export function WaitContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel htmlFor="wait-note">
+                <Label htmlFor="wait-note">
                     Poznámka pod názvem v diagramu
-                </FieldLabel>
+                </Label>
                 <Input
                     id="wait-note"
                     value={note}
@@ -68,18 +76,35 @@ export function WaitContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel required>Doba intervalu</FieldLabel>
-                <FieldSelect
-                    value={intervalUnit}
-                    onValueChange={setIntervalUnit}
-                    options={WAIT_INTERVAL_UNITS}
-                />
+                <Label>Doba intervalu</Label>
+                <Select
+                    items={toSelectItems(WAIT_INTERVAL_UNITS)}
+                    value={intervalUnit || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== intervalUnit) {
+                            setIntervalUnit(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(WAIT_INTERVAL_UNITS).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="wait-interval-value" required>
+                <Label htmlFor="wait-interval-value">
                     Hodnota intervalu
-                </FieldLabel>
+                </Label>
                 <Input
                     id="wait-interval-value"
                     type="number"
@@ -88,7 +113,9 @@ export function WaitContent({
                     onChange={(event) => setIntervalValue(event.target.value)}
                     placeholder="Hodnota"
                 />
-                <FieldError message={errors.intervalValue} />
+                {errors.intervalValue ? (
+                    <p className="text-destructive text-sm">{errors.intervalValue}</p>
+                ) : null}
             </div>
         </div>
     )

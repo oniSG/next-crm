@@ -10,11 +10,14 @@ import {
 
 import type { FanAction, FanActionWorkflowNodeData } from './data'
 
+/** Save handler slots registered by palette forms, node config, and (later) workflow. */
 export type SaveKey = 'basicInfo' | 'settings' | 'nodeConfig' | 'workflow'
 
+/** React Flow node typed with our workflow `data` payload. */
 export type WorkflowNode = Node<FanActionWorkflowNodeData>
 export type WorkflowEdge = Edge
 
+/** Imperative bridge to the live React Flow instance (registered from Canvas). */
 type FlowApi = {
     getNodes: () => WorkflowNode[]
     getEdges: () => WorkflowEdge[]
@@ -23,18 +26,23 @@ type FlowApi = {
 }
 
 type FanActionEditorContextValue = {
+    /** Current fan-action document (basic info, settings, workflow snapshot). */
     action: FanAction
     updateAction: (patch: Partial<FanAction>) => void
+    /** Visual “running” state for animated edges. */
     isRunning: boolean
     setRunning: (value: boolean) => void
+    /** Node currently open in the config panel (if any). */
     activeNodeId: string | null
     drawerOpen: boolean
+    /** Open config for a node, or close when `null` / same node toggled again. */
     configureNode: (nodeId: string | null) => void
     registerSaveHandler: (
         key: SaveKey,
         fn: () => Promise<boolean>,
     ) => void
     unregisterSaveHandler: (key: SaveKey) => void
+    /** Run registered save handlers in order; stops on first failure. */
     saveAll: () => Promise<boolean>
     registerFlowApi: (api: FlowApi) => void
     getNodes: () => WorkflowNode[]
@@ -46,6 +54,7 @@ type FanActionEditorContextValue = {
 const FanActionEditorContext =
     React.createContext<FanActionEditorContextValue | null>(null)
 
+/** Access editor state; must be used under `FanActionEditorProvider`. */
 export function useFanActionEditor() {
     const ctx = React.useContext(FanActionEditorContext)
     if (!ctx) {
@@ -56,6 +65,10 @@ export function useFanActionEditor() {
     return ctx
 }
 
+/**
+ * Shared state for the fan-action editor: action document, node-config drawer,
+ * save orchestration, and a façade over React Flow nodes/edges.
+ */
 export function FanActionEditorProvider({
     action: initialAction,
     children,
@@ -72,6 +85,7 @@ export function FanActionEditorProvider({
     >({})
     const flowApiRef = React.useRef<FlowApi | null>(null)
 
+    // Reset local UI when a different action is loaded into the provider.
     React.useEffect(() => {
         setAction(initialAction)
         setActiveNodeId(null)
@@ -82,6 +96,7 @@ export function FanActionEditorProvider({
         setAction((prev) => ({ ...prev, ...patch }))
     })
 
+    /** Toggle / open / close the right-hand node config panel. */
     const configureNode = React.useEffectEvent((nodeId: string | null) => {
         if (nodeId === null) {
             setActiveNodeId(null)

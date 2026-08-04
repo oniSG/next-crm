@@ -3,9 +3,10 @@
 import * as React from 'react'
 
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { FieldLabel } from '../shared/form-components'
+
 import {
     stringConfig,
     useNodeConfigSave,
@@ -54,9 +55,9 @@ export function LoyaltyPointsReachedContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel required>
+                <Label>
                     Kdy byl dosažen počet věrnostních bodů
-                </FieldLabel>
+                </Label>
                 <div className="grid grid-cols-2 gap-2">
                     <Input
                         id="loyalty-points-reached-from"
@@ -74,9 +75,9 @@ export function LoyaltyPointsReachedContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="loyalty-points-reached-count" required>
+                <Label htmlFor="loyalty-points-reached-count">
                     Počet věrnostních bodů
-                </FieldLabel>
+                </Label>
                 <Input
                     id="loyalty-points-reached-count"
                     type="number"

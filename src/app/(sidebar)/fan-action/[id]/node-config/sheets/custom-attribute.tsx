@@ -3,10 +3,18 @@
 import * as React from 'react'
 
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { CUSTOM_ATTRIBUTE_FIELDS } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
+import { CUSTOM_ATTRIBUTE_FIELDS, toSelectItems } from '../shared/constants'
 import {
     boolConfig,
     stringConfig,
@@ -46,18 +54,34 @@ export function CustomAttributeContent({
 
     return (
         <div className="space-y-3">
-            <FieldSelect
-                value={field}
-                onValueChange={setField}
-                options={CUSTOM_ATTRIBUTE_FIELDS}
-                placeholder="medicalRecords"
-            />
+            <Select
+                items={toSelectItems(CUSTOM_ATTRIBUTE_FIELDS)}
+                value={field || null}
+                onValueChange={(next) => {
+                    if (typeof next === 'string' && next !== field) {
+                        setField(next)
+                    }
+                }}
+            >
+                <SelectTrigger className="w-full">
+                    <SelectValue placeholder={"medicalRecords"} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        {toSelectItems(CUSTOM_ATTRIBUTE_FIELDS).map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
 
             <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                    <FieldLabel htmlFor="custom-attribute-log-changes">
+                    <Label htmlFor="custom-attribute-log-changes">
                         Logování změn vlastního pole
-                    </FieldLabel>
+                    </Label>
                     <Switch
                         id="custom-attribute-log-changes"
                         checked={logChanges}
@@ -66,9 +90,9 @@ export function CustomAttributeContent({
                     />
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                    <FieldLabel htmlFor="custom-attribute-oneid">
+                    <Label htmlFor="custom-attribute-oneid">
                         OneID integrace
-                    </FieldLabel>
+                    </Label>
                     <Switch
                         id="custom-attribute-oneid"
                         checked={oneid}
@@ -77,9 +101,9 @@ export function CustomAttributeContent({
                     />
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                    <FieldLabel htmlFor="custom-attribute-neon">
+                    <Label htmlFor="custom-attribute-neon">
                         NEON integrace
-                    </FieldLabel>
+                    </Label>
                     <Switch
                         id="custom-attribute-neon"
                         checked={neon}

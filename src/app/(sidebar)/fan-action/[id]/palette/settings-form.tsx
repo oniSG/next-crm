@@ -9,25 +9,9 @@ import {
     HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 
 import { useFanActionEditor } from '../context'
-
-function FieldLabel({
-    htmlFor,
-    children,
-}: {
-    htmlFor?: string
-    children: React.ReactNode
-}) {
-    return (
-        <label
-            htmlFor={htmlFor}
-            className="text-sm font-medium text-muted-foreground"
-        >
-            {children}
-        </label>
-    )
-}
 
 export function SettingsForm() {
     const { action, updateAction, registerSaveHandler, unregisterSaveHandler } =
@@ -65,9 +49,9 @@ export function SettingsForm() {
             noValidate
         >
             <div className="flex items-center justify-between gap-2">
-                <FieldLabel htmlFor="automatic-stop">
+                <Label htmlFor="automatic-stop">
                     Automatické zastavení akce
-                </FieldLabel>
+                </Label>
                 <Switch
                     id="automatic-stop"
                     checked={automaticStop}
@@ -77,9 +61,9 @@ export function SettingsForm() {
 
             <div className="flex items-center justify-between gap-2">
                 <div className="flex min-w-0 items-center gap-2">
-                    <FieldLabel htmlFor="planned-run-out">
+                    <Label htmlFor="planned-run-out">
                         Nechat doběhnout naplánované
-                    </FieldLabel>
+                    </Label>
                     <HoverCard>
                         <HoverCardTrigger
                             render={

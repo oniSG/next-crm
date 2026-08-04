@@ -5,10 +5,18 @@ import * as React from 'react'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { EMAIL_TEMPLATES } from '../shared/constants'
-import { FieldError, FieldLabel, FieldSelect } from '../shared/form-components'
+import { EMAIL_TEMPLATES, toSelectItems } from '../shared/constants'
 import {
     boolConfig,
     stringConfig,
@@ -149,9 +157,9 @@ export function EmailContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel htmlFor="email-note">
+                <Label htmlFor="email-note">
                     Poznámka pod názvem v diagramu
-                </FieldLabel>
+                </Label>
                 <Input
                     id="email-note"
                     value={note}
@@ -159,13 +167,15 @@ export function EmailContent({
                     placeholder="Poznámka"
                     maxLength={250}
                 />
-                <FieldError message={errors.note} />
+                {errors.note ? (
+                    <p className="text-destructive text-sm">{errors.note}</p>
+                ) : null}
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="sender-email" required>
+                <Label htmlFor="sender-email">
                     Odesílací e-mail
-                </FieldLabel>
+                </Label>
                 <Input
                     id="sender-email"
                     type="email"
@@ -174,13 +184,15 @@ export function EmailContent({
                     placeholder="info@relatoo.cz"
                     autoComplete="email"
                 />
-                <FieldError message={errors.senderEmail} />
+                {errors.senderEmail ? (
+                    <p className="text-destructive text-sm">{errors.senderEmail}</p>
+                ) : null}
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="email-reply" required>
+                <Label htmlFor="email-reply">
                     E-mail pro odpověď
-                </FieldLabel>
+                </Label>
                 <Input
                     id="email-reply"
                     type="email"
@@ -188,13 +200,15 @@ export function EmailContent({
                     onChange={(event) => setReplyEmail(event.target.value)}
                     placeholder="E-mail pro odpověď"
                 />
-                <FieldError message={errors.replyEmail} />
+                {errors.replyEmail ? (
+                    <p className="text-destructive text-sm">{errors.replyEmail}</p>
+                ) : null}
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="email-subject" required>
+                <Label htmlFor="email-subject">
                     Předmět e-mailu
-                </FieldLabel>
+                </Label>
                 <Input
                     id="email-subject"
                     value={subject}
@@ -202,24 +216,44 @@ export function EmailContent({
                     placeholder="Předmět e-mailu"
                     maxLength={250}
                 />
-                <FieldError message={errors.subject} />
+                {errors.subject ? (
+                    <p className="text-destructive text-sm">{errors.subject}</p>
+                ) : null}
             </div>
 
             <div className="space-y-2">
-                <FieldLabel required>Šablona e-mailu</FieldLabel>
-                <FieldSelect
-                    value={emailTemplate}
-                    onValueChange={setEmailTemplate}
-                    options={EMAIL_TEMPLATES}
-                    placeholder="Šablona e-mailu"
-                />
-                <FieldError message={errors.emailTemplate} />
+                <Label>Šablona e-mailu</Label>
+                <Select
+                    items={toSelectItems(EMAIL_TEMPLATES)}
+                    value={emailTemplate || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== emailTemplate) {
+                            setEmailTemplate(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Šablona e-mailu"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(EMAIL_TEMPLATES).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+                {errors.emailTemplate ? (
+                    <p className="text-destructive text-sm">{errors.emailTemplate}</p>
+                ) : null}
             </div>
 
             <div className="flex items-center justify-between gap-2">
-                <FieldLabel htmlFor="send-copy">
+                <Label htmlFor="send-copy">
                     Odeslat kopii e-mailu připojeným návštěvníkům
-                </FieldLabel>
+                </Label>
                 <Switch
                     id="send-copy"
                     checked={sendCopyToVisitors}
@@ -235,9 +269,9 @@ export function EmailContent({
                         key={field.key}
                         className="flex items-center justify-between gap-2"
                     >
-                        <FieldLabel htmlFor={`email-consent-${field.key}`}>
+                        <Label htmlFor={`email-consent-${field.key}`}>
                             {field.label}
-                        </FieldLabel>
+                        </Label>
                         <Switch
                             id={`email-consent-${field.key}`}
                             checked={consentValues[field.key]}

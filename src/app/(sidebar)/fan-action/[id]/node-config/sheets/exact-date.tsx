@@ -3,13 +3,18 @@
 import * as React from 'react'
 
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import {
-    DATE_PROPERTIES,
-    DAY_OFFSET_OPERATORS,
-} from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
+import { DATE_PROPERTIES, DAY_OFFSET_OPERATORS, toSelectItems } from '../shared/constants'
 import {
     stringConfig,
     useNodeConfigSave,
@@ -56,13 +61,29 @@ export function ExactDateContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel required>Vlastnost data</FieldLabel>
-                <FieldSelect
-                    value={dateProperty}
-                    onValueChange={setDateProperty}
-                    options={DATE_PROPERTIES}
-                    placeholder="Vyberte vlastnost data"
-                />
+                <Label>Vlastnost data</Label>
+                <Select
+                    items={toSelectItems(DATE_PROPERTIES)}
+                    value={dateProperty || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== dateProperty) {
+                            setDateProperty(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte vlastnost data"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(DATE_PROPERTIES).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
                 {dateProperty === 'holiday' ? (
                     <p className="text-sm text-muted-foreground">
                         Spouštěč reaguje na automaticky nebo ručně doplněné datum
@@ -72,14 +93,30 @@ export function ExactDateContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel>Počet dní před/po</FieldLabel>
+                <Label>Počet dní před/po</Label>
                 <div className="flex gap-2">
-                    <FieldSelect
-                        value={dayOffsetOperator}
-                        onValueChange={setDayOffsetOperator}
-                        options={DAY_OFFSET_OPERATORS}
-                        triggerClassName="w-20 shrink-0"
-                    />
+                    <Select
+                        items={toSelectItems(DAY_OFFSET_OPERATORS)}
+                        value={dayOffsetOperator || null}
+                        onValueChange={(next) => {
+                            if (typeof next === 'string' && next !== dayOffsetOperator) {
+                                setDayOffsetOperator(next)
+                            }
+                        }}
+                    >
+                        <SelectTrigger className="w-20 shrink-0">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {toSelectItems(DAY_OFFSET_OPERATORS).map((item) => (
+                                    <SelectItem key={item.value} value={item.value}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                     <Input
                         type="number"
                         min={0}
@@ -93,9 +130,9 @@ export function ExactDateContent({
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="exact-date-check-time" required>
+                <Label htmlFor="exact-date-check-time">
                     Čas kontroly
-                </FieldLabel>
+                </Label>
                 <Input
                     id="exact-date-check-time"
                     type="time"

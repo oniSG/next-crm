@@ -4,11 +4,19 @@ import * as React from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
 
 import { FAN_ACTION_OPTIONS } from '../../data'
 import type { WorkflowDrawerContentProps } from '../../shared/types'
-import { DAY_OFFSET_OPERATORS } from '../shared/constants'
-import { FieldLabel, FieldSelect } from '../shared/form-components'
+import { DAY_OFFSET_OPERATORS, toSelectItems } from '../shared/constants'
 import {
     boolConfig,
     stringConfig,
@@ -65,37 +73,85 @@ export function EventDateOccursContent({
     return (
         <div className="space-y-3">
             <div className="space-y-2">
-                <FieldLabel>Seznamy událostí</FieldLabel>
-                <FieldSelect
-                    value={eventList}
-                    onValueChange={setEventList}
-                    options={FAN_ACTION_OPTIONS.allEventLists}
-                    placeholder="Vyberte seznam událostí"
-                />
+                <Label>Seznamy událostí</Label>
+                <Select
+                    items={toSelectItems(FAN_ACTION_OPTIONS.allEventLists)}
+                    value={eventList || null}
+                    onValueChange={(next) => {
+                        if (typeof next === 'string' && next !== eventList) {
+                            setEventList(next)
+                        }
+                    }}
+                >
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"Vyberte seznam událostí"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {toSelectItems(FAN_ACTION_OPTIONS.allEventLists).map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                    {item.label}
+                                </SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="space-y-2">
-                <FieldLabel required>Dny</FieldLabel>
+                <Label>Dny</Label>
                 <div className="flex gap-2">
-                    <FieldSelect
-                        value={dayOffsetOperator}
-                        onValueChange={setDayOffsetOperator}
-                        options={DAY_OFFSET_OPERATORS}
-                        triggerClassName="w-20 shrink-0"
-                    />
-                    <FieldSelect
-                        value={dayOffsetValue}
-                        onValueChange={setDayOffsetValue}
-                        options={DAY_VALUES}
-                        triggerClassName="min-w-0 flex-1"
-                    />
+                    <Select
+                        items={toSelectItems(DAY_OFFSET_OPERATORS)}
+                        value={dayOffsetOperator || null}
+                        onValueChange={(next) => {
+                            if (typeof next === 'string' && next !== dayOffsetOperator) {
+                                setDayOffsetOperator(next)
+                            }
+                        }}
+                    >
+                        <SelectTrigger className="w-20 shrink-0">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {toSelectItems(DAY_OFFSET_OPERATORS).map((item) => (
+                                    <SelectItem key={item.value} value={item.value}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <Select
+                        items={toSelectItems(DAY_VALUES)}
+                        value={dayOffsetValue || null}
+                        onValueChange={(next) => {
+                            if (typeof next === 'string' && next !== dayOffsetValue) {
+                                setDayOffsetValue(next)
+                            }
+                        }}
+                    >
+                        <SelectTrigger className="min-w-0 w-full flex-1">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {toSelectItems(DAY_VALUES).map((item) => (
+                                    <SelectItem key={item.value} value={item.value}>
+                                        {item.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 
             <div className="space-y-2">
-                <FieldLabel htmlFor="event-date-occurs-hours" required>
+                <Label htmlFor="event-date-occurs-hours">
                     Hodiny
-                </FieldLabel>
+                </Label>
                 <Input
                     id="event-date-occurs-hours"
                     type="time"
@@ -105,9 +161,9 @@ export function EventDateOccursContent({
             </div>
 
             <div className="flex items-center justify-between gap-2">
-                <FieldLabel htmlFor="event-date-occurs-points-only">
+                <Label htmlFor="event-date-occurs-points-only">
                     Pouze události s body
-                </FieldLabel>
+                </Label>
                 <Switch
                     id="event-date-occurs-points-only"
                     checked={pointsEventsOnly}
