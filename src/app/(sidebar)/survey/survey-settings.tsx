@@ -5,6 +5,7 @@ import {
     HexColorInput,
     normalizeHexColor,
 } from '@/components/custom/inputs/hex-color-input'
+import { RequiredIndicator } from '@/components/custom/other/required-indicator'
 import {
     Card,
     CardContent,
@@ -61,8 +62,15 @@ function BasicSettingsCard({ initialData }: { initialData: SurveyFormData }) {
             </CardHeader>
             <CardContent className="space-y-5">
                 <Field>
-                    <FieldLabel htmlFor="survey-name">Name</FieldLabel>
-                    <Input id="survey-name" name="name" defaultValue={initialData.name} />
+                    <FieldLabel htmlFor="survey-name">
+                        Name <RequiredIndicator />
+                    </FieldLabel>
+                    <Input
+                        id="survey-name"
+                        name="name"
+                        defaultValue={initialData.name}
+                        required
+                    />
                 </Field>
                 <Field>
                     <FieldLabel htmlFor="survey-description">Description</FieldLabel>

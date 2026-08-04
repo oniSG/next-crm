@@ -6,6 +6,7 @@ import { CalendarIcon, ImageIcon } from 'lucide-react'
 import type { SurveyFormData, SurveyQuestion } from '@/app/(sidebar)/survey/temp'
 import { AnswerGridInput } from '@/components/custom/inputs/answer-grid-input'
 import { LinearScaleInput } from '@/components/custom/inputs/linear-scale-input'
+import { RequiredIndicator } from '@/components/custom/other/required-indicator'
 import { SelectionInput } from '@/components/custom/inputs/selection-input'
 import { StarRatingInput } from '@/components/custom/inputs/star-rating-input'
 import { Button } from '@/components/ui/button'
@@ -196,7 +197,7 @@ function Question({
         <Field className="bg-muted/20 rounded-xl border p-4">
             <FieldLabel className="text-base">
                 {title}
-                {required && <span className="text-destructive">*</span>}
+                {required && <RequiredIndicator />}
             </FieldLabel>
             {description && <FieldDescription>{description}</FieldDescription>}
             <div className="pt-1">{children}</div>

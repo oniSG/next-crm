@@ -1,9 +1,16 @@
 'use client'
 
 import { useState } from 'react'
+import { XIcon } from 'lucide-react'
 import { SurveyPreview } from '@/components/custom/survey/survey-preview'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogPortal,
+    DialogTitle,
+} from '@/components/ui/dialog'
 
 import { buildSurveyPreviewData } from './survey-form-parser'
 import { SurveySectionsEditor } from './survey-sections-editor'
@@ -81,12 +88,30 @@ export default function SurveyForm({ initialData }: { initialData?: SurveyFormDa
                 </Button>
             </div>
             <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-                <DialogContent className="bg-muted/25 max-h-[92vh] overflow-y-auto p-4 sm:max-w-5xl">
+                <DialogContent
+                    showCloseButton={false}
+                    className="h-dvh max-h-dvh [scrollbar-width:none] overflow-y-auto bg-transparent px-4 py-10 shadow-none ring-0 sm:max-w-5xl [&::-webkit-scrollbar]:hidden"
+                >
                     <DialogTitle className="sr-only">Survey preview</DialogTitle>
                     {previewData && (
                         <SurveyPreview survey={previewData} className="mx-auto" />
                     )}
                 </DialogContent>
+                <DialogPortal>
+                    <DialogClose
+                        render={
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                className="bg-background/90 fixed top-4 right-4 z-60 rounded-full shadow-sm backdrop-blur"
+                                aria-label="Close survey preview"
+                            />
+                        }
+                    >
+                        <XIcon />
+                    </DialogClose>
+                </DialogPortal>
             </Dialog>
         </form>
     )

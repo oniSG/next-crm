@@ -66,6 +66,7 @@ export function StarRatingInput({
                         />
                         <span className="peer-focus-visible:ring-ring block rounded-md peer-focus-visible:ring-3">
                             <StarIcon
+                                strokeWidth={1.25}
                                 style={
                                     selected
                                         ? {

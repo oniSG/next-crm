@@ -22,6 +22,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 
 import { Button } from '@/components/ui/button'
+import { RequiredIndicator } from '@/components/custom/other/required-indicator'
 import {
     Card,
     CardAction,
@@ -35,6 +36,7 @@ import {
     CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { Input } from '@/components/ui/input'
+import { Field, FieldLabel } from '@/components/ui/field'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 
@@ -133,12 +135,18 @@ export function SurveySectionCard({
                 >
                     <CardHeader className="gap-x-10">
                         <CardTitle>
-                            <Input
-                                id={`${section.id}-name`}
-                                name={`sections[${sectionIndex}][name]`}
-                                defaultValue={section.name}
-                                placeholder="Untitled section"
-                            />
+                            <Field>
+                                <FieldLabel htmlFor={`${section.id}-name`}>
+                                    Section name <RequiredIndicator />
+                                </FieldLabel>
+                                <Input
+                                    id={`${section.id}-name`}
+                                    name={`sections[${sectionIndex}][name]`}
+                                    defaultValue={section.name}
+                                    placeholder="Untitled section"
+                                    required
+                                />
+                            </Field>
                         </CardTitle>
                         <CardAction>
                             <Button

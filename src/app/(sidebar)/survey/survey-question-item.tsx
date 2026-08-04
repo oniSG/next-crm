@@ -5,6 +5,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import { Button } from '@/components/ui/button'
+import { RequiredIndicator } from '@/components/custom/other/required-indicator'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
@@ -75,13 +76,14 @@ export function SurveyQuestionItem({
                 </Button>
                 <Field className="min-w-0 flex-1">
                     <FieldLabel htmlFor={`${questionDomId}-name`}>
-                        Question {index + 1}
+                        Question {index + 1} <RequiredIndicator />
                     </FieldLabel>
                     <Input
                         id={`${questionDomId}-name`}
                         name={`${questionFieldName}[name]`}
                         defaultValue={question.name}
                         placeholder="Untitled question"
+                        required
                     />
                 </Field>
                 <Field className="w-48 shrink-0">
