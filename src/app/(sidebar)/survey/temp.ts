@@ -39,6 +39,7 @@ export type SurveyQuestion = {
     columns: string[]
     checkMoreOptions: boolean
     selectionOptions: SelectionOption[]
+    multipleSelection: boolean
 }
 
 export type SurveySection = {

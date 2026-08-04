@@ -153,7 +153,25 @@ const pages: {
             path: '/user/edit',
             status: 'progress',
             by: 'Petr'
-        }
+        },
+        {
+            name: 'Create survey',
+            path: '/survey/create',
+            status: 'progress',
+            by: 'Petr'
+        },
+        {
+            name: 'Edit survey',
+            path: '/survey/edit',
+            status: 'progress',
+            by: 'Petr'
+        },
+        {
+            name: 'View survey',
+            path: '/survey/view',
+            status: 'progress',
+            by: 'Petr'
+        },
     ]
 
 export default function Page() {

@@ -41,7 +41,11 @@ export function QuestionTypeSettings({
                     id={id}
                     name={name}
                     value={question.selectionOptions}
+                    multiple={question.multipleSelection}
                     onValueChange={(selectionOptions) => onChange({ selectionOptions })}
+                    onMultipleChange={(multipleSelection) =>
+                        onChange({ multipleSelection })
+                    }
                 />
             )
         default:

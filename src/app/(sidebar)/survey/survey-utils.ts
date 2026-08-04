@@ -33,6 +33,7 @@ export function createDefaultQuestion(id = 'question-1', isNew = false): SurveyQ
         columns: ['Column 1', 'Column 2'],
         checkMoreOptions: false,
         selectionOptions: createDefaultSelectionOptions(),
+        multipleSelection: false,
     }
 }
 

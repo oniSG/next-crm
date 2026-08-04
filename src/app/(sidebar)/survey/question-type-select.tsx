@@ -24,46 +24,49 @@ export function QuestionTypeSelect({
     onValueChange: (value: QuestionType) => void
 }) {
     return (
-        <Select
-            value={value}
-            name={name}
-            disabled={disabled}
-            onValueChange={(nextValue) => {
-                if (nextValue) onValueChange(nextValue as QuestionType)
-            }}
-        >
-            <SelectTrigger id={id} className="w-full">
-                <SelectValue>
-                    {(selectedValue) => {
-                        const selectedType = QUESTION_TYPE_OPTIONS.find(
-                            (option) => option.value === selectedValue,
-                        )
+        <>
+            {disabled && <input type="hidden" name={name} value={value} />}
+            <Select
+                value={value}
+                name={disabled ? undefined : name}
+                disabled={disabled}
+                onValueChange={(nextValue) => {
+                    if (nextValue) onValueChange(nextValue as QuestionType)
+                }}
+            >
+                <SelectTrigger id={id} className="w-full">
+                    <SelectValue>
+                        {(selectedValue) => {
+                            const selectedType = QUESTION_TYPE_OPTIONS.find(
+                                (option) => option.value === selectedValue,
+                            )
 
-                        if (!selectedType) return null
+                            if (!selectedType) return null
 
-                        const Icon = selectedType.icon
+                            const Icon = selectedType.icon
+
+                            return (
+                                <>
+                                    <Icon />
+                                    {selectedType.label}
+                                </>
+                            )
+                        }}
+                    </SelectValue>
+                </SelectTrigger>
+                <SelectContent align="start" alignItemWithTrigger={false}>
+                    {QUESTION_TYPE_OPTIONS.map((option) => {
+                        const Icon = option.icon
 
                         return (
-                            <>
+                            <SelectItem key={option.value} value={option.value}>
                                 <Icon />
-                                {selectedType.label}
-                            </>
+                                {option.label}
+                            </SelectItem>
                         )
-                    }}
-                </SelectValue>
-            </SelectTrigger>
-            <SelectContent align="start" alignItemWithTrigger={false}>
-                {QUESTION_TYPE_OPTIONS.map((option) => {
-                    const Icon = option.icon
-
-                    return (
-                        <SelectItem key={option.value} value={option.value}>
-                            <Icon />
-                            {option.label}
-                        </SelectItem>
-                    )
-                })}
-            </SelectContent>
-        </Select>
+                    })}
+                </SelectContent>
+            </Select>
+        </>
     )
 }

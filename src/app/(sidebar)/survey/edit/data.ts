@@ -43,6 +43,7 @@ export const EDIT_SURVEY_DATA: SurveyFormData = {
                             secondaryTextRequired: false,
                         },
                     ],
+                    multipleSelection: false,
                 },
                 {
                     id: 'question-2',
@@ -58,6 +59,7 @@ export const EDIT_SURVEY_DATA: SurveyFormData = {
                     columns: ['Column 1', 'Column 2'],
                     checkMoreOptions: false,
                     selectionOptions: [],
+                    multipleSelection: false,
                 },
             ],
         },
@@ -98,6 +100,7 @@ export const EDIT_SURVEY_DATA: SurveyFormData = {
                             secondaryTextRequired: false,
                         },
                     ],
+                    multipleSelection: true,
                 },
             ],
         },
