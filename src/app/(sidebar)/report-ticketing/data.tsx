@@ -1,4 +1,9 @@
+import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
+import type { ChartConfig } from '@/components/ui/chart'
+
 import ticketingReport from './data/ticketing-report.json'
+
+const numberFormatter = new Intl.NumberFormat('cs-CZ')
 
 export type SoldUsedPoint = {
     id: string
@@ -25,94 +30,112 @@ export type TicketingReportData = {
     ticketsSoldUsedBySeason: SoldUsedPoint[]
 }
 
-export type ReportChartSeries = {
-    key: string
-    label: string
-    color: string
-}
+export const TICKETS_BY_EVENT_CONFIG = {
+    sold: { label: 'Prodané', color: 'var(--chart-1)' },
+    used: { label: 'Použité', color: 'var(--chart-4)' },
+} satisfies ChartConfig
 
-export type ReportTableColumn = {
-    key: string
-    label: string
-    format?: 'number'
-    emphasize?: boolean
-}
+export const TICKETS_VS_SEASON_TICKETS_CONFIG = {
+    tickets: { label: 'Vstupenky', color: 'var(--chart-1)' },
+    seasonTickets: { label: 'Permanentky', color: 'var(--chart-2)' },
+} satisfies ChartConfig
 
-export type ReportSectionRow = {
-    period: string
-    label: string
-    [key: string]: string | number
-}
+export const SEASON_TICKETS_SOLD_USED_CONFIG = {
+    sold: { label: 'Prodané', color: 'var(--chart-1)' },
+    used: { label: 'Použité', color: 'var(--chart-3)' },
+} satisfies ChartConfig
 
-export const SOLD_USED_COLUMNS: ReportTableColumn[] = [
-    { key: 'sold', label: 'Prodané', format: 'number' },
-    { key: 'used', label: 'Použité', format: 'number', emphasize: true },
-]
+export const TICKETS_SOLD_USED_CONFIG = {
+    sold: { label: 'Prodané', color: 'var(--chart-4)' },
+    used: { label: 'Použité', color: 'var(--chart-2)' },
+} satisfies ChartConfig
 
-export const TICKETS_BY_EVENT_SERIES: ReportChartSeries[] = [
-    { key: 'sold', label: 'Prodané', color: 'var(--chart-1)' },
-    { key: 'used', label: 'Použité', color: 'var(--chart-4)' },
-]
+export const SOLD_USED_SERIES = ['sold', 'used'] as const
+export const TICKETS_VS_SEASON_TICKETS_SERIES = [
+    'tickets',
+    'seasonTickets',
+] as const
 
-export const SEASON_TICKETS_SOLD_USED_SERIES: ReportChartSeries[] = [
-    { key: 'sold', label: 'Prodané', color: 'var(--chart-1)' },
-    { key: 'used', label: 'Použité', color: 'var(--chart-3)' },
-]
-
-export const TICKETS_SOLD_USED_SERIES: ReportChartSeries[] = [
-    { key: 'sold', label: 'Prodané', color: 'var(--chart-4)' },
-    { key: 'used', label: 'Použité', color: 'var(--chart-2)' },
-]
-
-export const TICKETS_VS_SEASON_TICKETS_COLUMNS: ReportTableColumn[] = [
-    { key: 'tickets', label: 'Vstupenky', format: 'number' },
+export const SOLD_USED_COLUMNS: SimpleTableColumn<SoldUsedPoint>[] = [
     {
-        key: 'seasonTickets',
-        label: 'Permanentky',
-        format: 'number',
-        emphasize: true,
+        id: 'label',
+        header: 'Název',
+        cellClassName: 'font-medium',
+        cell: (row) => row.label,
+    },
+    {
+        id: 'sold',
+        header: 'Prodané',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => numberFormatter.format(row.sold),
+    },
+    {
+        id: 'used',
+        header: 'Použité',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right font-medium tabular-nums',
+        cell: (row) => numberFormatter.format(row.used),
     },
 ]
 
-export const TICKETS_VS_SEASON_TICKETS_SERIES: ReportChartSeries[] = [
-    { key: 'tickets', label: 'Vstupenky', color: 'var(--chart-1)' },
-    { key: 'seasonTickets', label: 'Permanentky', color: 'var(--chart-2)' },
-]
+export const TICKETS_VS_SEASON_TICKETS_COLUMNS: SimpleTableColumn<TicketsVsSeasonTicketsPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Sezóna',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'tickets',
+            header: 'Vstupenky',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.tickets),
+        },
+        {
+            id: 'seasonTickets',
+            header: 'Permanentky',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right font-medium tabular-nums',
+            cell: (row) => numberFormatter.format(row.seasonTickets),
+        },
+    ]
 
 export const TICKETING_REPORT_DATA = ticketingReport as TicketingReportData
 
-export function toSoldUsedRows(points: SoldUsedPoint[]): ReportSectionRow[] {
-    return points.map((point) => ({
-        period: point.id,
-        label: point.label,
-        sold: point.sold,
-        used: point.used,
-    }))
+export function formatTicketingCount(value: number) {
+    return numberFormatter.format(value)
 }
 
-/** Top N events by total (sold + used), highest first. */
-export function toTopSoldUsedRows(
+export function topSoldUsedByTotal(
     points: SoldUsedPoint[],
     limit = 10,
-): ReportSectionRow[] {
+): SoldUsedPoint[] {
     return [...points]
         .sort((a, b) => b.sold + b.used - (a.sold + a.used))
         .slice(0, limit)
-        .map((point) => ({
-            period: point.id,
-            label: point.label,
-            sold: point.sold,
-            used: point.used,
-        }))
 }
 
-export function toTicketsVsSeasonTicketsRows(
+export function sumSoldUsed(points: SoldUsedPoint[]) {
+    return points.reduce(
+        (result, point) => ({
+            sold: result.sold + point.sold,
+            used: result.used + point.used,
+        }),
+        { sold: 0, used: 0 },
+    )
+}
+
+export function sumTicketsVsSeasonTickets(
     points: TicketsVsSeasonTicketsPoint[],
-): ReportSectionRow[] {
-    return points.map((point) => ({
-        period: point.id,
-        label: point.label,
-        tickets: point.tickets,
-        seasonTickets: point.seasonTickets,
-    }))
+) {
+    return points.reduce(
+        (result, point) => ({
+            tickets: result.tickets + point.tickets,
+            seasonTickets: result.seasonTickets + point.seasonTickets,
+        }),
+        { tickets: 0, seasonTickets: 0 },
+    )
 }

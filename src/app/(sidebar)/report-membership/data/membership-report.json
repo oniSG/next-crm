@@ -1,0 +1,305 @@
+{
+    "meta": {
+        "organizationName": "FC Relatoo",
+        "generatedAt": "2026-08-05T10:00:00.000Z"
+    },
+    "rows": [
+        {
+            "id": "row-1",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Online prodej",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 249,
+            "currentCount": 4140,
+            "currentRevenue": 1030860
+        },
+        {
+            "id": "row-2",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 0,
+            "currentCount": 1,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-3",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Pokladna",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 249,
+            "currentCount": 4139,
+            "currentRevenue": 1030611
+        },
+        {
+            "id": "row-4",
+            "status": "Celkem",
+            "paymentType": "Čtvrtletní",
+            "orderType": "Online prodej",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 599,
+            "currentCount": 1620,
+            "currentRevenue": 970380
+        },
+        {
+            "id": "row-5",
+            "status": "Celkem",
+            "paymentType": "Čtvrtletní",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 0,
+            "currentCount": 3,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-6",
+            "status": "Celkem",
+            "paymentType": "Čtvrtletní",
+            "orderType": "Pokladna",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 599,
+            "currentCount": 1954,
+            "currentRevenue": 1170446
+        },
+        {
+            "id": "row-7",
+            "status": "Celkem",
+            "paymentType": "Roční",
+            "orderType": "Online prodej",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 2490,
+            "currentCount": 4195,
+            "currentRevenue": 10445550
+        },
+        {
+            "id": "row-8",
+            "status": "Celkem",
+            "paymentType": "Roční",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 0,
+            "currentCount": 4,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-9",
+            "status": "Celkem",
+            "paymentType": "Roční",
+            "orderType": "Pokladna",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 2490,
+            "currentCount": 4154,
+            "currentRevenue": 10343460
+        },
+        {
+            "id": "row-10",
+            "status": "Celkem",
+            "paymentType": "Jednorázová",
+            "orderType": "Online prodej",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 990,
+            "currentCount": 473,
+            "currentRevenue": 468270
+        },
+        {
+            "id": "row-11",
+            "status": "Celkem",
+            "paymentType": "Jednorázová",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 0,
+            "currentCount": 1,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-12",
+            "status": "Celkem",
+            "paymentType": "Jednorázová",
+            "orderType": "Pokladna",
+            "membershipId": 50,
+            "membershipName": "Sparta UNLIMITED.",
+            "price": 990,
+            "currentCount": 2327,
+            "currentRevenue": 2303730
+        },
+        {
+            "id": "row-13",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Online prodej",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 199,
+            "currentCount": 5119,
+            "currentRevenue": 1018681
+        },
+        {
+            "id": "row-14",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 0,
+            "currentCount": 3,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-15",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Pokladna",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 199,
+            "currentCount": 3114,
+            "currentRevenue": 619686
+        },
+        {
+            "id": "row-16",
+            "status": "Celkem",
+            "paymentType": "Čtvrtletní",
+            "orderType": "Online prodej",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 499,
+            "currentCount": 4710,
+            "currentRevenue": 2350290
+        },
+        {
+            "id": "row-17",
+            "status": "Celkem",
+            "paymentType": "Čtvrtletní",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 0,
+            "currentCount": 5,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-18",
+            "status": "Celkem",
+            "paymentType": "Čtvrtletní",
+            "orderType": "Pokladna",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 499,
+            "currentCount": 6339,
+            "currentRevenue": 3163161
+        },
+        {
+            "id": "row-19",
+            "status": "Celkem",
+            "paymentType": "Roční",
+            "orderType": "Online prodej",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 1890,
+            "currentCount": 2315,
+            "currentRevenue": 4375350
+        },
+        {
+            "id": "row-20",
+            "status": "Celkem",
+            "paymentType": "Roční",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 0,
+            "currentCount": 2,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-21",
+            "status": "Celkem",
+            "paymentType": "Roční",
+            "orderType": "Pokladna",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 1890,
+            "currentCount": 1901,
+            "currentRevenue": 3592890
+        },
+        {
+            "id": "row-22",
+            "status": "Celkem",
+            "paymentType": "Jednorázová",
+            "orderType": "Online prodej",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 690,
+            "currentCount": 3516,
+            "currentRevenue": 2426040
+        },
+        {
+            "id": "row-23",
+            "status": "Celkem",
+            "paymentType": "Jednorázová",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 0,
+            "currentCount": 3,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-24",
+            "status": "Celkem",
+            "paymentType": "Jednorázová",
+            "orderType": "Pokladna",
+            "membershipId": 61,
+            "membershipName": "Sparta Club Junior 2025/2026",
+            "price": 690,
+            "currentCount": 3878,
+            "currentRevenue": 2675820
+        },
+        {
+            "id": "row-25",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Online prodej",
+            "membershipId": 72,
+            "membershipName": "Sparta Club Adult 2025/2026",
+            "price": 149,
+            "currentCount": 6738,
+            "currentRevenue": 1003962
+        },
+        {
+            "id": "row-26",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Objednávka z adminu",
+            "membershipId": 72,
+            "membershipName": "Sparta Club Adult 2025/2026",
+            "price": 0,
+            "currentCount": 3,
+            "currentRevenue": 0
+        },
+        {
+            "id": "row-27",
+            "status": "Celkem",
+            "paymentType": "Měsíční",
+            "orderType": "Pokladna",
+            "membershipId": 72,
+            "membershipName": "Sparta Club Adult 2025/2026",
+            "price": 149,
+            "currentCount": 6066,
+            "currentRevenue": 903834
+        }
+    ]
+}

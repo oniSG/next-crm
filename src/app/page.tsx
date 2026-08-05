@@ -154,6 +154,18 @@ const pages: {
             status: 'progress',
             by: 'Tomas',
         },
+        {
+            name: 'Report sales',
+            path: '/report-sales',
+            status: 'progress',
+            by: 'Tomas',
+        },
+        {
+            name: 'Report membership',
+            path: '/report-membership',
+            status: 'progress',
+            by: 'Tomas',
+        },
     ]
 
 export default function Page() {

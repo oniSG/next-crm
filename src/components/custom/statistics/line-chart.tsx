@@ -1,6 +1,5 @@
 'use client'
 
-import { numericFormatter } from 'react-number-format'
 import {
     CartesianGrid,
     Line,
@@ -19,6 +18,8 @@ import {
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
 
+import { formatCompactNumber } from './format-compact-number'
+
 export type LineChartProps = {
     data: object[]
     config: ChartConfig
@@ -30,29 +31,6 @@ export type LineChartProps = {
     showYAxis?: boolean
     angledXAxis?: boolean
     showDots?: boolean
-}
-
-function formatCompactNumber(value: number): string {
-    const abs = Math.abs(value)
-
-    if (abs >= 1_000_000) {
-        return `${numericFormatter(String(value / 1_000_000), {
-            decimalScale: 1,
-            decimalSeparator: ',',
-        })}M`
-    }
-
-    if (abs >= 1_000) {
-        return `${numericFormatter(String(value / 1_000), {
-            decimalScale: 1,
-            decimalSeparator: ',',
-        })}k`
-    }
-
-    return numericFormatter(String(value), {
-        thousandSeparator: ' ',
-        decimalScale: 0,
-    })
 }
 
 export function LineChart({
@@ -67,6 +45,21 @@ export function LineChart({
     angledXAxis = false,
     showDots = false,
 }: LineChartProps) {
+    const xAxisHeight = angledXAxis
+        ? xAxisLabel
+            ? 78
+            : 56
+        : xAxisLabel
+          ? 40
+          : undefined
+    const bottomMargin = angledXAxis
+        ? xAxisLabel
+            ? 28
+            : 12
+        : xAxisLabel
+          ? 20
+          : 0
+
     return (
         <ChartContainer
             config={config}
@@ -76,9 +69,10 @@ export function LineChart({
                 accessibilityLayer
                 data={data}
                 margin={{
-                    left: showYAxis ? 0 : 12,
+                    top: showDots ? 12 : 8,
+                    left: showYAxis ? (yAxisLabel ? 8 : 0) : 12,
                     right: 12,
-                    bottom: xAxisLabel || angledXAxis ? 24 : 0,
+                    bottom: bottomMargin,
                 }}
             >
                 <CartesianGrid vertical={false} />
@@ -89,13 +83,15 @@ export function LineChart({
                     tickMargin={8}
                     angle={angledXAxis ? -35 : 0}
                     textAnchor={angledXAxis ? 'end' : 'middle'}
-                    height={angledXAxis ? 56 : undefined}
+                    height={xAxisHeight}
+                    interval="preserveStartEnd"
                     label={
                         xAxisLabel
                             ? {
                                   value: xAxisLabel,
                                   position: 'insideBottom',
-                                  offset: -4,
+                                  offset: angledXAxis ? 2 : -2,
+                                  style: { textAnchor: 'middle' },
                               }
                             : undefined
                     }
@@ -104,8 +100,8 @@ export function LineChart({
                     <YAxis
                         tickLine={false}
                         axisLine={false}
-                        tickMargin={4}
-                        width={48}
+                        tickMargin={8}
+                        width={yAxisLabel ? 56 : 48}
                         tickFormatter={(value) => formatCompactNumber(Number(value))}
                         label={
                             yAxisLabel
@@ -113,6 +109,7 @@ export function LineChart({
                                       value: yAxisLabel,
                                       angle: -90,
                                       position: 'insideLeft',
+                                      offset: 12,
                                       style: { textAnchor: 'middle' },
                                   }
                                 : undefined

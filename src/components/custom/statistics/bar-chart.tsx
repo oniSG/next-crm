@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
 
+import { formatCompactNumber } from './format-compact-number'
+
 export type BarChartProps = {
     data: object[]
     config: ChartConfig
@@ -57,6 +59,8 @@ export function BarChart({
     className,
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
+    const xAxisHeight = xAxisLabel ? 40 : undefined
+    const bottomMargin = isHorizontal ? 0 : xAxisLabel ? 20 : 0
 
     return (
         <ChartContainer config={config} className={cn('max-h-75 w-full', className)}>
@@ -68,9 +72,9 @@ export function BarChart({
                     isHorizontal
                         ? { left: 8, right: 12 }
                         : {
-                              left: 12,
+                              left: yAxisLabel ? 8 : 12,
                               right: 12,
-                              bottom: xAxisLabel ? 24 : 0,
+                              bottom: bottomMargin,
                           }
                 }
             >
@@ -83,7 +87,7 @@ export function BarChart({
                             axisLine={false}
                             tickMargin={8}
                             tickFormatter={(value) =>
-                                Number(value).toLocaleString('cs-CZ')
+                                formatCompactNumber(Number(value))
                             }
                         />
                         <YAxis
@@ -103,13 +107,15 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
+                            height={xAxisHeight}
                             tick={hideCategoryTicks ? false : undefined}
                             label={
                                 xAxisLabel
                                     ? {
                                           value: xAxisLabel,
                                           position: 'insideBottom',
-                                          offset: -4,
+                                          offset: -2,
+                                          style: { textAnchor: 'middle' },
                                       }
                                     : undefined
                             }
@@ -120,9 +126,9 @@ export function BarChart({
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
-                                width={64}
+                                width={yAxisLabel ? 56 : 48}
                                 tickFormatter={(value) =>
-                                    Number(value).toLocaleString('cs-CZ')
+                                    formatCompactNumber(Number(value))
                                 }
                                 label={
                                     yAxisLabel
@@ -130,6 +136,7 @@ export function BarChart({
                                               value: yAxisLabel,
                                               angle: -90,
                                               position: 'insideLeft',
+                                              offset: 12,
                                               style: { textAnchor: 'middle' },
                                           }
                                         : undefined

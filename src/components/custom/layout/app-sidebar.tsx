@@ -139,7 +139,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Prodeje',
-                        url: '#',
+                        url: '/report-sales',
                         icon: <CoinsIcon />,
                     },
                     {
@@ -154,7 +154,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Membership',
-                        url: '#',
+                        url: '/report-membership',
                         icon: <CreditCardIcon />,
                     },
                 ],
@@ -219,7 +219,7 @@ const businessGroups: NavGroup[] = [
                     },
                     {
                         title: 'Prodeje',
-                        url: '#',
+                        url: '/report-sales',
                         icon: <CoinsIcon />,
                     },
                     {
@@ -234,7 +234,7 @@ const businessGroups: NavGroup[] = [
                     },
                     {
                         title: 'Membership',
-                        url: '#',
+                        url: '/report-membership',
                         icon: <CreditCardIcon />,
                     },
                 ],
