@@ -1,0 +1,374 @@
+{
+    "meta": {
+        "organizationName": "FC Relatoo",
+        "generatedAt": "2026-07-29T10:00:00.000Z"
+    },
+    "ticketsSoldUsedByEvent": [
+        {
+            "id": "event-1",
+            "label": "Událost 1",
+            "sold": 42003,
+            "used": 23286
+        },
+        {
+            "id": "event-2",
+            "label": "Událost 2",
+            "sold": 11249,
+            "used": 10648
+        },
+        {
+            "id": "event-3",
+            "label": "Událost 3",
+            "sold": 2619,
+            "used": 1494
+        },
+        {
+            "id": "event-4",
+            "label": "Událost 4",
+            "sold": 5981,
+            "used": 4478
+        },
+        {
+            "id": "event-5",
+            "label": "Událost 5",
+            "sold": 8549,
+            "used": 4965
+        },
+        {
+            "id": "event-6",
+            "label": "Událost 6",
+            "sold": 3136,
+            "used": 2878
+        },
+        {
+            "id": "event-7",
+            "label": "Událost 7",
+            "sold": 11480,
+            "used": 9818
+        },
+        {
+            "id": "event-8",
+            "label": "Událost 8",
+            "sold": 48843,
+            "used": 35889
+        },
+        {
+            "id": "event-9",
+            "label": "Událost 9",
+            "sold": 6991,
+            "used": 6087
+        },
+        {
+            "id": "event-10",
+            "label": "Událost 10",
+            "sold": 9185,
+            "used": 5404
+        },
+        {
+            "id": "event-11",
+            "label": "Událost 11",
+            "sold": 2275,
+            "used": 2141
+        },
+        {
+            "id": "event-12",
+            "label": "Událost 12",
+            "sold": 63754,
+            "used": 43215
+        },
+        {
+            "id": "event-13",
+            "label": "Událost 13",
+            "sold": 3394,
+            "used": 2924
+        },
+        {
+            "id": "event-14",
+            "label": "Událost 14",
+            "sold": 11757,
+            "used": 10777
+        },
+        {
+            "id": "event-15",
+            "label": "Událost 15",
+            "sold": 46901,
+            "used": 29460
+        },
+        {
+            "id": "event-16",
+            "label": "Událost 16",
+            "sold": 6484,
+            "used": 4543
+        },
+        {
+            "id": "event-17",
+            "label": "Událost 17",
+            "sold": 6491,
+            "used": 3572
+        },
+        {
+            "id": "event-18",
+            "label": "Událost 18",
+            "sold": 4039,
+            "used": 2886
+        },
+        {
+            "id": "event-19",
+            "label": "Událost 19",
+            "sold": 5304,
+            "used": 3170
+        },
+        {
+            "id": "event-20",
+            "label": "Událost 20",
+            "sold": 6719,
+            "used": 5118
+        },
+        {
+            "id": "event-21",
+            "label": "Událost 21",
+            "sold": 8548,
+            "used": 7892
+        },
+        {
+            "id": "event-22",
+            "label": "Událost 22",
+            "sold": 54369,
+            "used": 51204
+        },
+        {
+            "id": "event-23",
+            "label": "Událost 23",
+            "sold": 70038,
+            "used": 64637
+        },
+        {
+            "id": "event-24",
+            "label": "Událost 24",
+            "sold": 1457,
+            "used": 1230
+        },
+        {
+            "id": "event-25",
+            "label": "Událost 25",
+            "sold": 7252,
+            "used": 6524
+        },
+        {
+            "id": "event-26",
+            "label": "Událost 26",
+            "sold": 7877,
+            "used": 6306
+        },
+        {
+            "id": "event-27",
+            "label": "Událost 27",
+            "sold": 1868,
+            "used": 1447
+        },
+        {
+            "id": "event-28",
+            "label": "Událost 28",
+            "sold": 8117,
+            "used": 6456
+        },
+        {
+            "id": "event-29",
+            "label": "Událost 29",
+            "sold": 49042,
+            "used": 33883
+        },
+        {
+            "id": "event-30",
+            "label": "Událost 30",
+            "sold": 9108,
+            "used": 7655
+        },
+        {
+            "id": "event-31",
+            "label": "Událost 31",
+            "sold": 11625,
+            "used": 7549
+        },
+        {
+            "id": "event-32",
+            "label": "Událost 32",
+            "sold": 4258,
+            "used": 3199
+        },
+        {
+            "id": "event-33",
+            "label": "Událost 33",
+            "sold": 7127,
+            "used": 4594
+        },
+        {
+            "id": "event-34",
+            "label": "Událost 34",
+            "sold": 39168,
+            "used": 28705
+        },
+        {
+            "id": "event-35",
+            "label": "Událost 35",
+            "sold": 11181,
+            "used": 8752
+        },
+        {
+            "id": "event-36",
+            "label": "Událost 36",
+            "sold": 63447,
+            "used": 36129
+        },
+        {
+            "id": "event-37",
+            "label": "Událost 37",
+            "sold": 1743,
+            "used": 1494
+        },
+        {
+            "id": "event-38",
+            "label": "Událost 38",
+            "sold": 5283,
+            "used": 4544
+        },
+        {
+            "id": "event-39",
+            "label": "Událost 39",
+            "sold": 10644,
+            "used": 5952
+        },
+        {
+            "id": "event-40",
+            "label": "Událost 40",
+            "sold": 456,
+            "used": 389
+        },
+        {
+            "id": "event-41",
+            "label": "Událost 41",
+            "sold": 2515,
+            "used": 1629
+        },
+        {
+            "id": "event-42",
+            "label": "Událost 42",
+            "sold": 4934,
+            "used": 3165
+        },
+        {
+            "id": "event-43",
+            "label": "Událost 43",
+            "sold": 54400,
+            "used": 47684
+        },
+        {
+            "id": "event-44",
+            "label": "Událost 44",
+            "sold": 8421,
+            "used": 5642
+        },
+        {
+            "id": "event-45",
+            "label": "Událost 45",
+            "sold": 57956,
+            "used": 32806
+        },
+        {
+            "id": "event-46",
+            "label": "Událost 46",
+            "sold": 6229,
+            "used": 4668
+        },
+        {
+            "id": "event-47",
+            "label": "Událost 47",
+            "sold": 11647,
+            "used": 7596
+        },
+        {
+            "id": "event-48",
+            "label": "Událost 48",
+            "sold": 462,
+            "used": 295
+        }
+    ],
+    "ticketsVsSeasonTicketsBySeason": [
+        {
+            "id": "ratio-2021-22",
+            "label": "2021/22",
+            "tickets": 980000,
+            "seasonTickets": 41200
+        },
+        {
+            "id": "ratio-2022-23",
+            "label": "2022/23",
+            "tickets": 1120000,
+            "seasonTickets": 48100
+        },
+        {
+            "id": "ratio-2023-24",
+            "label": "2023/24",
+            "tickets": 1245000,
+            "seasonTickets": 52800
+        },
+        {
+            "id": "ratio-2024-25",
+            "label": "2024/25",
+            "tickets": 1350000,
+            "seasonTickets": 58500
+        }
+    ],
+    "seasonTicketsSoldUsedBySeason": [
+        {
+            "id": "st-2021-22",
+            "label": "2021/22",
+            "sold": 41200,
+            "used": 33800
+        },
+        {
+            "id": "st-2022-23",
+            "label": "2022/23",
+            "sold": 48100,
+            "used": 39200
+        },
+        {
+            "id": "st-2023-24",
+            "label": "2023/24",
+            "sold": 52800,
+            "used": 44100
+        },
+        {
+            "id": "st-2024-25",
+            "label": "2024/25",
+            "sold": 58500,
+            "used": 47200
+        }
+    ],
+    "ticketsSoldUsedBySeason": [
+        {
+            "id": "t-2021-22",
+            "label": "2021/22",
+            "sold": 980000,
+            "used": 710000
+        },
+        {
+            "id": "t-2022-23",
+            "label": "2022/23",
+            "sold": 1120000,
+            "used": 790000
+        },
+        {
+            "id": "t-2023-24",
+            "label": "2023/24",
+            "sold": 1245000,
+            "used": 845000
+        },
+        {
+            "id": "t-2024-25",
+            "label": "2024/25",
+            "sold": 1350000,
+            "used": 900000
+        }
+    ]
+}

@@ -20,6 +20,7 @@ export type BarChartProps = {
     orientation?: 'vertical' | 'horizontal'
     stacked?: boolean
     showYAxis?: boolean
+    hideCategoryTicks?: boolean
     xAxisLabel?: string
     yAxisLabel?: string
     className?: string
@@ -50,6 +51,7 @@ export function BarChart({
     orientation = 'vertical',
     stacked = false,
     showYAxis = false,
+    hideCategoryTicks = false,
     xAxisLabel,
     yAxisLabel,
     className,
@@ -64,7 +66,7 @@ export function BarChart({
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
                 margin={
                     isHorizontal
-                        ? { left: -20 }
+                        ? { left: 8, right: 12 }
                         : {
                               left: 12,
                               right: 12,
@@ -75,13 +77,22 @@ export function BarChart({
                 {isHorizontal ? (
                     <>
                         <CartesianGrid horizontal={false} />
-                        <XAxis type="number" hide />
+                        <XAxis
+                            type="number"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) =>
+                                Number(value).toLocaleString('cs-CZ')
+                            }
+                        />
                         <YAxis
                             dataKey={categoryKey}
                             type="category"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={10}
+                            tickMargin={8}
+                            width={88}
                         />
                     </>
                 ) : (
@@ -92,6 +103,7 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
+                            tick={hideCategoryTicks ? false : undefined}
                             label={
                                 xAxisLabel
                                     ? {

@@ -147,7 +147,13 @@ const pages: {
             path: '/report-management',
             status: 'progress',
             by: 'Petr'
-        }
+        },
+        {
+            name: 'Report ticketing',
+            path: '/report-ticketing',
+            status: 'progress',
+            by: 'Tomas',
+        },
     ]
 
 export default function Page() {

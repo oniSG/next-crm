@@ -134,7 +134,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Ticketing',
-                        url: '#',
+                        url: '/report-ticketing',
                         icon: <TicketIcon />,
                     },
                     {
@@ -214,7 +214,7 @@ const businessGroups: NavGroup[] = [
                 items: [
                     {
                         title: 'Ticketing',
-                        url: '#',
+                        url: '/report-ticketing',
                         icon: <TicketIcon />,
                     },
                     {
