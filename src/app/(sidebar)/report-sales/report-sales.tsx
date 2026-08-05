@@ -48,7 +48,8 @@ export function ReportSales() {
                                 series={[...REVENUE_CHART_SERIES]}
                                 showYAxis
                                 xAxisLabel="Prodejní kanál"
-                                yAxisLabel="Příjem [Kč]"
+                                yAxisLabel="Příjem"
+                                formatValue={formatSalesCurrency}
                                 className="h-80"
                             />
                         ),
@@ -62,10 +63,7 @@ export function ReportSales() {
                                 data={report.revenueByChannel}
                                 columns={REVENUE_BY_CHANNEL_COLUMNS}
                                 getRowKey={(row) => row.id}
-                                footer={[
-                                    'Celkem',
-                                    formatSalesCurrency(channelTotal),
-                                ]}
+                                footer={['Celkem', formatSalesCurrency(channelTotal)]}
                             />
                         ),
                     },
@@ -91,7 +89,8 @@ export function ReportSales() {
                                 showDots
                                 angledXAxis
                                 xAxisLabel="Datum"
-                                yAxisLabel="Příjem [Kč]"
+                                yAxisLabel="Příjem"
+                                formatValue={formatSalesCurrency}
                                 className="h-96"
                             />
                         ),
@@ -105,10 +104,7 @@ export function ReportSales() {
                                 data={report.revenueByDate}
                                 columns={REVENUE_BY_DATE_COLUMNS}
                                 getRowKey={(row) => row.period}
-                                footer={[
-                                    'Celkem',
-                                    formatSalesCurrency(dateTotal),
-                                ]}
+                                footer={['Celkem', formatSalesCurrency(dateTotal)]}
                             />
                         ),
                     },

@@ -31,6 +31,7 @@ export type LineChartProps = {
     showYAxis?: boolean
     angledXAxis?: boolean
     showDots?: boolean
+    formatValue?: (value: number) => string
 }
 
 export function LineChart({
@@ -44,6 +45,7 @@ export function LineChart({
     showYAxis = false,
     angledXAxis = false,
     showDots = false,
+    formatValue,
 }: LineChartProps) {
     const xAxisHeight = angledXAxis
         ? xAxisLabel
@@ -116,7 +118,9 @@ export function LineChart({
                         }
                     />
                 )}
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartTooltip
+                    content={<ChartTooltipContent valueFormatter={formatValue} />}
+                />
                 <ChartLegend content={<ChartLegendContent />} />
                 {series.map((key) => (
                     <Line

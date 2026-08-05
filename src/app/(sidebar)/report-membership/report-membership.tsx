@@ -21,11 +21,6 @@ export function ReportMembership() {
                 title="Tabulka statistik k membershipu"
                 description="Přehled aktuálního stavu a příjmu podle členství."
                 queryKey="membership-stats-table"
-                footer={
-                    <p className="text-muted-foreground w-full text-right text-sm">
-                        {rowCount} řádků
-                    </p>
-                }
             >
                 <SimpleTable
                     data={report.rows}

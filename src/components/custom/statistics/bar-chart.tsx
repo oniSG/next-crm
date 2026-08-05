@@ -26,6 +26,7 @@ export type BarChartProps = {
     xAxisLabel?: string
     yAxisLabel?: string
     className?: string
+    formatValue?: (value: number) => string
 }
 
 function getBarRadius(
@@ -57,6 +58,7 @@ export function BarChart({
     xAxisLabel,
     yAxisLabel,
     className,
+    formatValue,
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
     const xAxisHeight = xAxisLabel ? 40 : undefined
@@ -145,7 +147,9 @@ export function BarChart({
                         )}
                     </>
                 )}
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartTooltip
+                    content={<ChartTooltipContent valueFormatter={formatValue} />}
+                />
                 {series.length > 1 && <ChartLegend content={<ChartLegendContent />} />}
                 {series.map((key, i) => (
                     <Bar
