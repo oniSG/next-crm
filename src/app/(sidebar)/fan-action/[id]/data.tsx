@@ -52,11 +52,6 @@ export type FanActionOptions = {
     allCreators: string[]
 }
 
+/** Seed snapshot from JSON (immutable). Live edits go through the mock API store. */
 export const FAN_ACTIONS = fanActionsJson as FanAction[]
 export const FAN_ACTION_OPTIONS = optionsJson as FanActionOptions
-
-export function getFanActionById(id: number | string): FanAction | undefined {
-    const numericId = typeof id === 'string' ? Number(id) : id
-    if (Number.isNaN(numericId)) return undefined
-    return FAN_ACTIONS.find((action) => action.id === numericId)
-}

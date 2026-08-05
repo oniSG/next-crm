@@ -9,9 +9,11 @@ import {
 } from '@xyflow/react'
 
 import type { FanAction, FanActionWorkflowNodeData } from './data'
+import { saveFanAction } from './api'
+import { toPersistedEdges, toPersistedNodes } from './shared/workflow-persist'
 
-/** Save handler slots registered by palette forms, node config, and (later) workflow. */
-export type SaveKey = 'basicInfo' | 'settings' | 'nodeConfig' | 'workflow'
+/** Save handler slots registered by palette forms and node config. */
+export type SaveKey = 'basicInfo' | 'settings' | 'nodeConfig'
 
 /** React Flow node typed with our workflow `data` payload. */
 export type WorkflowNode = Node<FanActionWorkflowNodeData>
@@ -80,20 +82,31 @@ export function FanActionEditorProvider({
     const [isRunning, setRunning] = React.useState(false)
     const [activeNodeId, setActiveNodeId] = React.useState<string | null>(null)
     const [drawerOpen, setDrawerOpen] = React.useState(false)
+    const actionRef = React.useRef(action)
+    actionRef.current = action
     const saveHandlersRef = React.useRef<
         Partial<Record<SaveKey, () => Promise<boolean>>>
     >({})
     const flowApiRef = React.useRef<FlowApi | null>(null)
 
-    // Reset local UI when a different action is loaded into the provider.
+    // Keep editor document aligned with the server/stub snapshot.
     React.useEffect(() => {
         setAction(initialAction)
-        setActiveNodeId(null)
-        setDrawerOpen(false)
+        actionRef.current = initialAction
     }, [initialAction])
 
+    // Close node config when switching to a different fan-action.
+    React.useEffect(() => {
+        setActiveNodeId(null)
+        setDrawerOpen(false)
+    }, [initialAction.id])
+
     const updateAction = React.useEffectEvent((patch: Partial<FanAction>) => {
-        setAction((prev) => ({ ...prev, ...patch }))
+        setAction((prev) => {
+            const next = { ...prev, ...patch }
+            actionRef.current = next
+            return next
+        })
     })
 
     /** Toggle / open / close the right-hand node config panel. */
@@ -123,17 +136,25 @@ export function FanActionEditorProvider({
     })
 
     const saveAll = React.useEffectEvent(async () => {
-        for (const key of [
-            'basicInfo',
-            'settings',
-            'nodeConfig',
-            'workflow',
-        ] as const) {
+        for (const key of ['basicInfo', 'settings', 'nodeConfig'] as const) {
             const handler = saveHandlersRef.current[key]
             if (!handler) continue
             const ok = await handler()
             if (!ok) return false
         }
+
+        const workflow = {
+            nodes: toPersistedNodes(flowApiRef.current?.getNodes() ?? []),
+            edges: toPersistedEdges(flowApiRef.current?.getEdges() ?? []),
+        }
+        updateAction({ workflow })
+
+        const saved = await saveFanAction({
+            ...actionRef.current,
+            workflow,
+        })
+        setAction(saved)
+        actionRef.current = saved
         return true
     })
 
