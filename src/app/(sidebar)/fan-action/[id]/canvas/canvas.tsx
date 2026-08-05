@@ -15,11 +15,7 @@ import '@xyflow/react/dist/style.css'
 
 import { cn } from '@/lib/utils'
 
-import {
-    useFanActionEditor,
-    type WorkflowEdge,
-    type WorkflowNode,
-} from '../context'
+import { useFanActionEditor, type WorkflowEdge, type WorkflowNode } from '../context'
 import type { FanActionWorkflowEdgeData, FanActionWorkflowNodeData } from '../data'
 import type { WorkflowPaletteItem } from '../shared/types'
 import { WORKFLOW_DRAG_MIME } from '../shared/types'
@@ -74,10 +70,7 @@ function toFlowEdges(
         id: edge.id,
         source: edge.source,
         target: edge.target,
-        type:
-            edge.type == null || edge.type === 'default'
-                ? 'workflow'
-                : edge.type,
+        type: edge.type == null || edge.type === 'default' ? 'workflow' : edge.type,
         sourceHandle: edge.sourceHandle,
         targetHandle: edge.targetHandle,
         data: edge.data,
@@ -85,7 +78,7 @@ function toFlowEdges(
 }
 
 /** Expose React Flow get/set nodes & edges to the editor context (save, sync config). */
-function FlowApiRegistrar() {
+function RegisterFlowApi() {
     const { registerFlowApi } = useFanActionEditor()
     const reactFlow = useReactFlow<WorkflowNode, WorkflowEdge>()
 
@@ -159,13 +152,7 @@ export function Canvas() {
     React.useEffect(() => {
         setNodes(toFlowNodes(action.workflow.nodes))
         setEdges(toFlowEdges(action.workflow.edges))
-    }, [
-        action.id,
-        action.workflow.nodes,
-        action.workflow.edges,
-        setNodes,
-        setEdges,
-    ])
+    }, [action.id, action.workflow.nodes, action.workflow.edges, setNodes, setEdges])
 
     function onDragOver(event: React.DragEvent) {
         event.preventDefault()
@@ -222,10 +209,7 @@ export function Canvas() {
     return (
         <div className="bg-muted/20 h-full min-h-0 w-full">
             <ReactFlow
-                className={cn(
-                    'workflow-flow',
-                    isRunning && 'workflow-flow-running',
-                )}
+                className={cn('workflow-flow', isRunning && 'workflow-flow-running')}
                 nodes={nodes}
                 edges={edges}
                 nodeTypes={nodeTypes}
@@ -239,7 +223,7 @@ export function Canvas() {
                 fitView
                 proOptions={{ hideAttribution: true }}
             >
-                <FlowApiRegistrar />
+                <RegisterFlowApi />
                 <FitViewOnResize />
                 <ZoomControls />
                 <Background />
