@@ -1,13 +1,23 @@
 'use client'
 
+import * as React from 'react'
 import {
     Handle,
+    NodeToolbar,
     Position,
+    useReactFlow,
     type Node,
     type NodeProps,
 } from '@xyflow/react'
-import { ChevronRightIcon, MailIcon } from 'lucide-react'
+import {
+    ChevronRightIcon,
+    CopyIcon,
+    MailIcon,
+    XIcon,
+} from 'lucide-react'
 
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { cn } from '@/lib/utils'
 
 import { useFanActionEditor } from '../context'
@@ -30,8 +40,7 @@ import {
 } from '../shared/workflow-catalog'
 
 /** Shared size/shape for connection ports on workflow nodes. */
-const handlePortBase =
-    '!size-[1.09375rem] !rounded-full !border-0'
+const handlePortBase = '!size-[1.09375rem] !rounded-full !border-0'
 /** Default (non yes/no) port: muted background + chevron arrow. */
 const handleMutedArrowClass = cn(
     handlePortBase,
@@ -68,12 +77,70 @@ function WorkflowNodeIcon({
     )
 }
 
+/** Hover toolbar above the node: duplicate + delete (same as Svelte NodeToolbar). */
+function NodeHoverToolbar({
+    visible,
+    onMouseEnter,
+    onMouseLeave,
+    onDuplicate,
+    onDelete,
+}: {
+    visible: boolean
+    onMouseEnter: () => void
+    onMouseLeave: () => void
+    onDuplicate: (event: React.MouseEvent) => void
+    onDelete: (event: React.MouseEvent) => void
+}) {
+    return (
+        <NodeToolbar
+            position={Position.Top}
+            align="center"
+            isVisible={visible}
+        >
+            <div
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                role="presentation"
+            >
+                <ButtonGroup className="overflow-hidden rounded-4xl bg-background">
+                    <Button
+                        type="button"
+                        size="icon-sm"
+                        variant="outline"
+                        className="px-2"
+                        aria-label="Duplicate"
+                        onClick={onDuplicate}
+                    >
+                        <CopyIcon />
+                    </Button>
+                    <Button
+                        type="button"
+                        size="icon-sm"
+                        variant="outline"
+                        className="px-2 text-destructive hover:text-destructive"
+                        aria-label="Delete"
+                        onClick={onDelete}
+                    >
+                        <XIcon />
+                    </Button>
+                </ButtonGroup>
+            </div>
+        </NodeToolbar>
+    )
+}
+
 /** React Flow custom node: trigger (chevron), condition (diamond), or action (square). */
 export function WorkflowNode({
     id,
     data,
 }: NodeProps<Node<FanActionWorkflowNodeData>>) {
     const { activeNodeId, drawerOpen, configureNode } = useFanActionEditor()
+    const { deleteElements, getNode, setNodes } = useReactFlow()
+    const [toolbarVisible, setToolbarVisible] = React.useState(false)
+    const hideToolbarTimeoutRef = React.useRef<ReturnType<
+        typeof setTimeout
+    > | null>(null)
+
     const isEditing = drawerOpen && activeNodeId === id
     const label = workflowItemLabel(data.itemId)
     const boxShapeStyles = workflowNodeBoxShapeStyles(
@@ -94,15 +161,75 @@ export function WorkflowNode({
         workflowActionNodeBox.stroke,
     )
 
+    function showToolbar() {
+        if (hideToolbarTimeoutRef.current) {
+            clearTimeout(hideToolbarTimeoutRef.current)
+            hideToolbarTimeoutRef.current = null
+        }
+        setToolbarVisible(true)
+    }
+
+    function scheduleHideToolbar() {
+        hideToolbarTimeoutRef.current = setTimeout(() => {
+            setToolbarVisible(false)
+        }, 150)
+    }
+
+    React.useEffect(() => {
+        return () => {
+            if (hideToolbarTimeoutRef.current) {
+                clearTimeout(hideToolbarTimeoutRef.current)
+            }
+        }
+    }, [])
+
     /** Open (or toggle) the node config panel for this node. */
     function openSettings(event: React.MouseEvent) {
         event.stopPropagation()
         configureNode(id)
     }
 
+    function duplicateNode(event: React.MouseEvent) {
+        event.stopPropagation()
+        const node = getNode(id)
+        if (!node) return
+
+        const clone = {
+            ...node,
+            id: `node-${crypto.randomUUID().slice(0, 8)}`,
+            position: {
+                x: node.position.x + 40,
+                y: node.position.y + 40,
+            },
+            selected: false,
+        }
+
+        setNodes((nodes) => [...nodes, clone])
+    }
+
+    function deleteNode(event: React.MouseEvent) {
+        event.stopPropagation()
+        void deleteElements({ nodes: [{ id }] })
+    }
+
+    const toolbar = (
+        <NodeHoverToolbar
+            visible={toolbarVisible}
+            onMouseEnter={showToolbar}
+            onMouseLeave={scheduleHideToolbar}
+            onDuplicate={duplicateNode}
+            onDelete={deleteNode}
+        />
+    )
+
     if (data.variant === 'trigger') {
         return (
-            <div className="relative">
+            <div
+                className="relative"
+                onMouseEnter={showToolbar}
+                onMouseLeave={scheduleHideToolbar}
+            >
+                {toolbar}
                 <div
                     className="relative z-20 mx-auto"
                     style={{
@@ -172,7 +299,12 @@ export function WorkflowNode({
     if (data.variant === 'condition') {
         const conditionBounds = workflowConditionNodeBounds()
         return (
-            <div className="relative">
+            <div
+                className="relative"
+                onMouseEnter={showToolbar}
+                onMouseLeave={scheduleHideToolbar}
+            >
+                {toolbar}
                 <div
                     className="relative z-20 mx-auto"
                     style={{
@@ -264,7 +396,12 @@ export function WorkflowNode({
 
     if (data.variant === 'action') {
         return (
-            <div className="relative">
+            <div
+                className="relative"
+                onMouseEnter={showToolbar}
+                onMouseLeave={scheduleHideToolbar}
+            >
+                {toolbar}
                 <div className="relative z-20 mx-auto w-20">
                     <button
                         type="button"

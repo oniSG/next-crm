@@ -8,7 +8,11 @@ import {
     type ReactFlowInstance,
 } from '@xyflow/react'
 
-import type { FanAction, FanActionWorkflowNodeData } from './data'
+import type {
+    FanAction,
+    FanActionWorkflowEdgeData,
+    FanActionWorkflowNodeData,
+} from './data'
 import { saveFanAction } from './api'
 import { toPersistedEdges, toPersistedNodes } from './shared/workflow-persist'
 
@@ -17,7 +21,7 @@ export type SaveKey = 'basicInfo' | 'settings' | 'nodeConfig'
 
 /** React Flow node typed with our workflow `data` payload. */
 export type WorkflowNode = Node<FanActionWorkflowNodeData>
-export type WorkflowEdge = Edge
+export type WorkflowEdge = Edge<FanActionWorkflowEdgeData>
 
 /** Imperative bridge to the live React Flow instance (registered from Canvas). */
 type FlowApi = {

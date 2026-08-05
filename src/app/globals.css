@@ -160,11 +160,11 @@
 @layer components {
     .workflow-flow .react-flow__edge-path {
         stroke-dasharray: 6 6;
-        animation: workflow-edge-flow 1.6s linear infinite;
+        animation: workflow-edge-flow 4s linear infinite;
     }
 
     .workflow-flow-running .react-flow__edge-path {
-        animation: workflow-edge-flow 0.7s linear infinite;
+        animation: workflow-edge-flow 0.5s linear infinite;
     }
 
     .workflow-flow .react-flow__node {

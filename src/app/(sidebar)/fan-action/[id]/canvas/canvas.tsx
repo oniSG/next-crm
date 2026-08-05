@@ -4,23 +4,40 @@ import * as React from 'react'
 import {
     Background,
     ReactFlow,
+    addEdge,
     useEdgesState,
     useNodesState,
     useReactFlow,
     useStore,
+    type Connection,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 
 import { cn } from '@/lib/utils'
 
-import { useFanActionEditor, type WorkflowEdge, type WorkflowNode } from '../context'
-import type { FanActionWorkflowNodeData } from '../data'
+import {
+    useFanActionEditor,
+    type WorkflowEdge,
+    type WorkflowNode,
+} from '../context'
+import type { FanActionWorkflowEdgeData, FanActionWorkflowNodeData } from '../data'
+import type { WorkflowPaletteItem } from '../shared/types'
+import { WORKFLOW_DRAG_MIME } from '../shared/types'
+import { WorkflowEdge as WorkflowEdgeComponent } from './edge'
 import { WorkflowNode as WorkflowNodeComponent } from './node'
+import { ZoomControls } from './zoom-controls'
 
 /** Maps React Flow `node.type` → custom node component (stable ref outside Canvas). */
 const nodeTypes = {
     workflow: WorkflowNodeComponent,
 }
+
+/** Maps React Flow `edge.type` → custom edge component. */
+const edgeTypes = {
+    workflow: WorkflowEdgeComponent,
+}
+
+const defaultEdgeOptions = { type: 'workflow' } as const
 
 const fitViewOptions = { padding: 0.2, duration: 0 } as const
 
@@ -41,7 +58,7 @@ function toFlowNodes(
     }))
 }
 
-/** Convert persisted workflow edges; map legacy `workflow` edge type to RF `default`. */
+/** Convert persisted workflow edges; keep / restore custom `workflow` edge type. */
 function toFlowEdges(
     edges: {
         id: string
@@ -50,15 +67,20 @@ function toFlowEdges(
         type?: string
         sourceHandle?: string
         targetHandle?: string
+        data?: FanActionWorkflowEdgeData
     }[],
 ): WorkflowEdge[] {
     return edges.map((edge) => ({
         id: edge.id,
         source: edge.source,
         target: edge.target,
-        type: edge.type === 'workflow' ? 'default' : edge.type,
+        type:
+            edge.type == null || edge.type === 'default'
+                ? 'workflow'
+                : edge.type,
         sourceHandle: edge.sourceHandle,
         targetHandle: edge.targetHandle,
+        data: edge.data,
     }))
 }
 
@@ -124,7 +146,8 @@ function FitViewOnResize() {
 
 /** React Flow canvas: loads workflow from action, keeps local node/edge state. */
 export function Canvas() {
-    const { action, isRunning } = useFanActionEditor()
+    const { action, isRunning, configureNode } = useFanActionEditor()
+    const { screenToFlowPosition } = useReactFlow<WorkflowNode, WorkflowEdge>()
     const [nodes, setNodes, onNodesChange] = useNodesState<WorkflowNode>(
         toFlowNodes(action.workflow.nodes),
     )
@@ -136,22 +159,89 @@ export function Canvas() {
     React.useEffect(() => {
         setNodes(toFlowNodes(action.workflow.nodes))
         setEdges(toFlowEdges(action.workflow.edges))
-    }, [action.id, action.workflow.nodes, action.workflow.edges, setNodes, setEdges])
+    }, [
+        action.id,
+        action.workflow.nodes,
+        action.workflow.edges,
+        setNodes,
+        setEdges,
+    ])
+
+    function onDragOver(event: React.DragEvent) {
+        event.preventDefault()
+        event.dataTransfer.dropEffect = 'move'
+    }
+
+    function onDrop(event: React.DragEvent) {
+        event.preventDefault()
+
+        const raw = event.dataTransfer.getData(WORKFLOW_DRAG_MIME)
+        if (!raw) return
+
+        let item: WorkflowPaletteItem
+        try {
+            item = JSON.parse(raw) as WorkflowPaletteItem
+        } catch {
+            return
+        }
+        if (!item.id || !item.variant) return
+
+        const position = screenToFlowPosition({
+            x: event.clientX,
+            y: event.clientY,
+        })
+        const id = `${item.id}-${crypto.randomUUID()}`
+        const newNode: WorkflowNode = {
+            id,
+            type: 'workflow',
+            position,
+            data: {
+                itemId: item.id,
+                variant: item.variant,
+                incomplete: item.incomplete ?? true,
+            },
+        }
+
+        setNodes((current) => [...current, newNode])
+        configureNode(id)
+    }
+
+    function onConnect(connection: Connection) {
+        setEdges((current) =>
+            addEdge(
+                {
+                    ...connection,
+                    type: 'workflow',
+                    data: { count: Math.floor(Math.random() * 500) + 1 },
+                },
+                current,
+            ),
+        )
+    }
 
     return (
         <div className="bg-muted/20 h-full min-h-0 w-full">
             <ReactFlow
-                className={cn('workflow-flow', isRunning && 'workflow-flow-running')}
+                className={cn(
+                    'workflow-flow',
+                    isRunning && 'workflow-flow-running',
+                )}
                 nodes={nodes}
                 edges={edges}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                defaultEdgeOptions={defaultEdgeOptions}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
                 fitView
                 proOptions={{ hideAttribution: true }}
             >
                 <FlowApiRegistrar />
                 <FitViewOnResize />
+                <ZoomControls />
                 <Background />
             </ReactFlow>
         </div>

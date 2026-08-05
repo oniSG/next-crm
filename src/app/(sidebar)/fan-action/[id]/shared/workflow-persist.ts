@@ -1,5 +1,6 @@
 import type {
     FanActionWorkflowEdge,
+    FanActionWorkflowEdgeData,
     FanActionWorkflowNode,
     FanActionWorkflowNodeData,
 } from '../data'
@@ -30,6 +31,7 @@ export function toPersistedEdges(
         type?: string
         sourceHandle?: string | null
         targetHandle?: string | null
+        data?: FanActionWorkflowEdgeData
     }[],
 ): FanActionWorkflowEdge[] {
     return edges.map((edge) => ({
@@ -46,5 +48,6 @@ export function toPersistedEdges(
         ...(edge.targetHandle
             ? { targetHandle: edge.targetHandle }
             : {}),
+        ...(edge.data ? { data: edge.data } : {}),
     }))
 }

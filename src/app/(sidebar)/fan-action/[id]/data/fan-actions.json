@@ -84,27 +84,39 @@
                     "id": "e-1-2",
                     "source": "trigger-1",
                     "target": "wait-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 307
+                    }
                 },
                 {
                     "id": "e-2-3",
                     "source": "wait-1",
                     "target": "condition-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 202
+                    }
                 },
                 {
                     "id": "e-3-4-yes",
                     "source": "condition-1",
                     "sourceHandle": "yes",
                     "target": "action-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 60
+                    }
                 },
                 {
                     "id": "e-3-4-no",
                     "source": "condition-1",
                     "sourceHandle": "no",
                     "target": "action-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 428
+                    }
                 }
             ]
         }
@@ -270,35 +282,50 @@
                     "id": "e-trigger-condition-1",
                     "source": "trigger-1",
                     "target": "condition-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 57
+                    }
                 },
                 {
                     "id": "e-condition-1-yes-action-1",
                     "source": "condition-1",
                     "sourceHandle": "yes",
                     "target": "action-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 288
+                    }
                 },
                 {
                     "id": "e-condition-1-no-2",
                     "source": "condition-1",
                     "sourceHandle": "no",
                     "target": "condition-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 86
+                    }
                 },
                 {
                     "id": "e-condition-2-yes-action-2",
                     "source": "condition-2",
                     "sourceHandle": "yes",
                     "target": "action-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 255
+                    }
                 },
                 {
                     "id": "e-condition-2-no-action-3",
                     "source": "condition-2",
                     "sourceHandle": "no",
                     "target": "action-3",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 163
+                    }
                 }
             ]
         }
@@ -547,33 +574,48 @@
                     "id": "e-trigger-ab",
                     "source": "trigger-1",
                     "target": "ab-test-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 353
+                    }
                 },
                 {
                     "id": "e-ab-email",
                     "source": "ab-test-1",
                     "sourceHandle": "a",
                     "target": "action-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 179
+                    }
                 },
                 {
                     "id": "e-ab-push",
                     "source": "ab-test-1",
                     "sourceHandle": "b",
                     "target": "action-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 216
+                    }
                 },
                 {
                     "id": "e-email-reward",
                     "source": "action-1",
                     "target": "action-3",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 72
+                    }
                 },
                 {
                     "id": "e-push-reward",
                     "source": "action-2",
                     "target": "action-3",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 322
+                    }
                 }
             ]
         }
@@ -947,25 +989,37 @@
                     "id": "e-trigger-wait",
                     "source": "trigger-1",
                     "target": "wait-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 498
+                    }
                 },
                 {
                     "id": "e-wait-sms",
                     "source": "wait-1",
                     "target": "action-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 297
+                    }
                 },
                 {
                     "id": "e-sms-email",
                     "source": "action-1",
                     "target": "action-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 80
+                    }
                 },
                 {
                     "id": "e-email-push",
                     "source": "action-2",
                     "target": "action-3",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 406
+                    }
                 }
             ]
         }
@@ -1339,27 +1393,39 @@
                     "id": "e-trigger-wait",
                     "source": "trigger-1",
                     "target": "wait-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 7
+                    }
                 },
                 {
                     "id": "e-wait-condition",
                     "source": "wait-1",
                     "target": "condition-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 204
+                    }
                 },
                 {
                     "id": "e-condition-sms",
                     "source": "condition-1",
                     "sourceHandle": "yes",
                     "target": "action-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 176
+                    }
                 },
                 {
                     "id": "e-condition-email",
                     "source": "condition-1",
                     "sourceHandle": "no",
                     "target": "action-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 28
+                    }
                 }
             ]
         }
@@ -2068,54 +2134,78 @@
                     "id": "e-trigger-email",
                     "source": "trigger-1",
                     "target": "action-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 338
+                    }
                 },
                 {
                     "id": "e-email-wait",
                     "source": "action-1",
                     "target": "wait-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 112
+                    }
                 },
                 {
                     "id": "e-wait-condition-1",
                     "source": "wait-1",
                     "target": "condition-1",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 463
+                    }
                 },
                 {
                     "id": "e-condition-1-yes-2",
                     "source": "condition-1",
                     "sourceHandle": "yes",
                     "target": "condition-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 311
+                    }
                 },
                 {
                     "id": "e-condition-1-no-3",
                     "source": "condition-1",
                     "sourceHandle": "no",
                     "target": "condition-3",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 306
+                    }
                 },
                 {
                     "id": "e-condition-2-yes-reward",
                     "source": "condition-2",
                     "sourceHandle": "yes",
                     "target": "action-2",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 391
+                    }
                 },
                 {
                     "id": "e-condition-2-no-tag",
                     "source": "condition-2",
                     "sourceHandle": "no",
                     "target": "action-3",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 125
+                    }
                 },
                 {
                     "id": "e-condition-3-yes-email",
                     "source": "condition-3",
                     "sourceHandle": "yes",
                     "target": "action-4",
-                    "type": "workflow"
+                    "type": "workflow",
+                    "data": {
+                        "count": 498
+                    }
                 }
             ]
         }

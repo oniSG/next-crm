@@ -15,6 +15,11 @@ export type FanActionWorkflowNode = {
     data: FanActionWorkflowNodeData
 }
 
+export type FanActionWorkflowEdgeData = {
+    /** Fan/visitor count shown on the mid-edge badge. */
+    count: number
+}
+
 export type FanActionWorkflowEdge = {
     id: string
     source: string
@@ -22,6 +27,7 @@ export type FanActionWorkflowEdge = {
     type?: string
     sourceHandle?: string
     targetHandle?: string
+    data?: FanActionWorkflowEdgeData
 }
 
 export type FanActionWorkflow = {
