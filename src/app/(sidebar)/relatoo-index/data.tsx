@@ -6,10 +6,13 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
         label: 'Relatoo index',
         value: '3,63',
         content: [
-            { label: 'Předchozí relatoo index', value: '3,03' },
-            { label: 'Změna indexu', value: '0,59' },
             { label: 'Pořadí mezi tenanty', value: '14' },
         ],
+        trend: {
+            direction: 'up',
+            delta: '+0,59',
+            hint: 'změna indexu',
+        },
         action: (
             <InfoTooltip>
                 Aktuální Relatoo index oproti předchozímu období, včetně změny a
@@ -20,15 +23,9 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
     {
         label: 'Stav',
         value: 'Dobrý',
-        trend: {
-            direction: 'up',
-            delta: '+0,59',
-            hint: 'za poslední měsíc',
-        },
         action: (
             <InfoTooltip>
-                Aktuální stav Relatoo indexu a směr trendu oproti předchozímu
-                období.
+                Aktuální stav Relatoo indexu oproti předchozímu období.
             </InfoTooltip>
         ),
     },
