@@ -34,6 +34,9 @@ export function GlobalReport() {
                             'spam',
                         ]}
                         stacked
+                        showYAxis
+                        xAxisLabel="Měsíc"
+                        yAxisLabel="Počet"
                         className="h-80"
                     />
                 </DataVisulaizationCard>

@@ -25,7 +25,10 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
     return (
         <ChartContainer
             config={config}
-            className={cn('mx-auto aspect-square max-h-[280px] w-full px-0', className)}
+            className={cn(
+                'mx-auto aspect-square max-h-[280px] w-full px-0 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto',
+                className,
+            )}
         >
             <RechartsPieChart>
                 <ChartTooltip

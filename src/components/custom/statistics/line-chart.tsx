@@ -54,14 +54,14 @@ export function LineChart({
         : xAxisLabel
           ? 40
           : undefined
-    const legendSpace = series.length > 1 ? 36 : 0
+    const legendSpace = 28
     const axisSpace = angledXAxis
         ? xAxisLabel
             ? 28
             : 12
         : xAxisLabel
           ? 12
-          : 0
+          : 4
     const bottomMargin = legendSpace + axisSpace
 
     return (
@@ -123,7 +123,6 @@ export function LineChart({
                 <ChartTooltip
                     content={<ChartTooltipContent valueFormatter={formatValue} />}
                 />
-                <ChartLegend content={<ChartLegendContent />} />
                 {series.map((key) => (
                     <Line
                         key={key}
@@ -144,6 +143,10 @@ export function LineChart({
                         activeDot={{ r: 4 }}
                     />
                 ))}
+                <ChartLegend
+                    verticalAlign="bottom"
+                    content={<ChartLegendContent />}
+                />
             </RechartsLineChart>
         </ChartContainer>
     )

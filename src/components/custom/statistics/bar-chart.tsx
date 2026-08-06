@@ -62,11 +62,17 @@ export function BarChart({
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
     const xAxisHeight = xAxisLabel ? 40 : undefined
-    const legendSpace = 36
-    const bottomMargin = (xAxisLabel ? 12 : 0) + legendSpace
+    // Room for axis label + legend row; legend is pinned to container bottom.
+    const bottomMargin = (xAxisLabel ? 12 : 4) + 24
 
     return (
-        <ChartContainer config={config} className={cn('max-h-75 w-full', className)}>
+        <ChartContainer
+            config={config}
+            className={cn(
+                'aspect-auto h-full min-h-56 w-full [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto',
+                className,
+            )}
+        >
             <RechartsBarChart
                 accessibilityLayer
                 data={data}

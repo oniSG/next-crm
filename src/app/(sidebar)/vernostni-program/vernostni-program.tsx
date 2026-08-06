@@ -24,6 +24,9 @@ export function VernostniProgram() {
                         config={BODY_CHART_CONFIG}
                         categoryKey="month"
                         series={['pocetBodu']}
+                        showYAxis
+                        xAxisLabel="Měsíc"
+                        yAxisLabel="Počet bodů"
                     />
                 </DataVisulaizationCard>
             </section>

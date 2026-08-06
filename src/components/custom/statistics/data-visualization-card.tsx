@@ -58,7 +58,7 @@ export function DataVisulaizationCard({
                 }}
                 className={cn('w-full gap-0', className)}
             >
-                <Card className="flex w-full flex-1 flex-col gap-0">
+                <Card className="flex w-full flex-1 flex-col gap-0 pb-3">
                     <CardHeader className="pb-2">
                         <CardTitle className="truncate text-sm font-medium">
                             {title}
@@ -78,7 +78,7 @@ export function DataVisulaizationCard({
                             </div>
                         </CardAction>
                     </CardHeader>
-                    <CardContent className="flex min-h-0 flex-1 flex-col">
+                    <CardContent className="flex min-h-0 flex-1 flex-col pb-0">
                         {tabs.map((tab) => (
                             <TabsContent key={tab.value} value={tab.value}>
                                 {tab.content}
@@ -92,13 +92,13 @@ export function DataVisulaizationCard({
     }
 
     return (
-        <Card className={cn('flex flex-1 flex-col gap-0', className)}>
+        <Card className={cn('flex flex-1 flex-col gap-0 pb-3', className)}>
             <CardHeader className="pb-2">
                 <CardTitle className="truncate text-sm font-medium">{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
                 {action && <CardAction>{action}</CardAction>}
             </CardHeader>
-            <CardContent className="flex min-h-0 flex-1 flex-col">{children}</CardContent>
+            <CardContent className="flex min-h-0 flex-1 flex-col pb-0">{children}</CardContent>
             {footer && <CardFooter>{footer}</CardFooter>}
         </Card>
     )
