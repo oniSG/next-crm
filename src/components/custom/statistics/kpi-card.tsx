@@ -101,7 +101,7 @@ export function KpiCard({
                     {metric && (
                         <div className="text-muted-foreground flex items-baseline gap-1.5 text-sm">
                             <span>{metric.label}</span>
-                            <span aria-hidden>—</span>
+                            <span aria-hidden>-</span>
                             <span className="tabular-nums">{metric.value}</span>
                         </div>
                     )}
