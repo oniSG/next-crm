@@ -169,8 +169,8 @@ export function EventReport() {
                                     categoryKey="label"
                                     series={[...EVENT_REPORT_CHART_SERIES]}
                                     showYAxis
-                                    xAxisLabel="Date"
-                                    yAxisLabel="Count"
+                                    xAxisLabel="Datum"
+                                    yAxisLabel="Počet"
                                     className="h-80"
                                 />
                             ),
@@ -214,8 +214,8 @@ export function EventReport() {
                                     categoryKey="label"
                                     series={[...EVENT_REPORT_CHART_SERIES]}
                                     showYAxis
-                                    xAxisLabel="Price category"
-                                    yAxisLabel="Count"
+                                    xAxisLabel="Cenová kategorie"
+                                    yAxisLabel="Počet"
                                     className="h-80"
                                 />
                             ),
@@ -291,8 +291,8 @@ export function EventReport() {
                                     categoryKey="label"
                                     series={[...EVENT_REPORT_CHART_SERIES]}
                                     showYAxis
-                                    xAxisLabel="Sector"
-                                    yAxisLabel="Count"
+                                    xAxisLabel="Sektor"
+                                    yAxisLabel="Počet"
                                     className="h-80"
                                 />
                             ),

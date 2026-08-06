@@ -23,7 +23,10 @@ export type SaveKey = 'basicInfo' | 'settings' | 'nodeConfig'
 export type WorkflowNode = Node<FanActionWorkflowNodeData>
 export type WorkflowEdge = Edge<FanActionWorkflowEdgeData>
 
-/** Imperative bridge to the live React Flow instance (registered from Canvas). */
+/**
+ * Façade over the live xyflow store (registered from Canvas via RegisterFlowApi).
+ * Callers outside `<ReactFlow>` go through context; storage stays in xyflow.
+ */
 type FlowApi = {
     getNodes: () => WorkflowNode[]
     getEdges: () => WorkflowEdge[]
@@ -50,7 +53,9 @@ type FanActionEditorContextValue = {
     unregisterSaveHandler: (key: SaveKey) => void
     /** Run registered save handlers in order; stops on first failure. */
     saveAll: () => Promise<boolean>
+    /** Wire Canvas → context (xyflow instance methods). */
     registerFlowApi: (api: FlowApi) => void
+    /** Read/write workflow graph via the xyflow store. */
     getNodes: () => WorkflowNode[]
     getEdges: () => WorkflowEdge[]
     setNodes: FlowApi['setNodes']
@@ -73,7 +78,7 @@ export function useFanActionEditor() {
 
 /**
  * Shared state for the fan-action editor: action document, node-config drawer,
- * save orchestration, and a façade over React Flow nodes/edges.
+ * save orchestration, and a context façade over the xyflow nodes/edges store.
  */
 export function FanActionEditorProvider({
     action: initialAction,

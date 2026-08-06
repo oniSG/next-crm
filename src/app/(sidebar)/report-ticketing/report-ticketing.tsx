@@ -60,6 +60,8 @@ export function ReportTicketing() {
                                 stacked
                                 orientation="horizontal"
                                 showYAxis
+                                xAxisLabel="Počet"
+                                yAxisLabel="Událost"
                                 className="h-96"
                             />
                         ),

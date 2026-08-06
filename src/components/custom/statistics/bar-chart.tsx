@@ -62,7 +62,8 @@ export function BarChart({
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
     const xAxisHeight = xAxisLabel ? 40 : undefined
-    const bottomMargin = isHorizontal ? 0 : xAxisLabel ? 20 : 0
+    const legendSpace = series.length > 1 ? 36 : 0
+    const bottomMargin = (xAxisLabel ? 12 : 0) + legendSpace
 
     return (
         <ChartContainer config={config} className={cn('max-h-75 w-full', className)}>
@@ -72,9 +73,13 @@ export function BarChart({
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
                 margin={
                     isHorizontal
-                        ? { left: 8, right: 12 }
+                        ? {
+                              left: yAxisLabel ? 16 : 8,
+                              right: 12,
+                              bottom: bottomMargin,
+                          }
                         : {
-                              left: yAxisLabel ? 8 : 12,
+                              left: yAxisLabel ? 16 : 12,
                               right: 12,
                               bottom: bottomMargin,
                           }
@@ -88,8 +93,19 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
+                            height={xAxisHeight}
                             tickFormatter={(value) =>
                                 formatCompactNumber(Number(value))
+                            }
+                            label={
+                                xAxisLabel
+                                    ? {
+                                          value: xAxisLabel,
+                                          position: 'insideBottom',
+                                          offset: -2,
+                                          style: { textAnchor: 'middle' },
+                                      }
+                                    : undefined
                             }
                         />
                         <YAxis
@@ -99,6 +115,17 @@ export function BarChart({
                             axisLine={false}
                             tickMargin={8}
                             width={88}
+                            label={
+                                yAxisLabel
+                                    ? {
+                                          value: yAxisLabel,
+                                          angle: -90,
+                                          position: 'left',
+                                          offset: 8,
+                                          style: { textAnchor: 'middle' },
+                                      }
+                                    : undefined
+                            }
                         />
                     </>
                 ) : (
@@ -128,7 +155,7 @@ export function BarChart({
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
-                                width={yAxisLabel ? 56 : 48}
+                                width={48}
                                 tickFormatter={(value) =>
                                     formatCompactNumber(Number(value))
                                 }
@@ -137,8 +164,8 @@ export function BarChart({
                                         ? {
                                               value: yAxisLabel,
                                               angle: -90,
-                                              position: 'insideLeft',
-                                              offset: 12,
+                                              position: 'left',
+                                              offset: 8,
                                               style: { textAnchor: 'middle' },
                                           }
                                         : undefined

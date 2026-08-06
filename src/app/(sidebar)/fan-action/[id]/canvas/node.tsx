@@ -20,7 +20,10 @@ import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { cn } from '@/lib/utils'
 
-import { useFanActionEditor } from '../context'
+import {
+    useFanActionEditor,
+    type WorkflowNode,
+} from '../context'
 import type { FanActionWorkflowNodeData } from '../data'
 import {
     workflowActionNodeBox,
@@ -134,8 +137,9 @@ export function WorkflowNode({
     id,
     data,
 }: NodeProps<Node<FanActionWorkflowNodeData>>) {
-    const { activeNodeId, drawerOpen, configureNode } = useFanActionEditor()
-    const { deleteElements, getNode, setNodes } = useReactFlow()
+    const { activeNodeId, drawerOpen, configureNode, setNodes } =
+        useFanActionEditor()
+    const { deleteElements, getNode } = useReactFlow()
     const [toolbarVisible, setToolbarVisible] = React.useState(false)
     const hideToolbarTimeoutRef = React.useRef<ReturnType<
         typeof setTimeout
@@ -194,7 +198,7 @@ export function WorkflowNode({
         const node = getNode(id)
         if (!node) return
 
-        const clone = {
+        const clone: WorkflowNode = {
             ...node,
             id: `node-${crypto.randomUUID().slice(0, 8)}`,
             position: {
@@ -202,6 +206,7 @@ export function WorkflowNode({
                 y: node.position.y + 40,
             },
             selected: false,
+            data: node.data as FanActionWorkflowNodeData,
         }
 
         setNodes((nodes) => [...nodes, clone])

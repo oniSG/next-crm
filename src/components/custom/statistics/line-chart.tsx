@@ -54,13 +54,15 @@ export function LineChart({
         : xAxisLabel
           ? 40
           : undefined
-    const bottomMargin = angledXAxis
+    const legendSpace = series.length > 1 ? 36 : 0
+    const axisSpace = angledXAxis
         ? xAxisLabel
             ? 28
             : 12
         : xAxisLabel
-          ? 20
+          ? 12
           : 0
+    const bottomMargin = legendSpace + axisSpace
 
     return (
         <ChartContainer
@@ -72,7 +74,7 @@ export function LineChart({
                 data={data}
                 margin={{
                     top: showDots ? 12 : 8,
-                    left: showYAxis ? (yAxisLabel ? 8 : 0) : 12,
+                    left: showYAxis ? (yAxisLabel ? 16 : 0) : 12,
                     right: 12,
                     bottom: bottomMargin,
                 }}
@@ -103,15 +105,15 @@ export function LineChart({
                         tickLine={false}
                         axisLine={false}
                         tickMargin={8}
-                        width={yAxisLabel ? 56 : 48}
+                        width={48}
                         tickFormatter={(value) => formatCompactNumber(Number(value))}
                         label={
                             yAxisLabel
                                 ? {
                                       value: yAxisLabel,
                                       angle: -90,
-                                      position: 'insideLeft',
-                                      offset: 12,
+                                      position: 'left',
+                                      offset: 8,
                                       style: { textAnchor: 'middle' },
                                   }
                                 : undefined

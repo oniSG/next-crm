@@ -77,8 +77,17 @@ function toFlowEdges(
     }))
 }
 
-/** Expose React Flow get/set nodes & edges to the editor context (save, sync config). */
-function RegisterFlowApi() {
+/**
+ * Wires the xyflow store into editor context: reads via `getNodes`/`getEdges`,
+ * writes via the same `setNodes`/`setEdges` that drive controlled React Flow state.
+ */
+function RegisterFlowApi({
+    setNodes,
+    setEdges,
+}: {
+    setNodes: React.Dispatch<React.SetStateAction<WorkflowNode[]>>
+    setEdges: React.Dispatch<React.SetStateAction<WorkflowEdge[]>>
+}) {
     const { registerFlowApi } = useFanActionEditor()
     const reactFlow = useReactFlow<WorkflowNode, WorkflowEdge>()
 
@@ -86,10 +95,10 @@ function RegisterFlowApi() {
         registerFlowApi({
             getNodes: () => reactFlow.getNodes(),
             getEdges: () => reactFlow.getEdges(),
-            setNodes: reactFlow.setNodes,
-            setEdges: reactFlow.setEdges,
+            setNodes,
+            setEdges,
         })
-    }, [reactFlow, registerFlowApi])
+    }, [reactFlow, registerFlowApi, setNodes, setEdges])
 
     return null
 }
@@ -137,7 +146,7 @@ function FitViewOnResize() {
     return null
 }
 
-/** React Flow canvas: loads workflow from action, keeps local node/edge state. */
+/** React Flow canvas: graph lives in xyflow; context is the API facade. */
 export function Canvas() {
     const { action, isRunning, configureNode } = useFanActionEditor()
     const { screenToFlowPosition } = useReactFlow<WorkflowNode, WorkflowEdge>()
@@ -223,7 +232,7 @@ export function Canvas() {
                 fitView
                 proOptions={{ hideAttribution: true }}
             >
-                <RegisterFlowApi />
+                <RegisterFlowApi setNodes={setNodes} setEdges={setEdges} />
                 <FitViewOnResize />
                 <ZoomControls />
                 <Background />

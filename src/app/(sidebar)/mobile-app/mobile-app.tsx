@@ -49,6 +49,8 @@ export function MobileApp() {
                     series={[...MOBILE_APP_ACTIVITY_SERIES]}
                     showYAxis
                     showDots
+                    xAxisLabel="Datum"
+                    yAxisLabel="Počet"
                     className="min-h-74"
                 />
             </DataVisulaizationCard>

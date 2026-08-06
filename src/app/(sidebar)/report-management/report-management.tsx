@@ -93,6 +93,8 @@ function ChartTableSection({
     showTotals = true,
     emptyMessage,
     queryKey,
+    xAxisLabel = 'Month',
+    yAxisLabel = 'Count',
 }: {
     title: string
     description: string
@@ -104,6 +106,8 @@ function ChartTableSection({
     showTotals?: boolean
     emptyMessage: string
     queryKey: string
+    xAxisLabel?: string
+    yAxisLabel?: string
 }) {
     const config = Object.fromEntries(
         series.map((item) => [item.key, { label: item.label, color: item.color }]),
@@ -123,6 +127,8 @@ function ChartTableSection({
                 series={series.map((item) => item.key)}
                 stacked={stacked}
                 showYAxis
+                xAxisLabel={xAxisLabel}
+                yAxisLabel={yAxisLabel}
                 className="h-80"
             />
         ) : (
@@ -329,6 +335,7 @@ export function ReportManagement() {
                 series={TICKET_CHANNEL_SERIES}
                 periodKey={periodKey}
                 stacked
+                yAxisLabel="CZK"
                 emptyMessage="No ticket sales data for the selected period."
                 queryKey="management-ticket-revenue-view"
             />
@@ -499,6 +506,7 @@ export function ReportManagement() {
                 columns={WON_BUSINESS_CASE_COLUMNS}
                 series={WON_BUSINESS_CASE_SERIES}
                 periodKey={periodKey}
+                yAxisLabel="CZK"
                 emptyMessage="No won business case data for the selected period."
                 queryKey="management-won-business-cases-view"
             />

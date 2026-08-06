@@ -1,20 +1,14 @@
 'use client'
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
+import { BarChart } from '@/components/custom/statistics/bar-chart'
 import {
     DataVisulaizationCard,
     type GraphCardTab,
 } from '@/components/custom/statistics/data-visualization-card'
-import {
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from '@/components/ui/chart'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
+import type { ChartConfig } from '@/components/ui/chart'
 import {
     Table,
     TableBody,
@@ -23,7 +17,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
-import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     EMAIL_REPORT_BY_DAY,
@@ -63,42 +56,17 @@ function ReportChart({
     period: Period
 }) {
     return (
-        <ChartContainer config={config} className="max-h-75 w-full">
-            <BarChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
-                <CartesianGrid vertical={false} />
-                <XAxis
-                    dataKey="label"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    minTickGap={period === 'day' ? 24 : 8}
-                />
-                <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    width={48}
-                    tickFormatter={(value) => Number(value).toLocaleString('cs-CZ')}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                {series.map((key, i) => (
-                    <Bar
-                        key={key}
-                        dataKey={key}
-                        fill={`var(--color-${key})`}
-                        stackId="a"
-                        radius={
-                            i === 0
-                                ? [0, 0, 4, 4]
-                                : i === series.length - 1
-                                  ? [4, 4, 0, 0]
-                                  : [0, 0, 0, 0]
-                        }
-                    />
-                ))}
-            </BarChart>
-        </ChartContainer>
+        <BarChart
+            data={data}
+            config={config}
+            categoryKey="label"
+            series={[...series]}
+            stacked
+            showYAxis
+            xAxisLabel={periodColumnLabel(period)}
+            yAxisLabel="Počet"
+            className="max-h-75 w-full"
+        />
     )
 }
 

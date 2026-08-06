@@ -7,10 +7,7 @@ import { XIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-import {
-    useFanActionEditor,
-    type WorkflowNode,
-} from '../context'
+import { useFanActionEditor, type WorkflowNode } from '../context'
 import {
     workflowDrawerTitle,
     workflowItemDescription,
@@ -26,6 +23,7 @@ export function NodeConfigPanel() {
         configureNode,
         setNodes,
     } = useFanActionEditor()
+    // Subscribe to xyflow store for renders; mutations go through context.
     const nodes = useNodes<WorkflowNode>()
 
     const node =
