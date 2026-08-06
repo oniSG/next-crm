@@ -27,6 +27,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'report-event',
     'report-ticketing',
     'report-sales',
+    'report-business',
     'report-membership',
     'report-loyalty-program',
     'report-history-fan',

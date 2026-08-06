@@ -24,7 +24,7 @@ export type WorkflowNode = Node<FanActionWorkflowNodeData>
 export type WorkflowEdge = Edge<FanActionWorkflowEdgeData>
 
 /**
- * Façade over the live xyflow store (registered from Canvas via RegisterFlowApi).
+ * Fasade over the live xyflow store (registered from Canvas via RegisterFlowApi).
  * Callers outside `<ReactFlow>` go through context; storage stays in xyflow.
  */
 type FlowApi = {
@@ -120,6 +120,11 @@ export function FanActionEditorProvider({
 
     /** Toggle / open / close the right-hand node config panel. */
     const configureNode = React.useEffectEvent((nodeId: string | null) => {
+        if (actionRef.current.isEdited) {
+            setActiveNodeId(null)
+            setDrawerOpen(false)
+            return
+        }
         if (nodeId === null) {
             setActiveNodeId(null)
             setDrawerOpen(false)
@@ -133,6 +138,13 @@ export function FanActionEditorProvider({
         setActiveNodeId(nodeId)
         setDrawerOpen(true)
     })
+
+    // Drop node-config drawer when another editor locks the action.
+    React.useEffect(() => {
+        if (!action.isEdited) return
+        setActiveNodeId(null)
+        setDrawerOpen(false)
+    }, [action.isEdited])
 
     const registerSaveHandler = React.useEffectEvent(
         (key: SaveKey, fn: () => Promise<boolean>) => {

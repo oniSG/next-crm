@@ -9,11 +9,18 @@ const globalForFanActions = globalThis as typeof globalThis & {
     __fanActionsStore?: FanAction[]
 }
 
+function normalizeFanAction(action: FanAction): FanAction {
+    return {
+        ...action,
+        isEdited: action.isEdited ?? false,
+    }
+}
+
 function getStore(): FanAction[] {
     if (!globalForFanActions.__fanActionsStore) {
         globalForFanActions.__fanActionsStore = structuredClone(
             fanActionsJson as FanAction[],
-        )
+        ).map(normalizeFanAction)
     }
     return globalForFanActions.__fanActionsStore
 }
@@ -27,12 +34,13 @@ export function getStoredFanAction(
 ): FanAction | undefined {
     const numericId = typeof id === 'string' ? Number(id) : id
     if (Number.isNaN(numericId)) return undefined
-    return getStore().find((action) => action.id === numericId)
+    const action = getStore().find((item) => item.id === numericId)
+    return action ? normalizeFanAction(action) : undefined
 }
 
 export function upsertStoredFanAction(action: FanAction): FanAction {
     const store = getStore()
-    const next = structuredClone(action)
+    const next = normalizeFanAction(structuredClone(action))
     const index = store.findIndex((item) => item.id === next.id)
     if (index >= 0) {
         store[index] = next
@@ -46,5 +54,5 @@ export function upsertStoredFanAction(action: FanAction): FanAction {
 export function resetFanActionsStore() {
     globalForFanActions.__fanActionsStore = structuredClone(
         fanActionsJson as FanAction[],
-    )
+    ).map(normalizeFanAction)
 }

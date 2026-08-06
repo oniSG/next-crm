@@ -19,6 +19,7 @@ import type {
     FanActionWorkflowEdgeData,
     FanActionWorkflowNodeData,
 } from '../data'
+import { useFanActionEditor } from '../context'
 
 const conditionBranchButtonClass = {
     yes: 'bg-success/10 text-success hover:bg-success/20 dark:bg-success/20 dark:hover:bg-success/30 border-success/25 dark:border-success/30',
@@ -43,6 +44,8 @@ export function WorkflowEdge({
     style,
     data,
 }: EdgeProps<WorkflowEdgeType>) {
+    const { action } = useFanActionEditor()
+    const locked = action.isEdited
     const { deleteElements, getNode } = useReactFlow()
     const [path, labelX, labelY] = getBezierPath({
         sourceX,
@@ -76,6 +79,7 @@ export function WorkflowEdge({
 
     function deleteEdge(event: React.MouseEvent) {
         event.stopPropagation()
+        if (locked) return
         void deleteElements({ edges: [{ id }] })
     }
 
@@ -90,7 +94,10 @@ export function WorkflowEdge({
             />
             <EdgeLabelRenderer>
                 <div
-                    className="workflow-edge-label nopan nodrag pointer-events-auto absolute z-10"
+                    className={cn(
+                        'workflow-edge-label nopan nodrag absolute z-10',
+                        locked ? 'pointer-events-none' : 'pointer-events-auto',
+                    )}
                     style={{
                         transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
                     }}
@@ -103,19 +110,22 @@ export function WorkflowEdge({
                             className={cn(
                                 branch ? conditionBranchButtonClass[branch] : undefined,
                             )}
+                            tabIndex={locked ? -1 : undefined}
                         >
                             <UserIcon />
                             {data?.count ?? 0}
                         </Button>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="icon-sm"
-                            aria-label="Delete connection"
-                            onClick={deleteEdge}
-                        >
-                            <XIcon />
-                        </Button>
+                        {!locked ? (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="icon-sm"
+                                aria-label="Delete connection"
+                                onClick={deleteEdge}
+                            >
+                                <XIcon />
+                            </Button>
+                        ) : null}
                     </ButtonGroup>
                 </div>
             </EdgeLabelRenderer>

@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "organizationName": "AC Sparta Praha",
+    "generatedAt": "2026-06-30T12:00:00.000Z",
+    "currency": "CZK"
+  },
+  "businessCasesByStatus": [
+    {
+      "id": "cancelled",
+      "label": "Zrušeno",
+      "count": 15,
+      "potentialIncome": 2451800
+    },
+    {
+      "id": "finished",
+      "label": "Ukončeno",
+      "count": 6,
+      "potentialIncome": 2575000
+    },
+    {
+      "id": "draft-saved",
+      "label": "Návrh uložen",
+      "count": 17,
+      "potentialIncome": 6477000
+    },
+    {
+      "id": "signed",
+      "label": "Podepsáno",
+      "count": 163,
+      "potentialIncome": 440609608
+    },
+    {
+      "id": "partner-signing",
+      "label": "Podepisuje partner",
+      "count": 2,
+      "potentialIncome": 175000
+    },
+    {
+      "id": "sparta-signing",
+      "label": "Podepisuje Sparta",
+      "count": 11,
+      "potentialIncome": 13098000
+    },
+    {
+      "id": "directory-ticketing",
+      "label": "Adresář + ticketing",
+      "count": 3,
+      "potentialIncome": 3300001
+    },
+    {
+      "id": "partner-proposal",
+      "label": "Návrh na partnera",
+      "count": 15,
+      "potentialIncome": 9683000
+    },
+    {
+      "id": "contract-expired",
+      "label": "Platnost smlouvy vypršela",
+      "count": 448,
+      "potentialIncome": 612450000
+    }
+  ],
+  "advertisingSpacesBySeason": [
+    {
+      "id": "off-season",
+      "label": "Mimo sezónu",
+      "occupied": 3480,
+      "occupiedMultiple": 1820,
+      "free": 7620
+    }
+  ],
+  "tradeTypeRatio": [
+    {
+      "id": "empty",
+      "label": "Prázdný",
+      "value": 117
+    },
+    {
+      "id": "finance",
+      "label": "Finance",
+      "value": 871
+    },
+    {
+      "id": "combined",
+      "label": "Kombinovaný",
+      "value": 12
+    }
+  ]
+}

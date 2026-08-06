@@ -62,7 +62,7 @@ export function BarChart({
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
     const xAxisHeight = xAxisLabel ? 40 : undefined
-    const legendSpace = series.length > 1 ? 36 : 0
+    const legendSpace = 36
     const bottomMargin = (xAxisLabel ? 12 : 0) + legendSpace
 
     return (
@@ -175,9 +175,20 @@ export function BarChart({
                     </>
                 )}
                 <ChartTooltip
-                    content={<ChartTooltipContent valueFormatter={formatValue} />}
+                    content={
+                        <ChartTooltipContent
+                            valueFormatter={formatValue}
+                            labelFormatter={(_value, tooltipPayload) => {
+                                const row = tooltipPayload?.[0]?.payload as
+                                    | Record<string, unknown>
+                                    | undefined
+                                const category = row?.[categoryKey]
+                                return category != null ? String(category) : ''
+                            }}
+                        />
+                    }
                 />
-                {series.length > 1 && <ChartLegend content={<ChartLegendContent />} />}
+                <ChartLegend content={<ChartLegendContent />} />
                 {series.map((key, i) => (
                     <Bar
                         key={key}

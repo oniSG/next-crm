@@ -149,6 +149,7 @@ function FitViewOnResize() {
 /** React Flow canvas: graph lives in xyflow; context is the API facade. */
 export function Canvas() {
     const { action, isRunning, configureNode } = useFanActionEditor()
+    const locked = action.isEdited
     const { screenToFlowPosition } = useReactFlow<WorkflowNode, WorkflowEdge>()
     const [nodes, setNodes, onNodesChange] = useNodesState<WorkflowNode>(
         toFlowNodes(action.workflow.nodes),
@@ -164,11 +165,13 @@ export function Canvas() {
     }, [action.id, action.workflow.nodes, action.workflow.edges, setNodes, setEdges])
 
     function onDragOver(event: React.DragEvent) {
+        if (locked) return
         event.preventDefault()
         event.dataTransfer.dropEffect = 'move'
     }
 
     function onDrop(event: React.DragEvent) {
+        if (locked) return
         event.preventDefault()
 
         const raw = event.dataTransfer.getData(WORKFLOW_DRAG_MIME)
@@ -203,6 +206,7 @@ export function Canvas() {
     }
 
     function onConnect(connection: Connection) {
+        if (locked) return
         setEdges((current) =>
             addEdge(
                 {
@@ -224,11 +228,19 @@ export function Canvas() {
                 nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
                 defaultEdgeOptions={defaultEdgeOptions}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
+                onNodesChange={locked ? undefined : onNodesChange}
+                onEdgesChange={locked ? undefined : onEdgesChange}
+                onConnect={locked ? undefined : onConnect}
                 onDragOver={onDragOver}
                 onDrop={onDrop}
+                nodesDraggable={!locked}
+                nodesConnectable={!locked}
+                nodesFocusable={!locked}
+                edgesFocusable={!locked}
+                edgesReconnectable={!locked}
+                elementsSelectable={!locked}
+                connectOnClick={!locked}
+                deleteKeyCode={locked ? null : ['Backspace', 'Delete']}
                 fitView
                 proOptions={{ hideAttribution: true }}
             >

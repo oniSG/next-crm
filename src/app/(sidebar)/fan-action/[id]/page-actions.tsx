@@ -10,10 +10,12 @@ import { useFanActionEditor } from './context'
 
 export function PageActions() {
     const router = useRouter()
-    const { saveAll } = useFanActionEditor()
+    const { action, updateAction, saveAll } = useFanActionEditor()
     const [saving, setSaving] = React.useState(false)
+    const locked = action.isEdited
 
     async function onSave() {
+        if (locked) return
         setSaving(true)
         try {
             const ok = await saveAll()
@@ -29,11 +31,21 @@ export function PageActions() {
 
     return (
         <>
+            <Button
+                type="button"
+                size="sm"
+                variant={locked ? 'default' : 'outline'}
+                onClick={() => {
+                    updateAction({ isEdited: !locked })
+                }}
+            >
+                {locked ? 'Unlock editor' : 'Simulate other editor'}
+            </Button>
             <ExportButton dashboard="fan-action" filename="fan-action.pdf" />
             <Button
                 type="button"
                 size="sm"
-                disabled={saving}
+                disabled={saving || locked}
                 onClick={() => {
                     void onSave()
                 }}

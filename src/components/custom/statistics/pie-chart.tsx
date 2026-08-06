@@ -4,6 +4,8 @@ import { Pie, PieChart as RechartsPieChart } from 'recharts'
 
 import {
     ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
     type ChartConfig,
@@ -23,7 +25,7 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
     return (
         <ChartContainer
             config={config}
-            className={cn('mx-auto aspect-square max-h-[250px] w-full px-0', className)}
+            className={cn('mx-auto aspect-square max-h-[280px] w-full px-0', className)}
         >
             <RechartsPieChart>
                 <ChartTooltip
@@ -34,6 +36,16 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
                         }
 
                         const item = payload[0]
+                        const segmentKey =
+                            typeof item.name === 'string'
+                                ? item.name
+                                : typeof item.payload?.name === 'string'
+                                  ? item.payload.name
+                                  : undefined
+                        const segmentLabel =
+                            (segmentKey && config[segmentKey]?.label) ||
+                            segmentKey ||
+                            ''
                         const num =
                             typeof item.value === 'number'
                                 ? item.value
@@ -44,7 +56,7 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
                             <ChartTooltipContent
                                 active={active}
                                 hideIndicator
-                                hideLabel
+                                label={segmentLabel}
                                 payload={[
                                     {
                                         ...item,
@@ -90,6 +102,7 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
                         )
                     }}
                 />
+                <ChartLegend content={<ChartLegendContent nameKey="name" />} />
             </RechartsPieChart>
         </ChartContainer>
     )

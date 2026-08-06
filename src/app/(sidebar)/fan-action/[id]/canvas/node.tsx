@@ -137,15 +137,16 @@ export function WorkflowNode({
     id,
     data,
 }: NodeProps<Node<FanActionWorkflowNodeData>>) {
-    const { activeNodeId, drawerOpen, configureNode, setNodes } =
+    const { action, activeNodeId, drawerOpen, configureNode, setNodes } =
         useFanActionEditor()
+    const locked = action.isEdited
     const { deleteElements, getNode } = useReactFlow()
     const [toolbarVisible, setToolbarVisible] = React.useState(false)
     const hideToolbarTimeoutRef = React.useRef<ReturnType<
         typeof setTimeout
     > | null>(null)
 
-    const isEditing = drawerOpen && activeNodeId === id
+    const isEditing = !locked && drawerOpen && activeNodeId === id
     const label = workflowItemLabel(data.itemId)
     const boxShapeStyles = workflowNodeBoxShapeStyles(
         data.itemId,
@@ -166,6 +167,7 @@ export function WorkflowNode({
     )
 
     function showToolbar() {
+        if (locked) return
         if (hideToolbarTimeoutRef.current) {
             clearTimeout(hideToolbarTimeoutRef.current)
             hideToolbarTimeoutRef.current = null
@@ -190,11 +192,13 @@ export function WorkflowNode({
     /** Open (or toggle) the node config panel for this node. */
     function openSettings(event: React.MouseEvent) {
         event.stopPropagation()
+        if (locked) return
         configureNode(id)
     }
 
     function duplicateNode(event: React.MouseEvent) {
         event.stopPropagation()
+        if (locked) return
         const node = getNode(id)
         if (!node) return
 
@@ -214,10 +218,11 @@ export function WorkflowNode({
 
     function deleteNode(event: React.MouseEvent) {
         event.stopPropagation()
+        if (locked) return
         void deleteElements({ nodes: [{ id }] })
     }
 
-    const toolbar = (
+    const toolbar = locked ? null : (
         <NodeHoverToolbar
             visible={toolbarVisible}
             onMouseEnter={showToolbar}

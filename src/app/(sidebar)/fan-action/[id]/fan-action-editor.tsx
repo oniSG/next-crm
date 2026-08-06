@@ -1,23 +1,46 @@
 'use client'
 
 import PageHeader from '@/components/custom/layout/page-header'
+import { cn } from '@/lib/utils'
 
 import { Canvas } from './canvas/canvas'
 import type { FanAction } from './data'
-import { FanActionEditorProvider } from './context'
+import { FanActionEditorProvider, useFanActionEditor } from './context'
 import { NodeConfigPanel } from './node-config/node-config-panel'
 import { PageActions } from './page-actions'
 import { PalettePanel } from './palette/palette-panel'
 
 /** Three-pane editor chrome (palette | canvas | node config). */
 function FanActionEditorLayout() {
+    const { action } = useFanActionEditor()
+    const locked = action.isEdited
+
     return (
-        <div className="flex h-full min-h-0 w-full overflow-hidden">
-            <PalettePanel />
+        <div
+            className={cn(
+                'flex h-full min-h-0 w-full overflow-hidden transition-[filter] duration-300',
+                locked && 'grayscale',
+            )}
+        >
+            <div
+                className={cn(
+                    'flex h-full min-h-0 shrink-0',
+                    locked && 'pointer-events-none select-none',
+                )}
+            >
+                <PalettePanel />
+            </div>
             <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
                 <Canvas />
             </div>
-            <NodeConfigPanel />
+            <div
+                className={cn(
+                    'flex h-full min-h-0 shrink-0',
+                    locked && 'pointer-events-none select-none',
+                )}
+            >
+                <NodeConfigPanel />
+            </div>
         </div>
     )
 }

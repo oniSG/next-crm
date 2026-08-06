@@ -149,7 +149,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Business',
-                        url: '#',
+                        url: '/report-business',
                         icon: <BriefcaseIcon />,
                     },
                     {
@@ -229,7 +229,7 @@ const businessGroups: NavGroup[] = [
                     },
                     {
                         title: 'Business',
-                        url: '#',
+                        url: '/report-business',
                         icon: <BriefcaseIcon />,
                     },
                     {

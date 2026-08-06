@@ -46,6 +46,11 @@ export type FanAction = {
     transactionActions: boolean
     automaticStop: boolean
     plannedRunOut: boolean
+    /**
+     * When true, another session is editing this action: UI is read-only
+     * (grayscale, no graph mutations). Frontend mock until real locking exists.
+     */
+    isEdited: boolean
     workflow: FanActionWorkflow
 }
 
