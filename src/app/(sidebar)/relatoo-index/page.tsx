@@ -6,7 +6,7 @@ import { RelatooIndex } from './relatoo-index'
 export default function Page() {
     return (
         <>
-            <PageHeader breadcrumbs={[{ label: 'Relatoo index' }]}>
+            <PageHeader breadcrumbs={[{ label: 'Postřehy relatoo' }]}>
                 <PageActions />
             </PageHeader>
             <div className="flex w-full justify-center p-3">

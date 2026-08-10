@@ -1,0 +1,6 @@
+[
+  { "label": "Doručeno", "pocet": 22, "percent": 100 },
+  { "label": "Unikátní otevření", "pocet": 21, "percent": 95.45 },
+  { "label": "Unikátní proklik", "pocet": 20, "percent": 90.91 },
+  { "label": "Odhlášeno", "pocet": 0, "percent": 0 }
+]
