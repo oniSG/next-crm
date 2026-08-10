@@ -1,13 +1,13 @@
 'use client'
 
-import { ChartColumnIcon, ChartPieIcon, TableIcon } from 'lucide-react'
+import { ChartColumnIcon, TableIcon, WaypointsIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
-import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
+import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
@@ -19,12 +19,13 @@ import {
     BEST_SEND_TIME_CHART_CONFIG,
     BEST_SEND_TIME_COLUMNS,
     BEST_SEND_TIME_SERIES,
+    EMAIL_FUNNEL_FLOW,
     EMAIL_METRICS_COLUMNS,
-    EMAIL_METRICS_PIE,
-    EMAIL_METRICS_PIE_CONFIG,
     EMAIL_METRICS_STAGES,
     formatExpertCount,
     RELATOO_INDEX_KPIS,
+    TOP_ACTIONS,
+    TOP_ACTIONS_COLUMNS,
 } from './data'
 
 export function RelatooIndex() {
@@ -122,20 +123,18 @@ export function RelatooIndex() {
             />
 
             <DataVisulaizationCard
-                title="E-mailové metriky"
-                description="Doručení, otevření, prokliky a odhlášení."
-                queryKey="view-email-metrics"
+                title="E-mailový trychtýř"
+                description="Statistiky e-mailového trychtýře."
+                queryKey="view-email-funnel"
                 tabs={[
                     {
                         name: 'Graf',
                         value: 'chart',
-                        icon: <ChartPieIcon />,
+                        icon: <WaypointsIcon />,
                         content: (
-                            <PieChart
-                                data={EMAIL_METRICS_PIE}
-                                config={EMAIL_METRICS_PIE_CONFIG}
-                                className="max-h-72"
-                                innerRadius={55}
+                            <SankeyChart
+                                data={EMAIL_FUNNEL_FLOW}
+                                className="min-h-80"
                             />
                         ),
                     },
@@ -153,6 +152,18 @@ export function RelatooIndex() {
                     },
                 ]}
             />
+
+            <DataVisulaizationCard
+                title="Nejvýkonnější akce"
+                description="Akce s nejvyšším CTR za posledních 90 dní."
+                queryKey="top-actions"
+            >
+                <SimpleTable
+                    data={TOP_ACTIONS}
+                    columns={TOP_ACTIONS_COLUMNS}
+                    getRowKey={(row) => row.id}
+                />
+            </DataVisulaizationCard>
         </div>
     )
 }

@@ -1,12 +1,14 @@
 import type { KpiCardProps } from '@/components/custom/statistics/kpi-card'
+import type { SankeyChartData } from '@/components/custom/statistics/sankey-chart'
 import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import type { ChartConfig } from '@/components/ui/chart'
 
 import bestSendDay from './data/best-send-day.json'
 import bestSendTime from './data/best-send-time.json'
-import emailMetricsPie from './data/email-metrics-pie.json'
+import emailFunnelFlow from './data/email-funnel-flow.json'
 import emailMetricsStages from './data/email-metrics-stages.json'
+import topActions from './data/top-actions.json'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const percentFormatter = new Intl.NumberFormat('cs-CZ', {
@@ -68,6 +70,17 @@ export type EmailMetricStage = {
     percent: number
 }
 
+export type TopActionRow = {
+    id: string
+    name: string
+    channel: string
+    delivered: number
+    uniqueOpens: number
+    openRate: number
+    uniqueClicks: number
+    ctr: number
+}
+
 export const BEST_SEND_TIME_SERIES = ['pocet'] as const
 
 export const BEST_SEND_TIME_CHART_CONFIG = {
@@ -84,20 +97,11 @@ export const BEST_SEND_DAY_CHART_CONFIG = {
 
 export const BEST_SEND_DAY_BY_WEEKDAY = bestSendDay as BestSendPoint[]
 
-export const EMAIL_METRICS_PIE_CONFIG = {
-    doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    unikatniOtevreni: { label: 'Unikátní otevření', color: 'var(--chart-2)' },
-    unikatniProklik: { label: 'Unikátní proklik', color: 'var(--chart-3)' },
-    odhlaseno: { label: 'Odhlášeno', color: 'var(--chart-4)' },
-} satisfies ChartConfig
-
-export const EMAIL_METRICS_PIE = emailMetricsPie as {
-    name: string
-    value: number
-    fill: string
-}[]
+export const EMAIL_FUNNEL_FLOW = emailFunnelFlow as SankeyChartData
 
 export const EMAIL_METRICS_STAGES = emailMetricsStages as EmailMetricStage[]
+
+export const TOP_ACTIONS = topActions as TopActionRow[]
 
 export const BEST_SEND_TIME_COLUMNS: SimpleTableColumn<BestSendPoint>[] = [
     {
@@ -151,6 +155,61 @@ export const EMAIL_METRICS_COLUMNS: SimpleTableColumn<EmailMetricStage>[] = [
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => `${percentFormatter.format(row.percent)} %`,
+    },
+]
+
+export const TOP_ACTIONS_COLUMNS: SimpleTableColumn<TopActionRow>[] = [
+    {
+        id: 'name',
+        header: 'Akce',
+        cellClassName: 'font-medium',
+        cell: (row) => row.name,
+    },
+    {
+        id: 'channel',
+        header: 'Kanál',
+        cell: (row) => row.channel,
+    },
+    {
+        id: 'delivered',
+        header: 'Doručeno',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => numberFormatter.format(row.delivered),
+    },
+    {
+        id: 'uniqueOpens',
+        header: 'Unikátní otevření',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) =>
+            row.channel === 'SMS'
+                ? '—'
+                : numberFormatter.format(row.uniqueOpens),
+    },
+    {
+        id: 'openRate',
+        header: 'Open rate',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) =>
+            row.channel === 'SMS'
+                ? '—'
+                : `${percentFormatter.format(row.openRate)} %`,
+    },
+    {
+        id: 'uniqueClicks',
+        header: 'Unikátní proklik',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => numberFormatter.format(row.uniqueClicks),
+    },
+    {
+        id: 'ctr',
+        header: 'CTR',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right font-medium tabular-nums',
+        cell: (row) => `${percentFormatter.format(row.ctr)} %`,
     },
 ]
 

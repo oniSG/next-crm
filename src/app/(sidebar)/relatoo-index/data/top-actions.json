@@ -1,0 +1,82 @@
+[
+  {
+    "id": "6",
+    "name": "E-mail: opuštěný košík",
+    "channel": "E-mail",
+    "delivered": 3840,
+    "uniqueOpens": 2010,
+    "openRate": 52.34,
+    "uniqueClicks": 1125,
+    "ctr": 29.3
+  },
+  {
+    "id": "3",
+    "name": "SMS: připomínka zápasu",
+    "channel": "SMS",
+    "delivered": 9420,
+    "uniqueOpens": 0,
+    "openRate": 0,
+    "uniqueClicks": 2180,
+    "ctr": 23.14
+  },
+  {
+    "id": "2",
+    "name": "Early bird vstupenky",
+    "channel": "E-mail",
+    "delivered": 12680,
+    "uniqueOpens": 7420,
+    "openRate": 58.52,
+    "uniqueClicks": 2895,
+    "ctr": 22.83
+  },
+  {
+    "id": "8",
+    "name": "Cross-sell merchandising",
+    "channel": "E-mail",
+    "delivered": 6540,
+    "uniqueOpens": 2870,
+    "openRate": 43.88,
+    "uniqueClicks": 1340,
+    "ctr": 20.49
+  },
+  {
+    "id": "7",
+    "name": "Dotazník spokojenosti",
+    "channel": "E-mail",
+    "delivered": 8120,
+    "uniqueOpens": 3980,
+    "openRate": 49.01,
+    "uniqueClicks": 1560,
+    "ctr": 19.21
+  },
+  {
+    "id": "5",
+    "name": "Push: start prodeje",
+    "channel": "Push",
+    "delivered": 22140,
+    "uniqueOpens": 9840,
+    "openRate": 44.44,
+    "uniqueClicks": 4120,
+    "ctr": 18.61
+  },
+  {
+    "id": "1",
+    "name": "E-mail: matchday info",
+    "channel": "E-mail",
+    "delivered": 18420,
+    "uniqueOpens": 11245,
+    "openRate": 61.05,
+    "uniqueClicks": 3210,
+    "ctr": 17.43
+  },
+  {
+    "id": "4",
+    "name": "Uvítací e-mail",
+    "channel": "E-mail",
+    "delivered": 5630,
+    "uniqueOpens": 3120,
+    "openRate": 55.42,
+    "uniqueClicks": 980,
+    "ctr": 17.41
+  }
+]
