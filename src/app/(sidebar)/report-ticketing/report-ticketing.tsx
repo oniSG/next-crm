@@ -1,9 +1,10 @@
 'use client'
 
-import { ChartColumnIcon, TableIcon } from 'lucide-react'
+import { ChartColumnIcon, ChartPieIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
+import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
@@ -19,15 +20,19 @@ import {
     TICKETS_SOLD_USED_CONFIG,
     TICKETS_VS_SEASON_TICKETS_COLUMNS,
     TICKETS_VS_SEASON_TICKETS_CONFIG,
-    TICKETS_VS_SEASON_TICKETS_SERIES,
     topSoldUsedByTotal,
+    toTicketsVsSeasonTicketsPieData,
 } from './data'
 
 export function ReportTicketing() {
     const report = TICKETING_REPORT_DATA
     const ticketsByEvent = topSoldUsedByTotal(report.ticketsSoldUsedByEvent, 10)
     const ticketsByEventTotal = sumSoldUsed(ticketsByEvent)
-    const ticketsVsSeasonTickets = report.ticketsVsSeasonTicketsBySeason
+    const ticketsVsSeasonTicketsLastSeason =
+        report.ticketsVsSeasonTicketsBySeason.at(-1)
+    const ticketsVsSeasonTickets = ticketsVsSeasonTicketsLastSeason
+        ? [ticketsVsSeasonTicketsLastSeason]
+        : []
     const ticketsVsSeasonTicketsTotal =
         sumTicketsVsSeasonTickets(ticketsVsSeasonTickets)
     const seasonTicketsBySeason = report.seasonTicketsSoldUsedBySeason
@@ -57,7 +62,6 @@ export function ReportTicketing() {
                                 config={TICKETS_BY_EVENT_CONFIG}
                                 categoryKey="label"
                                 series={[...SOLD_USED_SERIES]}
-                                stacked
                                 orientation="horizontal"
                                 showYAxis
                                 xAxisLabel="Počet"
@@ -88,26 +92,27 @@ export function ReportTicketing() {
 
             <DataVisulaizationCard
                 title="Poměr vstupenek a permanentek za sezónu"
-                description="Podíl vstupenek a permanentek v rámci sezóny."
+                description={
+                    ticketsVsSeasonTicketsLastSeason
+                        ? `Podíl vstupenek a permanentek — sezóna ${ticketsVsSeasonTicketsLastSeason.label}.`
+                        : 'Podíl vstupenek a permanentek v rámci sezóny.'
+                }
                 queryKey="ticketing-tickets-vs-season-tickets-view"
                 tabs={[
                     {
                         name: 'Graf',
                         value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content: (
-                            <BarChart
-                                data={ticketsVsSeasonTickets}
+                        icon: <ChartPieIcon />,
+                        content: ticketsVsSeasonTicketsLastSeason ? (
+                            <PieChart
+                                data={toTicketsVsSeasonTicketsPieData(
+                                    ticketsVsSeasonTicketsLastSeason,
+                                )}
                                 config={TICKETS_VS_SEASON_TICKETS_CONFIG}
-                                categoryKey="label"
-                                series={[...TICKETS_VS_SEASON_TICKETS_SERIES]}
-                                stacked
-                                showYAxis
-                                xAxisLabel="Sezóna"
-                                yAxisLabel="Počet"
-                                className="h-80"
+                                className="max-h-72"
+                                innerRadius={56}
                             />
-                        ),
+                        ) : null,
                     },
                     {
                         name: 'Tabulka',

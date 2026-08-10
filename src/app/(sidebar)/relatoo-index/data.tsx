@@ -209,7 +209,8 @@ export const TOP_ACTIONS_COLUMNS: SimpleTableColumn<TopActionRow>[] = [
         header: 'CTR',
         headerClassName: 'text-right',
         cellClassName: 'text-right font-medium tabular-nums',
-        cell: (row) => `${percentFormatter.format(row.ctr)} %`,
+        cell: (row) =>
+            row.ctr > 100 ? '—' : `${percentFormatter.format(row.ctr)} %`,
     },
 ]
 

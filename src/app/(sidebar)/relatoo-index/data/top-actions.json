@@ -1,5 +1,25 @@
 [
   {
+    "id": "9",
+    "name": "Test: CTR nad 100 %",
+    "channel": "E-mail",
+    "delivered": 1200,
+    "uniqueOpens": 980,
+    "openRate": 81.67,
+    "uniqueClicks": 1450,
+    "ctr": 120.83
+  },
+  {
+    "id": "10",
+    "name": "Test: CTR přesně 100 %",
+    "channel": "Push",
+    "delivered": 500,
+    "uniqueOpens": 400,
+    "openRate": 80,
+    "uniqueClicks": 500,
+    "ctr": 100
+  },
+  {
     "id": "6",
     "name": "E-mail: opuštěný košík",
     "channel": "E-mail",

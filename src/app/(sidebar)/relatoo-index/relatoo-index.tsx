@@ -5,7 +5,6 @@ import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { LineChart } from '@/components/custom/statistics/line-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
@@ -53,7 +52,7 @@ export function RelatooIndex() {
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
-                            <LineChart
+                            <BarChart
                                 data={BEST_SEND_TIME_BY_SLOT}
                                 config={BEST_SEND_TIME_CHART_CONFIG}
                                 categoryKey="label"

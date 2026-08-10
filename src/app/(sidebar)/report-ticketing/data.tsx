@@ -139,3 +139,20 @@ export function sumTicketsVsSeasonTickets(
         { tickets: 0, seasonTickets: 0 },
     )
 }
+
+export function toTicketsVsSeasonTicketsPieData(
+    point: TicketsVsSeasonTicketsPoint,
+) {
+    return [
+        {
+            name: 'tickets' as const,
+            value: point.tickets,
+            fill: 'var(--color-tickets)',
+        },
+        {
+            name: 'seasonTickets' as const,
+            value: point.seasonTickets,
+            fill: 'var(--color-seasonTickets)',
+        },
+    ]
+}

@@ -25,6 +25,7 @@ export type BarChartProps = {
     stacked?: boolean
     showYAxis?: boolean
     hideCategoryTicks?: boolean
+    angledXAxis?: boolean
     xAxisLabel?: string
     yAxisLabel?: string
     secondaryYAxisLabel?: string
@@ -60,6 +61,7 @@ export function BarChart({
     stacked = false,
     showYAxis = false,
     hideCategoryTicks = false,
+    angledXAxis = false,
     xAxisLabel,
     yAxisLabel,
     secondaryYAxisLabel,
@@ -72,9 +74,15 @@ export function BarChart({
     const primarySeries = hasSecondaryAxis
         ? series.filter((key) => !secondarySeries.includes(key))
         : series
-    const xAxisHeight = xAxisLabel ? 40 : undefined
+    const xAxisHeight = angledXAxis
+        ? xAxisLabel
+            ? 78
+            : 56
+        : xAxisLabel
+          ? 40
+          : undefined
     // Room for axis label + legend row; legend is pinned to container bottom.
-    const bottomMargin = (xAxisLabel ? 12 : 4) + 24
+    const bottomMargin = (angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4) + 24
     const secondaryKeys = new Set(secondarySeries)
 
     return (
@@ -159,13 +167,17 @@ export function BarChart({
                             axisLine={false}
                             tickMargin={8}
                             height={xAxisHeight}
+                            angle={angledXAxis ? -35 : 0}
+                            textAnchor={angledXAxis ? 'end' : 'middle'}
+                            minTickGap={angledXAxis ? 24 : undefined}
+                            interval={angledXAxis ? 'preserveStartEnd' : undefined}
                             tick={hideCategoryTicks ? false : undefined}
                             label={
                                 xAxisLabel
                                     ? {
                                           value: xAxisLabel,
                                           position: 'insideBottom',
-                                          offset: -2,
+                                          offset: angledXAxis ? 2 : -2,
                                           style: { textAnchor: 'middle' },
                                       }
                                     : undefined
