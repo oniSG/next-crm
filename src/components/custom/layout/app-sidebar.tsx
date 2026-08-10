@@ -157,6 +157,11 @@ const fansGroups: NavGroup[] = [
                         url: '/report-membership',
                         icon: <CreditCardIcon />,
                     },
+                    {
+                        title: 'Manažerský report',
+                        url: '/manazersky-report',
+                        icon: <ClipboardCheckIcon />,
+                    },
                 ],
             },
             { title: 'Visitors', url: '/fan', icon: <ZapIcon /> },
@@ -236,6 +241,11 @@ const businessGroups: NavGroup[] = [
                         title: 'Membership',
                         url: '/report-membership',
                         icon: <CreditCardIcon />,
+                    },
+                    {
+                        title: 'Manažerský report',
+                        url: '/manazersky-report',
+                        icon: <ClipboardCheckIcon />,
                     },
                 ],
             },

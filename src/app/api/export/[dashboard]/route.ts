@@ -34,6 +34,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'noticeboard-marketing',
     'data-quality',
     'relatoo-index',
+    'manazersky-report',
     'mobile-app',
     'fan-action',
 ])
