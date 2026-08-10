@@ -4,6 +4,112 @@
     "generatedAt": "2026-06-30T12:00:00.000Z",
     "currency": "CZK"
   },
+  "weeklyRevenue": [
+    {
+      "week": "2026-01-05",
+      "totalRevenue": 1317414
+    },
+    {
+      "week": "2026-01-12",
+      "totalRevenue": 1036814
+    },
+    {
+      "week": "2026-01-19",
+      "totalRevenue": 1201704
+    },
+    {
+      "week": "2026-01-26",
+      "totalRevenue": 1261029
+    },
+    {
+      "week": "2026-02-02",
+      "totalRevenue": 901148
+    },
+    {
+      "week": "2026-02-09",
+      "totalRevenue": 1829898
+    },
+    {
+      "week": "2026-02-16",
+      "totalRevenue": 1841412
+    },
+    {
+      "week": "2026-02-23",
+      "totalRevenue": 1358496
+    },
+    {
+      "week": "2026-03-02",
+      "totalRevenue": 1618508
+    },
+    {
+      "week": "2026-03-09",
+      "totalRevenue": 937824
+    },
+    {
+      "week": "2026-03-16",
+      "totalRevenue": 1319903
+    },
+    {
+      "week": "2026-03-23",
+      "totalRevenue": 913962
+    },
+    {
+      "week": "2026-03-30",
+      "totalRevenue": 1619258
+    },
+    {
+      "week": "2026-04-06",
+      "totalRevenue": 1368246
+    },
+    {
+      "week": "2026-04-13",
+      "totalRevenue": 1181244
+    },
+    {
+      "week": "2026-04-20",
+      "totalRevenue": 1063326
+    },
+    {
+      "week": "2026-04-27",
+      "totalRevenue": 1352417
+    },
+    {
+      "week": "2026-05-04",
+      "totalRevenue": 881161
+    },
+    {
+      "week": "2026-05-11",
+      "totalRevenue": 1241858
+    },
+    {
+      "week": "2026-05-18",
+      "totalRevenue": 1497473
+    },
+    {
+      "week": "2026-05-25",
+      "totalRevenue": 1416316
+    },
+    {
+      "week": "2026-06-01",
+      "totalRevenue": 1384053
+    },
+    {
+      "week": "2026-06-08",
+      "totalRevenue": 1286787
+    },
+    {
+      "week": "2026-06-15",
+      "totalRevenue": 1198389
+    },
+    {
+      "week": "2026-06-22",
+      "totalRevenue": 816225
+    },
+    {
+      "week": "2026-06-29",
+      "totalRevenue": 786739
+    }
+  ],
   "businessCasesByStatus": [
     {
       "id": "cancelled",

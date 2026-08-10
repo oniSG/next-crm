@@ -31,16 +31,32 @@ export type TradeTypePoint = {
     value: number
 }
 
+export type WeeklyRevenuePoint = {
+    week: string
+    totalRevenue: number
+}
+
+export type WeeklyRevenueChartRow = WeeklyRevenuePoint & {
+    label: string
+}
+
 export type BusinessReportData = {
     meta: {
         organizationName: string
         generatedAt: string
         currency: 'CZK'
     }
+    weeklyRevenue: WeeklyRevenuePoint[]
     businessCasesByStatus: BusinessCaseStatusPoint[]
     advertisingSpacesBySeason: AdvertisingSpaceSeasonPoint[]
     tradeTypeRatio: TradeTypePoint[]
 }
+
+export const WEEKLY_REVENUE_CONFIG = {
+    totalRevenue: { label: 'Příjem', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
+export const WEEKLY_REVENUE_SERIES = ['totalRevenue'] as const
 
 export const BUSINESS_CASE_STATUS_CONFIG = {
     count: { label: 'Počet', color: 'var(--chart-1)' },
@@ -70,6 +86,23 @@ export const TRADE_TYPE_CONFIG = {
     finance: { label: 'Finance', color: 'var(--chart-1)' },
     combined: { label: 'Kombinovaný', color: 'var(--chart-3)' },
 } satisfies ChartConfig
+
+export const WEEKLY_REVENUE_COLUMNS: SimpleTableColumn<WeeklyRevenueChartRow>[] =
+    [
+        {
+            id: 'week',
+            header: 'Týden',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'totalRevenue',
+            header: 'Příjem',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right font-medium tabular-nums',
+            cell: (row) => currencyFormatter.format(row.totalRevenue),
+        },
+    ]
 
 export const BUSINESS_CASE_STATUS_COLUMNS: SimpleTableColumn<BusinessCaseStatusPoint>[] =
     [
@@ -150,6 +183,24 @@ export function formatBusinessCurrency(value: number) {
 
 export function formatBusinessCount(value: number) {
     return numberFormatter.format(value)
+}
+
+export function formatWeekLabel(week: string) {
+    const [year, month, day] = week.split('-')
+    return `${Number(day)}.${Number(month)}.${year}`
+}
+
+export function toWeeklyRevenueChartRows(
+    points: WeeklyRevenuePoint[],
+): WeeklyRevenueChartRow[] {
+    return points.map((point) => ({
+        ...point,
+        label: formatWeekLabel(point.week),
+    }))
+}
+
+export function sumWeeklyRevenue(points: Array<{ totalRevenue: number }>) {
+    return points.reduce((sum, point) => sum + point.totalRevenue, 0)
 }
 
 export function sumBusinessCaseCounts(points: BusinessCaseStatusPoint[]) {

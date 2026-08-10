@@ -4,6 +4,7 @@ import { ChartColumnIcon, ChartPieIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
+import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
@@ -23,17 +24,24 @@ import {
     sumBusinessCaseCounts,
     sumBusinessCaseIncome,
     sumTradeTypeValues,
+    sumWeeklyRevenue,
     toTradeTypePieData,
+    toWeeklyRevenueChartRows,
     TRADE_TYPE_COLUMNS,
     TRADE_TYPE_CONFIG,
+    WEEKLY_REVENUE_COLUMNS,
+    WEEKLY_REVENUE_CONFIG,
+    WEEKLY_REVENUE_SERIES,
 } from './data'
 
 export function ReportBusiness() {
     const report = BUSINESS_REPORT_DATA
+    const weeklyRevenue = toWeeklyRevenueChartRows(report.weeklyRevenue)
     const cases = report.businessCasesByStatus
     const spacesBySeason = report.advertisingSpacesBySeason
     const tradeTypes = report.tradeTypeRatio
 
+    const weeklyRevenueTotal = sumWeeklyRevenue(weeklyRevenue)
     const caseCountTotal = sumBusinessCaseCounts(cases)
     const caseIncomeTotal = sumBusinessCaseIncome(cases)
     const spacesTotals = sumAdvertisingSpacesBySeason(spacesBySeason)
@@ -44,6 +52,50 @@ export function ReportBusiness() {
             <ReportHeaderCard
                 title="Business"
                 description="Přehled obchodních případů, reklamních ploch a typu obchodu."
+            />
+
+            <DataVisulaizationCard
+                title="Příjem z obchodních případů po týdnech"
+                description="Součet příjmů podle týdne vytvoření obchodního případu."
+                queryKey="business-weekly-revenue-view"
+                tabs={[
+                    {
+                        name: 'Graf',
+                        value: 'chart',
+                        icon: <ChartColumnIcon />,
+                        content: (
+                            <LineChart
+                                data={weeklyRevenue}
+                                config={WEEKLY_REVENUE_CONFIG}
+                                categoryKey="label"
+                                series={[...WEEKLY_REVENUE_SERIES]}
+                                showYAxis
+                                showDots
+                                angledXAxis
+                                xAxisLabel="Týden"
+                                yAxisLabel="Kč"
+                                formatValue={formatBusinessCurrency}
+                                className="h-80"
+                            />
+                        ),
+                    },
+                    {
+                        name: 'Tabulka',
+                        value: 'table',
+                        icon: <TableIcon />,
+                        content: (
+                            <SimpleTable
+                                data={weeklyRevenue}
+                                columns={WEEKLY_REVENUE_COLUMNS}
+                                getRowKey={(row) => row.week}
+                                footer={[
+                                    'Celkem',
+                                    formatBusinessCurrency(weeklyRevenueTotal),
+                                ]}
+                            />
+                        ),
+                    },
+                ]}
             />
 
             <DataVisulaizationCard
@@ -129,9 +181,7 @@ export function ReportBusiness() {
                                 footer={[
                                     'Celkem',
                                     formatBusinessCount(spacesTotals.occupied),
-                                    formatBusinessCount(
-                                        spacesTotals.occupiedMultiple,
-                                    ),
+                                    formatBusinessCount(spacesTotals.occupiedMultiple),
                                     formatBusinessCount(spacesTotals.free),
                                 ]}
                             />
@@ -168,10 +218,7 @@ export function ReportBusiness() {
                                 data={tradeTypes}
                                 columns={TRADE_TYPE_COLUMNS}
                                 getRowKey={(row) => row.id}
-                                footer={[
-                                    'Celkem',
-                                    formatBusinessCount(tradeTotal),
-                                ]}
+                                footer={['Celkem', formatBusinessCount(tradeTotal)]}
                             />
                         ),
                     },
