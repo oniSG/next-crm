@@ -27,6 +27,7 @@ export function VernostniProgram() {
                         showYAxis
                         xAxisLabel="Měsíc"
                         yAxisLabel="Počet bodů"
+                        className="h-80"
                     />
                 </DataVisulaizationCard>
             </section>

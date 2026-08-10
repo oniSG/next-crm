@@ -9,6 +9,14 @@ const currencyFormatter = new Intl.NumberFormat('cs-CZ', {
     maximumFractionDigits: 0,
 })
 
+export type Period = 'day' | 'month' | 'year'
+
+export const PERIOD_OPTIONS = [
+    { label: 'Den', value: 'day' },
+    { label: 'Měsíc', value: 'month' },
+    { label: 'Rok', value: 'year' },
+] as const
+
 export type RevenuePoint = {
     id: string
     label: string
@@ -55,21 +63,31 @@ export const REVENUE_BY_CHANNEL_COLUMNS: SimpleTableColumn<RevenuePoint>[] = [
     },
 ]
 
-export const REVENUE_BY_DATE_COLUMNS: SimpleTableColumn<RevenueByDatePoint>[] = [
-    {
-        id: 'date',
-        header: 'Datum',
-        cellClassName: 'font-medium',
-        cell: (row) => row.label,
-    },
-    {
-        id: 'revenue',
-        header: 'Příjem',
-        headerClassName: 'text-right',
-        cellClassName: 'text-right font-medium tabular-nums',
-        cell: (row) => currencyFormatter.format(row.revenue),
-    },
-]
+export function revenueByDateColumns(
+    period: Period,
+): SimpleTableColumn<RevenueByDatePoint>[] {
+    return [
+        {
+            id: 'date',
+            header: periodColumnLabel(period),
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'revenue',
+            header: 'Příjem',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right font-medium tabular-nums',
+            cell: (row) => currencyFormatter.format(row.revenue),
+        },
+    ]
+}
+
+export function periodColumnLabel(period: Period) {
+    if (period === 'day') return 'Datum'
+    if (period === 'month') return 'Měsíc'
+    return 'Rok'
+}
 
 export const SALES_REPORT_DATA = salesReport as SalesReportData
 

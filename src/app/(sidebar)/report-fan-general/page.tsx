@@ -6,7 +6,7 @@ import { ReportFanGeneral } from './report-fan-general'
 export default function Page() {
     return (
         <>
-            <PageHeader breadcrumbs={[{ label: 'Global analytics' }]}>
+            <PageHeader breadcrumbs={[{ label: 'Globální report' }]}>
                 <PageActions />
             </PageHeader>
             <div className="flex w-full justify-center p-3">

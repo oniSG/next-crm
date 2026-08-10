@@ -3,7 +3,7 @@ import { ReportFanGeneral } from '@/app/(sidebar)/report-fan-general/report-fan-
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
 const printPageSettings: PrintPageSettings = {
-    title: 'Global analytics',
+    title: 'Globální report',
     description: 'Přehled metrik e-mailu, SMS a push notifikací.',
     body: <ReportFanGeneral />,
 }

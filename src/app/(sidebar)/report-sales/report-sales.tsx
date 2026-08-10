@@ -10,30 +10,47 @@ import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
     formatSalesCurrency,
+    periodColumnLabel,
     REVENUE_BY_CHANNEL_COLUMNS,
     REVENUE_BY_CHANNEL_CONFIG,
-    REVENUE_BY_DATE_COLUMNS,
     REVENUE_BY_DATE_CONFIG,
     REVENUE_CHART_SERIES,
+    revenueByDateColumns,
     SALES_REPORT_DATA,
     sumRevenue,
 } from './data'
+import {
+    aggregateByPeriod,
+    filterByDateRange,
+    scaleChannelsToPeriodTotal,
+    useReportDateRange,
+    useReportPeriod,
+} from './report-utils'
 
 export function ReportSales() {
+    const [period] = useReportPeriod()
+    const { dateRange } = useReportDateRange()
+
     const report = SALES_REPORT_DATA
-    const channelTotal = sumRevenue(report.revenueByChannel)
-    const dateTotal = sumRevenue(report.revenueByDate)
+    const filteredByDate = filterByDateRange(report.revenueByDate, dateRange)
+    const revenueByDate = aggregateByPeriod(filteredByDate, period)
+    const dateTotal = sumRevenue(revenueByDate)
+    const revenueByChannel = scaleChannelsToPeriodTotal(
+        report.revenueByChannel,
+        dateTotal,
+    )
+    const channelTotal = sumRevenue(revenueByChannel)
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <ReportHeaderCard
-                title="Prodeje"
+                title="Prodeje vstupenek"
                 description="Statistika příjmu z prodeje vstupenek."
             />
 
             <DataVisulaizationCard
                 title="Statistika příjmu z prodeje vstupenek podle prodejních kanálů"
-                description="Příjem podle prodejního kanálu."
+                description="Příjem podle prodejního kanálu ve zvoleném období."
                 queryKey="sales-revenue-by-channel-view"
                 tabs={[
                     {
@@ -42,7 +59,7 @@ export function ReportSales() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <BarChart
-                                data={report.revenueByChannel}
+                                data={revenueByChannel}
                                 config={REVENUE_BY_CHANNEL_CONFIG}
                                 categoryKey="label"
                                 series={[...REVENUE_CHART_SERIES]}
@@ -60,7 +77,7 @@ export function ReportSales() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={report.revenueByChannel}
+                                data={revenueByChannel}
                                 columns={REVENUE_BY_CHANNEL_COLUMNS}
                                 getRowKey={(row) => row.id}
                                 footer={['Celkem', formatSalesCurrency(channelTotal)]}
@@ -72,7 +89,7 @@ export function ReportSales() {
 
             <DataVisulaizationCard
                 title="Statistika příjmu z prodeje vstupenek"
-                description="Denní příjem z prodeje vstupenek."
+                description="Příjem z prodeje vstupenek ve zvoleném období."
                 queryKey="sales-revenue-by-date-view"
                 tabs={[
                     {
@@ -81,14 +98,14 @@ export function ReportSales() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={report.revenueByDate}
+                                data={revenueByDate}
                                 config={REVENUE_BY_DATE_CONFIG}
                                 categoryKey="label"
                                 series={[...REVENUE_CHART_SERIES]}
                                 showYAxis
                                 showDots
-                                angledXAxis
-                                xAxisLabel="Datum"
+                                angledXAxis={period === 'day'}
+                                xAxisLabel={periodColumnLabel(period)}
                                 yAxisLabel="Příjem"
                                 formatValue={formatSalesCurrency}
                                 className="h-96"
@@ -101,9 +118,9 @@ export function ReportSales() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={report.revenueByDate}
-                                columns={REVENUE_BY_DATE_COLUMNS}
-                                getRowKey={(row) => row.period}
+                                data={revenueByDate}
+                                columns={revenueByDateColumns(period)}
+                                getRowKey={(row) => row.id}
                                 footer={['Celkem', formatSalesCurrency(dateTotal)]}
                             />
                         ),

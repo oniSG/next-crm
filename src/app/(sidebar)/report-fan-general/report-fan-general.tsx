@@ -85,7 +85,7 @@ export function ReportFanGeneral() {
     return (
         <div className="grid w-full max-w-6xl grid-cols-1 gap-4">
             <ReportHeaderCard
-                title="Global analytics"
+                title="Globální report"
                 description="Přehled metrik e-mailu, SMS a push notifikací."
             />
 

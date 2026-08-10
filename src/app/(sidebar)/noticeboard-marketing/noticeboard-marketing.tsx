@@ -32,8 +32,8 @@ export function NoticeboardMarketing() {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <ReportHeaderCard
-                title="Noticeboard marketing"
-                description="Přehled noticeboard marketingu."
+                title="Komunikace a akce"
+                description="Přehled komunikace a akcí."
             />
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">

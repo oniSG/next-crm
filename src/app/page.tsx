@@ -84,7 +84,7 @@ const pages: {
         },
         {
             name: 'Globální report',
-            path: '/global-report',
+            path: '/report-fan-general',
             status: 'progress',
             by: 'Tomas',
         },
@@ -97,12 +97,6 @@ const pages: {
         {
             name: 'Funnel chart',
             path: '/funnel-chart',
-            status: 'progress',
-            by: 'Tomas',
-        },
-        {
-            name: 'Global analytics',
-            path: '/report-fan-general',
             status: 'progress',
             by: 'Tomas',
         },

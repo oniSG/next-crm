@@ -51,7 +51,7 @@ export function MobileApp() {
                     showDots
                     xAxisLabel="Datum"
                     yAxisLabel="Počet"
-                    className="min-h-80"
+                    className="h-80"
                 />
             </DataVisulaizationCard>
         </div>

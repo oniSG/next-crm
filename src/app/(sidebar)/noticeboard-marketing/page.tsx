@@ -6,7 +6,7 @@ import { PageActions } from './page-actions'
 export default function Page() {
     return (
         <>
-            <PageHeader breadcrumbs={[{ label: 'Noticeboard marketing' }]}>
+            <PageHeader breadcrumbs={[{ label: 'Komunikace a akce' }]}>
                 <PageActions />
             </PageHeader>
             <div className="flex w-full justify-center p-3">

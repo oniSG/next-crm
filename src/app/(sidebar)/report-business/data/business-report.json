@@ -62,6 +62,27 @@
   ],
   "advertisingSpacesBySeason": [
     {
+      "id": "2023-24",
+      "label": "2023/24",
+      "occupied": 3120,
+      "occupiedMultiple": 1540,
+      "free": 6980
+    },
+    {
+      "id": "2024-25",
+      "label": "2024/25",
+      "occupied": 3360,
+      "occupiedMultiple": 1710,
+      "free": 7280
+    },
+    {
+      "id": "2025-26",
+      "label": "2025/26",
+      "occupied": 3580,
+      "occupiedMultiple": 1890,
+      "free": 7410
+    },
+    {
       "id": "off-season",
       "label": "Mimo sezónu",
       "occupied": 3480,

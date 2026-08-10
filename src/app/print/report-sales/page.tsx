@@ -3,7 +3,7 @@ import { ReportSales } from '@/app/(sidebar)/report-sales/report-sales'
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
 const printPageSettings: PrintPageSettings = {
-    title: 'Prodeje',
+    title: 'Prodeje vstupenek',
     description: 'Statistika příjmu z prodeje vstupenek.',
     body: <ReportSales />,
 }

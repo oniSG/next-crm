@@ -45,23 +45,13 @@ export type BusinessReportData = {
 export const BUSINESS_CASE_STATUS_CONFIG = {
     count: { label: 'Počet', color: 'var(--chart-1)' },
     potentialIncome: {
-        label: 'Potenciální příjem [mil. Kč]',
+        label: 'Potenciální příjem',
         color: 'var(--chart-2)',
     },
 } satisfies ChartConfig
 
-export const BUSINESS_CASE_STATUS_SERIES = [
-    'count',
-    'potentialIncome',
-] as const
-
-/** Chart-friendly income (mil. Kč) so count + income can share a stacked axis. */
-export function toBusinessCaseChartRows(points: BusinessCaseStatusPoint[]) {
-    return points.map((point) => ({
-        ...point,
-        potentialIncome: point.potentialIncome / 1_000_000,
-    }))
-}
+export const BUSINESS_CASE_STATUS_SERIES = ['count', 'potentialIncome'] as const
+export const BUSINESS_CASE_STATUS_SECONDARY_SERIES = ['potentialIncome'] as const
 
 export const ADVERTISING_SPACES_CONFIG = {
     occupied: { label: 'Obsazeno', color: 'var(--chart-2)' },
@@ -69,11 +59,11 @@ export const ADVERTISING_SPACES_CONFIG = {
     free: { label: 'Volno', color: 'var(--chart-3)' },
 } satisfies ChartConfig
 
-export type AdvertisingSpaceSlice = {
-    id: keyof typeof ADVERTISING_SPACES_CONFIG
-    label: string
-    value: number
-}
+export const ADVERTISING_SPACES_SERIES = [
+    'occupied',
+    'occupiedMultiple',
+    'free',
+] as const
 
 export const TRADE_TYPE_CONFIG = {
     empty: { label: 'Prázdný', color: 'var(--destructive)' },
@@ -105,20 +95,34 @@ export const BUSINESS_CASE_STATUS_COLUMNS: SimpleTableColumn<BusinessCaseStatusP
         },
     ]
 
-export const ADVERTISING_SPACES_COLUMNS: SimpleTableColumn<AdvertisingSpaceSlice>[] =
+export const ADVERTISING_SPACES_COLUMNS: SimpleTableColumn<AdvertisingSpaceSeasonPoint>[] =
     [
         {
-            id: 'status',
-            header: 'Stav',
+            id: 'season',
+            header: 'Sezóna',
             cellClassName: 'font-medium',
             cell: (row) => row.label,
         },
         {
-            id: 'value',
-            header: 'Počet',
+            id: 'occupied',
+            header: ADVERTISING_SPACES_CONFIG.occupied.label,
             headerClassName: 'text-right',
             cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.value),
+            cell: (row) => numberFormatter.format(row.occupied),
+        },
+        {
+            id: 'occupiedMultiple',
+            header: ADVERTISING_SPACES_CONFIG.occupiedMultiple.label,
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.occupiedMultiple),
+        },
+        {
+            id: 'free',
+            header: ADVERTISING_SPACES_CONFIG.free.label,
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.free),
         },
     ]
 
@@ -156,38 +160,17 @@ export function sumBusinessCaseIncome(points: BusinessCaseStatusPoint[]) {
     return points.reduce((sum, point) => sum + point.potentialIncome, 0)
 }
 
-export function toAdvertisingSpaceSlices(
-    point: AdvertisingSpaceSeasonPoint,
-): AdvertisingSpaceSlice[] {
-    return [
-        {
-            id: 'occupied',
-            label: ADVERTISING_SPACES_CONFIG.occupied.label,
-            value: point.occupied,
-        },
-        {
-            id: 'occupiedMultiple',
-            label: ADVERTISING_SPACES_CONFIG.occupiedMultiple.label,
-            value: point.occupiedMultiple,
-        },
-        {
-            id: 'free',
-            label: ADVERTISING_SPACES_CONFIG.free.label,
-            value: point.free,
-        },
-    ]
-}
-
-export function sumAdvertisingSpaceSlices(slices: AdvertisingSpaceSlice[]) {
-    return slices.reduce((sum, slice) => sum + slice.value, 0)
-}
-
-export function toAdvertisingSpacesPieData(slices: AdvertisingSpaceSlice[]) {
-    return slices.map((slice) => ({
-        name: slice.id,
-        value: slice.value,
-        fill: `var(--color-${slice.id})`,
-    }))
+export function sumAdvertisingSpacesBySeason(
+    points: AdvertisingSpaceSeasonPoint[],
+) {
+    return points.reduce(
+        (totals, point) => ({
+            occupied: totals.occupied + point.occupied,
+            occupiedMultiple: totals.occupiedMultiple + point.occupiedMultiple,
+            free: totals.free + point.free,
+        }),
+        { occupied: 0, occupiedMultiple: 0, free: 0 },
+    )
 }
 
 export function sumTradeTypeValues(points: TradeTypePoint[]) {

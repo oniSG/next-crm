@@ -148,7 +148,6 @@ export function ReportTicketing() {
                                 config={SEASON_TICKETS_SOLD_USED_CONFIG}
                                 categoryKey="label"
                                 series={[...SOLD_USED_SERIES]}
-                                stacked
                                 showYAxis
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Počet"
@@ -195,7 +194,6 @@ export function ReportTicketing() {
                                 config={TICKETS_SOLD_USED_CONFIG}
                                 categoryKey="label"
                                 series={[...SOLD_USED_SERIES]}
-                                stacked
                                 showYAxis
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Počet"

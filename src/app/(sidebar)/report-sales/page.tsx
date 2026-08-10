@@ -6,7 +6,7 @@ import { ReportSales } from './report-sales'
 export default function Page() {
     return (
         <>
-            <PageHeader breadcrumbs={[{ label: 'Prodeje' }]}>
+            <PageHeader breadcrumbs={[{ label: 'Prodeje vstupenek' }]}>
                 <PageActions />
             </PageHeader>
             <div className="flex w-full justify-center p-3">

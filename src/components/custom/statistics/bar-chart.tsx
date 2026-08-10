@@ -19,14 +19,18 @@ export type BarChartProps = {
     config: ChartConfig
     categoryKey: string
     series: string[]
+    /** Series keys rendered against the right Y-axis (vertical charts only). */
+    secondarySeries?: string[]
     orientation?: 'vertical' | 'horizontal'
     stacked?: boolean
     showYAxis?: boolean
     hideCategoryTicks?: boolean
     xAxisLabel?: string
     yAxisLabel?: string
+    secondaryYAxisLabel?: string
     className?: string
     formatValue?: (value: number) => string
+    formatSecondaryValue?: (value: number) => string
 }
 
 function getBarRadius(
@@ -51,19 +55,27 @@ export function BarChart({
     config,
     categoryKey,
     series,
+    secondarySeries = [],
     orientation = 'vertical',
     stacked = false,
     showYAxis = false,
     hideCategoryTicks = false,
     xAxisLabel,
     yAxisLabel,
+    secondaryYAxisLabel,
     className,
     formatValue,
+    formatSecondaryValue,
 }: BarChartProps) {
     const isHorizontal = orientation === 'horizontal'
+    const hasSecondaryAxis = !isHorizontal && secondarySeries.length > 0
+    const primarySeries = hasSecondaryAxis
+        ? series.filter((key) => !secondarySeries.includes(key))
+        : series
     const xAxisHeight = xAxisLabel ? 40 : undefined
     // Room for axis label + legend row; legend is pinned to container bottom.
     const bottomMargin = (xAxisLabel ? 12 : 4) + 24
+    const secondaryKeys = new Set(secondarySeries)
 
     return (
         <ChartContainer
@@ -86,7 +98,11 @@ export function BarChart({
                           }
                         : {
                               left: yAxisLabel ? 16 : 12,
-                              right: 12,
+                              right: hasSecondaryAxis
+                                  ? secondaryYAxisLabel
+                                      ? 28
+                                      : 16
+                                  : 12,
                               bottom: bottomMargin,
                           }
                 }
@@ -155,8 +171,9 @@ export function BarChart({
                                     : undefined
                             }
                         />
-                        {showYAxis && (
+                        {(showYAxis || hasSecondaryAxis) && (
                             <YAxis
+                                yAxisId={hasSecondaryAxis ? 'left' : undefined}
                                 allowDecimals={false}
                                 tickLine={false}
                                 axisLine={false}
@@ -178,12 +195,83 @@ export function BarChart({
                                 }
                             />
                         )}
+                        {hasSecondaryAxis && (
+                            <YAxis
+                                yAxisId="right"
+                                orientation="right"
+                                tickLine={false}
+                                axisLine={false}
+                                tickMargin={8}
+                                width={52}
+                                tickFormatter={(value) =>
+                                    formatCompactNumber(Number(value))
+                                }
+                                label={
+                                    secondaryYAxisLabel
+                                        ? {
+                                              value: secondaryYAxisLabel,
+                                              angle: 90,
+                                              position: 'right',
+                                              offset: 8,
+                                              style: { textAnchor: 'middle' },
+                                          }
+                                        : undefined
+                                }
+                            />
+                        )}
                     </>
                 )}
                 <ChartTooltip
                     content={
                         <ChartTooltipContent
                             valueFormatter={formatValue}
+                            formatter={
+                                hasSecondaryAxis
+                                    ? (value, name, item) => {
+                                          const key = String(
+                                              typeof item.dataKey === 'function'
+                                                  ? name
+                                                  : (item.dataKey ?? name),
+                                          )
+                                          const numeric = Number(value)
+                                          const formatted =
+                                              secondaryKeys.has(key) &&
+                                              formatSecondaryValue
+                                                  ? formatSecondaryValue(numeric)
+                                                  : formatValue
+                                                    ? formatValue(numeric)
+                                                    : formatCompactNumber(numeric)
+                                          const itemConfig = config[key]
+                                          const color =
+                                              item.color ??
+                                              (
+                                                  item.payload as
+                                                      | { fill?: string }
+                                                      | undefined
+                                              )?.fill
+
+                                          return (
+                                              <div className="flex w-full items-center gap-2">
+                                                  <div
+                                                      className="h-2 w-2 shrink-0 rounded-[2px]"
+                                                      style={{
+                                                          backgroundColor: color,
+                                                      }}
+                                                  />
+                                                  <div className="flex flex-1 items-center justify-between gap-4 leading-none">
+                                                      <span className="text-muted-foreground">
+                                                          {itemConfig?.label ??
+                                                              String(name)}
+                                                      </span>
+                                                      <span className="font-mono font-medium tabular-nums">
+                                                          {formatted}
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                          )
+                                      }
+                                    : undefined
+                            }
                             labelFormatter={(_value, tooltipPayload) => {
                                 const row = tooltipPayload?.[0]?.payload as
                                     | Record<string, unknown>
@@ -195,15 +283,37 @@ export function BarChart({
                     }
                 />
                 <ChartLegend content={<ChartLegendContent />} />
-                {series.map((key, i) => (
+                {primarySeries.map((key, i) => (
                     <Bar
                         key={key}
                         dataKey={key}
                         fill={`var(--color-${key})`}
-                        stackId={stacked ? 'a' : undefined}
-                        radius={getBarRadius(i, series.length, stacked, orientation)}
+                        yAxisId={hasSecondaryAxis ? 'left' : undefined}
+                        stackId={stacked ? 'left' : undefined}
+                        radius={getBarRadius(
+                            i,
+                            primarySeries.length,
+                            stacked,
+                            orientation,
+                        )}
                     />
                 ))}
+                {hasSecondaryAxis &&
+                    secondarySeries.map((key, i) => (
+                        <Bar
+                            key={key}
+                            dataKey={key}
+                            fill={`var(--color-${key})`}
+                            yAxisId="right"
+                            stackId={stacked ? 'right' : undefined}
+                            radius={getBarRadius(
+                                i,
+                                secondarySeries.length,
+                                stacked,
+                                orientation,
+                            )}
+                        />
+                    ))}
             </RechartsBarChart>
         </ChartContainer>
     )

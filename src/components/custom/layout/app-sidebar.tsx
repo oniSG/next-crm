@@ -104,7 +104,7 @@ const fansGroups: NavGroup[] = [
                 items: [
                     {
                         title: 'Komunikace a akce',
-                        url: '/report-fan-general',
+                        url: '/noticeboard-marketing',
                         icon: <MegaphoneIcon />,
                     },
                     {
@@ -114,7 +114,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Globální report',
-                        url: '/global-report',
+                        url: '/report-fan-general',
                         icon: <GlobeIcon />,
                     },
                     {
@@ -138,7 +138,7 @@ const fansGroups: NavGroup[] = [
                         icon: <TicketIcon />,
                     },
                     {
-                        title: 'Prodeje',
+                        title: 'Prodeje vstupenek',
                         url: '/report-sales',
                         icon: <CoinsIcon />,
                     },
@@ -218,7 +218,7 @@ const businessGroups: NavGroup[] = [
                         icon: <TicketIcon />,
                     },
                     {
-                        title: 'Prodeje',
+                        title: 'Prodeje vstupenek',
                         url: '/report-sales',
                         icon: <CoinsIcon />,
                     },

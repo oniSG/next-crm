@@ -17,7 +17,6 @@ const ALLOWED_DASHBOARDS = new Set([
     'prehled-push',
     'prehled-sms',
     'vernostni-program',
-    'global-report',
     'email-send',
     'stats',
     'sankey',
