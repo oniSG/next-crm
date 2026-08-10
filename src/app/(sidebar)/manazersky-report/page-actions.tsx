@@ -1,12 +1,35 @@
 'use client'
 
+import { useState } from 'react'
+import { parseAsIsoDate, useQueryState } from 'nuqs'
+
+import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
+import { DEFAULT_FROM, DEFAULT_TO } from './data'
+
 export function PageActions() {
+    const [today] = useState(() => new Date())
+    const [from, setFrom] = useQueryState(
+        'from',
+        parseAsIsoDate.withDefault(DEFAULT_FROM),
+    )
+    const [to, setTo] = useQueryState('to', parseAsIsoDate.withDefault(DEFAULT_TO))
+
     return (
-        <ExportButton
-            dashboard="manazersky-report"
-            filename="manazersky-report.pdf"
-        />
+        <>
+            <DateRangeFilter
+                value={{ from, to }}
+                onChange={(range) => {
+                    void setFrom(range.from)
+                    void setTo(range.to)
+                }}
+                today={today}
+            />
+            <ExportButton
+                dashboard="manazersky-report"
+                filename="manazersky-report.pdf"
+            />
+        </>
     )
 }
