@@ -1,6 +1,6 @@
 'use client'
 
-import { ChartColumnIcon, TableIcon, WaypointsIcon } from 'lucide-react'
+import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
@@ -20,8 +20,6 @@ import {
     BEST_SEND_TIME_COLUMNS,
     BEST_SEND_TIME_SERIES,
     EMAIL_FUNNEL_FLOW,
-    EMAIL_METRICS_COLUMNS,
-    EMAIL_METRICS_STAGES,
     formatExpertCount,
     RELATOO_INDEX_KPIS,
     TOP_ACTIONS,
@@ -126,32 +124,9 @@ export function RelatooIndex() {
                 title="E-mailový trychtýř"
                 description="Statistiky e-mailového trychtýře."
                 queryKey="view-email-funnel"
-                tabs={[
-                    {
-                        name: 'Graf',
-                        value: 'chart',
-                        icon: <WaypointsIcon />,
-                        content: (
-                            <SankeyChart
-                                data={EMAIL_FUNNEL_FLOW}
-                                className="min-h-80"
-                            />
-                        ),
-                    },
-                    {
-                        name: 'Tabulka',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content: (
-                            <SimpleTable
-                                data={EMAIL_METRICS_STAGES}
-                                columns={EMAIL_METRICS_COLUMNS}
-                                getRowKey={(row) => row.label}
-                            />
-                        ),
-                    },
-                ]}
-            />
+            >
+                <SankeyChart data={EMAIL_FUNNEL_FLOW} className="min-h-80" />
+            </DataVisulaizationCard>
 
             <DataVisulaizationCard
                 title="Nejvýkonnější akce"
