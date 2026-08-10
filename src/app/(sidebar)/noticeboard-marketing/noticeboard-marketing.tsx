@@ -7,6 +7,7 @@ import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 
 import {
     COMMUNICATION_CHANNELS,
@@ -42,11 +43,27 @@ export function NoticeboardMarketing() {
                         label={NOTICEBOARD_DETAIL.title}
                         content={NOTICEBOARD_DETAIL.rows}
                         trend={NOTICEBOARD_DETAIL.trend}
+                        action={
+                            <InfoTooltip>
+                                Relatoo index měří CRM zralost vašeho klubu za
+                                posledních 30 dní. Více najdete na stránce
+                                „relatoo index“.
+                            </InfoTooltip>
+                        }
                     />
                     <KpiCard
                         label={NOTICEBOARD_METRIC.title}
                         value={NOTICEBOARD_METRIC.value}
                         trend={NOTICEBOARD_METRIC.trend}
+                        action={
+                            <InfoTooltip>
+                                Click-rate e-mailových kampaní vyjadřuje poměr
+                                unikátních prokliků vůči doručeným e-mailům za
+                                posledních 30 dní. Pokud za posledních 30 dní
+                                nebyly doručeny žádné e-maily, zobrazí se
+                                hláška „Nejsou data“.
+                            </InfoTooltip>
+                        }
                     />
                 </div>
 
@@ -54,6 +71,17 @@ export function NoticeboardMarketing() {
                     title="Flowchart e-mailových kampaní"
                     className="h-full min-h-0 lg:col-span-3"
                     queryKey="email-campaign-flow"
+                    action={
+                        <InfoTooltip>
+                            Flowchart e-mailových kampaní graficky znázorňuje
+                            statistiku a úspěšnost e-mailových kampaní za
+                            posledních 30 dní. Pokud se vám nezobrazují informace
+                            o celkovém počtu doručených e-mailů, nebyly za
+                            posledních 30 dní poslány žádné e-maily a zobrazené
+                            informace se tak týkají interakcí s dříve poslanými
+                            e-maily.
+                        </InfoTooltip>
+                    }
                 >
                     <SankeyChart
                         data={EMAIL_CAMPAIGN_FLOW}
@@ -68,6 +96,25 @@ export function NoticeboardMarketing() {
                         title="Statistika e-mailových kampaní"
                         description="Doručeno, otevřeno, kliknuto a odhlášeno po dnech."
                         queryKey="email-campaign-stats"
+                        action={
+                            <InfoTooltip>
+                                Statistika e-mailových kampaní znázorňuje počty
+                                e-mailů spadající do 3 kategorií za posledních
+                                90 dní.
+                                <br />
+                                Kategorie:
+                                <br />
+                                Doručeno,
+                                <br />
+                                Soft bounce = e-maily nedoručené z důvodu
+                                dočasné závady (např. plná e-mailová schránka),
+                                <br />
+                                Unikátní otevření = otevřeno unikátním
+                                uživatelem (tj. i při větším počtu rozkliknutí
+                                jedním uživatelem se rozklik počítá jen
+                                jednou)
+                            </InfoTooltip>
+                        }
                     >
                         <LineChart
                             data={EMAIL_CAMPAIGN_STATS}
