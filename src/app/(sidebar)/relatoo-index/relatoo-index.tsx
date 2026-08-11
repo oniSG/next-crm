@@ -44,7 +44,7 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Nejlepší čas na odesílání e-mailů"
-                description="Průměr unikátně otevřených za 90 dní."
+                description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-time"
                 tabs={[
                     {
@@ -83,7 +83,7 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Nejlepší den na odesílání e-mailů"
-                description="Průměr unikátně otevřených za 90 dní."
+                description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-day"
                 tabs={[
                     {
@@ -120,8 +120,8 @@ export function RelatooIndex() {
             />
 
             <DataVisulaizationCard
-                title="E-mailový trychtýř"
-                description="Statistiky e-mailového trychtýře."
+                title="Flowchart e-mailových kampaní"
+                description="Statistiky e-mailových kampaní za celou dobu."
                 queryKey="view-email-funnel"
             >
                 <SankeyChart data={EMAIL_FUNNEL_FLOW} className="min-h-80" />
@@ -129,7 +129,7 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Nejvýkonnější akce"
-                description="Akce s nejvyšším CTR za posledních 90 dní."
+                description="Akce s nejvyšším CTR za celou dobu."
                 queryKey="top-actions"
             >
                 <SimpleTable

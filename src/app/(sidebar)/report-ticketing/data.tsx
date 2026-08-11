@@ -150,11 +150,12 @@ export function filterSoldUsedByDateRange(
 
 export function topSoldUsedByTotal(
     points: SoldUsedPoint[],
-    limit = 10,
+    limit?: number,
 ): SoldUsedPoint[] {
-    return [...points]
-        .sort((a, b) => b.sold + b.used - (a.sold + a.used))
-        .slice(0, limit)
+    const sorted = [...points].sort(
+        (a, b) => b.sold + b.used - (a.sold + a.used),
+    )
+    return limit == null ? sorted : sorted.slice(0, limit)
 }
 
 export function sumSoldUsed(points: SoldUsedPoint[]) {

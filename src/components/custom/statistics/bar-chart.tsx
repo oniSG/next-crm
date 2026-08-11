@@ -26,12 +26,20 @@ export type BarChartProps = {
     showYAxis?: boolean
     hideCategoryTicks?: boolean
     angledXAxis?: boolean
+    /** Max characters for category axis ticks; longer labels get an ellipsis. */
+    categoryMaxLength?: number
     xAxisLabel?: string
     yAxisLabel?: string
     secondaryYAxisLabel?: string
     className?: string
     formatValue?: (value: number) => string
     formatSecondaryValue?: (value: number) => string
+}
+
+function truncateCategoryLabel(value: unknown, maxLength: number) {
+    const label = String(value)
+    if (label.length <= maxLength) return label
+    return `${label.slice(0, Math.max(0, maxLength - 1))}…`
 }
 
 function getBarRadius(
@@ -62,6 +70,7 @@ export function BarChart({
     showYAxis = false,
     hideCategoryTicks = false,
     angledXAxis = false,
+    categoryMaxLength,
     xAxisLabel,
     yAxisLabel,
     secondaryYAxisLabel,
@@ -74,6 +83,9 @@ export function BarChart({
     const primarySeries = hasSecondaryAxis
         ? series.filter((key) => !secondarySeries.includes(key))
         : series
+    const formatCategoryTick = categoryMaxLength
+        ? (value: unknown) => truncateCategoryLabel(value, categoryMaxLength)
+        : undefined
     const xAxisHeight = angledXAxis
         ? xAxisLabel
             ? 78
@@ -144,7 +156,8 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            width={88}
+                            width={categoryMaxLength ? 112 : 88}
+                            tickFormatter={formatCategoryTick}
                             label={
                                 yAxisLabel
                                     ? {
@@ -172,6 +185,7 @@ export function BarChart({
                             minTickGap={angledXAxis ? 24 : undefined}
                             interval={angledXAxis ? 'preserveStartEnd' : undefined}
                             tick={hideCategoryTicks ? false : undefined}
+                            tickFormatter={formatCategoryTick}
                             label={
                                 xAxisLabel
                                     ? {

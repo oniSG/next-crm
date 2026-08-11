@@ -50,9 +50,12 @@ export function ReportTicketing() {
             report.ticketsSoldUsedByEvent,
             eventDateRange,
         ),
-        10,
     )
     const ticketsByEventTotal = sumSoldUsed(ticketsByEvent)
+    const ticketsByEventChartHeight = Math.max(
+        384,
+        ticketsByEvent.length * 36 + 64,
+    )
     const ticketsVsSeasonTicketsLastSeason =
         report.ticketsVsSeasonTicketsBySeason.at(-1)
     const ticketsVsSeasonTickets = ticketsVsSeasonTicketsLastSeason
@@ -74,7 +77,7 @@ export function ReportTicketing() {
 
             <DataVisulaizationCard
                 title="Porovnání prodaných a použitých vstupenek na jednotlivých událostech"
-                description="Top 10 událostí podle počtu prodaných vstupenek."
+                description="Prodané a použité vstupenky podle jednotlivých událostí."
                 queryKey="ticketing-tickets-by-event-view"
                 dateRange={{
                     value: eventDateRange,
@@ -90,17 +93,23 @@ export function ReportTicketing() {
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
-                            <BarChart
-                                data={ticketsByEvent}
-                                config={TICKETS_BY_EVENT_CONFIG}
-                                categoryKey="label"
-                                series={[...SOLD_USED_SERIES]}
-                                orientation="horizontal"
-                                showYAxis
-                                xAxisLabel="Počet"
-                                yAxisLabel="Událost"
-                                className="h-96"
-                            />
+                            <div
+                                className="w-full"
+                                style={{ height: ticketsByEventChartHeight }}
+                            >
+                                <BarChart
+                                    data={ticketsByEvent}
+                                    config={TICKETS_BY_EVENT_CONFIG}
+                                    categoryKey="label"
+                                    series={[...SOLD_USED_SERIES]}
+                                    orientation="horizontal"
+                                    showYAxis
+                                    categoryMaxLength={18}
+                                    xAxisLabel="Počet"
+                                    yAxisLabel="Událost"
+                                    className="h-full"
+                                />
+                            </div>
                         ),
                     },
                     {
