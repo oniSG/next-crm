@@ -26,11 +26,11 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
         <ChartContainer
             config={config}
             className={cn(
-                'mx-auto aspect-square max-h-[280px] w-full px-0 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto',
+                'mx-auto aspect-square max-h-[280px] w-full overflow-visible px-0 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-responsive-container]:overflow-visible [&_.recharts-surface]:overflow-visible',
                 className,
             )}
         >
-            <RechartsPieChart>
+            <RechartsPieChart margin={{ top: 20, right: 28, bottom: 8, left: 28 }}>
                 <ChartTooltip
                     cursor={false}
                     content={({ active, payload }) => {
@@ -83,6 +83,7 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
                     dataKey="value"
                     nameKey="name"
                     innerRadius={innerRadius}
+                    outerRadius="68%"
                     labelLine={false}
                     label={({ payload, ...props }) => {
                         const value =

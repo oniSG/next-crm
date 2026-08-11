@@ -131,6 +131,9 @@ export function NoticeboardMarketing() {
                     <DataVisulaizationCard
                         title="Statistika odhlášení GDPR souhlasů"
                         queryKey="gdpr-unsubscribe-stats"
+                        action={
+                            <InfoTooltip>GDPR souhlasy - trendy</InfoTooltip>
+                        }
                     >
                         <LineChart
                             data={GDPR_UNSUBSCRIBE_STATS}
@@ -148,6 +151,13 @@ export function NoticeboardMarketing() {
                     <DataVisulaizationCard
                         title="Komunikační kanály"
                         queryKey="communication-channels"
+                        action={
+                            <InfoTooltip>
+                                Grafické vyobrazení četnosti užívání
+                                jednotlivých komunikačních kanálů v posledních
+                                30 dnech.
+                            </InfoTooltip>
+                        }
                     >
                         <PieChart
                             data={COMMUNICATION_CHANNELS}
@@ -159,6 +169,22 @@ export function NoticeboardMarketing() {
                     <DataVisulaizationCard
                         title="Nedoručené e-maily"
                         queryKey="undelivered-emails"
+                        action={
+                            <InfoTooltip>
+                                Grafické vyobrazení poměrů známých příčin
+                                nedoručení e-mailové komunikace v posledních 30
+                                dnech.
+                                <br />
+                                Soft bounce = e-maily nedoručené z důvodu
+                                dočasné závady (např. plná e-mailová schránka)
+                                <br />
+                                Hard bounce = e-maily, které jsou trvale
+                                nedoručitelné (např. neexistující adresa,
+                                závada na straně domény)
+                                <br />
+                                Spam = pošta byla označena za spam
+                            </InfoTooltip>
+                        }
                     >
                         <PieChart
                             data={UNDELIVERED_EMAILS}
@@ -170,6 +196,12 @@ export function NoticeboardMarketing() {
                     <DataVisulaizationCard
                         title="Počty odhlášených GDPR"
                         queryKey="gdpr-optout-counts"
+                        action={
+                            <InfoTooltip>
+                                Tabulka celkových počtů odhlášených GDPR
+                                souhlasů pro jednotlivé komunikační kanály.
+                            </InfoTooltip>
+                        }
                     >
                         <PieChart
                             data={GDPR_OPTOUT_COUNTS}
