@@ -3,6 +3,8 @@
 import type { ReactNode } from 'react'
 import { parseAsString, useQueryState } from 'nuqs'
 
+import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
+import type { DateRange } from '@/components/custom/filters/date-presets'
 import {
     Card,
     CardAction,
@@ -22,10 +24,17 @@ export type GraphCardTab = {
     icon?: ReactNode
 }
 
+export type GraphCardDateRange = {
+    value: DateRange
+    onChange: (value: DateRange) => void
+    today?: Date
+}
+
 export type GraphCardProps = {
     title: string
     description?: string
     action?: ReactNode
+    dateRange?: GraphCardDateRange
     queryKey: string
     className?: string
     children?: ReactNode
@@ -37,6 +46,7 @@ export function DataVisulaizationCard({
     title,
     description,
     action,
+    dateRange,
     queryKey,
     className,
     children,
@@ -65,7 +75,15 @@ export function DataVisulaizationCard({
                         </CardTitle>
                         {description && <CardDescription>{description}</CardDescription>}
                         <CardAction>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center justify-end gap-2">
+                                {dateRange && (
+                                    <DateRangeFilter
+                                        value={dateRange.value}
+                                        onChange={dateRange.onChange}
+                                        today={dateRange.today}
+                                        className="h-8"
+                                    />
+                                )}
                                 <TabsList>
                                     {tabs.map((tab) => (
                                         <TabsTrigger key={tab.value} value={tab.value}>
@@ -96,7 +114,21 @@ export function DataVisulaizationCard({
             <CardHeader className="pb-2">
                 <CardTitle className="truncate text-sm font-medium">{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
-                {action && <CardAction>{action}</CardAction>}
+                {(dateRange || action) && (
+                    <CardAction>
+                        <div className="flex flex-wrap items-center justify-end gap-2">
+                            {dateRange && (
+                                <DateRangeFilter
+                                    value={dateRange.value}
+                                    onChange={dateRange.onChange}
+                                    today={dateRange.today}
+                                    className="h-8"
+                                />
+                            )}
+                            {action}
+                        </div>
+                    </CardAction>
+                )}
             </CardHeader>
             <CardContent className="flex min-h-0 flex-1 flex-col pb-0">{children}</CardContent>
             {footer && <CardFooter>{footer}</CardFooter>}

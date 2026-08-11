@@ -1,6 +1,8 @@
 'use client'
 
+import { useMemo, useState } from 'react'
 import { ChartColumnIcon, ChartPieIcon, TableIcon } from 'lucide-react'
+import { parseAsIsoDate, useQueryState } from 'nuqs'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
@@ -9,6 +11,7 @@ import { ReportHeaderCard } from '@/components/custom/statistics/report-header-c
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
+    filterSoldUsedByDateRange,
     formatTicketingCount,
     SEASON_TICKETS_SOLD_USED_CONFIG,
     SOLD_USED_COLUMNS,
@@ -17,6 +20,8 @@ import {
     sumTicketsVsSeasonTickets,
     TICKETING_REPORT_DATA,
     TICKETS_BY_EVENT_CONFIG,
+    TICKETS_BY_EVENT_DEFAULT_FROM,
+    TICKETS_BY_EVENT_DEFAULT_TO,
     TICKETS_SOLD_USED_CONFIG,
     TICKETS_VS_SEASON_TICKETS_COLUMNS,
     TICKETS_VS_SEASON_TICKETS_CONFIG,
@@ -25,8 +30,28 @@ import {
 } from './data'
 
 export function ReportTicketing() {
+    const [today] = useState(() => new Date())
+    const [eventFrom, setEventFrom] = useQueryState(
+        'event-from',
+        parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_FROM),
+    )
+    const [eventTo, setEventTo] = useQueryState(
+        'event-to',
+        parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_TO),
+    )
+    const eventDateRange = useMemo(
+        () => ({ from: eventFrom, to: eventTo }),
+        [eventFrom, eventTo],
+    )
+
     const report = TICKETING_REPORT_DATA
-    const ticketsByEvent = topSoldUsedByTotal(report.ticketsSoldUsedByEvent, 10)
+    const ticketsByEvent = topSoldUsedByTotal(
+        filterSoldUsedByDateRange(
+            report.ticketsSoldUsedByEvent,
+            eventDateRange,
+        ),
+        10,
+    )
     const ticketsByEventTotal = sumSoldUsed(ticketsByEvent)
     const ticketsVsSeasonTicketsLastSeason =
         report.ticketsVsSeasonTicketsBySeason.at(-1)
@@ -51,6 +76,14 @@ export function ReportTicketing() {
                 title="Porovnání prodaných a použitých vstupenek na jednotlivých událostech"
                 description="Top 10 událostí podle počtu prodaných vstupenek."
                 queryKey="ticketing-tickets-by-event-view"
+                dateRange={{
+                    value: eventDateRange,
+                    today,
+                    onChange: (range) => {
+                        void setEventFrom(range.from)
+                        void setEventTo(range.to)
+                    },
+                }}
                 tabs={[
                     {
                         name: 'Graf',

@@ -1,3 +1,6 @@
+import { format } from 'date-fns'
+
+import type { DateRange } from '@/components/custom/filters/date-presets'
 import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
 import type { ChartConfig } from '@/components/ui/chart'
 
@@ -10,6 +13,7 @@ export type SoldUsedPoint = {
     label: string
     sold: number
     used: number
+    date?: string
 }
 
 export type TicketsVsSeasonTicketsPoint = {
@@ -103,10 +107,45 @@ export const TICKETS_VS_SEASON_TICKETS_COLUMNS: SimpleTableColumn<TicketsVsSeaso
         },
     ]
 
-export const TICKETING_REPORT_DATA = ticketingReport as TicketingReportData
+function withEventDates(
+    points: Omit<SoldUsedPoint, 'date'>[],
+): SoldUsedPoint[] {
+    const start = new Date(2025, 0, 15)
+    return points.map((point, index) => {
+        const date = new Date(start)
+        date.setDate(date.getDate() + index * 10)
+        return {
+            ...point,
+            date: format(date, 'yyyy-MM-dd'),
+        }
+    })
+}
+
+const rawReport = ticketingReport as TicketingReportData
+
+export const TICKETING_REPORT_DATA: TicketingReportData = {
+    ...rawReport,
+    ticketsSoldUsedByEvent: withEventDates(rawReport.ticketsSoldUsedByEvent),
+}
+
+/** Default range covering most mock events (Jan 2025 – Jul 2026). */
+export const TICKETS_BY_EVENT_DEFAULT_FROM = new Date(2025, 0, 1)
+export const TICKETS_BY_EVENT_DEFAULT_TO = new Date(2026, 6, 31)
 
 export function formatTicketingCount(value: number) {
     return numberFormatter.format(value)
+}
+
+export function filterSoldUsedByDateRange(
+    points: SoldUsedPoint[],
+    range: DateRange,
+): SoldUsedPoint[] {
+    const from = format(range.from, 'yyyy-MM-dd')
+    const to = format(range.to, 'yyyy-MM-dd')
+    return points.filter((point) => {
+        if (!point.date) return true
+        return point.date >= from && point.date <= to
+    })
 }
 
 export function topSoldUsedByTotal(
