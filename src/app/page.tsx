@@ -160,12 +160,6 @@ const pages: {
             status: 'progress',
             by: 'Tomas',
         },
-        {
-            name: 'Manažerský report',
-            path: '/manazersky-report',
-            status: 'progress',
-            by: 'Tomas',
-        },
     ]
 
 export default function Page() {

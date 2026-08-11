@@ -6,7 +6,7 @@ import { ReportManagement } from './report-management'
 export default function Page() {
     return (
         <>
-            <PageHeader breadcrumbs={[{ label: 'Managerial report' }]}>
+            <PageHeader breadcrumbs={[{ label: 'Manažerský report' }]}>
                 <PageActions />
             </PageHeader>
             <div className="flex w-full justify-center p-3">

@@ -1,9 +1,17 @@
 import { format } from 'date-fns'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
+import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
 import type { ChartConfig } from '@/components/ui/chart'
 
 import managementReport from './data/management-report.json'
+
+const numberFormatter = new Intl.NumberFormat('cs-CZ')
+const currencyFormatter = new Intl.NumberFormat('cs-CZ', {
+    style: 'currency',
+    currency: 'CZK',
+    maximumFractionDigits: 0,
+})
 
 export type ManagementReportPeriod = {
     from: string
@@ -153,6 +161,66 @@ export type ReportChartSeries = {
     color: string
 }
 
+export function formatReportValue(
+    value: number,
+    format?: ReportTableColumn['format'],
+) {
+    if (format === 'currency') return currencyFormatter.format(value)
+    const formatted = numberFormatter.format(value)
+    if (format === 'signed' && value >= 0) return `+${formatted}`
+    return formatted
+}
+
+export function toChartConfig(series: ReportChartSeries[]) {
+    return Object.fromEntries(
+        series.map((item) => [item.key, { label: item.label, color: item.color }]),
+    ) satisfies ChartConfig
+}
+
+export function toSectionTableColumns(
+    columns: ReportTableColumn[],
+): SimpleTableColumn<ReportSectionRow>[] {
+    return [
+        {
+            id: 'label',
+            header: 'Month',
+            cell: (row) => row.label,
+            cellClassName: 'font-medium',
+        },
+        ...columns.map((column) => ({
+            id: column.key,
+            header: column.label,
+            headerClassName: 'text-right',
+            cellClassName: column.emphasize
+                ? 'text-right font-medium tabular-nums'
+                : 'text-right tabular-nums',
+            cell: (row: ReportSectionRow) =>
+                formatReportValue(Number(row[column.key] ?? 0), column.format),
+        })),
+    ]
+}
+
+export function sumBy<T>(rows: T[], pick: (row: T) => number) {
+    return rows.reduce((sum, row) => sum + pick(row), 0)
+}
+
+export function toSectionFooter(
+    rows: ReportSectionRow[],
+    columns: ReportTableColumn[],
+) {
+    const totals = columns.reduce<Record<string, number>>((result, column) => {
+        result[column.key] = sumBy(rows, (row) => Number(row[column.key] ?? 0))
+        return result
+    }, {})
+
+    return [
+        'Total',
+        ...columns.map((column) =>
+            formatReportValue(totals[column.key], column.format),
+        ),
+    ]
+}
+
 export const TICKET_CHANNEL_SERIES: ReportChartSeries[] = [
     { key: 'online', label: 'Online', color: 'var(--chart-1)' },
     { key: 'boxOffice', label: 'Box office', color: 'var(--chart-2)' },
@@ -278,4 +346,111 @@ export function toBusinessCaseStatusRows(
         cancelled: point.cancelled.count,
         total: point.won.count + point.open.count + point.cancelled.count,
     }))
+}
+
+export function getManagementReportPeriodView(
+    report: ManagementReportData,
+    range: DateRange,
+) {
+    const fanDevelopment = filterByPeriodRange(report.fans.development, range)
+    const seasonTicketDevelopment = filterByPeriodRange(
+        report.seasonTickets.development,
+        range,
+    )
+    const ticketDevelopment = filterByPeriodRange(
+        report.tickets.development,
+        range,
+    )
+    const emailDevelopment = filterByPeriodRange(
+        report.communication.email.development,
+        range,
+    )
+    const pushDevelopment = filterByPeriodRange(
+        report.communication.push.development,
+        range,
+    )
+    const smsDevelopment = filterByPeriodRange(
+        report.communication.sms.development,
+        range,
+    )
+    const advertisingDevelopment = filterByPeriodRange(
+        report.business.advertisingSpaces.development,
+        range,
+    )
+    const wonBusinessCasesDevelopment = filterByPeriodRange(
+        report.business.wonCases.development,
+        range,
+    )
+    const businessCaseDevelopment = filterByPeriodRange(
+        report.business.caseDevelopment,
+        range,
+    )
+
+    const lastFanPoint = fanDevelopment.at(-1)
+    const fanNetGrowth = sumBy(fanDevelopment, (point) => point.netChange)
+    const seasonTicketsSold = sumBy(seasonTicketDevelopment, (point) => point.sold)
+    const seasonTicketsRevenue = sumBy(
+        seasonTicketDevelopment,
+        (point) => point.revenue,
+    )
+    const ticketsSold = sumBy(ticketDevelopment, (point) => point.total.count)
+    const ticketsRevenue = sumBy(
+        ticketDevelopment,
+        (point) => point.total.revenue,
+    )
+    const ticketsEventCount = sumBy(
+        ticketDevelopment,
+        (point) => point.eventCount,
+    )
+
+    const emailDelivered = sumBy(emailDevelopment, (point) => point.delivered)
+    const emailOpened = sumBy(
+        emailDevelopment,
+        (point) => point.openedUnique ?? 0,
+    )
+    const emailClicked = sumBy(
+        emailDevelopment,
+        (point) => point.clickedUnique ?? 0,
+    )
+    const pushDelivered = sumBy(pushDevelopment, (point) => point.delivered)
+    const pushFailed = sumBy(pushDevelopment, (point) => point.failed)
+    const smsDelivered = sumBy(smsDevelopment, (point) => point.delivered)
+    const smsFailed = sumBy(smsDevelopment, (point) => point.failed)
+
+    const emailOpenRate = emailDelivered
+        ? (emailOpened / emailDelivered) * 100
+        : 0
+    const emailClickRate = emailDelivered
+        ? (emailClicked / emailDelivered) * 100
+        : 0
+    const pushTotal = pushDelivered + pushFailed
+    const pushFailureRate = pushTotal ? (pushFailed / pushTotal) * 100 : 0
+
+    return {
+        fanDevelopment,
+        seasonTicketDevelopment,
+        ticketDevelopment,
+        emailDevelopment,
+        pushDevelopment,
+        smsDevelopment,
+        advertisingDevelopment,
+        wonBusinessCasesDevelopment,
+        businessCaseDevelopment,
+        lastFanPoint,
+        fanNetGrowth,
+        seasonTicketsSold,
+        seasonTicketsRevenue,
+        ticketsSold,
+        ticketsRevenue,
+        ticketsEventCount,
+        emailDelivered,
+        emailOpenRate,
+        emailClickRate,
+        pushDelivered,
+        pushFailed,
+        pushFailureRate,
+        smsDelivered,
+        smsFailed,
+        currentAdvertisingSpaces: advertisingDevelopment.at(-1),
+    }
 }

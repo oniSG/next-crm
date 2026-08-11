@@ -159,7 +159,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Manažerský report',
-                        url: '/manazersky-report',
+                        url: '/report-management',
                         icon: <ClipboardCheckIcon />,
                     },
                 ],
@@ -244,7 +244,7 @@ const businessGroups: NavGroup[] = [
                     },
                     {
                         title: 'Manažerský report',
-                        url: '/manazersky-report',
+                        url: '/report-management',
                         icon: <ClipboardCheckIcon />,
                     },
                 ],

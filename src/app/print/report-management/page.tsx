@@ -3,8 +3,8 @@ import { ReportManagement } from '@/app/(sidebar)/report-management/report-manag
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
 const printPageSettings: PrintPageSettings = {
-    title: 'Managerial report',
-    description: 'Overview of audience, ticketing, communication and business metrics.',
+    title: 'Manažerský report',
+    description: 'Přehled návštěvníků, ticketingu, komunikace a business metrik.',
     body: <ReportManagement />,
 }
 
