@@ -1,32 +1,20 @@
 'use client'
 
-import {
-    ChartColumnIcon,
-    MailIcon,
-    MessageSquareTextIcon,
-    SendIcon,
-    TableIcon,
-} from 'lucide-react'
+import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { parseAsIsoDate, useQueryState } from 'nuqs'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
-    ADVERTISING_SPACES_CONFIG,
-    BUSINESS_CASE_STATUS_COLUMNS,
-    BUSINESS_CASE_STATUS_SERIES,
-    DELIVERED_COLUMNS,
     getManagementReportPeriodView,
     MANAGEMENT_REPORT_DATA,
     TICKET_CHANNEL_SERIES,
     TICKET_COUNT_COLUMNS,
     TICKET_REVENUE_COLUMNS,
-    toBusinessCaseStatusRows,
     toChartConfig,
     toSectionFooter,
     toSectionTableColumns,
@@ -36,8 +24,6 @@ import {
     VISITOR_GROWTH_SERIES,
     VISITOR_TOTAL_COLUMNS,
     VISITOR_TOTAL_SERIES,
-    WON_BUSINESS_CASE_COLUMNS,
-    WON_BUSINESS_CASE_SERIES,
 } from './data'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
@@ -67,24 +53,6 @@ const VISITOR_TOTAL_CONFIG = toChartConfig(VISITOR_TOTAL_SERIES)
 const VISITOR_TOTAL_KEYS = VISITOR_TOTAL_SERIES.map((item) => item.key)
 const VISITOR_GROWTH_CONFIG = toChartConfig(VISITOR_GROWTH_SERIES)
 const VISITOR_GROWTH_KEYS = VISITOR_GROWTH_SERIES.map((item) => item.key)
-const WON_BUSINESS_CASE_CONFIG = toChartConfig(WON_BUSINESS_CASE_SERIES)
-const WON_BUSINESS_CASE_KEYS = WON_BUSINESS_CASE_SERIES.map((item) => item.key)
-const BUSINESS_CASE_STATUS_CONFIG = toChartConfig(BUSINESS_CASE_STATUS_SERIES)
-const BUSINESS_CASE_STATUS_KEYS = BUSINESS_CASE_STATUS_SERIES.map(
-    (item) => item.key,
-)
-const EMAIL_DELIVERED_SERIES = [
-    { key: 'delivered', label: 'Delivered', color: 'var(--chart-1)' },
-] as const
-const PUSH_DELIVERED_SERIES = [
-    { key: 'delivered', label: 'Delivered', color: 'var(--chart-2)' },
-] as const
-const SMS_DELIVERED_SERIES = [
-    { key: 'delivered', label: 'Delivered', color: 'var(--chart-3)' },
-] as const
-const EMAIL_DELIVERED_CONFIG = toChartConfig([...EMAIL_DELIVERED_SERIES])
-const PUSH_DELIVERED_CONFIG = toChartConfig([...PUSH_DELIVERED_SERIES])
-const SMS_DELIVERED_CONFIG = toChartConfig([...SMS_DELIVERED_SERIES])
 
 export function ReportManagement() {
     const { meta } = MANAGEMENT_REPORT_DATA
@@ -95,11 +63,6 @@ export function ReportManagement() {
     const {
         fanDevelopment,
         ticketDevelopment,
-        emailDevelopment,
-        pushDevelopment,
-        smsDevelopment,
-        wonBusinessCasesDevelopment,
-        businessCaseDevelopment,
         lastFanPoint,
         fanNetGrowth,
         seasonTicketsSold,
@@ -107,22 +70,10 @@ export function ReportManagement() {
         ticketsSold,
         ticketsRevenue,
         ticketsEventCount,
-        emailDelivered,
-        emailOpenRate,
-        emailClickRate,
-        pushDelivered,
-        pushFailed,
-        pushFailureRate,
-        smsDelivered,
-        smsFailed,
-        currentAdvertisingSpaces,
     } = getManagementReportPeriodView(MANAGEMENT_REPORT_DATA, dateRange)
 
     const ticketRevenueRows = toTicketRevenueRows(ticketDevelopment)
     const ticketCountRows = toTicketCountRows(ticketDevelopment)
-    const businessCaseStatusRows = toBusinessCaseStatusRows(
-        businessCaseDevelopment,
-    )
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -140,7 +91,7 @@ export function ReportManagement() {
                     },
                     {
                         title: 'Datum sestavení',
-                        value: dateTimeFormatter.format(new Date(meta.generatedAt)),
+                        value: dateTimeFormatter.format(new Date()),
                     },
                 ]}
             />
@@ -189,7 +140,7 @@ export function ReportManagement() {
                             value: `${numberFormatter.format(ticketsSold)}`,
                         },
                         {
-                            label: 'Počet událostí (zápasů,...)',
+                            label: 'Počet událostí',
                             value: numberFormatter.format(ticketsEventCount),
                         },
                     ]}
@@ -290,9 +241,7 @@ export function ReportManagement() {
                                 <SimpleTable
                                     key={`management-ticket-count-table-${periodKey}`}
                                     data={ticketCountRows}
-                                    columns={toSectionTableColumns(
-                                        TICKET_COUNT_COLUMNS,
-                                    )}
+                                    columns={toSectionTableColumns(TICKET_COUNT_COLUMNS)}
                                     getRowKey={(row) => row.period}
                                     footer={toSectionFooter(
                                         ticketCountRows,
@@ -345,9 +294,7 @@ export function ReportManagement() {
                                 <SimpleTable
                                     key={`management-visitor-total-table-${periodKey}`}
                                     data={fanDevelopment}
-                                    columns={toSectionTableColumns(
-                                        VISITOR_TOTAL_COLUMNS,
-                                    )}
+                                    columns={toSectionTableColumns(VISITOR_TOTAL_COLUMNS)}
                                     getRowKey={(row) => row.period}
                                 />
                             ) : (
@@ -408,364 +355,6 @@ export function ReportManagement() {
                             ) : (
                                 <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
                                     No visitor growth data for the selected period.
-                                </div>
-                            ),
-                    },
-                ]}
-            />
-
-            <section
-                className="grid gap-4 md:grid-cols-3"
-                aria-label="Communication overview"
-            >
-                <KpiCard
-                    label="E-mail"
-                    icon={<MailIcon className="size-4" />}
-                    iconClassName="bg-chart-2/10 text-chart-2"
-                    value={numberFormatter.format(emailDelivered)}
-                    content={[
-                        {
-                            label: 'Uniquely opened',
-                            value: `${emailOpenRate.toFixed(1)} %`,
-                        },
-                        {
-                            label: 'Unique click through',
-                            value: `${emailClickRate.toFixed(1)} %`,
-                        },
-                    ]}
-                />
-                <KpiCard
-                    label="Push"
-                    icon={<SendIcon className="size-4" />}
-                    iconClassName="bg-chart-4/10 text-chart-4"
-                    value={numberFormatter.format(pushDelivered)}
-                    content={[
-                        {
-                            label: 'Not delivered',
-                            value: `${pushFailureRate.toFixed(1)} %`,
-                        },
-                        {
-                            label: 'Failed',
-                            value: numberFormatter.format(pushFailed),
-                        },
-                    ]}
-                />
-                <KpiCard
-                    label="SMS"
-                    icon={<MessageSquareTextIcon className="size-4" />}
-                    iconClassName="bg-chart-1/10 text-chart-1"
-                    value={numberFormatter.format(smsDelivered)}
-                    content={[
-                        {
-                            label: 'Delivered',
-                            value: numberFormatter.format(smsDelivered),
-                        },
-                        {
-                            label: 'Failed',
-                            value: numberFormatter.format(smsFailed),
-                        },
-                    ]}
-                />
-            </section>
-
-            <DataVisulaizationCard
-                title="Statistics of delivered e-mails"
-                description="Delivered e-mails in the selected period."
-                queryKey="management-delivered-e-mails-view"
-                tabs={[
-                    {
-                        name: 'Chart',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content:
-                            emailDevelopment.length > 0 ? (
-                                <BarChart
-                                    key={`management-delivered-emails-chart-${periodKey}`}
-                                    data={emailDevelopment}
-                                    config={EMAIL_DELIVERED_CONFIG}
-                                    categoryKey="label"
-                                    series={['delivered']}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No e-mails data for the selected period.
-                                </div>
-                            ),
-                    },
-                    {
-                        name: 'Table',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content:
-                            emailDevelopment.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-delivered-emails-table-${periodKey}`}
-                                    data={emailDevelopment}
-                                    columns={toSectionTableColumns(DELIVERED_COLUMNS)}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        emailDevelopment,
-                                        DELIVERED_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No e-mails data for the selected period.
-                                </div>
-                            ),
-                    },
-                ]}
-            />
-
-            <DataVisulaizationCard
-                title="Statistics of delivered push notifications"
-                description="Delivered push notifications in the selected period."
-                queryKey="management-delivered-push-notifications-view"
-                tabs={[
-                    {
-                        name: 'Chart',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content:
-                            pushDevelopment.length > 0 ? (
-                                <BarChart
-                                    key={`management-delivered-push-chart-${periodKey}`}
-                                    data={pushDevelopment}
-                                    config={PUSH_DELIVERED_CONFIG}
-                                    categoryKey="label"
-                                    series={['delivered']}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No push notifications data for the selected
-                                    period.
-                                </div>
-                            ),
-                    },
-                    {
-                        name: 'Table',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content:
-                            pushDevelopment.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-delivered-push-table-${periodKey}`}
-                                    data={pushDevelopment}
-                                    columns={toSectionTableColumns(DELIVERED_COLUMNS)}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        pushDevelopment,
-                                        DELIVERED_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No push notifications data for the selected
-                                    period.
-                                </div>
-                            ),
-                    },
-                ]}
-            />
-
-            <DataVisulaizationCard
-                title="Statistics of delivered SMS"
-                description="Delivered SMS in the selected period."
-                queryKey="management-delivered-SMS-view"
-                tabs={[
-                    {
-                        name: 'Chart',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content:
-                            smsDevelopment.length > 0 ? (
-                                <BarChart
-                                    key={`management-delivered-sms-chart-${periodKey}`}
-                                    data={smsDevelopment}
-                                    config={SMS_DELIVERED_CONFIG}
-                                    categoryKey="label"
-                                    series={['delivered']}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No SMS data for the selected period.
-                                </div>
-                            ),
-                    },
-                    {
-                        name: 'Table',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content:
-                            smsDevelopment.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-delivered-sms-table-${periodKey}`}
-                                    data={smsDevelopment}
-                                    columns={toSectionTableColumns(DELIVERED_COLUMNS)}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        smsDevelopment,
-                                        DELIVERED_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No SMS data for the selected period.
-                                </div>
-                            ),
-                    },
-                ]}
-            />
-
-            <DataVisulaizationCard
-                title="Ratio of available and taken advertising spaces"
-                description={`Current state as of ${dateFormatter.format(to)}.`}
-                queryKey="management-advertising-spaces"
-            >
-                {currentAdvertisingSpaces ? (
-                    <PieChart
-                        key={`advertising-spaces-${periodKey}`}
-                        data={[
-                            {
-                                name: 'occupied',
-                                value: currentAdvertisingSpaces.occupied,
-                                fill: 'var(--color-occupied)',
-                            },
-                            {
-                                name: 'free',
-                                value: currentAdvertisingSpaces.free,
-                                fill: 'var(--color-free)',
-                            },
-                        ]}
-                        config={ADVERTISING_SPACES_CONFIG}
-                        className="max-h-64"
-                        innerRadius={56}
-                    />
-                ) : (
-                    <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                        No advertising space data for the selected period.
-                    </div>
-                )}
-            </DataVisulaizationCard>
-
-            <DataVisulaizationCard
-                title="Total volume of business cases won in Kč"
-                description="Value of won business cases in the selected period."
-                queryKey="management-won-business-cases-view"
-                tabs={[
-                    {
-                        name: 'Chart',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content:
-                            wonBusinessCasesDevelopment.length > 0 ? (
-                                <BarChart
-                                    key={`management-won-business-cases-chart-${periodKey}`}
-                                    data={wonBusinessCasesDevelopment}
-                                    config={WON_BUSINESS_CASE_CONFIG}
-                                    categoryKey="label"
-                                    series={WON_BUSINESS_CASE_KEYS}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="CZK"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No won business case data for the selected
-                                    period.
-                                </div>
-                            ),
-                    },
-                    {
-                        name: 'Table',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content:
-                            wonBusinessCasesDevelopment.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-won-business-cases-table-${periodKey}`}
-                                    data={wonBusinessCasesDevelopment}
-                                    columns={toSectionTableColumns(
-                                        WON_BUSINESS_CASE_COLUMNS,
-                                    )}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        wonBusinessCasesDevelopment,
-                                        WON_BUSINESS_CASE_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No won business case data for the selected
-                                    period.
-                                </div>
-                            ),
-                    },
-                ]}
-            />
-
-            <DataVisulaizationCard
-                title="Number of business cases created by status"
-                description="Created business cases grouped by status in the selected period."
-                queryKey="management-business-case-status-view"
-                tabs={[
-                    {
-                        name: 'Chart',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content:
-                            businessCaseStatusRows.length > 0 ? (
-                                <BarChart
-                                    key={`management-business-case-status-chart-${periodKey}`}
-                                    data={businessCaseStatusRows}
-                                    config={BUSINESS_CASE_STATUS_CONFIG}
-                                    categoryKey="label"
-                                    series={BUSINESS_CASE_STATUS_KEYS}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No business case data for the selected period.
-                                </div>
-                            ),
-                    },
-                    {
-                        name: 'Table',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content:
-                            businessCaseStatusRows.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-business-case-status-table-${periodKey}`}
-                                    data={businessCaseStatusRows}
-                                    columns={toSectionTableColumns(
-                                        BUSINESS_CASE_STATUS_COLUMNS,
-                                    )}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        businessCaseStatusRows,
-                                        BUSINESS_CASE_STATUS_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No business case data for the selected period.
                                 </div>
                             ),
                     },
