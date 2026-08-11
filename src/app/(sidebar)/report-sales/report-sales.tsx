@@ -4,7 +4,6 @@ import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
-import { LineChart } from '@/components/custom/statistics/line-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
@@ -97,13 +96,12 @@ export function ReportSales() {
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
-                            <LineChart
+                            <BarChart
                                 data={revenueByDate}
                                 config={REVENUE_BY_DATE_CONFIG}
                                 categoryKey="label"
                                 series={[...REVENUE_CHART_SERIES]}
                                 showYAxis
-                                showDots
                                 angledXAxis={period === 'day'}
                                 xAxisLabel={periodColumnLabel(period)}
                                 yAxisLabel="Příjem"

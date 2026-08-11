@@ -4,7 +4,6 @@ import { ChartColumnIcon, ChartPieIcon, TableIcon } from 'lucide-react'
 
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
-import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
@@ -64,13 +63,12 @@ export function ReportBusiness() {
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
-                            <LineChart
+                            <BarChart
                                 data={weeklyRevenue}
                                 config={WEEKLY_REVENUE_CONFIG}
                                 categoryKey="label"
                                 series={[...WEEKLY_REVENUE_SERIES]}
                                 showYAxis
-                                showDots
                                 angledXAxis
                                 xAxisLabel="Týden"
                                 yAxisLabel="Kč"
@@ -194,7 +192,6 @@ export function ReportBusiness() {
                 title="Poměr barteru a finančního obchodu"
                 description="Rozložení obchodů podle typu (finance / barter / kombinace)."
                 queryKey="business-trade-type-ratio-view"
-                className="max-w-xl"
                 tabs={[
                     {
                         name: 'Graf',
@@ -204,7 +201,7 @@ export function ReportBusiness() {
                             <PieChart
                                 data={toTradeTypePieData(tradeTypes)}
                                 config={TRADE_TYPE_CONFIG}
-                                className="max-h-72"
+                                className="max-h-80"
                                 innerRadius={56}
                             />
                         ),

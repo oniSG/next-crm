@@ -1,5 +1,6 @@
 'use client'
 
+import { createContext, useContext } from 'react'
 import {
     Layer,
     Rectangle,
@@ -44,6 +45,22 @@ export type SankeyChartProps = {
     className?: string
 }
 
+const NodeValuesContext = createContext<number[]>([])
+
+function getNodeValues(data: SankeyChartData): number[] {
+    const outgoing = data.nodes.map(() => 0)
+    const incoming = data.nodes.map(() => 0)
+
+    for (const link of data.links) {
+        outgoing[link.source] += link.value
+        incoming[link.target] += link.value
+    }
+
+    return data.nodes.map((_, index) =>
+        Math.max(outgoing[index], incoming[index]),
+    )
+}
+
 function getNodeFill(node: unknown): string {
     if (
         node &&
@@ -56,11 +73,16 @@ function getNodeFill(node: unknown): string {
     return 'var(--chart-1)'
 }
 
-function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
+function SankeyNode({ x, y, width, height, payload, index }: SankeyNodeProps) {
+    const nodeValues = useContext(NodeValuesContext)
     const name = typeof payload?.name === 'string' ? payload.name : ''
-    const value = typeof payload?.value === 'number' ? payload.value : null
+    const value =
+        typeof payload?.value === 'number'
+            ? payload.value
+            : (nodeValues[index] ?? null)
     const fill = getNodeFill(payload)
-    const label = value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
+    const label =
+        value != null ? `${name} (${value.toLocaleString('cs-CZ')})` : name
 
     return (
         <Layer>
@@ -126,22 +148,26 @@ export function SankeyChart({
     margin = { top: 16, right: 180, bottom: 16, left: 16 },
     className,
 }: SankeyChartProps) {
+    const nodeValues = getNodeValues(data)
+
     return (
-        <div className={cn('h-140 w-full', className)}>
-            <ResponsiveContainer width="100%" height="100%">
-                <Sankey
-                    data={data}
-                    nodeWidth={nodeWidth}
-                    nodePadding={nodePadding}
-                    sort={sort}
-                    align={align}
-                    verticalAlign={verticalAlign}
-                    iterations={iterations}
-                    margin={margin}
-                    link={SankeyLink}
-                    node={SankeyNode}
-                />
-            </ResponsiveContainer>
-        </div>
+        <NodeValuesContext.Provider value={nodeValues}>
+            <div className={cn('h-140 w-full', className)}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <Sankey
+                        data={data}
+                        nodeWidth={nodeWidth}
+                        nodePadding={nodePadding}
+                        sort={sort}
+                        align={align}
+                        verticalAlign={verticalAlign}
+                        iterations={iterations}
+                        margin={margin}
+                        link={SankeyLink}
+                        node={SankeyNode}
+                    />
+                </ResponsiveContainer>
+            </div>
+        </NodeValuesContext.Provider>
     )
 }

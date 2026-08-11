@@ -27,8 +27,8 @@ export function MobileApp() {
             >
                 <SankeyChart
                     data={PUSH_NOTIFICATION_FLOW}
-                    className="h-56"
-                    margin={{ top: 8, right: 120, bottom: 8, left: 16 }}
+                    className="h-64"
+                    margin={{ top: 16, right: 180, bottom: 16, left: 16 }}
                 />
             </DataVisulaizationCard>
 
