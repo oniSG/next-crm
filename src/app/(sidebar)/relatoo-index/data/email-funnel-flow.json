@@ -1,11 +1,11 @@
 {
   "nodes": [
-    { "name": "Doručeno", "fill": "oklch(0.62 0.17 145)" },
+    { "name": "Doručeno", "fill": "var(--chart-1)" },
     { "name": "Unikátní otevření", "fill": "var(--chart-2)" },
-    { "name": "Neotevřeno", "fill": "var(--muted-foreground)" },
+    { "name": "Neotevřeno", "fill": "var(--chart-5)" },
     { "name": "Unikátní proklik", "fill": "var(--chart-3)" },
-    { "name": "Bez prokliku", "fill": "var(--chart-4)" },
-    { "name": "Odhlášeno", "fill": "var(--chart-1)" }
+    { "name": "Bez prokliku", "fill": "var(--chart-5)" },
+    { "name": "Odhlášeno", "fill": "var(--chart-4)" }
   ],
   "links": [
     { "source": 0, "target": 1, "value": 20012 },

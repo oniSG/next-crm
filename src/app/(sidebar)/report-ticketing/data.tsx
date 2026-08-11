@@ -36,7 +36,7 @@ export type TicketingReportData = {
 
 export const TICKETS_BY_EVENT_CONFIG = {
     sold: { label: 'Prodané', color: 'var(--chart-1)' },
-    used: { label: 'Použité', color: 'var(--chart-4)' },
+    used: { label: 'Použité', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
 export const TICKETS_VS_SEASON_TICKETS_CONFIG = {
@@ -46,11 +46,11 @@ export const TICKETS_VS_SEASON_TICKETS_CONFIG = {
 
 export const SEASON_TICKETS_SOLD_USED_CONFIG = {
     sold: { label: 'Prodané', color: 'var(--chart-1)' },
-    used: { label: 'Použité', color: 'var(--chart-3)' },
+    used: { label: 'Použité', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
 export const TICKETS_SOLD_USED_CONFIG = {
-    sold: { label: 'Prodané', color: 'var(--chart-4)' },
+    sold: { label: 'Prodané', color: 'var(--chart-1)' },
     used: { label: 'Použité', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 

@@ -158,7 +158,7 @@ export const TICKET_CHANNEL_SERIES: ReportChartSeries[] = [
     { key: 'boxOffice', label: 'Box office', color: 'var(--chart-2)' },
     { key: 'administration', label: 'Administration', color: 'var(--chart-3)' },
     { key: 'mobileApp', label: 'Mobile app', color: 'var(--chart-4)' },
-    { key: 'partner', label: 'Partner', color: 'oklch(0.65 0.2 35)' },
+    { key: 'partner', label: 'Partner', color: 'var(--chart-6)' },
 ]
 
 export const TICKET_REVENUE_COLUMNS: ReportTableColumn[] = [
@@ -184,7 +184,7 @@ export const VISITOR_TOTAL_COLUMNS: ReportTableColumn[] = [
 ]
 
 export const VISITOR_TOTAL_SERIES: ReportChartSeries[] = [
-    { key: 'total', label: 'Visitors', color: 'var(--chart-2)' },
+    { key: 'total', label: 'Visitors', color: 'var(--chart-1)' },
 ]
 
 export const VISITOR_GROWTH_COLUMNS: ReportTableColumn[] = [
@@ -225,7 +225,7 @@ export const BUSINESS_CASE_STATUS_SERIES: ReportChartSeries[] = [
 
 export const ADVERTISING_SPACES_CONFIG = {
     occupied: { label: 'Taken', color: 'var(--chart-1)' },
-    free: { label: 'Available', color: 'var(--muted)' },
+    free: { label: 'Available', color: 'var(--chart-8)' },
 } satisfies ChartConfig
 
 export const MANAGEMENT_REPORT_DATA = managementReport as ManagementReportData

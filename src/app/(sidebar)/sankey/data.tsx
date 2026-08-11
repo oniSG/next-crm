@@ -2,12 +2,12 @@ export const SANKEY_DATA = {
     nodes: [
         { name: 'Odesláno', fill: 'var(--chart-1)' },
         { name: 'Doručeno', fill: 'var(--chart-1)' },
-        { name: 'Nedoručeno', fill: 'var(--destructive)' },
+        { name: 'Nedoručeno', fill: 'var(--chart-5)' },
         { name: 'Otevřeno', fill: 'var(--chart-2)' },
-        { name: 'Neotevřeno', fill: 'var(--chart-4)' },
+        { name: 'Neotevřeno', fill: 'var(--chart-5)' },
         { name: 'Kliknuto', fill: 'var(--chart-3)' },
-        { name: 'Bez kliknutí', fill: 'var(--chart-4)' },
-        { name: 'Konverze', fill: 'var(--chart-1)' },
+        { name: 'Bez kliknutí', fill: 'var(--chart-5)' },
+        { name: 'Konverze', fill: 'var(--chart-4)' },
     ],
     links: [
         // Odesláno →

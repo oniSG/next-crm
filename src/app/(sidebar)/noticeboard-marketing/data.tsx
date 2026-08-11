@@ -55,7 +55,7 @@ export const EMAIL_CAMPAIGN_STATS_SERIES = [
 
 export const EMAIL_CAMPAIGN_STATS_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    softBounce: { label: 'Soft Bounce', color: 'oklch(0.7 0.16 10)' },
+    softBounce: { label: 'Soft Bounce', color: 'var(--chart-5)' },
     unikatneOtevreno: { label: 'Unikátně otevřeno', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
@@ -73,29 +73,29 @@ export const GDPR_UNSUBSCRIBE_STATS_CONFIG = {
         label: 'Sdělení pořadatele',
         color: 'var(--chart-2)',
     },
-    marketing: { label: 'Marketing', color: 'oklch(0.7 0.16 10)' },
+    marketing: { label: 'Marketing', color: 'var(--chart-3)' },
 } satisfies ChartConfig
 
 export const GDPR_UNSUBSCRIBE_STATS = gdprUnsubscribeStats
 
 export const COMMUNICATION_CHANNELS_CONFIG = {
-    email: { label: 'E-mail', color: 'var(--chart-2)' },
-    push: { label: 'Push', color: 'var(--chart-4)' },
+    email: { label: 'E-mail', color: 'var(--chart-1)' },
+    push: { label: 'Push', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
 export const COMMUNICATION_CHANNELS = communicationChannels
 
 export const UNDELIVERED_EMAILS_CONFIG = {
-    softBounce: { label: 'Soft Bounce', color: 'oklch(0.7 0.16 10)' },
-    ostatni: { label: 'Ostatní', color: 'oklch(0.45 0.02 260)' },
+    softBounce: { label: 'Soft Bounce', color: 'var(--chart-5)' },
+    ostatni: { label: 'Ostatní', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
 export const UNDELIVERED_EMAILS = undeliveredEmails
 
 export const GDPR_OPTOUT_COUNTS_CONFIG = {
     zpravy: { label: 'Zprávy', color: 'var(--chart-1)' },
-    push: { label: 'Push', color: 'var(--chart-4)' },
-    email: { label: 'E-mail', color: 'var(--chart-2)' },
+    push: { label: 'Push', color: 'var(--chart-2)' },
+    email: { label: 'E-mail', color: 'var(--chart-3)' },
 } satisfies ChartConfig
 
 export const GDPR_OPTOUT_COUNTS = gdprOptoutCounts

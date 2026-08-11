@@ -31,7 +31,7 @@ export const TICKET_CHANNEL_SERIES: ReportChartSeries[] = [
     { key: 'boxOffice', label: 'Pokladna', color: 'var(--chart-2)' },
     { key: 'administration', label: 'Administrace', color: 'var(--chart-3)' },
     { key: 'mobileApp', label: 'Mobilní aplikace', color: 'var(--chart-4)' },
-    { key: 'partner', label: 'Partner', color: 'oklch(0.65 0.2 35)' },
+    { key: 'partner', label: 'Partner', color: 'var(--chart-6)' },
 ]
 
 export const TICKET_REVENUE_COLUMNS: ReportTableColumn[] = [
@@ -62,7 +62,7 @@ export const VISITOR_TOTAL_COLUMNS: ReportTableColumn[] = [
 ]
 
 export const VISITOR_TOTAL_SERIES: ReportChartSeries[] = [
-    { key: 'total', label: 'Návštěvníci', color: 'var(--chart-2)' },
+    { key: 'total', label: 'Návštěvníci', color: 'var(--chart-1)' },
 ]
 
 export const VISITOR_GROWTH_COLUMNS: ReportTableColumn[] = [
@@ -78,7 +78,7 @@ export const VISITOR_GROWTH_COLUMNS: ReportTableColumn[] = [
 
 export const VISITOR_GROWTH_SERIES: ReportChartSeries[] = [
     { key: 'added', label: 'Přidaní', color: 'var(--chart-1)' },
-    { key: 'removed', label: 'Odebraní', color: 'var(--chart-4)' },
+    { key: 'removed', label: 'Odebraní', color: 'var(--chart-2)' },
 ]
 
 export function formatValue(

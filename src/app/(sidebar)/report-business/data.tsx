@@ -70,8 +70,8 @@ export const BUSINESS_CASE_STATUS_SERIES = ['count', 'potentialIncome'] as const
 export const BUSINESS_CASE_STATUS_SECONDARY_SERIES = ['potentialIncome'] as const
 
 export const ADVERTISING_SPACES_CONFIG = {
-    occupied: { label: 'Obsazeno', color: 'var(--chart-2)' },
-    occupiedMultiple: { label: 'Obsazeno vícekrát', color: 'var(--chart-1)' },
+    occupied: { label: 'Obsazeno', color: 'var(--chart-1)' },
+    occupiedMultiple: { label: 'Obsazeno vícekrát', color: 'var(--chart-2)' },
     free: { label: 'Volno', color: 'var(--chart-3)' },
 } satisfies ChartConfig
 
@@ -82,9 +82,9 @@ export const ADVERTISING_SPACES_SERIES = [
 ] as const
 
 export const TRADE_TYPE_CONFIG = {
-    empty: { label: 'Prázdný', color: 'var(--destructive)' },
+    empty: { label: 'Prázdný', color: 'var(--chart-5)' },
     finance: { label: 'Finance', color: 'var(--chart-1)' },
-    combined: { label: 'Kombinovaný', color: 'var(--chart-3)' },
+    combined: { label: 'Kombinovaný', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
 export const WEEKLY_REVENUE_COLUMNS: SimpleTableColumn<WeeklyRevenueChartRow>[] =

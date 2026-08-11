@@ -17,6 +17,18 @@
     --color-sidebar-primary: var(--sidebar-primary);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar: var(--sidebar);
+    --color-chart-16: var(--chart-16);
+    --color-chart-15: var(--chart-15);
+    --color-chart-14: var(--chart-14);
+    --color-chart-13: var(--chart-13);
+    --color-chart-12: var(--chart-12);
+    --color-chart-11: var(--chart-11);
+    --color-chart-10: var(--chart-10);
+    --color-chart-9: var(--chart-9);
+    --color-chart-8: var(--chart-8);
+    --color-chart-7: var(--chart-7);
+    --color-chart-6: var(--chart-6);
+    --color-chart-5: var(--chart-5);
     --color-chart-4: var(--chart-4);
     --color-chart-3: var(--chart-3);
     --color-chart-2: var(--chart-2);
@@ -74,6 +86,18 @@
     --chart-2: oklch(0.735 0.117 236); /* sky blue     */
     --chart-3: oklch(0.753 0.158 77); /* orange       */
     --chart-4: oklch(0.621 0.17 48); /* vermillion   */
+    --chart-5: oklch(0.58 0.2 25); /* red — negative */
+    --chart-6: oklch(0.679 0.118 346); /* reddish purple */
+    --chart-7: oklch(0.532 0.131 244); /* blue         */
+    --chart-8: oklch(0.58 0 0); /* neutral gray */
+    --chart-9: oklch(0.648 0.111 195); /* teal         */
+    --chart-10: oklch(0.743 0.133 229); /* cyan        */
+    --chart-11: oklch(0.821 0.169 127); /* lime        */
+    --chart-12: oklch(0.522 0.076 57); /* brown        */
+    --chart-13: oklch(0.606 0.239 354); /* magenta     */
+    --chart-14: oklch(0.396 0.131 270); /* navy        */
+    --chart-15: oklch(0.728 0.138 90); /* gold         */
+    --chart-16: oklch(0.599 0.137 126); /* olive       */
     --radius: 0.875rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
@@ -115,6 +139,18 @@
     --chart-2: oklch(0.78 0.12 236); /* sky blue     */
     --chart-3: oklch(0.8 0.15 77); /* orange       */
     --chart-4: oklch(0.7 0.16 48); /* vermillion   */
+    --chart-5: oklch(0.68 0.19 25); /* red — negative */
+    --chart-6: oklch(0.74 0.12 346); /* reddish purple */
+    --chart-7: oklch(0.62 0.13 244); /* blue         */
+    --chart-8: oklch(0.65 0 0); /* neutral gray */
+    --chart-9: oklch(0.7 0.11 195); /* teal         */
+    --chart-10: oklch(0.78 0.13 229); /* cyan        */
+    --chart-11: oklch(0.84 0.16 127); /* lime        */
+    --chart-12: oklch(0.6 0.08 57); /* brown        */
+    --chart-13: oklch(0.68 0.22 354); /* magenta     */
+    --chart-14: oklch(0.5 0.13 270); /* navy         */
+    --chart-15: oklch(0.78 0.14 90); /* gold         */
+    --chart-16: oklch(0.66 0.14 126); /* olive       */
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.723 0.219 149.579);

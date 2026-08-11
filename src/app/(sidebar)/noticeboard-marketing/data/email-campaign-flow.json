@@ -2,11 +2,11 @@
   "nodes": [
     { "name": "Aktivita", "fill": "var(--chart-1)" },
     { "name": "Doručeno", "fill": "var(--chart-1)" },
-    { "name": "Soft Bounce", "fill": "var(--destructive)" },
-    { "name": "Nedoručeno", "fill": "oklch(0.75 0.14 85)" },
-    { "name": "Neotevřeno", "fill": "var(--chart-2)" },
-    { "name": "Otevřeno", "fill": "oklch(0.55 0.14 155)" },
-    { "name": "Bez prokliku", "fill": "var(--chart-4)" },
+    { "name": "Soft Bounce", "fill": "var(--chart-5)" },
+    { "name": "Nedoručeno", "fill": "var(--chart-5)" },
+    { "name": "Neotevřeno", "fill": "var(--chart-5)" },
+    { "name": "Otevřeno", "fill": "var(--chart-2)" },
+    { "name": "Bez prokliku", "fill": "var(--chart-5)" },
     { "name": "Proklik", "fill": "var(--chart-3)" }
   ],
   "links": [

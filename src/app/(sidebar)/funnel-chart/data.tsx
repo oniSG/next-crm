@@ -13,5 +13,5 @@ export const FUNNEL_CHART_CONFIG = {
     click: { label: 'Click', color: 'var(--chart-2)' },
     visit: { label: 'Visit', color: 'var(--chart-3)' },
     consult: { label: 'Consult', color: 'var(--chart-4)' },
-    order: { label: 'Order', color: 'var(--destructive)' },
+    order: { label: 'Order', color: 'var(--chart-5)' },
 } satisfies ChartConfig

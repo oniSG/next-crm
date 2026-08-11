@@ -24,12 +24,12 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
         trend: {
             direction: 'up',
             delta: '+0,59',
-            hint: 'změna indexu',
+            hint: 'změna indexu za posledních 30 dní',
         },
         action: (
             <InfoTooltip>
-                Aktuální Relatoo index oproti předchozímu období, včetně změny a
-                pořadí mezi tenanty.
+                Aktuální Relatoo index oproti předchozímu období, včetně změny a pořadí
+                mezi tenanty.
             </InfoTooltip>
         ),
     },
@@ -52,8 +52,8 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
         ],
         action: (
             <InfoTooltip>
-                Proměnné vstupující do výpočtu Relatoo indexu — události, akce,
-                dotazníky a vstupy.
+                Proměnné vstupující do výpočtu Relatoo indexu — události, akce, dotazníky
+                a vstupy.
             </InfoTooltip>
         ),
     },
@@ -92,7 +92,7 @@ export const BEST_SEND_TIME_BY_SLOT = bestSendTime as BestSendPoint[]
 export const BEST_SEND_DAY_SERIES = ['pocet'] as const
 
 export const BEST_SEND_DAY_CHART_CONFIG = {
-    pocet: { label: 'Počet', color: 'var(--chart-2)' },
+    pocet: { label: 'Počet', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
 export const BEST_SEND_DAY_BY_WEEKDAY = bestSendDay as BestSendPoint[]
@@ -183,9 +183,7 @@ export const TOP_ACTIONS_COLUMNS: SimpleTableColumn<TopActionRow>[] = [
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) =>
-            row.channel === 'SMS'
-                ? '—'
-                : numberFormatter.format(row.uniqueOpens),
+            row.channel === 'SMS' ? '—' : numberFormatter.format(row.uniqueOpens),
     },
     {
         id: 'openRate',
@@ -193,9 +191,7 @@ export const TOP_ACTIONS_COLUMNS: SimpleTableColumn<TopActionRow>[] = [
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) =>
-            row.channel === 'SMS'
-                ? '—'
-                : `${percentFormatter.format(row.openRate)} %`,
+            row.channel === 'SMS' ? '—' : `${percentFormatter.format(row.openRate)} %`,
     },
     {
         id: 'uniqueClicks',
@@ -209,8 +205,7 @@ export const TOP_ACTIONS_COLUMNS: SimpleTableColumn<TopActionRow>[] = [
         header: 'CTR',
         headerClassName: 'text-right',
         cellClassName: 'text-right font-medium tabular-nums',
-        cell: (row) =>
-            row.ctr > 100 ? '—' : `${percentFormatter.format(row.ctr)} %`,
+        cell: (row) => (row.ctr > 100 ? '—' : `${percentFormatter.format(row.ctr)} %`),
     },
 ]
 

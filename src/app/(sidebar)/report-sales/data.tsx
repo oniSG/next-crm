@@ -38,7 +38,7 @@ export type SalesReportData = {
 }
 
 export const REVENUE_BY_CHANNEL_CONFIG = {
-    revenue: { label: 'Příjem', color: 'var(--chart-4)' },
+    revenue: { label: 'Příjem', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
 export const REVENUE_BY_DATE_CONFIG = {

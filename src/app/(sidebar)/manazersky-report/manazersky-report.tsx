@@ -8,7 +8,6 @@ import {
     DataVisulaizationCard,
     type GraphCardTab,
 } from '@/components/custom/statistics/data-visualization-card'
-import { LineChart } from '@/components/custom/statistics/line-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import {
     SimpleTable,
@@ -47,7 +46,6 @@ function ChartTableSection({
     periodKey,
     stacked = false,
     showTotals = true,
-    chartType = 'bar',
     emptyMessage,
     queryKey,
     xAxisLabel = 'Měsíc',
@@ -62,7 +60,6 @@ function ChartTableSection({
     periodKey: string
     stacked?: boolean
     showTotals?: boolean
-    chartType?: 'bar' | 'line'
     emptyMessage: string
     queryKey: string
     xAxisLabel?: string
@@ -80,35 +77,19 @@ function ChartTableSection({
 
     const chart =
         rows.length > 0 ? (
-            chartType === 'line' ? (
-                <LineChart
-                    key={`${queryKey}-chart-${periodKey}`}
-                    data={rows}
-                    config={config}
-                    categoryKey="label"
-                    series={seriesKeys}
-                    showYAxis
-                    showDots
-                    xAxisLabel={xAxisLabel}
-                    yAxisLabel={yAxisLabel}
-                    formatValue={formatChartValue}
-                    className="h-80"
-                />
-            ) : (
-                <BarChart
-                    key={`${queryKey}-chart-${periodKey}`}
-                    data={rows}
-                    config={config}
-                    categoryKey="label"
-                    series={seriesKeys}
-                    stacked={stacked}
-                    showYAxis
-                    xAxisLabel={xAxisLabel}
-                    yAxisLabel={yAxisLabel}
-                    formatValue={formatChartValue}
-                    className="h-80"
-                />
-            )
+            <BarChart
+                key={`${queryKey}-chart-${periodKey}`}
+                data={rows}
+                config={config}
+                categoryKey="label"
+                series={seriesKeys}
+                stacked={stacked}
+                showYAxis
+                xAxisLabel={xAxisLabel}
+                yAxisLabel={yAxisLabel}
+                formatValue={formatChartValue}
+                className="h-80"
+            />
         ) : (
             <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
                 {emptyMessage}
@@ -240,7 +221,6 @@ export function ManazerskyReport() {
                 columns={VISITOR_TOTAL_COLUMNS}
                 series={VISITOR_TOTAL_SERIES}
                 periodKey={periodKey}
-                chartType="line"
                 showTotals={false}
                 emptyMessage="Žádná data o návštěvnících pro zvolené období."
                 queryKey="manazersky-visitor-total-view"

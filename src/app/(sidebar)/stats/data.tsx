@@ -63,7 +63,7 @@ export const SURVEY_QUESTIONS: StatsQuestion[] = [
             { name: 'SMS', value: 24, fill: 'var(--chart-2)' },
             { name: 'Push', value: 18, fill: 'var(--chart-3)' },
             { name: 'Popup', value: 12, fill: 'var(--chart-4)' },
-            { name: 'Notifikační lišty', value: 8, fill: 'var(--destructive)' },
+            { name: 'Notifikační lišty', value: 8, fill: 'var(--chart-6)' },
         ],
         pieConfig: {
             value: { label: 'Podíl' },
@@ -73,7 +73,7 @@ export const SURVEY_QUESTIONS: StatsQuestion[] = [
             Popup: { label: 'Popup', color: 'var(--chart-4)' },
             'Notifikační lišty': {
                 label: 'Notifikační lišty',
-                color: 'var(--destructive)',
+                color: 'var(--chart-6)',
             },
         },
     },
@@ -131,7 +131,7 @@ export const SURVEY_QUESTIONS: StatsQuestion[] = [
         ],
         areaConfig: {
             nasbiraneBody: { label: 'Nasbírané body', color: 'var(--chart-1)' },
-            odmeny: { label: 'Uplatněné odměny', color: 'var(--chart-3)' },
+            odmeny: { label: 'Uplatněné odměny', color: 'var(--chart-2)' },
         },
         categoryKey: 'month',
         series: ['nasbiraneBody', 'odmeny'],
@@ -169,7 +169,7 @@ export const SURVEY_QUESTIONS: StatsQuestion[] = [
             { kategorie: 'Doplňky', zajem: 450 },
         ],
         labeledBarConfig: {
-            zajem: { label: 'Zájem', color: 'var(--chart-4)' },
+            zajem: { label: 'Zájem', color: 'var(--chart-1)' },
         },
         categoryKey: 'kategorie',
         valueKey: 'zajem',
