@@ -34,6 +34,7 @@ export type BarChartProps = {
     className?: string
     formatValue?: (value: number) => string
     formatSecondaryValue?: (value: number) => string
+    emptyMessage?: string
 }
 
 function truncateCategoryLabel(value: unknown, maxLength: number) {
@@ -77,7 +78,21 @@ export function BarChart({
     className,
     formatValue,
     formatSecondaryValue,
+    emptyMessage,
 }: BarChartProps) {
+    if (data.length === 0) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex h-64 items-center justify-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage ?? 'No data for the selected period.'}
+            </div>
+        )
+    }
+
     const isHorizontal = orientation === 'horizontal'
     const hasSecondaryAxis = !isHorizontal && secondarySeries.length > 0
     const primarySeries = hasSecondaryAxis

@@ -50,6 +50,14 @@ export function RelatooIndex() {
                 title="Nejlepší čas na odesílání e-mailů"
                 description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-time"
+                tableExportable={{
+                    filename: 'nejlepsi-cas-na-odesilani-emailu',
+                    headers: ['Čas', 'Počet'],
+                    rows: BEST_SEND_TIME_BY_SLOT.map((row) => [
+                        row.label,
+                        row.pocet,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -89,6 +97,14 @@ export function RelatooIndex() {
                 title="Nejlepší den na odesílání e-mailů"
                 description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-day"
+                tableExportable={{
+                    filename: 'nejlepsi-den-na-odesilani-emailu',
+                    headers: ['Den', 'Počet'],
+                    rows: BEST_SEND_DAY_BY_WEEKDAY.map((row) => [
+                        row.label,
+                        row.pocet,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -135,6 +151,21 @@ export function RelatooIndex() {
                 title="Typy odhlášení"
                 description="Rozložení odhlášení podle typu souhlasu za celou dobu."
                 queryKey="view-unsubscribe-types"
+                tableExportable={{
+                    filename: 'typy-odhlaseni',
+                    headers: [
+                        'Kategorie',
+                        'Sdělení o akci',
+                        'Sdělení pořadatele',
+                        'Marketing',
+                    ],
+                    rows: UNSUBSCRIBE_TYPES.map((row) => [
+                        row.label,
+                        row.sdeleniOAkci,
+                        row.sdeleniPoradatele,
+                        row.marketing,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',

@@ -156,6 +156,15 @@ export function EventReport() {
                     title="Sales by days"
                     description="Number of tickets sold on individual sales days."
                     queryKey="event-sales-by-day-view"
+                    tableExportable={{
+                        filename: 'sales-by-days',
+                        headers: ['Day', 'Tickets sold', 'Revenue'],
+                        rows: event.salesByDay.map((row) => [
+                            row.label,
+                            row.count,
+                            row.revenue ?? 0,
+                        ]),
+                    }}
                     tabs={[
                         {
                             name: 'Chart',
@@ -201,6 +210,15 @@ export function EventReport() {
                     title="Number of tickets sold by price"
                     description="Ticket volume grouped by price level."
                     queryKey="event-sales-by-price-view"
+                    tableExportable={{
+                        filename: 'number-of-tickets-sold-by-price',
+                        headers: ['Price', 'Tickets sold', 'Revenue'],
+                        rows: event.salesByPrice.map((row) => [
+                            row.label,
+                            row.count,
+                            row.revenue ?? 0,
+                        ]),
+                    }}
                     tabs={[
                         {
                             name: 'Chart',
@@ -278,6 +296,14 @@ export function EventReport() {
                     title="Tickets sold by sector"
                     description="Ticket volume grouped by venue sector."
                     queryKey="event-sales-by-sector-view"
+                    tableExportable={{
+                        filename: 'tickets-sold-by-sector',
+                        headers: ['Sector', 'Tickets sold'],
+                        rows: event.salesBySector.map((row) => [
+                            row.label,
+                            row.count,
+                        ]),
+                    }}
                     tabs={[
                         {
                             name: 'Chart',

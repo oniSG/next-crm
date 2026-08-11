@@ -17,6 +17,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 
+import { TableExportButton } from './table-export-button'
+import type { TableExportable } from './table-export'
+
 export type GraphCardTab = {
     name: string
     value: string
@@ -40,6 +43,7 @@ export type GraphCardProps = {
     children?: ReactNode
     footer?: ReactNode
     tabs?: GraphCardTab[]
+    tableExportable?: TableExportable
 }
 
 export function DataVisulaizationCard({
@@ -52,6 +56,7 @@ export function DataVisulaizationCard({
     children,
     footer,
     tabs,
+    tableExportable,
 }: GraphCardProps) {
     const fallbackValue = tabs?.[0]?.value ?? ''
     const [value, setValue] = useQueryState(
@@ -76,6 +81,7 @@ export function DataVisulaizationCard({
                         {description && <CardDescription>{description}</CardDescription>}
                         <CardAction>
                             <div className="flex flex-wrap items-center justify-end gap-2">
+                                {action}
                                 {dateRange && (
                                     <DateRangeFilter
                                         value={dateRange.value}
@@ -92,7 +98,9 @@ export function DataVisulaizationCard({
                                         </TabsTrigger>
                                     ))}
                                 </TabsList>
-                                {action}
+                                {tableExportable && (
+                                    <TableExportButton exportable={tableExportable} />
+                                )}
                             </div>
                         </CardAction>
                     </CardHeader>
@@ -114,7 +122,7 @@ export function DataVisulaizationCard({
             <CardHeader className="pb-2">
                 <CardTitle className="truncate text-sm font-medium">{title}</CardTitle>
                 {description && <CardDescription>{description}</CardDescription>}
-                {(dateRange || action) && (
+                {(dateRange || action || tableExportable) && (
                     <CardAction>
                         <div className="flex flex-wrap items-center justify-end gap-2">
                             {dateRange && (
@@ -125,12 +133,17 @@ export function DataVisulaizationCard({
                                     className="h-8"
                                 />
                             )}
+                            {tableExportable && (
+                                <TableExportButton exportable={tableExportable} />
+                            )}
                             {action}
                         </div>
                     </CardAction>
                 )}
             </CardHeader>
-            <CardContent className="flex min-h-0 flex-1 flex-col pb-0">{children}</CardContent>
+            <CardContent className="flex min-h-0 flex-1 flex-col pb-0">
+                {children}
+            </CardContent>
             {footer && <CardFooter>{footer}</CardFooter>}
         </Card>
     )

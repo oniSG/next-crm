@@ -28,6 +28,7 @@ export type SimpleTableProps<T> = {
     className?: string
     footer?: ReactNode[]
     onRowClick?: (row: T) => void
+    emptyMessage?: string
 }
 
 export function SimpleTable<T>({
@@ -37,7 +38,21 @@ export function SimpleTable<T>({
     className,
     footer,
     onRowClick,
+    emptyMessage,
 }: SimpleTableProps<T>) {
+    if (data.length === 0) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex h-24 items-center justify-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage ?? 'No data for the selected period.'}
+            </div>
+        )
+    }
+
     return (
         <Table className={cn(className)}>
             <TableHeader>

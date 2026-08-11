@@ -51,6 +51,14 @@ export function ReportSales() {
                 title="Statistika příjmu z prodeje vstupenek podle prodejních kanálů"
                 description="Příjem podle prodejního kanálu ve zvoleném období."
                 queryKey="sales-revenue-by-channel-view"
+                tableExportable={{
+                    filename: 'prijem-z-prodeje-vstupenek-podle-kanalu',
+                    headers: ['Prodejní kanál', 'Příjem'],
+                    rows: revenueByChannel.map((row) => [
+                        row.label,
+                        row.revenue,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -90,6 +98,11 @@ export function ReportSales() {
                 title="Statistika příjmu z prodeje vstupenek"
                 description="Příjem z prodeje vstupenek ve zvoleném období."
                 queryKey="sales-revenue-by-date-view"
+                tableExportable={{
+                    filename: 'prijem-z-prodeje-vstupenek',
+                    headers: [periodColumnLabel(period), 'Příjem'],
+                    rows: revenueByDate.map((row) => [row.label, row.revenue]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',

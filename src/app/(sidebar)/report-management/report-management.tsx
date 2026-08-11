@@ -3,6 +3,7 @@
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { parseAsIsoDate, useQueryState } from 'nuqs'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
@@ -148,215 +149,249 @@ export function ReportManagement() {
             </section>
 
             <DataVisulaizationCard
-                title="Development of revenue from tickets sold"
-                description="Revenue by sales channel in the selected period."
+                title="Vývoj tržeb za prodané vstupenky"
                 queryKey="management-ticket-revenue-view"
+                action={
+                    <InfoTooltip>
+                        Přehled celkových tržeb z prodaných za vybrané období,
+                        barevně rozdělené podle kanálu prodeje.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'vyvoj-trzeb-za-prodane-vstupenky',
+                    headers: [
+                        'Month',
+                        ...TICKET_REVENUE_COLUMNS.map((column) => column.label),
+                    ],
+                    rows: ticketRevenueRows.map((row) => [
+                        row.label,
+                        ...TICKET_REVENUE_COLUMNS.map((column) =>
+                            Number(row[column.key] ?? 0),
+                        ),
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Chart',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
-                        content:
-                            ticketRevenueRows.length > 0 ? (
-                                <BarChart
-                                    key={`management-ticket-revenue-chart-${periodKey}`}
-                                    data={ticketRevenueRows}
-                                    config={TICKET_CHANNEL_CONFIG}
-                                    categoryKey="label"
-                                    series={TICKET_CHANNEL_KEYS}
-                                    stacked
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="CZK"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No ticket sales data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <BarChart
+                                key={`management-ticket-revenue-chart-${periodKey}`}
+                                data={ticketRevenueRows}
+                                config={TICKET_CHANNEL_CONFIG}
+                                categoryKey="label"
+                                series={TICKET_CHANNEL_KEYS}
+                                stacked
+                                showYAxis
+                                xAxisLabel="Month"
+                                yAxisLabel="CZK"
+                                className="h-80"
+                                emptyMessage="No ticket sales data for the selected period."
+                            />
+                        ),
                     },
                     {
                         name: 'Table',
                         value: 'table',
                         icon: <TableIcon />,
-                        content:
-                            ticketRevenueRows.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-ticket-revenue-table-${periodKey}`}
-                                    data={ticketRevenueRows}
-                                    columns={toSectionTableColumns(
-                                        TICKET_REVENUE_COLUMNS,
-                                    )}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        ticketRevenueRows,
-                                        TICKET_REVENUE_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No ticket sales data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <SimpleTable
+                                key={`management-ticket-revenue-table-${periodKey}`}
+                                data={ticketRevenueRows}
+                                columns={toSectionTableColumns(TICKET_REVENUE_COLUMNS)}
+                                getRowKey={(row) => row.period}
+                                footer={toSectionFooter(
+                                    ticketRevenueRows,
+                                    TICKET_REVENUE_COLUMNS,
+                                )}
+                                emptyMessage="No ticket sales data for the selected period."
+                            />
+                        ),
                     },
                 ]}
             />
 
             <DataVisulaizationCard
-                title="Number of tickets sold"
-                description="Ticket volume by sales channel in the selected period."
+                title="Počet prodaných kusů vstupenek"
                 queryKey="management-ticket-count-view"
+                action={
+                    <InfoTooltip>
+                        Přehled celkového počtu prodaných vstupenek za vybrané
+                        období, barevně rozdělené podle kanálu prodeje.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'pocet-prodanych-kusu-vstupenek',
+                    headers: [
+                        'Month',
+                        ...TICKET_COUNT_COLUMNS.map((column) => column.label),
+                    ],
+                    rows: ticketCountRows.map((row) => [
+                        row.label,
+                        ...TICKET_COUNT_COLUMNS.map((column) =>
+                            Number(row[column.key] ?? 0),
+                        ),
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Chart',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
-                        content:
-                            ticketCountRows.length > 0 ? (
-                                <BarChart
-                                    key={`management-ticket-count-chart-${periodKey}`}
-                                    data={ticketCountRows}
-                                    config={TICKET_CHANNEL_CONFIG}
-                                    categoryKey="label"
-                                    series={TICKET_CHANNEL_KEYS}
-                                    stacked
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No ticket sales data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <BarChart
+                                key={`management-ticket-count-chart-${periodKey}`}
+                                data={ticketCountRows}
+                                config={TICKET_CHANNEL_CONFIG}
+                                categoryKey="label"
+                                series={TICKET_CHANNEL_KEYS}
+                                stacked
+                                showYAxis
+                                xAxisLabel="Month"
+                                yAxisLabel="Count"
+                                className="h-80"
+                                emptyMessage="No ticket sales data for the selected period."
+                            />
+                        ),
                     },
                     {
                         name: 'Table',
                         value: 'table',
                         icon: <TableIcon />,
-                        content:
-                            ticketCountRows.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-ticket-count-table-${periodKey}`}
-                                    data={ticketCountRows}
-                                    columns={toSectionTableColumns(TICKET_COUNT_COLUMNS)}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        ticketCountRows,
-                                        TICKET_COUNT_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No ticket sales data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <SimpleTable
+                                key={`management-ticket-count-table-${periodKey}`}
+                                data={ticketCountRows}
+                                columns={toSectionTableColumns(TICKET_COUNT_COLUMNS)}
+                                getRowKey={(row) => row.period}
+                                footer={toSectionFooter(
+                                    ticketCountRows,
+                                    TICKET_COUNT_COLUMNS,
+                                )}
+                                emptyMessage="No ticket sales data for the selected period."
+                            />
+                        ),
                     },
                 ]}
             />
 
             <DataVisulaizationCard
-                title="Development of the total number of visitors"
-                description="Total number of visitors at the end of each month in the selected period."
+                title="Vývoj celkového počtu návštěvníků"
                 queryKey="management-visitor-total-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění vývoje celkového počtu návštěvníků
+                        zaznamenaných v databázi za vybrané období.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'vyvoj-celkoveho-poctu-navstevniku',
+                    headers: [
+                        'Month',
+                        ...VISITOR_TOTAL_COLUMNS.map((column) => column.label),
+                    ],
+                    rows: fanDevelopment.map((row) => [
+                        row.label,
+                        row.total,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Chart',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
-                        content:
-                            fanDevelopment.length > 0 ? (
-                                <BarChart
-                                    key={`management-visitor-total-chart-${periodKey}`}
-                                    data={fanDevelopment}
-                                    config={VISITOR_TOTAL_CONFIG}
-                                    categoryKey="label"
-                                    series={VISITOR_TOTAL_KEYS}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No visitor data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <BarChart
+                                key={`management-visitor-total-chart-${periodKey}`}
+                                data={fanDevelopment}
+                                config={VISITOR_TOTAL_CONFIG}
+                                categoryKey="label"
+                                series={VISITOR_TOTAL_KEYS}
+                                showYAxis
+                                xAxisLabel="Month"
+                                yAxisLabel="Count"
+                                className="h-80"
+                                emptyMessage="No visitor data for the selected period."
+                            />
+                        ),
                     },
                     {
                         name: 'Table',
                         value: 'table',
                         icon: <TableIcon />,
-                        content:
-                            fanDevelopment.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-visitor-total-table-${periodKey}`}
-                                    data={fanDevelopment}
-                                    columns={toSectionTableColumns(VISITOR_TOTAL_COLUMNS)}
-                                    getRowKey={(row) => row.period}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No visitor data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <SimpleTable
+                                key={`management-visitor-total-table-${periodKey}`}
+                                data={fanDevelopment}
+                                columns={toSectionTableColumns(VISITOR_TOTAL_COLUMNS)}
+                                getRowKey={(row) => row.period}
+                                emptyMessage="No visitor data for the selected period."
+                            />
+                        ),
                     },
                 ]}
             />
 
             <DataVisulaizationCard
-                title="Growth in the number of visitors"
-                description="New and removed visitors in the selected period."
+                title="Přírůstky počtu návštěvníků"
                 queryKey="management-visitor-growth-view"
+                action={
+                    <InfoTooltip>
+                        Denní počet návštěvníků nově vytvořených v databázi za
+                        vybrané období.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'prirustky-poctu-navstevniku',
+                    headers: [
+                        'Month',
+                        ...VISITOR_GROWTH_COLUMNS.map((column) => column.label),
+                    ],
+                    rows: fanDevelopment.map((row) => [
+                        row.label,
+                        row.added,
+                        row.removed,
+                        row.netChange,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Chart',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
-                        content:
-                            fanDevelopment.length > 0 ? (
-                                <BarChart
-                                    key={`management-visitor-growth-chart-${periodKey}`}
-                                    data={fanDevelopment}
-                                    config={VISITOR_GROWTH_CONFIG}
-                                    categoryKey="label"
-                                    series={VISITOR_GROWTH_KEYS}
-                                    showYAxis
-                                    xAxisLabel="Month"
-                                    yAxisLabel="Count"
-                                    className="h-80"
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-64 items-center justify-center text-sm">
-                                    No visitor growth data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <BarChart
+                                key={`management-visitor-growth-chart-${periodKey}`}
+                                data={fanDevelopment}
+                                config={VISITOR_GROWTH_CONFIG}
+                                categoryKey="label"
+                                series={VISITOR_GROWTH_KEYS}
+                                showYAxis
+                                xAxisLabel="Month"
+                                yAxisLabel="Count"
+                                className="h-80"
+                                emptyMessage="No visitor growth data for the selected period."
+                            />
+                        ),
                     },
                     {
                         name: 'Table',
                         value: 'table',
                         icon: <TableIcon />,
-                        content:
-                            fanDevelopment.length > 0 ? (
-                                <SimpleTable
-                                    key={`management-visitor-growth-table-${periodKey}`}
-                                    data={fanDevelopment}
-                                    columns={toSectionTableColumns(
-                                        VISITOR_GROWTH_COLUMNS,
-                                    )}
-                                    getRowKey={(row) => row.period}
-                                    footer={toSectionFooter(
-                                        fanDevelopment,
-                                        VISITOR_GROWTH_COLUMNS,
-                                    )}
-                                />
-                            ) : (
-                                <div className="text-muted-foreground flex h-24 items-center justify-center text-sm">
-                                    No visitor growth data for the selected period.
-                                </div>
-                            ),
+                        content: (
+                            <SimpleTable
+                                key={`management-visitor-growth-table-${periodKey}`}
+                                data={fanDevelopment}
+                                columns={toSectionTableColumns(VISITOR_GROWTH_COLUMNS)}
+                                getRowKey={(row) => row.period}
+                                footer={toSectionFooter(
+                                    fanDevelopment,
+                                    VISITOR_GROWTH_COLUMNS,
+                                )}
+                                emptyMessage="No visitor growth data for the selected period."
+                            />
+                        ),
                     },
                 ]}
             />

@@ -74,6 +74,15 @@ export function ReportTicketing() {
                 title="Porovnání prodaných a použitých vstupenek na jednotlivých událostech"
                 description="Prodané a použité vstupenky podle jednotlivých událostí."
                 queryKey="ticketing-tickets-by-event-view"
+                tableExportable={{
+                    filename: 'prodane-a-pouzite-vstupenky-na-udalostech',
+                    headers: ['Název', 'Prodané', 'Použité'],
+                    rows: ticketsByEvent.map((row) => [
+                        row.label,
+                        row.sold,
+                        row.used,
+                    ]),
+                }}
                 dateRange={{
                     value: eventDateRange,
                     today,
@@ -131,6 +140,15 @@ export function ReportTicketing() {
                 title="Poměr vstupenek a permanentek za sezónu"
                 description="Podíl vstupenek a permanentek podle sezóny."
                 queryKey="ticketing-tickets-vs-season-tickets-view"
+                tableExportable={{
+                    filename: 'pomer-vstupenek-a-permanentek-za-sezonu',
+                    headers: ['Sezóna', 'Vstupenky', 'Permanentky'],
+                    rows: ticketsVsSeasonTickets.map((row) => [
+                        row.label,
+                        row.tickets,
+                        row.seasonTickets,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -178,6 +196,15 @@ export function ReportTicketing() {
                 title="Porovnání prodaných a použitých permanentek za sezónu"
                 description="Počet prodaných a použitých permanentek podle sezóny."
                 queryKey="ticketing-season-tickets-by-season-view"
+                tableExportable={{
+                    filename: 'prodane-a-pouzite-permanentky-za-sezonu',
+                    headers: ['Název', 'Prodané', 'Použité'],
+                    rows: seasonTicketsBySeason.map((row) => [
+                        row.label,
+                        row.sold,
+                        row.used,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -224,6 +251,15 @@ export function ReportTicketing() {
                 title="Porovnání prodaných a použitých vstupenek za sezónu"
                 description="Počet prodaných a použitých vstupenek podle sezóny."
                 queryKey="ticketing-tickets-by-season-view"
+                tableExportable={{
+                    filename: 'prodane-a-pouzite-vstupenky-za-sezonu',
+                    headers: ['Název', 'Prodané', 'Použité'],
+                    rows: ticketsBySeason.map((row) => [
+                        row.label,
+                        row.sold,
+                        row.used,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',

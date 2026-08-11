@@ -57,6 +57,11 @@ export function ReportBusiness() {
                 title="Příjem z obchodních případů po týdnech"
                 description="Součet příjmů podle týdne vytvoření obchodního případu."
                 queryKey="business-weekly-revenue-view"
+                tableExportable={{
+                    filename: 'prijem-z-obchodnich-pripadu-po-tydnech',
+                    headers: ['Týden', 'Příjem'],
+                    rows: weeklyRevenue.map((row) => [row.label, row.totalRevenue]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -100,6 +105,15 @@ export function ReportBusiness() {
                 title="Počet obchodních případů a potenciální příjem"
                 description="Objem a potenciální příjem podle stavu obchodního případu."
                 queryKey="business-cases-by-status-view"
+                tableExportable={{
+                    filename: 'obchodni-pripady-podle-stavu',
+                    headers: ['Stav', 'Počet', 'Potenciální příjem'],
+                    rows: cases.map((row) => [
+                        row.label,
+                        row.count,
+                        row.potentialIncome,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -148,6 +162,21 @@ export function ReportBusiness() {
                 title="Poměr obsazených a volných ploch za sezónu"
                 description="Obsazenost reklamních ploch podle sezóny."
                 queryKey="business-advertising-spaces-by-season-view"
+                tableExportable={{
+                    filename: 'reklamni-plochy-za-sezonu',
+                    headers: [
+                        'Sezóna',
+                        ADVERTISING_SPACES_CONFIG.occupied.label,
+                        ADVERTISING_SPACES_CONFIG.occupiedMultiple.label,
+                        ADVERTISING_SPACES_CONFIG.free.label,
+                    ],
+                    rows: spacesBySeason.map((row) => [
+                        row.label,
+                        row.occupied,
+                        row.occupiedMultiple,
+                        row.free,
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -192,6 +221,11 @@ export function ReportBusiness() {
                 title="Poměr barteru a finančního obchodu"
                 description="Rozložení obchodů podle typu (finance / barter / kombinace)."
                 queryKey="business-trade-type-ratio-view"
+                tableExportable={{
+                    filename: 'pomer-typu-obchodu',
+                    headers: ['Typ obchodu', 'Počet'],
+                    rows: tradeTypes.map((row) => [row.label, row.value]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',

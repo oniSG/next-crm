@@ -93,6 +93,24 @@ export function ReportFanGeneral() {
                 queryKey="view-email"
                 title="E-mail"
                 description="Přehled ve zvoleném období."
+                tableExportable={{
+                    filename: 'email',
+                    headers: [
+                        periodColumnLabel(period),
+                        ...EMAIL_REPORT_SERIES.map(
+                            (key) =>
+                                String(
+                                    EMAIL_REPORT_CHART_CONFIG[key]?.label ?? key,
+                                ),
+                        ),
+                    ],
+                    rows: emailData.map((row) => [
+                        row.label,
+                        ...EMAIL_REPORT_SERIES.map((key) =>
+                            Number(row[key] ?? 0),
+                        ),
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -134,6 +152,24 @@ export function ReportFanGeneral() {
                 queryKey="view-sms"
                 title="SMS"
                 description="Přehled ve zvoleném období."
+                tableExportable={{
+                    filename: 'sms',
+                    headers: [
+                        periodColumnLabel(period),
+                        ...SMS_REPORT_SERIES.map(
+                            (key) =>
+                                String(
+                                    SMS_REPORT_CHART_CONFIG[key]?.label ?? key,
+                                ),
+                        ),
+                    ],
+                    rows: smsData.map((row) => [
+                        row.label,
+                        ...SMS_REPORT_SERIES.map((key) =>
+                            Number(row[key] ?? 0),
+                        ),
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
@@ -175,6 +211,24 @@ export function ReportFanGeneral() {
                 queryKey="view-push"
                 title="Push notifikace"
                 description="Přehled ve zvoleném období."
+                tableExportable={{
+                    filename: 'push-notifikace',
+                    headers: [
+                        periodColumnLabel(period),
+                        ...PUSH_REPORT_SERIES.map(
+                            (key) =>
+                                String(
+                                    PUSH_REPORT_CHART_CONFIG[key]?.label ?? key,
+                                ),
+                        ),
+                    ],
+                    rows: pushData.map((row) => [
+                        row.label,
+                        ...PUSH_REPORT_SERIES.map((key) =>
+                            Number(row[key] ?? 0),
+                        ),
+                    ]),
+                }}
                 tabs={[
                     {
                         name: 'Graf',
