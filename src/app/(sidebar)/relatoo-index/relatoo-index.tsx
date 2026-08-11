@@ -23,6 +23,10 @@ import {
     RELATOO_INDEX_KPIS,
     TOP_ACTIONS,
     TOP_ACTIONS_COLUMNS,
+    UNSUBSCRIBE_TYPES,
+    UNSUBSCRIBE_TYPES_CHART_CONFIG,
+    UNSUBSCRIBE_TYPES_COLUMNS,
+    UNSUBSCRIBE_TYPES_SERIES,
 } from './data'
 
 export function RelatooIndex() {
@@ -126,6 +130,46 @@ export function RelatooIndex() {
             >
                 <SankeyChart data={EMAIL_FUNNEL_FLOW} className="min-h-80" />
             </DataVisulaizationCard>
+
+            <DataVisulaizationCard
+                title="Typy odhlášení"
+                description="Rozložení odhlášení podle typu souhlasu za celou dobu."
+                queryKey="view-unsubscribe-types"
+                tabs={[
+                    {
+                        name: 'Graf',
+                        value: 'chart',
+                        icon: <ChartColumnIcon />,
+                        content: (
+                            <BarChart
+                                data={UNSUBSCRIBE_TYPES}
+                                config={UNSUBSCRIBE_TYPES_CHART_CONFIG}
+                                categoryKey="label"
+                                series={[...UNSUBSCRIBE_TYPES_SERIES]}
+                                orientation="horizontal"
+                                stacked
+                                showYAxis
+                                xAxisLabel="Počet"
+                                yAxisLabel="Kategorie"
+                                formatValue={formatExpertCount}
+                                className="h-48"
+                            />
+                        ),
+                    },
+                    {
+                        name: 'Tabulka',
+                        value: 'table',
+                        icon: <TableIcon />,
+                        content: (
+                            <SimpleTable
+                                data={UNSUBSCRIBE_TYPES}
+                                columns={UNSUBSCRIBE_TYPES_COLUMNS}
+                                getRowKey={(row) => row.label}
+                            />
+                        ),
+                    },
+                ]}
+            />
 
             <DataVisulaizationCard
                 title="Nejvýkonnější akce"

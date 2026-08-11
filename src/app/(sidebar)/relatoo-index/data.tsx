@@ -9,6 +9,7 @@ import bestSendTime from './data/best-send-time.json'
 import emailFunnelFlow from './data/email-funnel-flow.json'
 import emailMetricsStages from './data/email-metrics-stages.json'
 import topActions from './data/top-actions.json'
+import unsubscribeTypes from './data/unsubscribe-types.json'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const percentFormatter = new Intl.NumberFormat('cs-CZ', {
@@ -98,6 +99,61 @@ export const BEST_SEND_DAY_CHART_CONFIG = {
 export const BEST_SEND_DAY_BY_WEEKDAY = bestSendDay as BestSendPoint[]
 
 export const EMAIL_FUNNEL_FLOW = emailFunnelFlow as SankeyChartData
+
+export type UnsubscribeTypePoint = {
+    label: string
+    sdeleniOAkci: number
+    sdeleniPoradatele: number
+    marketing: number
+}
+
+export const UNSUBSCRIBE_TYPES_SERIES = [
+    'sdeleniOAkci',
+    'sdeleniPoradatele',
+    'marketing',
+] as const
+
+export const UNSUBSCRIBE_TYPES_CHART_CONFIG = {
+    sdeleniOAkci: { label: 'Sdělení o akci', color: 'var(--chart-1)' },
+    sdeleniPoradatele: {
+        label: 'Sdělení pořadatele',
+        color: 'var(--chart-2)',
+    },
+    marketing: { label: 'Marketing', color: 'var(--chart-3)' },
+} satisfies ChartConfig
+
+export const UNSUBSCRIBE_TYPES = unsubscribeTypes as UnsubscribeTypePoint[]
+
+export const UNSUBSCRIBE_TYPES_COLUMNS: SimpleTableColumn<UnsubscribeTypePoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Kategorie',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'sdeleniOAkci',
+            header: 'Sdělení o akci',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.sdeleniOAkci),
+        },
+        {
+            id: 'sdeleniPoradatele',
+            header: 'Sdělení pořadatele',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.sdeleniPoradatele),
+        },
+        {
+            id: 'marketing',
+            header: 'Marketing',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.marketing),
+        },
+    ]
 
 export const EMAIL_METRICS_STAGES = emailMetricsStages as EmailMetricStage[]
 
