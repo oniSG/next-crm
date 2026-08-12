@@ -32,6 +32,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'data-quality',
     'relatoo-index',
     'mobile-app',
+    'alumni-dashboard',
     'fan-action',
 ])
 

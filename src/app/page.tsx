@@ -160,6 +160,12 @@ const pages: {
             status: 'progress',
             by: 'Tomas',
         },
+        {
+            name: 'Alumni dashboard',
+            path: '/alumni-dashboard',
+            status: 'progress',
+            by: 'Tomas',
+        },
     ]
 
 export default function Page() {

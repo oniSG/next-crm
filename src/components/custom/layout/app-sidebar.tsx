@@ -162,6 +162,11 @@ const fansGroups: NavGroup[] = [
                         url: '/report-management',
                         icon: <ClipboardCheckIcon />,
                     },
+                    {
+                        title: 'Alumni dashboard',
+                        url: '/alumni-dashboard',
+                        icon: <GraduationCapIcon />,
+                    },
                 ],
             },
             { title: 'Visitors', url: '/fan', icon: <ZapIcon /> },

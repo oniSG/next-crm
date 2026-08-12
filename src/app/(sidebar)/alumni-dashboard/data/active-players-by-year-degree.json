@@ -1,0 +1,38 @@
+[
+  {
+    "label": "1",
+    "bakalarske": 72,
+    "magisterske": 0,
+    "doktorske": 0
+  },
+  {
+    "label": "2",
+    "bakalarske": 85,
+    "magisterske": 0,
+    "doktorske": 0
+  },
+  {
+    "label": "3",
+    "bakalarske": 111,
+    "magisterske": 0,
+    "doktorske": 0
+  },
+  {
+    "label": "4",
+    "bakalarske": 0,
+    "magisterske": 68,
+    "doktorske": 0
+  },
+  {
+    "label": "5",
+    "bakalarske": 0,
+    "magisterske": 53,
+    "doktorske": 14
+  },
+  {
+    "label": "6",
+    "bakalarske": 0,
+    "magisterske": 0,
+    "doktorske": 16
+  }
+]
