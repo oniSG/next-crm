@@ -51,6 +51,7 @@ export function MobileApp() {
                     showDots
                     xAxisLabel="Datum"
                     yAxisLabel="Počet"
+                    legendQueryKey="mobile-app-activity-muted"
                     className="h-80"
                 />
             </DataVisulaizationCard>

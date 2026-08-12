@@ -225,6 +225,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                                     showYAxis
                                     xAxisLabel="Datum"
                                     yAxisLabel="Počet"
+                                    legendQueryKey="event-sales-by-day-muted"
                                     className="h-80"
                                 />
                             ),
@@ -284,6 +285,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                                     showYAxis
                                     xAxisLabel="Cenová kategorie"
                                     yAxisLabel="Počet"
+                                    legendQueryKey="event-sales-by-price-muted"
                                     className="h-80"
                                 />
                             ),
@@ -380,6 +382,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                                     showYAxis
                                     xAxisLabel="Sektor"
                                     yAxisLabel="Počet"
+                                    legendQueryKey="event-sales-by-sector-muted"
                                     className="h-80"
                                 />
                             ),
@@ -435,6 +438,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                                     showYAxis
                                     xAxisLabel="Počet"
                                     yAxisLabel="Kategorie"
+                                    legendQueryKey="event-sold-used-muted"
                                     className="h-56"
                                 />
                             ),

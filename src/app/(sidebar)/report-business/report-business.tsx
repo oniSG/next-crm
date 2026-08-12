@@ -84,6 +84,7 @@ export function ReportBusiness() {
                                 xAxisLabel="Týden"
                                 yAxisLabel="Kč"
                                 formatValue={formatBusinessCurrency}
+                                legendQueryKey="business-weekly-revenue-muted"
                                 className="h-80"
                             />
                         ),
@@ -142,6 +143,7 @@ export function ReportBusiness() {
                                 secondaryYAxisLabel="Kč"
                                 formatValue={formatBusinessCount}
                                 formatSecondaryValue={formatBusinessCurrency}
+                                legendQueryKey="business-cases-by-status-muted"
                                 className="h-96"
                             />
                         ),
@@ -208,6 +210,7 @@ export function ReportBusiness() {
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Počet"
                                 formatValue={formatBusinessCount}
+                                legendQueryKey="business-advertising-spaces-muted"
                                 className="h-80"
                             />
                         ),

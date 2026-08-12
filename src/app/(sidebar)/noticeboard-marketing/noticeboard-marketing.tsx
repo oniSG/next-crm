@@ -123,6 +123,7 @@ export function NoticeboardMarketing() {
                             showYAxis
                             angledXAxis
                             showDots
+                            legendQueryKey="noticeboard-email-campaign-muted"
                             className="min-h-72 flex-1"
                         />
                     </DataVisulaizationCard>
@@ -141,6 +142,7 @@ export function NoticeboardMarketing() {
                             series={[...GDPR_UNSUBSCRIBE_STATS_SERIES]}
                             showYAxis
                             showDots
+                            legendQueryKey="noticeboard-gdpr-unsubscribe-muted"
                             className="min-h-72 flex-1"
                         />
                     </DataVisulaizationCard>

@@ -80,6 +80,7 @@ export function ReportSales() {
                                 xAxisLabel="Prodejní kanál"
                                 yAxisLabel="Příjem"
                                 formatValue={formatSalesCurrency}
+                                legendQueryKey="sales-revenue-by-channel-muted"
                                 className="h-80"
                             />
                         ),
@@ -130,6 +131,7 @@ export function ReportSales() {
                                 xAxisLabel={periodColumnLabel(period)}
                                 yAxisLabel="Příjem"
                                 formatValue={formatSalesCurrency}
+                                legendQueryKey="sales-revenue-by-date-muted"
                                 className="h-96"
                             />
                         ),

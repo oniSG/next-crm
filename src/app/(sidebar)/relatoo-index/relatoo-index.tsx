@@ -79,6 +79,7 @@ export function RelatooIndex() {
                                 xAxisLabel="Čas"
                                 yAxisLabel="Počet"
                                 formatValue={formatExpertCount}
+                                legendQueryKey="relatoo-best-send-time-muted"
                                 className="h-80"
                             />
                         ),
@@ -127,6 +128,7 @@ export function RelatooIndex() {
                                 xAxisLabel="Den"
                                 yAxisLabel="Počet"
                                 formatValue={formatExpertCount}
+                                legendQueryKey="relatoo-best-send-day-muted"
                                 className="h-80"
                             />
                         ),

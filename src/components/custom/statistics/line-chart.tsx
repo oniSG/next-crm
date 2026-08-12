@@ -1,5 +1,6 @@
 'use client'
 
+import { useId } from 'react'
 import {
     CartesianGrid,
     Line,
@@ -10,6 +11,8 @@ import {
 
 import {
     ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
     type ChartConfig,
@@ -17,6 +20,7 @@ import {
 import { cn } from '@/lib/utils'
 
 import { formatCompactNumber } from './format-compact-number'
+import { useMutedSeries } from './use-muted-series'
 
 export type LineChartProps = {
     data: object[]
@@ -30,6 +34,8 @@ export type LineChartProps = {
     angledXAxis?: boolean
     showDots?: boolean
     formatValue?: (value: number) => string
+    /** When set, legend clicks mute/unmute series and persist state in the URL. */
+    legendQueryKey?: string
 }
 
 export function LineChart({
@@ -44,7 +50,15 @@ export function LineChart({
     angledXAxis = false,
     showDots = false,
     formatValue,
+    legendQueryKey,
 }: LineChartProps) {
+    const reactId = useId().replace(/:/g, '')
+    const chartId = legendQueryKey ?? `line-chart-${reactId}`
+    const { orderedSeries, visibleSeries, mutedKeys, toggleSeries } = useMutedSeries(
+        legendQueryKey,
+        series,
+    )
+
     const xAxisHeight = angledXAxis
         ? xAxisLabel
             ? 78
@@ -52,117 +66,111 @@ export function LineChart({
         : xAxisLabel
           ? 40
           : undefined
-    const bottomMargin = angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4
+    const bottomMargin =
+        (angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4) + 24
+    const legendItems = orderedSeries.map((key) => ({
+        dataKey: key,
+        color: config[key]?.color ?? `var(--color-${key})`,
+    }))
 
     return (
-        <div className={cn('flex w-full flex-col', className)}>
-            <ChartContainer
-                config={config}
-                className="aspect-auto min-h-56 w-full flex-1"
+        <ChartContainer
+            id={chartId}
+            config={config}
+            className={cn(
+                'aspect-auto min-h-56 w-full flex-1 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto',
+                className,
+            )}
+        >
+            <RechartsLineChart
+                id={chartId}
+                accessibilityLayer
+                data={data}
+                margin={{
+                    top: showDots ? 12 : 8,
+                    left: showYAxis ? (yAxisLabel ? 16 : 0) : 12,
+                    right: 12,
+                    bottom: bottomMargin,
+                }}
             >
-                <RechartsLineChart
-                    accessibilityLayer
-                    data={data}
-                    margin={{
-                        top: showDots ? 12 : 8,
-                        left: showYAxis ? (yAxisLabel ? 16 : 0) : 12,
-                        right: 12,
-                        bottom: bottomMargin,
-                    }}
-                >
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                        dataKey={categoryKey}
+                <CartesianGrid vertical={false} />
+                <XAxis
+                    dataKey={categoryKey}
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    angle={angledXAxis ? -35 : 0}
+                    textAnchor={angledXAxis ? 'end' : 'middle'}
+                    height={xAxisHeight}
+                    interval="preserveStartEnd"
+                    label={
+                        xAxisLabel
+                            ? {
+                                  value: xAxisLabel,
+                                  position: 'insideBottom',
+                                  offset: angledXAxis ? 2 : -2,
+                                  style: { textAnchor: 'middle' },
+                              }
+                            : undefined
+                    }
+                />
+                {showYAxis && (
+                    <YAxis
                         tickLine={false}
                         axisLine={false}
                         tickMargin={8}
-                        angle={angledXAxis ? -35 : 0}
-                        textAnchor={angledXAxis ? 'end' : 'middle'}
-                        height={xAxisHeight}
-                        interval="preserveStartEnd"
+                        width={48}
+                        tickFormatter={(value) =>
+                            formatCompactNumber(Number(value))
+                        }
                         label={
-                            xAxisLabel
+                            yAxisLabel
                                 ? {
-                                      value: xAxisLabel,
-                                      position: 'insideBottom',
-                                      offset: angledXAxis ? 2 : -2,
+                                      value: yAxisLabel,
+                                      angle: -90,
+                                      position: 'left',
+                                      offset: 8,
                                       style: { textAnchor: 'middle' },
                                   }
                                 : undefined
                         }
                     />
-                    {showYAxis && (
-                        <YAxis
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            width={48}
-                            tickFormatter={(value) =>
-                                formatCompactNumber(Number(value))
-                            }
-                            label={
-                                yAxisLabel
-                                    ? {
-                                          value: yAxisLabel,
-                                          angle: -90,
-                                          position: 'left',
-                                          offset: 8,
-                                          style: { textAnchor: 'middle' },
-                                      }
-                                    : undefined
-                            }
+                )}
+                <ChartTooltip
+                    content={
+                        <ChartTooltipContent valueFormatter={formatValue} />
+                    }
+                />
+                <ChartLegend
+                    content={
+                        <ChartLegendContent
+                            items={legendItems}
+                            mutedKeys={mutedKeys}
+                            onItemClick={toggleSeries}
                         />
-                    )}
-                    <ChartTooltip
-                        content={
-                            <ChartTooltipContent valueFormatter={formatValue} />
+                    }
+                />
+                {visibleSeries.map((key) => (
+                    <Line
+                        key={key}
+                        dataKey={key}
+                        type="monotone"
+                        stroke={`var(--color-${key})`}
+                        strokeWidth={2}
+                        dot={
+                            showDots
+                                ? {
+                                      r: 3,
+                                      fill: 'var(--background)',
+                                      stroke: `var(--color-${key})`,
+                                      strokeWidth: 2,
+                                  }
+                                : false
                         }
+                        activeDot={{ r: 4 }}
                     />
-                    {series.map((key) => (
-                        <Line
-                            key={key}
-                            dataKey={key}
-                            type="monotone"
-                            stroke={`var(--color-${key})`}
-                            strokeWidth={2}
-                            dot={
-                                showDots
-                                    ? {
-                                          r: 3,
-                                          fill: 'var(--background)',
-                                          stroke: `var(--color-${key})`,
-                                          strokeWidth: 2,
-                                      }
-                                    : false
-                            }
-                            activeDot={{ r: 4 }}
-                        />
-                    ))}
-                </RechartsLineChart>
-            </ChartContainer>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2 text-xs">
-                {series.map((key) => {
-                    const item = config[key]
-                    const color =
-                        item && 'color' in item
-                            ? item.color
-                            : item && 'theme' in item
-                              ? item.theme?.light
-                              : undefined
-                    return (
-                        <div key={key} className="flex items-center gap-1.5">
-                            <div
-                                className="h-2 w-2 shrink-0 rounded-[2px]"
-                                style={{ backgroundColor: color }}
-                            />
-                            <span className="text-muted-foreground">
-                                {item?.label ?? key}
-                            </span>
-                        </div>
-                    )
-                })}
-            </div>
-        </div>
+                ))}
+            </RechartsLineChart>
+        </ChartContainer>
     )
 }

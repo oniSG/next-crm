@@ -106,6 +106,7 @@ export function ReportTicketing() {
                                     categoryMaxLength={18}
                                     xAxisLabel="Počet"
                                     yAxisLabel="Událost"
+                                    legendQueryKey="ticketing-tickets-by-event-muted"
                                     className="h-full"
                                 />
                             </div>
@@ -165,6 +166,7 @@ export function ReportTicketing() {
                                 showYAxis
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Počet"
+                                legendQueryKey="ticketing-tickets-vs-season-muted"
                                 className="h-80"
                             />
                         ),
@@ -225,6 +227,7 @@ export function ReportTicketing() {
                                 showYAxis
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Počet"
+                                legendQueryKey="ticketing-season-tickets-muted"
                                 className="h-80"
                             />
                         ),
@@ -277,6 +280,7 @@ export function ReportTicketing() {
                                 showYAxis
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Počet"
+                                legendQueryKey="ticketing-tickets-by-season-muted"
                                 className="h-80"
                             />
                         ),
