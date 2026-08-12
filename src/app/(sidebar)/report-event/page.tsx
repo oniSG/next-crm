@@ -1,7 +1,7 @@
 import PageHeader from '@/components/custom/layout/page-header'
 
 import { REPORT_EVENT } from './data'
-import { EventReport } from './event-report'
+import { EventReport } from './report-event'
 import { PageActions } from './page-actions'
 
 export default function Page() {

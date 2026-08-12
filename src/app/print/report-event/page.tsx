@@ -1,4 +1,4 @@
-import { EventReport } from '@/app/(sidebar)/report-event/event-report'
+import { EventReport } from '@/app/(sidebar)/report-event/report-event'
 
 import { PrintShell, type PrintPageSettings } from '../components/print-shell'
 
