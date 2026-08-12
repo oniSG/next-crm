@@ -30,21 +30,21 @@ export const EMAIL_REPORT_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
     unikatniOtevreni: { label: 'Unikátní otevření', color: 'var(--chart-2)' },
     unikatniProklik: { label: 'Unikátní proklik', color: 'var(--chart-3)' },
-    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-5)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-7)' },
     odhlaseno: { label: 'Odhlášeno', color: 'var(--chart-4)' },
-    hardBounce: { label: 'Hard bounce', color: 'var(--chart-5)' },
-    softBounce: { label: 'Soft bounce', color: 'var(--chart-5)' },
-    spam: { label: 'Spam', color: 'var(--chart-5)' },
+    hardBounce: { label: 'Hard bounce', color: 'var(--chart-7)' },
+    softBounce: { label: 'Soft bounce', color: 'var(--chart-7)' },
+    spam: { label: 'Spam', color: 'var(--chart-7)' },
 } satisfies ChartConfig
 
 export const SMS_REPORT_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-5)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-7)' },
 } satisfies ChartConfig
 
 export const PUSH_REPORT_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-5)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-7)' },
 } satisfies ChartConfig
 
 export const EMAIL_REPORT_BY_DAY = emailReportByDay

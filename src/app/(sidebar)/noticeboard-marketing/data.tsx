@@ -55,7 +55,7 @@ export const EMAIL_CAMPAIGN_STATS_SERIES = [
 
 export const EMAIL_CAMPAIGN_STATS_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    softBounce: { label: 'Soft Bounce', color: 'var(--chart-5)' },
+    softBounce: { label: 'Soft Bounce', color: 'var(--chart-7)' },
     unikatneOtevreno: { label: 'Unikátně otevřeno', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
@@ -86,7 +86,7 @@ export const COMMUNICATION_CHANNELS_CONFIG = {
 export const COMMUNICATION_CHANNELS = communicationChannels
 
 export const UNDELIVERED_EMAILS_CONFIG = {
-    softBounce: { label: 'Soft Bounce', color: 'var(--chart-5)' },
+    softBounce: { label: 'Soft Bounce', color: 'var(--chart-7)' },
     ostatni: { label: 'Ostatní', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 

@@ -13,6 +13,6 @@ export const SMS_STATS_BY_MONTH = [
 export const SMS_STATS_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
     rozkliknuto: { label: 'Rozkliknuto', color: 'var(--chart-2)' },
-    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-5)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-7)' },
     odhlaseno: { label: 'Odhlášeno', color: 'var(--chart-3)' },
 } satisfies ChartConfig

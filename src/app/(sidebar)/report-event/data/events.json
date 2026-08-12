@@ -139,7 +139,7 @@
       },
       {
         "name": "Absent",
-        "fill": "var(--chart-5)"
+        "fill": "var(--chart-7)"
       },
       {
         "name": "Entered",
@@ -167,7 +167,7 @@
       },
       {
         "name": "Gift: absent",
-        "fill": "var(--chart-5)"
+        "fill": "var(--chart-7)"
       },
       {
         "name": "Bought",
@@ -175,7 +175,7 @@
       },
       {
         "name": "Unsold",
-        "fill": "var(--chart-5)"
+        "fill": "var(--chart-7)"
       },
       {
         "name": "Buyer: entered",
@@ -183,7 +183,7 @@
       },
       {
         "name": "Buyer: absent",
-        "fill": "var(--chart-5)"
+        "fill": "var(--chart-7)"
       }
     ],
     "links": [

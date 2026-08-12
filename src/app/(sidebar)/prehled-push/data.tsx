@@ -12,5 +12,5 @@ export const PUSH_STATS_BY_MONTH = [
 
 export const PUSH_STATS_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-5)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-7)' },
 } satisfies ChartConfig

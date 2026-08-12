@@ -82,14 +82,14 @@
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
     /* Okabe–Ito–inspired chart palette (CVD-safe; keep brand green) */
-    --chart-1: oklch(0.7 0.16 155); /* green — brand */
-    --chart-2: oklch(0.735 0.117 236); /* sky blue     */
-    --chart-3: oklch(0.753 0.158 77); /* orange       */
-    --chart-4: oklch(0.621 0.17 48); /* vermillion   */
-    --chart-5: oklch(0.58 0.2 25); /* red — negative */
-    --chart-6: oklch(0.679 0.118 346); /* reddish purple */
-    --chart-7: oklch(0.532 0.131 244); /* blue         */
-    --chart-8: oklch(0.58 0 0); /* neutral gray */
+    --chart-1: oklch(0.776 0.227 136); /* green #6BD40E — brand */
+    --chart-2: oklch(0.532 0.131 244); /* blue #0072B2  */
+    --chart-3: oklch(0.753 0.158 77); /* orange #E69F00 */
+    --chart-4: oklch(0.679 0.118 346); /* reddish purple #CC79A7 */
+    --chart-5: oklch(0.42 0 0); /* dark gray #4D4D4D */
+    --chart-6: oklch(0.621 0.17 48); /* vermillion   */
+    --chart-7: oklch(0.58 0.2 25); /* red — negative */
+    --chart-8: oklch(0.735 0.117 236); /* sky blue     */
     --chart-9: oklch(0.648 0.111 195); /* teal         */
     --chart-10: oklch(0.743 0.133 229); /* cyan        */
     --chart-11: oklch(0.821 0.169 127); /* lime        */
@@ -135,14 +135,14 @@
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
     /* Okabe–Ito–inspired chart palette (CVD-safe; keep brand green) */
-    --chart-1: oklch(0.7 0.16 155); /* green — brand */
-    --chart-2: oklch(0.78 0.12 236); /* sky blue     */
-    --chart-3: oklch(0.8 0.15 77); /* orange       */
-    --chart-4: oklch(0.7 0.16 48); /* vermillion   */
-    --chart-5: oklch(0.68 0.19 25); /* red — negative */
-    --chart-6: oklch(0.74 0.12 346); /* reddish purple */
-    --chart-7: oklch(0.62 0.13 244); /* blue         */
-    --chart-8: oklch(0.65 0 0); /* neutral gray */
+    --chart-1: oklch(0.776 0.227 136); /* green #6BD40E — brand */
+    --chart-2: oklch(0.62 0.13 244); /* blue #0072B2 — lightened */
+    --chart-3: oklch(0.8 0.15 77); /* orange #E69F00 — lightened */
+    --chart-4: oklch(0.74 0.12 346); /* reddish purple #CC79A7 — lightened */
+    --chart-5: oklch(0.65 0 0); /* dark gray #4D4D4D — lightened */
+    --chart-6: oklch(0.7 0.16 48); /* vermillion   */
+    --chart-7: oklch(0.68 0.19 25); /* red — negative */
+    --chart-8: oklch(0.78 0.12 236); /* sky blue     */
     --chart-9: oklch(0.7 0.11 195); /* teal         */
     --chart-10: oklch(0.78 0.13 229); /* cyan        */
     --chart-11: oklch(0.84 0.16 127); /* lime        */

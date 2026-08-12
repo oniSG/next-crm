@@ -2,9 +2,9 @@
   "nodes": [
     { "name": "Doručeno", "fill": "var(--chart-1)" },
     { "name": "Unikátní otevření", "fill": "var(--chart-2)" },
-    { "name": "Neotevřeno", "fill": "var(--chart-5)" },
+    { "name": "Neotevřeno", "fill": "var(--chart-7)" },
     { "name": "Unikátní proklik", "fill": "var(--chart-3)" },
-    { "name": "Bez prokliku", "fill": "var(--chart-5)" },
+    { "name": "Bez prokliku", "fill": "var(--chart-7)" },
     { "name": "Odhlášeno", "fill": "var(--chart-4)" }
   ],
   "links": [

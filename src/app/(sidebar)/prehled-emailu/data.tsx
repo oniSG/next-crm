@@ -28,8 +28,8 @@ export const EMAIL_DELIVERY_BY_MONTH = [
 
 export const EMAIL_DELIVERY_CHART_CONFIG = {
     doruceno: { label: 'Doručeno', color: 'var(--chart-1)' },
-    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-5)' },
-    hardBounce: { label: 'Hard bounce', color: 'var(--chart-5)' },
-    softBounce: { label: 'Soft bounce', color: 'var(--chart-5)' },
-    spam: { label: 'Spam', color: 'var(--chart-5)' },
+    nedoruceno: { label: 'Nedoručeno', color: 'var(--chart-7)' },
+    hardBounce: { label: 'Hard bounce', color: 'var(--chart-7)' },
+    softBounce: { label: 'Soft bounce', color: 'var(--chart-7)' },
+    spam: { label: 'Spam', color: 'var(--chart-7)' },
 } satisfies ChartConfig
