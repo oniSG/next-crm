@@ -50,7 +50,6 @@ export function ReportSales() {
 
             <DataVisulaizationCard
                 title="Statistika příjmu z prodeje vstupenek podle prodejních kanálů"
-                description="Příjem podle prodejního kanálu ve zvoleném období."
                 queryKey="sales-revenue-by-channel-view"
                 action={
                     <InfoTooltip>
@@ -103,7 +102,6 @@ export function ReportSales() {
 
             <DataVisulaizationCard
                 title="Statistika příjmu z prodeje vstupenek"
-                description="Příjem z prodeje vstupenek ve zvoleném období."
                 queryKey="sales-revenue-by-date-view"
                 action={
                     <InfoTooltip>

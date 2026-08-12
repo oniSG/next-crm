@@ -1,8 +1,5 @@
 [
-  {
-    "label": "Odhlášení",
-    "sdeleniOAkci": 62,
-    "sdeleniPoradatele": 71,
-    "marketing": 43
-  }
+  { "name": "sdeleniOAkci", "value": 62, "fill": "var(--color-sdeleniOAkci)" },
+  { "name": "sdeleniPoradatele", "value": 71, "fill": "var(--color-sdeleniPoradatele)" },
+  { "name": "marketing", "value": 43, "fill": "var(--color-marketing)" }
 ]

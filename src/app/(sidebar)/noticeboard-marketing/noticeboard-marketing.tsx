@@ -94,7 +94,6 @@ export function NoticeboardMarketing() {
                 <div className="flex h-full min-h-0 flex-col gap-4 lg:col-span-2">
                     <DataVisulaizationCard
                         title="Statistika e-mailových kampaní"
-                        description="Doručeno, otevřeno, kliknuto a odhlášeno po dnech."
                         queryKey="email-campaign-stats"
                         action={
                             <InfoTooltip>

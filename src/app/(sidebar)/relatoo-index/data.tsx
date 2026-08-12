@@ -153,19 +153,6 @@ export const BEST_SEND_DAY_BY_WEEKDAY = bestSendDay as BestSendPoint[]
 
 export const EMAIL_FUNNEL_FLOW = emailFunnelFlow as SankeyChartData
 
-export type UnsubscribeTypePoint = {
-    label: string
-    sdeleniOAkci: number
-    sdeleniPoradatele: number
-    marketing: number
-}
-
-export const UNSUBSCRIBE_TYPES_SERIES = [
-    'sdeleniOAkci',
-    'sdeleniPoradatele',
-    'marketing',
-] as const
-
 export const UNSUBSCRIBE_TYPES_CHART_CONFIG = {
     sdeleniOAkci: { label: 'Sdělení o akci', color: 'var(--chart-1)' },
     sdeleniPoradatele: {
@@ -175,36 +162,29 @@ export const UNSUBSCRIBE_TYPES_CHART_CONFIG = {
     marketing: { label: 'Marketing', color: 'var(--chart-3)' },
 } satisfies ChartConfig
 
+export type UnsubscribeTypePoint = {
+    name: keyof typeof UNSUBSCRIBE_TYPES_CHART_CONFIG
+    value: number
+    fill: string
+}
+
 export const UNSUBSCRIBE_TYPES = unsubscribeTypes as UnsubscribeTypePoint[]
 
 export const UNSUBSCRIBE_TYPES_COLUMNS: SimpleTableColumn<UnsubscribeTypePoint>[] =
     [
         {
-            id: 'label',
-            header: 'Kategorie',
+            id: 'name',
+            header: 'Typ',
             cellClassName: 'font-medium',
-            cell: (row) => row.label,
+            cell: (row) =>
+                String(UNSUBSCRIBE_TYPES_CHART_CONFIG[row.name].label),
         },
         {
-            id: 'sdeleniOAkci',
-            header: 'Sdělení o akci',
+            id: 'value',
+            header: 'Počet',
             headerClassName: 'text-right',
             cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.sdeleniOAkci),
-        },
-        {
-            id: 'sdeleniPoradatele',
-            header: 'Sdělení pořadatele',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.sdeleniPoradatele),
-        },
-        {
-            id: 'marketing',
-            header: 'Marketing',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.marketing),
+            cell: (row) => numberFormatter.format(row.value),
         },
     ]
 

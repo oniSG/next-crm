@@ -6,6 +6,7 @@ import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
+import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
@@ -27,7 +28,6 @@ import {
     UNSUBSCRIBE_TYPES,
     UNSUBSCRIBE_TYPES_CHART_CONFIG,
     UNSUBSCRIBE_TYPES_COLUMNS,
-    UNSUBSCRIBE_TYPES_SERIES,
 } from './data'
 
 export function RelatooIndex() {
@@ -49,7 +49,6 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Nejlepší čas na odesílání e-mailů"
-                description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-time"
                 action={
                     <InfoTooltip>
@@ -101,7 +100,6 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Nejlepší den na odesílání e-mailů"
-                description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-day"
                 action={
                     <InfoTooltip>
@@ -150,7 +148,6 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Flowchart e-mailových kampaní"
-                description="Statistiky e-mailových kampaní za celou dobu."
                 queryKey="view-email-funnel"
                 action={
                     <InfoTooltip>
@@ -167,7 +164,6 @@ export function RelatooIndex() {
 
             <DataVisulaizationCard
                 title="Typy odhlášení"
-                description="Rozložení odhlášení podle typu souhlasu za celou dobu."
                 queryKey="view-unsubscribe-types"
                 action={
                     <InfoTooltip>
@@ -178,17 +174,10 @@ export function RelatooIndex() {
                 }
                 tableExportable={{
                     filename: 'typy-odhlaseni',
-                    headers: [
-                        'Kategorie',
-                        'Sdělení o akci',
-                        'Sdělení pořadatele',
-                        'Marketing',
-                    ],
+                    headers: ['Typ', 'Počet'],
                     rows: UNSUBSCRIBE_TYPES.map((row) => [
-                        row.label,
-                        row.sdeleniOAkci,
-                        row.sdeleniPoradatele,
-                        row.marketing,
+                        String(UNSUBSCRIBE_TYPES_CHART_CONFIG[row.name].label),
+                        row.value,
                     ]),
                 }}
                 tabs={[
@@ -197,18 +186,10 @@ export function RelatooIndex() {
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
-                            <BarChart
+                            <PieChart
                                 data={UNSUBSCRIBE_TYPES}
                                 config={UNSUBSCRIBE_TYPES_CHART_CONFIG}
-                                categoryKey="label"
-                                series={[...UNSUBSCRIBE_TYPES_SERIES]}
-                                orientation="horizontal"
-                                stacked
-                                showYAxis
-                                xAxisLabel="Počet"
-                                formatValue={formatExpertCount}
-                                legendQueryKey="relatoo-unsubscribe-types-muted"
-                                className="h-48"
+                                className="max-h-72"
                             />
                         ),
                     },
@@ -220,7 +201,7 @@ export function RelatooIndex() {
                             <SimpleTable
                                 data={UNSUBSCRIBE_TYPES}
                                 columns={UNSUBSCRIBE_TYPES_COLUMNS}
-                                getRowKey={(row) => row.label}
+                                getRowKey={(row) => row.name}
                             />
                         ),
                     },

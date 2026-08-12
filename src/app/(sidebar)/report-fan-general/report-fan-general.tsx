@@ -93,7 +93,6 @@ export function ReportFanGeneral() {
             <DataVisulaizationCard
                 queryKey="view-email"
                 title="E-mail"
-                description="Přehled ve zvoleném období."
                 action={
                     <InfoTooltip>
                         Časový vývoj úspěšnosti e-mailových kampaní za vybrané
@@ -159,7 +158,6 @@ export function ReportFanGeneral() {
             <DataVisulaizationCard
                 queryKey="view-sms"
                 title="SMS"
-                description="Přehled ve zvoleném období."
                 action={
                     <InfoTooltip>
                         Časový vývoj úspěšnosti SMS kampaní za vybrané období.
@@ -224,7 +222,6 @@ export function ReportFanGeneral() {
             <DataVisulaizationCard
                 queryKey="view-push"
                 title="Push notifikace"
-                description="Přehled ve zvoleném období."
                 action={
                     <InfoTooltip>
                         Časový vývoj úspěšnosti kampaní v mobilní aplikaci za
