@@ -1,7 +1,7 @@
 import type { KpiCardProps } from '@/components/custom/statistics/kpi-card'
 import type { SankeyChartData } from '@/components/custom/statistics/sankey-chart'
 import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
-import InfoTooltip from '@/components/custom/other/info-tooltip'
+import InfoSheet from '@/components/custom/other/info-sheet'
 import type { ChartConfig } from '@/components/ui/chart'
 
 import bestSendDay from './data/best-send-day.json'
@@ -17,6 +17,78 @@ const percentFormatter = new Intl.NumberFormat('cs-CZ', {
     maximumFractionDigits: 2,
 })
 
+const RELATOO_INDEX_INFO = (
+    <>
+        <p>
+            Relatoo Index měří „CRM zralost“ klubu za posledních 30 dní — čím více a
+            rozmanitěji klub komunikuje, automatizuje a úspěšně láká fanoušky na své
+            události, tím vyššího indexu dosahuje. Změna vůči minulému období pak
+            ukazuje trend rozvoje práce se systémem.
+        </p>
+        <p>Vstupní datové bloky z logovacích tabulek:</p>
+        <ol>
+            <li>
+                Spočítá celkový počet aktivních fanoušků pro daný klub, to je základ
+                pro normalizaci všech poměrů.
+            </li>
+            <li>
+                Porovná se posledních 30 dnů s předchozím obdobím v následujících
+                metrikách:
+                <ul>
+                    <li>
+                        součet odeslaných e-mailů, push notifikací a SMS na 1000
+                        návštěvníků
+                    </li>
+                    <li>
+                        průměrný počet vstupů na jednu událost na 1000 fanoušků
+                    </li>
+                    <li>počet otevřených dotazníků</li>
+                    <li>
+                        průměrný počet aktivovaných akcí (automatizací) z e-mailů s
+                        vyplněným spouštěčem na jeden den
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Z těchto metrik se skládá výsledná hodnota pomocí váženého
+                logaritmického vzorce, přičemž jsou určeny váhy jednotlivých metrik:
+                <ul>
+                    <li>Odeslané zprávy = 40 %</li>
+                    <li>Počet průchodů = 40 %</li>
+                    <li>Počet dotazníků = 10 %</li>
+                    <li>Akce / den = 10 %</li>
+                </ul>
+            </li>
+            <li>
+                Porovnají se jednotlivá období a spočítají se absolutní a procentuální
+                změny, které se zařadí do trendu a přiřadí se k nim slovní kategorie
+                výkonu:
+                <ul>
+                    <li>Výborný {'>= 6.0'}</li>
+                    <li>Velmi dobrý {'>= 4.5'}</li>
+                    <li>Dobrý {'>= 3.5'}</li>
+                    <li>Průměrný {'>= 2.5'}</li>
+                    <li>Pod průměrem {'< 2.5'}</li>
+                </ul>
+            </li>
+        </ol>
+        <p>
+            Použití logaritmu zajišťuje, že vysoké objemy aktivit (např. 10 000
+            odeslaných e-mailů) nezvyšují skóre lineárně, ale s postupně klesajícím
+            přínosem. Díky tomu se více oceňuje pravidelná a vyvážená aktivita než
+            samotná kvantita a zároveň se tím vyrovnávají rozdíly ve velikosti databází
+            jednotlivých klubů.
+        </p>
+        <p>Relatoo Index tedy kombinuje:</p>
+        <ul>
+            <li>jak aktivní je klub v kampaních,</li>
+            <li>jak využívá automatizace,</li>
+            <li>jak úspěšně láká své fanoušky na akce,</li>
+            <li>a jak často komunikuje s fanoušky.</li>
+        </ul>
+    </>
+)
+
 export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
     {
         label: 'Relatoo index',
@@ -28,20 +100,13 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
             hint: 'změna indexu za posledních 30 dní',
         },
         action: (
-            <InfoTooltip>
-                Aktuální Relatoo index oproti předchozímu období, včetně změny a pořadí
-                mezi tenanty.
-            </InfoTooltip>
+            <InfoSheet title="Relatoo index">{RELATOO_INDEX_INFO}</InfoSheet>
         ),
     },
     {
         label: 'Stav',
         value: 'Dobrý',
-        action: (
-            <InfoTooltip>
-                Aktuální stav Relatoo indexu oproti předchozímu období.
-            </InfoTooltip>
-        ),
+        action: <InfoSheet title="Stav">{RELATOO_INDEX_INFO}</InfoSheet>,
     },
     {
         label: 'Proměnné',
@@ -51,12 +116,7 @@ export const RELATOO_INDEX_KPIS: Omit<KpiCardProps, 'className'>[] = [
             { label: 'Počet dotazníků', value: '0' },
             { label: 'Vstupy', value: '0' },
         ],
-        action: (
-            <InfoTooltip>
-                Proměnné vstupující do výpočtu Relatoo indexu — události, akce, dotazníky
-                a vstupy.
-            </InfoTooltip>
-        ),
+        action: <InfoSheet title="Proměnné">{RELATOO_INDEX_INFO}</InfoSheet>,
     },
 ]
 
