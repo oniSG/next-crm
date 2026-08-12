@@ -281,41 +281,79 @@ export type ChartLegendItem = {
     color?: string
 }
 
-function getLegendItemKey(
-    item: {
-        dataKey?: string | number | ((obj: any) => any)
-        value?: unknown
-        payload?: unknown
-    },
-    nameKey?: string,
-) {
+type LegendPayloadItem = NonNullable<
+    RechartsPrimitive.DefaultLegendContentProps['payload']
+>[number]
+
+type ResolvedLegendItem = {
+    /** Unique React key; deduplicated when two items share a dataKey. */
+    key: string
+    /** Semantic series key used for config lookup, muting and clicks. */
+    dataKey: string
+    color?: string
+    payloadItem?: LegendPayloadItem
+}
+
+function getLegendItemKey(item: LegendPayloadItem, nameKey?: string): string {
     if (nameKey) {
         const nestedPayload =
-            item.payload &&
-            typeof item.payload === 'object' &&
-            item.payload !== null
+            typeof item.payload === 'object' && item.payload !== null
                 ? (item.payload as Record<string, unknown>)
                 : undefined
-        const fromItem = (item as Record<string, unknown>)[nameKey]
-        const fromPayload = nestedPayload?.[nameKey]
-        if (typeof fromItem === 'string' || typeof fromItem === 'number') {
-            return String(fromItem)
-        }
-        if (typeof fromPayload === 'string' || typeof fromPayload === 'number') {
-            return String(fromPayload)
-        }
-        // Pie legend payload often stores the slice name in `value`.
-        if (typeof item.value === 'string' || typeof item.value === 'number') {
-            return String(item.value)
+        const candidates = [
+            (item as unknown as Record<string, unknown>)[nameKey],
+            nestedPayload?.[nameKey],
+            // Pie legend payload often stores the slice name in `value`.
+            item.value,
+        ]
+        for (const candidate of candidates) {
+            if (typeof candidate === 'string' || typeof candidate === 'number') {
+                return String(candidate)
+            }
         }
     }
 
-    const dataKey = item.dataKey
-    if (typeof dataKey === 'string' || typeof dataKey === 'number') {
-        return String(dataKey)
+    // `dataKey` may also be an accessor function; only literals are usable.
+    if (typeof item.dataKey === 'string' || typeof item.dataKey === 'number') {
+        return String(item.dataKey)
     }
 
     return 'value'
+}
+
+function resolveLegendItems(
+    config: ChartConfig,
+    items: ChartLegendItem[] | undefined,
+    payload: RechartsPrimitive.DefaultLegendContentProps['payload'],
+    nameKey?: string,
+): ResolvedLegendItem[] {
+    const withoutKeys = items
+        ? items.map((item) => ({
+              dataKey: item.dataKey,
+              color:
+                  item.color ??
+                  config[item.dataKey]?.color ??
+                  `var(--color-${item.dataKey})`,
+          }))
+        : (payload ?? [])
+              .filter((item) => item.type !== 'none')
+              .map((item) => ({
+                  dataKey: getLegendItemKey(item, nameKey),
+                  color: item.color,
+                  payloadItem: item,
+              }))
+
+    // Two items can resolve to the same dataKey (e.g. shared fallback);
+    // suffix duplicates so React keys stay unique.
+    const seen = new Map<string, number>()
+    return withoutKeys.map((item) => {
+        const occurrence = seen.get(item.dataKey) ?? 0
+        seen.set(item.dataKey, occurrence + 1)
+        return {
+            ...item,
+            key: occurrence === 0 ? item.dataKey : `${item.dataKey}-${occurrence}`,
+        }
+    })
 }
 
 function ChartLegendContent({
@@ -335,24 +373,10 @@ function ChartLegendContent({
     items?: ChartLegendItem[]
 } & RechartsPrimitive.DefaultLegendContentProps) {
     const { config } = useChart()
-    const mutedSet = new Set(mutedKeys ?? [])
+    const mutedSet = new Set(mutedKeys)
+    const interactive = Boolean(onItemClick)
 
-    const legendItems = items
-        ? items.map((item) => ({
-              dataKey: item.dataKey,
-              color:
-                  item.color ??
-                  config[item.dataKey]?.color ??
-                  `var(--color-${item.dataKey})`,
-          }))
-        : (payload ?? [])
-              .filter((item) => item.type !== 'none')
-              .map((item) => ({
-                  dataKey: getLegendItemKey(item, nameKey),
-                  color: item.color,
-                  payloadItem: item,
-              }))
-
+    const legendItems = resolveLegendItems(config, items, payload, nameKey)
     if (!legendItems.length) {
         return null
     }
@@ -366,17 +390,10 @@ function ChartLegendContent({
             )}
         >
             {legendItems.map((item) => {
-                const key = item.dataKey
-                const itemConfig =
-                    'payloadItem' in item && item.payloadItem
-                        ? getPayloadConfigFromPayload(
-                              config,
-                              item.payloadItem,
-                              key,
-                          )
-                        : config[key]
-                const isMuted = mutedSet.has(key)
-                const interactive = Boolean(onItemClick)
+                const itemConfig = item.payloadItem
+                    ? getPayloadConfigFromPayload(config, item.payloadItem, item.dataKey)
+                    : config[item.dataKey]
+                const isMuted = mutedSet.has(item.dataKey)
 
                 const content = (
                     <>
@@ -385,12 +402,10 @@ function ChartLegendContent({
                         ) : (
                             <div
                                 className="h-2 w-2 shrink-0 rounded-[2px]"
-                                style={{
-                                    backgroundColor: item.color,
-                                }}
+                                style={{ backgroundColor: item.color }}
                             />
                         )}
-                        {itemConfig?.label ?? key}
+                        {itemConfig?.label ?? item.dataKey}
                     </>
                 )
 
@@ -404,11 +419,11 @@ function ChartLegendContent({
                 if (interactive) {
                     return (
                         <button
-                            key={key}
+                            key={item.key}
                             type="button"
                             className={itemClassName}
                             aria-pressed={!isMuted}
-                            onClick={() => onItemClick?.(key)}
+                            onClick={() => onItemClick?.(item.dataKey)}
                         >
                             {content}
                         </button>
@@ -416,7 +431,7 @@ function ChartLegendContent({
                 }
 
                 return (
-                    <div key={key} className={itemClassName}>
+                    <div key={item.key} className={itemClassName}>
                         {content}
                     </div>
                 )
