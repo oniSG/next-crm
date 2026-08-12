@@ -2,6 +2,7 @@
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
@@ -50,13 +51,18 @@ export function RelatooIndex() {
                 title="Nejlepší čas na odesílání e-mailů"
                 description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-time"
+                action={
+                    <InfoTooltip>
+                        <p>
+                            Přehled z agregovaných dat unikátních otevření v půlhodinových
+                            intervalech, mapující aktivitu návštěvníků v akcích během dne.
+                        </p>
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'nejlepsi-cas-na-odesilani-emailu',
                     headers: ['Čas', 'Počet'],
-                    rows: BEST_SEND_TIME_BY_SLOT.map((row) => [
-                        row.label,
-                        row.pocet,
-                    ]),
+                    rows: BEST_SEND_TIME_BY_SLOT.map((row) => [row.label, row.pocet]),
                 }}
                 tabs={[
                     {
@@ -97,13 +103,16 @@ export function RelatooIndex() {
                 title="Nejlepší den na odesílání e-mailů"
                 description="Průměr unikátně otevřených za celou dobu."
                 queryKey="view-best-send-day"
+                action={
+                    <InfoTooltip>
+                        Přehled z agregovaných dat unikátních otevření v daných dnech v
+                        týdnu, mapující aktivitu návštěvníků v akcích během týdne.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'nejlepsi-den-na-odesilani-emailu',
                     headers: ['Den', 'Počet'],
-                    rows: BEST_SEND_DAY_BY_WEEKDAY.map((row) => [
-                        row.label,
-                        row.pocet,
-                    ]),
+                    rows: BEST_SEND_DAY_BY_WEEKDAY.map((row) => [row.label, row.pocet]),
                 }}
                 tabs={[
                     {
@@ -143,6 +152,15 @@ export function RelatooIndex() {
                 title="Flowchart e-mailových kampaní"
                 description="Statistiky e-mailových kampaní za celou dobu."
                 queryKey="view-email-funnel"
+                action={
+                    <InfoTooltip>
+                        Flowchart e-mailových kampaní graficky znázorňuje statistiku a
+                        úspěšnost e-mailových kampaní za posledních 30 dní. Pokud se vám
+                        nezobrazují informace o celkovém počtu doručených e-mailů, nebyly
+                        za posledních 30 dní poslány žádné e-maily a zobrazené informace
+                        se tak týkají interakcí s dříve poslanými e-maily.
+                    </InfoTooltip>
+                }
             >
                 <SankeyChart data={EMAIL_FUNNEL_FLOW} className="min-h-80" />
             </DataVisulaizationCard>
@@ -151,6 +169,13 @@ export function RelatooIndex() {
                 title="Typy odhlášení"
                 description="Rozložení odhlášení podle typu souhlasu za celou dobu."
                 queryKey="view-unsubscribe-types"
+                action={
+                    <InfoTooltip>
+                        Přehledové zobrazení agregovaného počtu tří typů odhlášení
+                        GDPR souhlasů napříč všemi komunikačními kanály (e-mail + SMS
+                        + push).
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'typy-odhlaseni',
                     headers: [
@@ -181,7 +206,6 @@ export function RelatooIndex() {
                                 stacked
                                 showYAxis
                                 xAxisLabel="Počet"
-                                yAxisLabel="Kategorie"
                                 formatValue={formatExpertCount}
                                 legendQueryKey="relatoo-unsubscribe-types-muted"
                                 className="h-48"

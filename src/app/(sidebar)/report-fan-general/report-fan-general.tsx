@@ -2,6 +2,7 @@
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
@@ -93,6 +94,12 @@ export function ReportFanGeneral() {
                 queryKey="view-email"
                 title="E-mail"
                 description="Přehled ve zvoleném období."
+                action={
+                    <InfoTooltip>
+                        Časový vývoj úspěšnosti e-mailových kampaní za vybrané
+                        období.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'email',
                     headers: [
@@ -153,6 +160,11 @@ export function ReportFanGeneral() {
                 queryKey="view-sms"
                 title="SMS"
                 description="Přehled ve zvoleném období."
+                action={
+                    <InfoTooltip>
+                        Časový vývoj úspěšnosti SMS kampaní za vybrané období.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'sms',
                     headers: [
@@ -213,6 +225,12 @@ export function ReportFanGeneral() {
                 queryKey="view-push"
                 title="Push notifikace"
                 description="Přehled ve zvoleném období."
+                action={
+                    <InfoTooltip>
+                        Časový vývoj úspěšnosti kampaní v mobilní aplikaci za
+                        vybrané období.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'push-notifikace',
                     headers: [
