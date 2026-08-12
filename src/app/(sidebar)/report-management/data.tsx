@@ -265,37 +265,6 @@ export const VISITOR_GROWTH_SERIES: ReportChartSeries[] = [
     { key: 'netChange', label: 'Net growth', color: 'var(--chart-1)' },
 ]
 
-export const DELIVERED_COLUMNS: ReportTableColumn[] = [
-    { key: 'delivered', label: 'Delivered', format: 'number', emphasize: true },
-]
-
-export const WON_BUSINESS_CASE_COLUMNS: ReportTableColumn[] = [
-    { key: 'count', label: 'Won cases', format: 'number' },
-    { key: 'value', label: 'Total volume', format: 'currency', emphasize: true },
-]
-
-export const WON_BUSINESS_CASE_SERIES: ReportChartSeries[] = [
-    { key: 'value', label: 'Won business cases', color: 'var(--chart-1)' },
-]
-
-export const BUSINESS_CASE_STATUS_COLUMNS: ReportTableColumn[] = [
-    { key: 'won', label: 'Won', format: 'number' },
-    { key: 'open', label: 'Open', format: 'number' },
-    { key: 'cancelled', label: 'Cancelled', format: 'number' },
-    { key: 'total', label: 'Total', format: 'number', emphasize: true },
-]
-
-export const BUSINESS_CASE_STATUS_SERIES: ReportChartSeries[] = [
-    { key: 'won', label: 'Won', color: 'var(--chart-1)' },
-    { key: 'open', label: 'Open', color: 'var(--chart-2)' },
-    { key: 'cancelled', label: 'Cancelled', color: 'var(--chart-3)' },
-]
-
-export const ADVERTISING_SPACES_CONFIG = {
-    occupied: { label: 'Taken', color: 'var(--chart-1)' },
-    free: { label: 'Available', color: 'var(--chart-8)' },
-} satisfies ChartConfig
-
 export const MANAGEMENT_REPORT_DATA = managementReport as ManagementReportData
 
 export function filterByPeriodRange<T extends { period: string }>(
@@ -335,19 +304,6 @@ export function toTicketCountRows(points: TicketSalesPoint[]): ReportSectionRow[
     }))
 }
 
-export function toBusinessCaseStatusRows(
-    points: BusinessCasePoint[],
-): ReportSectionRow[] {
-    return points.map((point) => ({
-        period: point.period,
-        label: point.label,
-        won: point.won.count,
-        open: point.open.count,
-        cancelled: point.cancelled.count,
-        total: point.won.count + point.open.count + point.cancelled.count,
-    }))
-}
-
 export function getManagementReportPeriodView(
     report: ManagementReportData,
     range: DateRange,
@@ -359,30 +315,6 @@ export function getManagementReportPeriodView(
     )
     const ticketDevelopment = filterByPeriodRange(
         report.tickets.development,
-        range,
-    )
-    const emailDevelopment = filterByPeriodRange(
-        report.communication.email.development,
-        range,
-    )
-    const pushDevelopment = filterByPeriodRange(
-        report.communication.push.development,
-        range,
-    )
-    const smsDevelopment = filterByPeriodRange(
-        report.communication.sms.development,
-        range,
-    )
-    const advertisingDevelopment = filterByPeriodRange(
-        report.business.advertisingSpaces.development,
-        range,
-    )
-    const wonBusinessCasesDevelopment = filterByPeriodRange(
-        report.business.wonCases.development,
-        range,
-    )
-    const businessCaseDevelopment = filterByPeriodRange(
-        report.business.caseDevelopment,
         range,
     )
 
@@ -403,39 +335,10 @@ export function getManagementReportPeriodView(
         (point) => point.eventCount,
     )
 
-    const emailDelivered = sumBy(emailDevelopment, (point) => point.delivered)
-    const emailOpened = sumBy(
-        emailDevelopment,
-        (point) => point.openedUnique ?? 0,
-    )
-    const emailClicked = sumBy(
-        emailDevelopment,
-        (point) => point.clickedUnique ?? 0,
-    )
-    const pushDelivered = sumBy(pushDevelopment, (point) => point.delivered)
-    const pushFailed = sumBy(pushDevelopment, (point) => point.failed)
-    const smsDelivered = sumBy(smsDevelopment, (point) => point.delivered)
-    const smsFailed = sumBy(smsDevelopment, (point) => point.failed)
-
-    const emailOpenRate = emailDelivered
-        ? (emailOpened / emailDelivered) * 100
-        : 0
-    const emailClickRate = emailDelivered
-        ? (emailClicked / emailDelivered) * 100
-        : 0
-    const pushTotal = pushDelivered + pushFailed
-    const pushFailureRate = pushTotal ? (pushFailed / pushTotal) * 100 : 0
-
     return {
         fanDevelopment,
         seasonTicketDevelopment,
         ticketDevelopment,
-        emailDevelopment,
-        pushDevelopment,
-        smsDevelopment,
-        advertisingDevelopment,
-        wonBusinessCasesDevelopment,
-        businessCaseDevelopment,
         lastFanPoint,
         fanNetGrowth,
         seasonTicketsSold,
@@ -443,14 +346,5 @@ export function getManagementReportPeriodView(
         ticketsSold,
         ticketsRevenue,
         ticketsEventCount,
-        emailDelivered,
-        emailOpenRate,
-        emailClickRate,
-        pushDelivered,
-        pushFailed,
-        pushFailureRate,
-        smsDelivered,
-        smsFailed,
-        currentAdvertisingSpaces: advertisingDevelopment.at(-1),
     }
 }

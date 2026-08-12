@@ -1,6 +1,7 @@
 'use client'
 
 import {
+    ArrowLeftIcon,
     ChartColumnIcon,
     CircleDollarSignIcon,
     ScanLineIcon,
@@ -16,8 +17,11 @@ import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { Button } from '@/components/ui/button'
 
 import {
+    EVENT_LIST,
+    EVENT_LIST_COLUMNS,
     EVENT_REPORT_CHART_SERIES,
     EVENT_SALES_BY_DAY_CONFIG,
     EVENT_SALES_BY_PRICE_CONFIG,
@@ -25,13 +29,14 @@ import {
     EVENT_SOLD_USED_CONFIG,
     formatEventCount,
     formatEventCurrency,
+    getEventReportById,
     getEventSoldUsedRows,
-    REPORT_EVENT,
     SALES_BY_DAY_COLUMNS,
     SALES_BY_PRICE_COLUMNS,
     SALES_BY_SECTOR_COLUMNS,
     SOLD_USED_COLUMNS,
     type EventReportChartPoint,
+    type EventReportData,
 } from './data'
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -50,13 +55,58 @@ function sumSales(data: EventReportChartPoint[]) {
     )
 }
 
-export function EventReport() {
-    useQueryState(
+export function ReportEvent() {
+    const [eventId, setEventId] = useQueryState(
         'event',
-        parseAsString.withDefault(REPORT_EVENT.id).withOptions({ clearOnDefault: false }),
+        parseAsString.withOptions({ clearOnDefault: true }),
     )
-    const event = REPORT_EVENT
 
+    if (!eventId) {
+        return <EventListView onSelect={(id) => void setEventId(id)} />
+    }
+
+    const event = getEventReportById(eventId)
+    if (!event) {
+        return <EventListView onSelect={(id) => void setEventId(id)} />
+    }
+
+    return (
+        <div className="flex w-full max-w-6xl flex-col gap-4">
+            <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="-ml-2 w-fit"
+                onClick={() => void setEventId(null)}
+            >
+                <ArrowLeftIcon className="size-4" />
+                Zpět na seznam událostí
+            </Button>
+            <EventReportDetail event={event} />
+        </div>
+    )
+}
+
+function EventListView({ onSelect }: { onSelect: (id: string) => void }) {
+    return (
+        <div className="flex w-full max-w-6xl flex-col gap-4">
+            <ReportHeaderCard
+                title="Report události"
+                description="Vyberte událost ze seznamu."
+            />
+            <DataVisulaizationCard title="Události" queryKey="event-list-view">
+                <SimpleTable
+                    data={EVENT_LIST}
+                    columns={EVENT_LIST_COLUMNS}
+                    getRowKey={(row) => row.id}
+                    onRowClick={(row) => onSelect(row.id)}
+                />
+            </DataVisulaizationCard>
+        </div>
+    )
+}
+
+function EventReportDetail({ event }: { event: EventReportData }) {
     const salesByDayTotal = sumSales(event.salesByDay)
     const salesByPriceTotal = sumSales(event.salesByPrice)
     const salesBySectorTotal = event.salesBySector.reduce(

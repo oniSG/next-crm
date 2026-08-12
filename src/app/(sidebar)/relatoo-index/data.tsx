@@ -7,7 +7,6 @@ import type { ChartConfig } from '@/components/ui/chart'
 import bestSendDay from './data/best-send-day.json'
 import bestSendTime from './data/best-send-time.json'
 import emailFunnelFlow from './data/email-funnel-flow.json'
-import emailMetricsStages from './data/email-metrics-stages.json'
 import topActions from './data/top-actions.json'
 import unsubscribeTypes from './data/unsubscribe-types.json'
 
@@ -125,12 +124,6 @@ export type BestSendPoint = {
     pocet: number
 }
 
-export type EmailMetricStage = {
-    label: string
-    pocet: number
-    percent: number
-}
-
 export type TopActionRow = {
     id: string
     name: string
@@ -215,8 +208,6 @@ export const UNSUBSCRIBE_TYPES_COLUMNS: SimpleTableColumn<UnsubscribeTypePoint>[
         },
     ]
 
-export const EMAIL_METRICS_STAGES = emailMetricsStages as EmailMetricStage[]
-
 export const TOP_ACTIONS = topActions as TopActionRow[]
 
 export const BEST_SEND_TIME_COLUMNS: SimpleTableColumn<BestSendPoint>[] = [
@@ -248,29 +239,6 @@ export const BEST_SEND_DAY_COLUMNS: SimpleTableColumn<BestSendPoint>[] = [
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => numberFormatter.format(row.pocet),
-    },
-]
-
-export const EMAIL_METRICS_COLUMNS: SimpleTableColumn<EmailMetricStage>[] = [
-    {
-        id: 'label',
-        header: 'Metrika',
-        cellClassName: 'font-medium',
-        cell: (row) => row.label,
-    },
-    {
-        id: 'pocet',
-        header: 'Počet',
-        headerClassName: 'text-right',
-        cellClassName: 'text-right tabular-nums',
-        cell: (row) => numberFormatter.format(row.pocet),
-    },
-    {
-        id: 'percent',
-        header: 'Podíl',
-        headerClassName: 'text-right',
-        cellClassName: 'text-right tabular-nums',
-        cell: (row) => `${percentFormatter.format(row.percent)} %`,
     },
 ]
 

@@ -3,6 +3,7 @@ import type { SimpleTableColumn } from '@/components/custom/statistics/simple-ta
 import type { ChartConfig } from '@/components/ui/chart'
 
 import events from './data/events.json'
+import eventList from './data/event-list.json'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const currencyFormatter = new Intl.NumberFormat('cs-CZ', {
@@ -16,6 +17,10 @@ export type ReportEventOption = {
     name: string
     date: string
     capacity: number
+}
+
+export type ReportEventListItem = ReportEventOption & {
+    venue: string
 }
 
 export type EventReportChartPoint = {
@@ -181,4 +186,49 @@ export function formatEventCurrency(value: number) {
     return currencyFormatter.format(value)
 }
 
-export const REPORT_EVENT = events as EventReportData
+const EVENT_REPORT_DETAIL = events as EventReportData
+
+export const EVENT_LIST = eventList as ReportEventListItem[]
+
+const dateFormatter = new Intl.DateTimeFormat('cs-CZ', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+})
+
+export const EVENT_LIST_COLUMNS: SimpleTableColumn<ReportEventListItem>[] = [
+    {
+        id: 'name',
+        header: 'Událost',
+        cellClassName: 'font-medium',
+        cell: (row) => row.name,
+    },
+    {
+        id: 'date',
+        header: 'Datum',
+        cell: (row) => dateFormatter.format(new Date(`${row.date}T00:00:00`)),
+    },
+    {
+        id: 'venue',
+        header: 'Místo',
+        cell: (row) => row.venue,
+    },
+    {
+        id: 'capacity',
+        header: 'Kapacita',
+        headerClassName: 'text-right',
+        cellClassName: 'text-right tabular-nums',
+        cell: (row) => numberFormatter.format(row.capacity),
+    },
+]
+
+/** Dočasně používá stejná data reportu; metadata se přebírají ze seznamu událostí. */
+export function getEventReportById(id: string): EventReportData | undefined {
+    const summary = EVENT_LIST.find((item) => item.id === id)
+    if (!summary) return undefined
+
+    return {
+        ...EVENT_REPORT_DETAIL,
+        ...summary,
+    }
+}

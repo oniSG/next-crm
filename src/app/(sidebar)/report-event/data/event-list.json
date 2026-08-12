@@ -1,0 +1,30 @@
+[
+    {
+        "id": "EVT-2026-001",
+        "name": "HC Relatoo Praha – Brno",
+        "date": "2026-01-17",
+        "venue": "Relatoo Arena",
+        "capacity": 13150
+    },
+    {
+        "id": "EVT-2026-002",
+        "name": "HC Relatoo Praha – Ostrava",
+        "date": "2026-02-08",
+        "venue": "Relatoo Arena",
+        "capacity": 13150
+    },
+    {
+        "id": "EVT-2026-003",
+        "name": "HC Relatoo Praha – Liberec",
+        "date": "2026-02-22",
+        "venue": "Relatoo Arena",
+        "capacity": 13150
+    },
+    {
+        "id": "EVT-2026-004",
+        "name": "HC Relatoo Praha – Sparta",
+        "date": "2026-03-14",
+        "venue": "Relatoo Arena",
+        "capacity": 13150
+    }
+]
