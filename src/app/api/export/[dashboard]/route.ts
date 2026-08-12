@@ -50,7 +50,18 @@ export async function GET(
 
     const requestUrl = new URL(request.url)
     const searchParams = new URLSearchParams(requestUrl.search)
-    const printUrl = `${requestUrl.origin}/print/${dashboard}?${searchParams.toString()}`
+    const pathParam = searchParams.get('path')
+    searchParams.delete('path')
+
+    if (pathParam) {
+        if (!pathParam.startsWith(`/${dashboard}`) || pathParam.includes('..')) {
+            return new Response('Invalid path', { status: 400 })
+        }
+    }
+
+    const printPath = pathParam ?? `/${dashboard}`
+    const query = searchParams.toString()
+    const printUrl = `${requestUrl.origin}/print${printPath}${query ? `?${query}` : ''}`
 
     let browser: Browser | undefined
     try {

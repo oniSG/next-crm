@@ -8,7 +8,8 @@ import {
     TableIcon,
     TicketCheckIcon,
 } from 'lucide-react'
-import { parseAsString, useQueryState } from 'nuqs'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
@@ -17,7 +18,8 @@ import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 import { SankeyChart } from '@/components/custom/statistics/sankey-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 import {
     EVENT_LIST,
@@ -29,7 +31,6 @@ import {
     EVENT_SOLD_USED_CONFIG,
     formatEventCount,
     formatEventCurrency,
-    getEventReportById,
     getEventSoldUsedRows,
     SALES_BY_DAY_COLUMNS,
     SALES_BY_PRICE_COLUMNS,
@@ -55,39 +56,9 @@ function sumSales(data: EventReportChartPoint[]) {
     )
 }
 
-export function ReportEvent() {
-    const [eventId, setEventId] = useQueryState(
-        'event',
-        parseAsString.withOptions({ clearOnDefault: true }),
-    )
+export function ReportEventList() {
+    const router = useRouter()
 
-    if (!eventId) {
-        return <EventListView onSelect={(id) => void setEventId(id)} />
-    }
-
-    const event = getEventReportById(eventId)
-    if (!event) {
-        return <EventListView onSelect={(id) => void setEventId(id)} />
-    }
-
-    return (
-        <div className="flex w-full max-w-6xl flex-col gap-4">
-            <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="-ml-2 w-fit"
-                onClick={() => void setEventId(null)}
-            >
-                <ArrowLeftIcon className="size-4" />
-                Zpět na seznam událostí
-            </Button>
-            <EventReportDetail event={event} />
-        </div>
-    )
-}
-
-function EventListView({ onSelect }: { onSelect: (id: string) => void }) {
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
             <ReportHeaderCard
@@ -99,14 +70,19 @@ function EventListView({ onSelect }: { onSelect: (id: string) => void }) {
                     data={EVENT_LIST}
                     columns={EVENT_LIST_COLUMNS}
                     getRowKey={(row) => row.id}
-                    onRowClick={(row) => onSelect(row.id)}
+                    onRowClick={(row) => router.push(`/report-event/${row.id}`)}
                 />
             </DataVisulaizationCard>
         </div>
     )
 }
 
-function EventReportDetail({ event }: { event: EventReportData }) {
+type ReportEventDetailProps = {
+    event: EventReportData
+    showBack?: boolean
+}
+
+export function ReportEventDetail({ event, showBack = true }: ReportEventDetailProps) {
     const salesByDayTotal = sumSales(event.salesByDay)
     const salesByPriceTotal = sumSales(event.salesByPrice)
     const salesBySectorTotal = event.salesBySector.reduce(
@@ -117,6 +93,18 @@ function EventReportDetail({ event }: { event: EventReportData }) {
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
+            {showBack ? (
+                <Link
+                    href="/report-event"
+                    className={cn(
+                        buttonVariants({ variant: 'ghost', size: 'sm' }),
+                        '-ml-2 w-fit',
+                    )}
+                >
+                    <ArrowLeftIcon className="size-4" />
+                    Zpět na seznam událostí
+                </Link>
+            ) : null}
             <ReportHeaderCard
                 title={event.name}
                 description="Overview of ticket sales, entrances and revenue for this event."
