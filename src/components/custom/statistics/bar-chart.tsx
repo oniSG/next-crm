@@ -1,5 +1,6 @@
 'use client'
 
+import { useId } from 'react'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
@@ -13,6 +14,7 @@ import {
 import { cn } from '@/lib/utils'
 
 import { formatCompactNumber } from './format-compact-number'
+import { useMutedSeries } from './use-muted-series'
 
 export type BarChartProps = {
     data: object[]
@@ -35,6 +37,8 @@ export type BarChartProps = {
     formatValue?: (value: number) => string
     formatSecondaryValue?: (value: number) => string
     emptyMessage?: string
+    /** When set, legend clicks mute/unmute series and persist state in the URL. */
+    legendQueryKey?: string
 }
 
 function truncateCategoryLabel(value: unknown, maxLength: number) {
@@ -79,7 +83,15 @@ export function BarChart({
     formatValue,
     formatSecondaryValue,
     emptyMessage,
+    legendQueryKey,
 }: BarChartProps) {
+    const reactId = useId().replace(/:/g, '')
+    const chartId = legendQueryKey ?? `bar-chart-${reactId}`
+    const { orderedSeries, visibleSeries, mutedKeys, toggleSeries } = useMutedSeries(
+        legendQueryKey,
+        series,
+    )
+
     if (data.length === 0) {
         return (
             <div
@@ -95,25 +107,26 @@ export function BarChart({
 
     const isHorizontal = orientation === 'horizontal'
     const hasSecondaryAxis = !isHorizontal && secondarySeries.length > 0
-    const primarySeries = hasSecondaryAxis
-        ? series.filter((key) => !secondarySeries.includes(key))
-        : series
+    const secondarySet = new Set(secondarySeries)
+    const visiblePrimarySeries = visibleSeries.filter((key) => !secondarySet.has(key))
+    const visibleSecondarySeries = visibleSeries.filter((key) => secondarySet.has(key))
     const formatCategoryTick = categoryMaxLength
         ? (value: unknown) => truncateCategoryLabel(value, categoryMaxLength)
         : undefined
-    const xAxisHeight = angledXAxis
-        ? xAxisLabel
-            ? 78
-            : 56
-        : xAxisLabel
-          ? 40
-          : undefined
+    const xAxisHeight = angledXAxis ? (xAxisLabel ? 78 : 56) : xAxisLabel ? 40 : undefined
     // Room for axis label + legend row; legend is pinned to container bottom.
     const bottomMargin = (angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4) + 24
     const secondaryKeys = new Set(secondarySeries)
+    const legendItems = orderedSeries.map((key) => ({
+        dataKey: key,
+        color: config[key]?.color ?? `var(--color-${key})`,
+    }))
+    const leftStackId = `${chartId}-left`
+    const rightStackId = `${chartId}-right`
 
     return (
         <ChartContainer
+            id={chartId}
             config={config}
             className={cn(
                 'aspect-auto h-full min-h-56 w-full [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto',
@@ -121,6 +134,7 @@ export function BarChart({
             )}
         >
             <RechartsBarChart
+                id={chartId}
                 accessibilityLayer
                 data={data}
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
@@ -151,9 +165,7 @@ export function BarChart({
                             axisLine={false}
                             tickMargin={8}
                             height={xAxisHeight}
-                            tickFormatter={(value) =>
-                                formatCompactNumber(Number(value))
-                            }
+                            tickFormatter={(value) => formatCompactNumber(Number(value))}
                             label={
                                 xAxisLabel
                                     ? {
@@ -287,8 +299,7 @@ export function BarChart({
                                               item.color ??
                                               (
                                                   item.payload as
-                                                      | { fill?: string }
-                                                      | undefined
+                                                      { fill?: string } | undefined
                                               )?.fill
 
                                           return (
@@ -315,46 +326,61 @@ export function BarChart({
                             }
                             labelFormatter={(_value, tooltipPayload) => {
                                 const row = tooltipPayload?.[0]?.payload as
-                                    | Record<string, unknown>
-                                    | undefined
+                                    Record<string, unknown> | undefined
                                 const category = row?.[categoryKey]
                                 return category != null ? String(category) : ''
                             }}
                         />
                     }
                 />
-                <ChartLegend content={<ChartLegendContent />} />
-                {primarySeries.map((key, i) => (
-                    <Bar
-                        key={key}
-                        dataKey={key}
-                        fill={`var(--color-${key})`}
-                        yAxisId={hasSecondaryAxis ? 'left' : undefined}
-                        stackId={stacked ? 'left' : undefined}
-                        radius={getBarRadius(
-                            i,
-                            primarySeries.length,
-                            stacked,
-                            orientation,
-                        )}
-                    />
-                ))}
-                {hasSecondaryAxis &&
-                    secondarySeries.map((key, i) => (
+                <ChartLegend
+                    content={
+                        <ChartLegendContent
+                            items={legendItems}
+                            mutedKeys={mutedKeys}
+                            onItemClick={toggleSeries}
+                        />
+                    }
+                />
+                {visiblePrimarySeries.map((key, i) => {
+                    const radius = getBarRadius(
+                        i,
+                        visiblePrimarySeries.length,
+                        stacked,
+                        orientation,
+                    )
+                    return (
                         <Bar
-                            key={key}
+                            // Remount when stack position changes — Recharts won't
+                            // reliably update `radius` on an existing Bar instance.
+                            key={`${chartId}-${key}-${i}-${visiblePrimarySeries.length}`}
                             dataKey={key}
                             fill={`var(--color-${key})`}
-                            yAxisId="right"
-                            stackId={stacked ? 'right' : undefined}
-                            radius={getBarRadius(
-                                i,
-                                secondarySeries.length,
-                                stacked,
-                                orientation,
-                            )}
+                            yAxisId={hasSecondaryAxis ? 'left' : undefined}
+                            stackId={stacked ? leftStackId : undefined}
+                            radius={radius}
                         />
-                    ))}
+                    )
+                })}
+                {hasSecondaryAxis &&
+                    visibleSecondarySeries.map((key, i) => {
+                        const radius = getBarRadius(
+                            i,
+                            visibleSecondarySeries.length,
+                            stacked,
+                            orientation,
+                        )
+                        return (
+                            <Bar
+                                key={`${chartId}-${key}-${i}-${visibleSecondarySeries.length}`}
+                                dataKey={key}
+                                fill={`var(--color-${key})`}
+                                yAxisId="right"
+                                stackId={stacked ? rightStackId : undefined}
+                                radius={radius}
+                            />
+                        )
+                    })}
             </RechartsBarChart>
         </ChartContainer>
     )

@@ -276,19 +276,84 @@ function ChartTooltipContent({
 
 const ChartLegend = RechartsPrimitive.Legend
 
+export type ChartLegendItem = {
+    dataKey: string
+    color?: string
+}
+
+function getLegendItemKey(
+    item: {
+        dataKey?: string | number | ((obj: any) => any)
+        value?: unknown
+        payload?: unknown
+    },
+    nameKey?: string,
+) {
+    if (nameKey) {
+        const nestedPayload =
+            item.payload &&
+            typeof item.payload === 'object' &&
+            item.payload !== null
+                ? (item.payload as Record<string, unknown>)
+                : undefined
+        const fromItem = (item as Record<string, unknown>)[nameKey]
+        const fromPayload = nestedPayload?.[nameKey]
+        if (typeof fromItem === 'string' || typeof fromItem === 'number') {
+            return String(fromItem)
+        }
+        if (typeof fromPayload === 'string' || typeof fromPayload === 'number') {
+            return String(fromPayload)
+        }
+        // Pie legend payload often stores the slice name in `value`.
+        if (typeof item.value === 'string' || typeof item.value === 'number') {
+            return String(item.value)
+        }
+    }
+
+    const dataKey = item.dataKey
+    if (typeof dataKey === 'string' || typeof dataKey === 'number') {
+        return String(dataKey)
+    }
+
+    return 'value'
+}
+
 function ChartLegendContent({
     className,
     hideIcon = false,
     payload,
     verticalAlign = 'bottom',
     nameKey,
+    mutedKeys,
+    onItemClick,
+    items,
 }: React.ComponentProps<'div'> & {
     hideIcon?: boolean
     nameKey?: string
+    mutedKeys?: string[]
+    onItemClick?: (key: string) => void
+    items?: ChartLegendItem[]
 } & RechartsPrimitive.DefaultLegendContentProps) {
     const { config } = useChart()
+    const mutedSet = new Set(mutedKeys ?? [])
 
-    if (!payload?.length) {
+    const legendItems = items
+        ? items.map((item) => ({
+              dataKey: item.dataKey,
+              color:
+                  item.color ??
+                  config[item.dataKey]?.color ??
+                  `var(--color-${item.dataKey})`,
+          }))
+        : (payload ?? [])
+              .filter((item) => item.type !== 'none')
+              .map((item) => ({
+                  dataKey: getLegendItemKey(item, nameKey),
+                  color: item.color,
+                  payloadItem: item,
+              }))
+
+    if (!legendItems.length) {
         return null
     }
 
@@ -300,33 +365,62 @@ function ChartLegendContent({
                 className,
             )}
         >
-            {payload
-                .filter((item) => item.type !== 'none')
-                .map((item, index) => {
-                    const key = `${nameKey ?? item.dataKey ?? 'value'}`
-                    const itemConfig = getPayloadConfigFromPayload(config, item, key)
+            {legendItems.map((item) => {
+                const key = item.dataKey
+                const itemConfig =
+                    'payloadItem' in item && item.payloadItem
+                        ? getPayloadConfigFromPayload(
+                              config,
+                              item.payloadItem,
+                              key,
+                          )
+                        : config[key]
+                const isMuted = mutedSet.has(key)
+                const interactive = Boolean(onItemClick)
 
+                const content = (
+                    <>
+                        {itemConfig?.icon && !hideIcon ? (
+                            <itemConfig.icon />
+                        ) : (
+                            <div
+                                className="h-2 w-2 shrink-0 rounded-[2px]"
+                                style={{
+                                    backgroundColor: item.color,
+                                }}
+                            />
+                        )}
+                        {itemConfig?.label ?? key}
+                    </>
+                )
+
+                const itemClassName = cn(
+                    '[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3',
+                    isMuted && 'text-muted-foreground opacity-50',
+                    interactive &&
+                        'hover:text-foreground cursor-pointer hover:underline',
+                )
+
+                if (interactive) {
                     return (
-                        <div
-                            key={index}
-                            className={cn(
-                                '[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3',
-                            )}
+                        <button
+                            key={key}
+                            type="button"
+                            className={itemClassName}
+                            aria-pressed={!isMuted}
+                            onClick={() => onItemClick?.(key)}
                         >
-                            {itemConfig?.icon && !hideIcon ? (
-                                <itemConfig.icon />
-                            ) : (
-                                <div
-                                    className="h-2 w-2 shrink-0 rounded-[2px]"
-                                    style={{
-                                        backgroundColor: item.color,
-                                    }}
-                                />
-                            )}
-                            {itemConfig?.label}
-                        </div>
+                            {content}
+                        </button>
                     )
-                })}
+                }
+
+                return (
+                    <div key={key} className={itemClassName}>
+                        {content}
+                    </div>
+                )
+            })}
         </div>
     )
 }

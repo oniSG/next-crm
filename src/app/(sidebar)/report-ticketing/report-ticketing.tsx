@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 import { parseAsIsoDate, useQueryState } from 'nuqs'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
@@ -45,19 +46,12 @@ export function ReportTicketing() {
 
     const report = TICKETING_REPORT_DATA
     const ticketsByEvent = topSoldUsedByTotal(
-        filterSoldUsedByDateRange(
-            report.ticketsSoldUsedByEvent,
-            eventDateRange,
-        ),
+        filterSoldUsedByDateRange(report.ticketsSoldUsedByEvent, eventDateRange),
     )
     const ticketsByEventTotal = sumSoldUsed(ticketsByEvent)
-    const ticketsByEventChartHeight = Math.max(
-        384,
-        ticketsByEvent.length * 36 + 64,
-    )
+    const ticketsByEventChartHeight = Math.max(384, ticketsByEvent.length * 36 + 64)
     const ticketsVsSeasonTickets = report.ticketsVsSeasonTicketsBySeason
-    const ticketsVsSeasonTicketsTotal =
-        sumTicketsVsSeasonTickets(ticketsVsSeasonTickets)
+    const ticketsVsSeasonTicketsTotal = sumTicketsVsSeasonTickets(ticketsVsSeasonTickets)
     const seasonTicketsBySeason = report.seasonTicketsSoldUsedBySeason
     const seasonTicketsBySeasonTotal = sumSoldUsed(seasonTicketsBySeason)
     const ticketsBySeason = report.ticketsSoldUsedBySeason
@@ -72,16 +66,17 @@ export function ReportTicketing() {
 
             <DataVisulaizationCard
                 title="Porovnání prodaných a použitých vstupenek na jednotlivých událostech"
-                description="Prodané a použité vstupenky podle jednotlivých událostí."
                 queryKey="ticketing-tickets-by-event-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění poměru mezi prodanými a použitými vstupenkami
+                        na jednotlivé události, identifikované podle jejich ID.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'prodane-a-pouzite-vstupenky-na-udalostech',
                     headers: ['Název', 'Prodané', 'Použité'],
-                    rows: ticketsByEvent.map((row) => [
-                        row.label,
-                        row.sold,
-                        row.used,
-                    ]),
+                    rows: ticketsByEvent.map((row) => [row.label, row.sold, row.used]),
                 }}
                 dateRange={{
                     value: eventDateRange,
@@ -138,8 +133,14 @@ export function ReportTicketing() {
 
             <DataVisulaizationCard
                 title="Poměr vstupenek a permanentek za sezónu"
-                description="Podíl vstupenek a permanentek podle sezóny."
                 queryKey="ticketing-tickets-vs-season-tickets-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění poměru mezi prodanými vstupenkami a
+                        permanentkami za poslední sezónu. Pokud se vám graf nezobrazuje /
+                        nezobrazuje správně, nemáte definované sezóny v záložce nastavení.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'pomer-vstupenek-a-permanentek-za-sezonu',
                     headers: ['Sezóna', 'Vstupenky', 'Permanentky'],
@@ -194,8 +195,13 @@ export function ReportTicketing() {
 
             <DataVisulaizationCard
                 title="Porovnání prodaných a použitých permanentek za sezónu"
-                description="Počet prodaných a použitých permanentek podle sezóny."
                 queryKey="ticketing-season-tickets-by-season-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění poměru mezi prodanými a použitými
+                        permanentkami v jednotlivých sezónách.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'prodane-a-pouzite-permanentky-za-sezonu',
                     headers: ['Název', 'Prodané', 'Použité'],
@@ -234,12 +240,8 @@ export function ReportTicketing() {
                                 getRowKey={(row) => row.id}
                                 footer={[
                                     'Celkem',
-                                    formatTicketingCount(
-                                        seasonTicketsBySeasonTotal.sold,
-                                    ),
-                                    formatTicketingCount(
-                                        seasonTicketsBySeasonTotal.used,
-                                    ),
+                                    formatTicketingCount(seasonTicketsBySeasonTotal.sold),
+                                    formatTicketingCount(seasonTicketsBySeasonTotal.used),
                                 ]}
                             />
                         ),
@@ -249,16 +251,17 @@ export function ReportTicketing() {
 
             <DataVisulaizationCard
                 title="Porovnání prodaných a použitých vstupenek za sezónu"
-                description="Počet prodaných a použitých vstupenek podle sezóny."
                 queryKey="ticketing-tickets-by-season-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění poměru mezi prodanými a použitými vstupenkami
+                        v jednotlivých sezónách.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'prodane-a-pouzite-vstupenky-za-sezonu',
                     headers: ['Název', 'Prodané', 'Použité'],
-                    rows: ticketsBySeason.map((row) => [
-                        row.label,
-                        row.sold,
-                        row.used,
-                    ]),
+                    rows: ticketsBySeason.map((row) => [row.label, row.sold, row.used]),
                 }}
                 tabs={[
                     {

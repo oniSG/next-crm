@@ -188,6 +188,7 @@ export function ReportManagement() {
                                 yAxisLabel="CZK"
                                 className="h-80"
                                 emptyMessage="No ticket sales data for the selected period."
+                                legendQueryKey="management-ticket-revenue-muted"
                             />
                         ),
                     },
@@ -252,6 +253,7 @@ export function ReportManagement() {
                                 yAxisLabel="Count"
                                 className="h-80"
                                 emptyMessage="No ticket sales data for the selected period."
+                                legendQueryKey="management-ticket-count-muted"
                             />
                         ),
                     },
@@ -313,6 +315,7 @@ export function ReportManagement() {
                                 yAxisLabel="Count"
                                 className="h-80"
                                 emptyMessage="No visitor data for the selected period."
+                                legendQueryKey="management-visitor-total-muted"
                             />
                         ),
                     },
@@ -372,6 +375,7 @@ export function ReportManagement() {
                                 yAxisLabel="Count"
                                 className="h-80"
                                 emptyMessage="No visitor growth data for the selected period."
+                                legendQueryKey="management-visitor-growth-muted"
                             />
                         ),
                     },

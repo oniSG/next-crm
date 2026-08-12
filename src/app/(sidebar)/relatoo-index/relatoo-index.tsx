@@ -183,6 +183,7 @@ export function RelatooIndex() {
                                 xAxisLabel="Počet"
                                 yAxisLabel="Kategorie"
                                 formatValue={formatExpertCount}
+                                legendQueryKey="relatoo-unsubscribe-types-muted"
                                 className="h-48"
                             />
                         ),

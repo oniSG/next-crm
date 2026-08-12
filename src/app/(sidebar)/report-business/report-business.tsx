@@ -2,6 +2,7 @@
 
 import { ChartColumnIcon, ChartPieIcon, TableIcon } from 'lucide-react'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
@@ -55,7 +56,12 @@ export function ReportBusiness() {
 
             <DataVisulaizationCard
                 title="Příjem z obchodních případů po týdnech"
-                description="Součet příjmů podle týdne vytvoření obchodního případu."
+                action={
+                    <InfoTooltip>
+                        Statistický přehled příjmů z obchodních případů a spolupráce za
+                        posledních 30 dní nebo jiný vámi zvolený časový interval.
+                    </InfoTooltip>
+                }
                 queryKey="business-weekly-revenue-view"
                 tableExportable={{
                     filename: 'prijem-z-obchodnich-pripadu-po-tydnech',
@@ -103,16 +109,18 @@ export function ReportBusiness() {
 
             <DataVisulaizationCard
                 title="Počet obchodních případů a potenciální příjem"
-                description="Objem a potenciální příjem podle stavu obchodního případu."
                 queryKey="business-cases-by-status-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění rozdělení OP podle stavu a jaký mohou
+                        potenciálně generovat příjem. Na levé svislé ose je počet OP, na
+                        pravé svislé ose příjem v Kč.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'obchodni-pripady-podle-stavu',
                     headers: ['Stav', 'Počet', 'Potenciální příjem'],
-                    rows: cases.map((row) => [
-                        row.label,
-                        row.count,
-                        row.potentialIncome,
-                    ]),
+                    rows: cases.map((row) => [row.label, row.count, row.potentialIncome]),
                 }}
                 tabs={[
                     {
@@ -160,7 +168,15 @@ export function ReportBusiness() {
 
             <DataVisulaizationCard
                 title="Poměr obsazených a volných ploch za sezónu"
-                description="Obsazenost reklamních ploch podle sezóny."
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění poměru volných a prodaných reklamních ploch,
+                        rozdělené podle sezón. Pokud se reklamní plochy zobrazují ve
+                        sloupci "Mimo sezónu", znamená to, že v atributech reklamní plochy
+                        není sezóna definovaná. Pokud jí definujete, graf bude více
+                        odpovídat realitě prodejů.
+                    </InfoTooltip>
+                }
                 queryKey="business-advertising-spaces-by-season-view"
                 tableExportable={{
                     filename: 'reklamni-plochy-za-sezonu',
@@ -219,7 +235,13 @@ export function ReportBusiness() {
 
             <DataVisulaizationCard
                 title="Poměr barteru a finančního obchodu"
-                description="Rozložení obchodů podle typu (finance / barter / kombinace)."
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění poměru mezi četností barteru a finančního
+                        obchodu v rámci OP z poslední sezóny (vnitřní kruh) a příjem z
+                        nich (vnější kruh).
+                    </InfoTooltip>
+                }
                 queryKey="business-trade-type-ratio-view"
                 tableExportable={{
                     filename: 'pomer-typu-obchodu',

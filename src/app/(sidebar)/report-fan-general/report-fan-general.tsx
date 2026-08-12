@@ -126,6 +126,7 @@ export function ReportFanGeneral() {
                                 showYAxis
                                 xAxisLabel={periodColumnLabel(period)}
                                 yAxisLabel="Počet"
+                                legendQueryKey="fan-general-email-muted"
                                 className="max-h-75 w-full"
                             />
                         ),
@@ -185,6 +186,7 @@ export function ReportFanGeneral() {
                                 showYAxis
                                 xAxisLabel={periodColumnLabel(period)}
                                 yAxisLabel="Počet"
+                                legendQueryKey="fan-general-sms-muted"
                                 className="max-h-75 w-full"
                             />
                         ),
@@ -244,6 +246,7 @@ export function ReportFanGeneral() {
                                 showYAxis
                                 xAxisLabel={periodColumnLabel(period)}
                                 yAxisLabel="Počet"
+                                legendQueryKey="fan-general-push-muted"
                                 className="max-h-75 w-full"
                             />
                         ),

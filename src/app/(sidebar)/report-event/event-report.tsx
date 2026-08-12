@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { parseAsString, useQueryState } from 'nuqs'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
@@ -21,12 +22,15 @@ import {
     EVENT_SALES_BY_DAY_CONFIG,
     EVENT_SALES_BY_PRICE_CONFIG,
     EVENT_SALES_BY_SECTOR_CONFIG,
+    EVENT_SOLD_USED_CONFIG,
     formatEventCount,
     formatEventCurrency,
+    getEventSoldUsedRows,
     REPORT_EVENT,
     SALES_BY_DAY_COLUMNS,
     SALES_BY_PRICE_COLUMNS,
     SALES_BY_SECTOR_COLUMNS,
+    SOLD_USED_COLUMNS,
     type EventReportChartPoint,
 } from './data'
 
@@ -49,9 +53,7 @@ function sumSales(data: EventReportChartPoint[]) {
 export function EventReport() {
     useQueryState(
         'event',
-        parseAsString
-            .withDefault(REPORT_EVENT.id)
-            .withOptions({ clearOnDefault: false }),
+        parseAsString.withDefault(REPORT_EVENT.id).withOptions({ clearOnDefault: false }),
     )
     const event = REPORT_EVENT
 
@@ -61,6 +63,7 @@ export function EventReport() {
         (sum, point) => sum + point.count,
         0,
     )
+    const soldUsedRows = getEventSoldUsedRows(event)
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -153,9 +156,13 @@ export function EventReport() {
 
             <section>
                 <DataVisulaizationCard
-                    title="Sales by days"
-                    description="Number of tickets sold on individual sales days."
+                    title="Počty prodaných vstupenek dle dní"
                     queryKey="event-sales-by-day-view"
+                    action={
+                        <InfoTooltip>
+                            Přehled počtu vstupenek na událost prodaných v jednotlivé dny.
+                        </InfoTooltip>
+                    }
                     tableExportable={{
                         filename: 'sales-by-days',
                         headers: ['Day', 'Tickets sold', 'Revenue'],
@@ -207,9 +214,14 @@ export function EventReport() {
 
             <section>
                 <DataVisulaizationCard
-                    title="Number of tickets sold by price"
-                    description="Ticket volume grouped by price level."
+                    title="Počty prodaných vstupenek dle ceny"
                     queryKey="event-sales-by-price-view"
+                    action={
+                        <InfoTooltip>
+                            Přehled počtu prodaných vstupenek v určených cenových
+                            kategoriích.
+                        </InfoTooltip>
+                    }
                     tableExportable={{
                         filename: 'number-of-tickets-sold-by-price',
                         headers: ['Price', 'Tickets sold', 'Revenue'],
@@ -261,9 +273,14 @@ export function EventReport() {
 
             <section>
                 <DataVisulaizationCard
-                    title="Overview of season tickets"
-                    description="Flow of season-ticket attendance, forwarding, gifting and resale."
+                    title="Přehled využití permanentek"
                     queryKey="event-season-ticket-overview"
+                    action={
+                        <InfoTooltip>
+                            Vizuální reprezentace využití permanentek na vstup na danou
+                            událost.
+                        </InfoTooltip>
+                    }
                 >
                     <SankeyChart
                         key={`season-ticket-flow-${event.id}`}
@@ -277,9 +294,14 @@ export function EventReport() {
 
             <section>
                 <DataVisulaizationCard
-                    title="Ticket sales overview"
-                    description="Paid and free tickets grouped by sales channel."
+                    title="Přehled prodeje vstupenek"
                     queryKey="event-ticket-sales-overview"
+                    action={
+                        <InfoTooltip>
+                            Vizuální reprezentace poměrů prodeje vstupenek podle ceny a
+                            prodejního kanálu.
+                        </InfoTooltip>
+                    }
                 >
                     <SankeyChart
                         key={`ticket-sales-flow-${event.id}`}
@@ -293,16 +315,17 @@ export function EventReport() {
 
             <section>
                 <DataVisulaizationCard
-                    title="Tickets sold by sector"
-                    description="Ticket volume grouped by venue sector."
+                    title="Prodané vstupenky po sektorech"
                     queryKey="event-sales-by-sector-view"
+                    action={
+                        <InfoTooltip>
+                            Přehled prodaných vstupenek v jednotlivých sektorech.
+                        </InfoTooltip>
+                    }
                     tableExportable={{
                         filename: 'tickets-sold-by-sector',
                         headers: ['Sector', 'Tickets sold'],
-                        rows: event.salesBySector.map((row) => [
-                            row.label,
-                            row.count,
-                        ]),
+                        rows: event.salesBySector.map((row) => [row.label, row.count]),
                     }}
                     tabs={[
                         {
@@ -336,6 +359,57 @@ export function EventReport() {
                                         'Total',
                                         formatEventCount(salesBySectorTotal),
                                     ]}
+                                />
+                            ),
+                        },
+                    ]}
+                />
+            </section>
+
+            <section>
+                <DataVisulaizationCard
+                    title="Přehled využití permanentek"
+                    queryKey="event-sold-used-view"
+                    action={
+                        <InfoTooltip>
+                            Vizuální reprezentace využití permanentek na vstup na danou
+                            událost.
+                        </InfoTooltip>
+                    }
+                    tableExportable={{
+                        filename: 'pomer-prodanych-a-vyuzitych-vstupenek',
+                        headers: ['Kategorie', 'Počet'],
+                        rows: soldUsedRows.map((row) => [row.label, row.count]),
+                    }}
+                    tabs={[
+                        {
+                            name: 'Chart',
+                            value: 'chart',
+                            icon: <ChartColumnIcon />,
+                            content: (
+                                <BarChart
+                                    key={`sold-used-${event.id}`}
+                                    data={soldUsedRows}
+                                    config={EVENT_SOLD_USED_CONFIG}
+                                    categoryKey="label"
+                                    series={[...EVENT_REPORT_CHART_SERIES]}
+                                    orientation="horizontal"
+                                    showYAxis
+                                    xAxisLabel="Počet"
+                                    yAxisLabel="Kategorie"
+                                    className="h-56"
+                                />
+                            ),
+                        },
+                        {
+                            name: 'Table',
+                            value: 'table',
+                            icon: <TableIcon />,
+                            content: (
+                                <SimpleTable
+                                    data={soldUsedRows}
+                                    columns={SOLD_USED_COLUMNS}
+                                    getRowKey={(row) => row.id}
                                 />
                             ),
                         },

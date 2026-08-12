@@ -2,6 +2,7 @@
 
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
+import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
@@ -51,6 +52,12 @@ export function ReportSales() {
                 title="Statistika příjmu z prodeje vstupenek podle prodejních kanálů"
                 description="Příjem podle prodejního kanálu ve zvoleném období."
                 queryKey="sales-revenue-by-channel-view"
+                action={
+                    <InfoTooltip>
+                        Grafické znázornění příjmů z prodeje vstupenek za posledních
+                        30 dní, rozdělené podle prodejních kanálů.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'prijem-z-prodeje-vstupenek-podle-kanalu',
                     headers: ['Prodejní kanál', 'Příjem'],
@@ -98,6 +105,12 @@ export function ReportSales() {
                 title="Statistika příjmu z prodeje vstupenek"
                 description="Příjem z prodeje vstupenek ve zvoleném období."
                 queryKey="sales-revenue-by-date-view"
+                action={
+                    <InfoTooltip>
+                        Statistický přehled příjmů z prodeje vstupenek za posledních
+                        30 dní.
+                    </InfoTooltip>
+                }
                 tableExportable={{
                     filename: 'prijem-z-prodeje-vstupenek',
                     headers: [periodColumnLabel(period), 'Příjem'],
