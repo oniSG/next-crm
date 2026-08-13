@@ -168,7 +168,7 @@ const pages: {
         },
         {
             name: 'Alumni dashboard',
-            path: '/alumni-dashboard',
+            path: '/alumni-dashboard/prehled',
             status: 'progress',
             by: 'Tomas',
         },

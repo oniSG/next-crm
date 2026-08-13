@@ -41,7 +41,7 @@ import {
     YEAR_DEGREE_COLUMNS,
     YEAR_DEGREE_CONFIG,
     YEAR_DEGREE_SERIES,
-} from '../data'
+} from './data'
 
 export function ActivePlayersTab() {
     const [team] = useAlumniTeamFilter()

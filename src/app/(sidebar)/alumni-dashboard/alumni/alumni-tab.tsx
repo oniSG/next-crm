@@ -45,7 +45,7 @@ import {
     ALUMNI_TOP_FIELDS_SERIES,
     formatGraduationPercent,
     formatPlayerCount,
-} from '../data'
+} from './data'
 
 export function AlumniTab() {
     const [seasonFrom] = useAlumniSeasonFrom()

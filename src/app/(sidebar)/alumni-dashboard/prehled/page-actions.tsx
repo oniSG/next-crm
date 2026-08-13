@@ -2,14 +2,14 @@
 
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
-import { AlumniFilterSelect } from './alumni-filter-select'
+import { AlumniFilterSelect } from '../alumni-filter-select'
 import {
     TEAM_FILTER_OPTIONS,
     useAlumniSeasonFrom,
     useAlumniSeasonTo,
     useAlumniTeamFilter,
-} from './alumni-filters'
-import { ALUMNI_SEASON_OPTIONS } from './data'
+} from '../alumni-filters'
+import { ALUMNI_SEASON_OPTIONS } from '../data'
 
 export function PageActions() {
     const [seasonFrom, setSeasonFrom] = useAlumniSeasonFrom()
@@ -41,7 +41,7 @@ export function PageActions() {
             />
             <ExportButton
                 dashboard="alumni-dashboard"
-                filename="alumni-dashboard.pdf"
+                filename="alumni-dashboard-prehled.pdf"
             />
         </>
     )

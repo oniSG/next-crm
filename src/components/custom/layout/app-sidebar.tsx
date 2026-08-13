@@ -170,7 +170,7 @@ const fansGroups: NavGroup[] = [
                     },
                     {
                         title: 'Alumni dashboard',
-                        url: '/alumni-dashboard',
+                        url: '/alumni-dashboard/prehled',
                         icon: <GraduationCapIcon />,
                     },
                 ],

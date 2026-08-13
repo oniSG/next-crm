@@ -3,7 +3,7 @@ import { NavTabs } from '@/components/custom/layout/nav-tabs'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { ALUMNI_DASHBOARD_TABS } from '../data'
-import { GraduationRateTab } from './graduation-rate-tab'
+import { OverviewTab } from './overview-tab'
 import { PageActions } from './page-actions'
 
 export default function Page() {
@@ -17,7 +17,7 @@ export default function Page() {
                     <ReportHeaderCard title="Alumni dashboard" />
                     <NavTabs items={ALUMNI_DASHBOARD_TABS} />
                     <div className="flex flex-col gap-4">
-                        <GraduationRateTab />
+                        <OverviewTab />
                     </div>
                 </div>
             </div>

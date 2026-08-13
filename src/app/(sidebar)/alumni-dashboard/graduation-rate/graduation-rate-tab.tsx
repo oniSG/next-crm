@@ -36,7 +36,7 @@ import {
     GRADUATION_RATE_OVER_TIME_COLUMNS,
     GRADUATION_RATE_OVER_TIME_CONFIG,
     GRADUATION_RATE_OVER_TIME_SERIES,
-} from '../data'
+} from './data'
 
 const TEAM_SERIES_BY_VALUE = {
     sparta: 'sparta',

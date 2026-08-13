@@ -1,13 +1,18 @@
 import { notFound } from 'next/navigation'
 
-import { ActivePlayersTab } from '@/app/(sidebar)/alumni-dashboard/tabs/active-players-tab'
-import { AlumniTab } from '@/app/(sidebar)/alumni-dashboard/tabs/alumni-tab'
-import { GraduationRateTab } from '@/app/(sidebar)/alumni-dashboard/tabs/graduation-rate-tab'
+import { ActivePlayersTab } from '@/app/(sidebar)/alumni-dashboard/aktivni-hraci/active-players-tab'
+import { AlumniTab } from '@/app/(sidebar)/alumni-dashboard/alumni/alumni-tab'
+import { GraduationRateTab } from '@/app/(sidebar)/alumni-dashboard/graduation-rate/graduation-rate-tab'
+import { OverviewTab } from '@/app/(sidebar)/alumni-dashboard/prehled/overview-tab'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { PrintShell, type PrintPageSettings } from '../../components/print-shell'
 
 const TAB_CONTENT = {
+    prehled: {
+        title: 'Přehled',
+        body: <OverviewTab />,
+    },
     'graduation-rate': {
         title: 'Graduation rate',
         body: <GraduationRateTab />,

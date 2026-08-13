@@ -28,7 +28,7 @@ import {
     TEAM_COMPARISON_COLUMNS,
     TEAM_COMPARISON_CONFIG,
     TEAM_COMPARISON_SERIES,
-} from '../data'
+} from './data'
 
 export function OverviewTab() {
     const [seasonFrom] = useAlumniSeasonFrom()
