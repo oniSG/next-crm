@@ -89,16 +89,35 @@ export function BarChart({
               ? data
               : data.filter((row) => rowHasVisibleValue(row, visibleSeries))
 
+    const legendItems = orderedSeries.map((key) => ({
+        dataKey: key,
+        color: config[key]?.color ?? `var(--color-${key})`,
+    }))
+
     if (chartData.length === 0) {
         return (
-            <div
+            <ChartContainer
+                id={chartId}
+                config={config}
                 className={cn(
-                    'text-muted-foreground flex h-64 items-center justify-center text-sm',
+                    'aspect-auto h-full min-h-56 w-full',
                     className,
                 )}
             >
-                {emptyMessage ?? 'No data for the selected period.'}
-            </div>
+                <div className="flex h-full min-h-56 w-full flex-col">
+                    <div className="text-muted-foreground flex flex-1 items-center justify-center text-sm">
+                        {emptyMessage ?? 'No data for the selected period.'}
+                    </div>
+                    {legendItems.length > 0 ? (
+                        <ChartLegendContent
+                            items={legendItems}
+                            mutedKeys={mutedKeys}
+                            onItemClick={toggleSeries}
+                            className="pt-2"
+                        />
+                    ) : null}
+                </div>
+            </ChartContainer>
         )
     }
 
@@ -114,10 +133,6 @@ export function BarChart({
     // Room for axis label + legend row; legend is pinned to container bottom.
     const bottomMargin = (angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4) + 24
     const secondaryKeys = new Set(secondarySeries)
-    const legendItems = orderedSeries.map((key) => ({
-        dataKey: key,
-        color: config[key]?.color ?? `var(--color-${key})`,
-    }))
     const leftStackId = `${chartId}-left`
     const rightStackId = `${chartId}-right`
 

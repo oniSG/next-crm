@@ -2,6 +2,7 @@ import type { KpiCardProps } from '@/components/custom/statistics/kpi-card'
 import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import type { ChartConfig } from '@/components/ui/chart'
+import { buildCategoryConfig } from '@/lib/alumni/sparse-category-chart'
 
 import alumniByUniversity from './data/alumni-by-university.json'
 import alumniByUniversityFaculty from './data/alumni-by-university-faculty.json'
@@ -105,14 +106,10 @@ export const ALUMNI_DEGREE_STRUCTURE_COLUMNS: SimpleTableColumn<AlumniDegreeStru
         },
     ]
 
-export const ALUMNI_BY_UNIVERSITY_SERIES = ['count'] as const
-
-export const ALUMNI_BY_UNIVERSITY_CONFIG = {
-    count: { label: 'Počet alumni', color: 'var(--chart-1)' },
-} satisfies ChartConfig
-
 export const ALUMNI_BY_UNIVERSITY =
     alumniByUniversity as AlumniByUniversityPoint[]
+
+export const ALUMNI_BY_UNIVERSITY_CONFIG = buildCategoryConfig(ALUMNI_BY_UNIVERSITY)
 
 export const ALUMNI_BY_UNIVERSITY_COLUMNS: SimpleTableColumn<AlumniByUniversityPoint>[] =
     [
@@ -131,13 +128,9 @@ export const ALUMNI_BY_UNIVERSITY_COLUMNS: SimpleTableColumn<AlumniByUniversityP
         },
     ]
 
-export const ALUMNI_TOP_FIELDS_SERIES = ['count'] as const
-
-export const ALUMNI_TOP_FIELDS_CONFIG = {
-    count: { label: 'Počet', color: 'var(--chart-1)' },
-} satisfies ChartConfig
-
 export const ALUMNI_TOP_FIELDS = alumniTopFields as AlumniTopFieldPoint[]
+
+export const ALUMNI_TOP_FIELDS_CONFIG = buildCategoryConfig(ALUMNI_TOP_FIELDS)
 
 export const ALUMNI_TOP_FIELDS_COLUMNS: SimpleTableColumn<AlumniTopFieldPoint>[] =
     [

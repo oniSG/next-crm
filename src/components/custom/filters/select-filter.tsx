@@ -24,6 +24,8 @@ export type SelectFilterProps = {
     onChange: (value: string) => void
     placeholder?: string
     label?: string
+    /** Compact label shown inside the trigger (for toolbars). */
+    leadingLabel?: string
     className?: string
     contentAlign?: 'start' | 'center' | 'end'
 }
@@ -34,6 +36,7 @@ export function SelectFilter({
     onChange,
     placeholder,
     label,
+    leadingLabel,
     className,
     contentAlign = 'end',
 }: SelectFilterProps) {
@@ -51,9 +54,15 @@ export function SelectFilter({
                 id={label ? id : undefined}
                 className={cn(
                     label ? 'w-full min-w-0 overflow-hidden' : 'w-40 min-w-0 overflow-hidden',
+                    leadingLabel && 'gap-2',
                     className,
                 )}
             >
+                {leadingLabel ? (
+                    <span className="text-muted-foreground shrink-0 text-sm">
+                        {leadingLabel}
+                    </span>
+                ) : null}
                 <SelectValue placeholder={placeholder ?? label} />
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false} align={contentAlign}>

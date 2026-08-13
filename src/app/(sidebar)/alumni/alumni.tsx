@@ -27,13 +27,13 @@ import {
     SCHOOL_FILTER_OPTIONS,
 } from '@/lib/alumni/filters'
 import { useFilterParam } from '@/lib/alumni/use-filter-param'
+import { toSparseCategoryChart } from '@/lib/alumni/sparse-category-chart'
 import {
     ALUMNI_BY_UNIVERSITY,
     ALUMNI_BY_UNIVERSITY_COLUMNS,
     ALUMNI_BY_UNIVERSITY_CONFIG,
     ALUMNI_BY_UNIVERSITY_FACULTY,
     ALUMNI_BY_UNIVERSITY_FACULTY_COLUMNS,
-    ALUMNI_BY_UNIVERSITY_SERIES,
     ALUMNI_DEGREE_STRUCTURE,
     ALUMNI_DEGREE_STRUCTURE_COLUMNS,
     ALUMNI_DEGREE_STRUCTURE_CONFIG,
@@ -44,7 +44,6 @@ import {
     ALUMNI_TOP_FIELDS,
     ALUMNI_TOP_FIELDS_COLUMNS,
     ALUMNI_TOP_FIELDS_CONFIG,
-    ALUMNI_TOP_FIELDS_SERIES,
     formatGraduationPercent,
     formatPlayerCount,
 } from './data'
@@ -98,6 +97,11 @@ export function Alumni() {
         [field],
     )
 
+    const topFieldsChart = useMemo(
+        () => toSparseCategoryChart(topFields),
+        [topFields],
+    )
+
     const degreeStructure = useMemo(
         () => filterBySeasonRange(ALUMNI_DEGREE_STRUCTURE, seasonFrom, seasonTo),
         [seasonFrom, seasonTo],
@@ -106,6 +110,11 @@ export function Alumni() {
     const byUniversity = useMemo(
         () => ALUMNI_BY_UNIVERSITY.filter((row) => matchesSchool(row.label, school)),
         [school],
+    )
+
+    const byUniversityChart = useMemo(
+        () => toSparseCategoryChart(byUniversity),
+        [byUniversity],
     )
 
     const byUniversityFaculty = useMemo(
@@ -199,10 +208,11 @@ export function Alumni() {
                                     style={{ height: topFieldsChartHeight }}
                                 >
                                     <BarChart
-                                        data={topFields}
+                                        data={topFieldsChart.data}
                                         config={ALUMNI_TOP_FIELDS_CONFIG}
                                         categoryKey="label"
-                                        series={[...ALUMNI_TOP_FIELDS_SERIES]}
+                                        series={topFieldsChart.series}
+                                        stacked
                                         orientation="horizontal"
                                         showYAxis
                                         categoryMaxLength={22}
@@ -306,10 +316,11 @@ export function Alumni() {
                                 style={{ height: alumniByUniversityChartHeight }}
                             >
                                 <BarChart
-                                    data={byUniversity}
+                                    data={byUniversityChart.data}
                                     config={ALUMNI_BY_UNIVERSITY_CONFIG}
                                     categoryKey="label"
-                                    series={[...ALUMNI_BY_UNIVERSITY_SERIES]}
+                                    series={byUniversityChart.series}
+                                    stacked
                                     orientation="horizontal"
                                     showYAxis
                                     categoryMaxLength={28}

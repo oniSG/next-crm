@@ -161,8 +161,35 @@ export function matchesDegree(degreeName: string, degreeValue: string) {
     return degreeName === label
 }
 
+export function matchesField(fieldName: string, fieldValue: string) {
+    const label = optionLabel(ALUMNI_FIELD_OPTIONS, fieldValue)
+    if (!label) return true
+    return fieldName === label
+}
+
 export function matchesTeam(teamName: string, teamValue: string) {
     const label = optionLabel(ALUMNI_TEAM_OPTIONS, teamValue)
     if (!label) return true
     return teamName === label
+}
+
+/** Empty selection means all teams. */
+export function matchesAnyTeam(teamName: string, teamValues: readonly string[]) {
+    if (teamValues.length === 0) return true
+    return teamValues.some((value) => matchesTeam(teamName, value))
+}
+
+/** Empty selection means all fields. */
+export function matchesAnyField(fieldName: string, fieldValues: readonly string[]) {
+    if (fieldValues.length === 0) return true
+    return fieldValues.some((value) => matchesField(fieldName, value))
+}
+
+/** Empty selection means all degrees. */
+export function matchesAnyDegree(
+    degreeName: string,
+    degreeValues: readonly string[],
+) {
+    if (degreeValues.length === 0) return true
+    return degreeValues.some((value) => matchesDegree(degreeName, value))
 }

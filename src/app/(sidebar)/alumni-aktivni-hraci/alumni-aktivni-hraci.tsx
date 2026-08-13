@@ -12,20 +12,14 @@ import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
+    ALUMNI_DEGREE_OPTIONS,
     ALUMNI_FIELD_OPTIONS,
-    ALUMNI_FILTER_DEFAULTS,
     ALUMNI_TEAM_OPTIONS,
-    DEGREE_FILTER_OPTIONS,
-    FACULTY_FILTER_OPTIONS,
-    FIELD_FILTER_OPTIONS,
-    filterByOptionLabel,
-    isAllFilter,
-    matchesDegree,
-    matchesFaculty,
-    matchesTeam,
-    TEAM_FILTER_OPTIONS,
+    matchesAnyDegree,
+    matchesAnyField,
+    matchesAnyTeam,
 } from '@/lib/alumni/filters'
-import { useFilterParam } from '@/lib/alumni/use-filter-param'
+import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
 import {
     ACTIVE_PLAYERS_DETAIL,
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
@@ -46,47 +40,29 @@ import {
     YEAR_DEGREE_SERIES,
 } from './data'
 
-const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
-const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
-const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
-const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
+const teamValues = ALUMNI_TEAM_OPTIONS.map((option) => option.value)
+const fieldValues = ALUMNI_FIELD_OPTIONS.map((option) => option.value)
+const degreeValues = ALUMNI_DEGREE_OPTIONS.map((option) => option.value)
 
 export function AlumniAktivniHraci() {
-    const [team] = useFilterParam('team', teamValues, ALUMNI_FILTER_DEFAULTS.team)
-    const [faculty] = useFilterParam(
-        'faculty',
-        facultyValues,
-        ALUMNI_FILTER_DEFAULTS.faculty,
-    )
-    const [field] = useFilterParam('field', fieldValues, ALUMNI_FILTER_DEFAULTS.field)
-    const [degree] = useFilterParam('degree', degreeValues, ALUMNI_FILTER_DEFAULTS.degree)
+    const [teams] = useMultiFilterParam('team', teamValues)
+    const [fields] = useMultiFilterParam('field', fieldValues)
+    const [degrees] = useMultiFilterParam('degree', degreeValues)
 
-    const playersByTeam = useMemo(
-        () =>
-            filterByOptionLabel(
-                PLAYERS_BY_TEAM,
-                (row) => row.label,
-                team,
-                ALUMNI_TEAM_OPTIONS,
-            ),
-        [team],
-    )
+    const playersByTeam = useMemo(() => {
+        if (teams.length === 0) return PLAYERS_BY_TEAM
+        return PLAYERS_BY_TEAM.filter((row) => matchesAnyTeam(row.label, teams))
+    }, [teams])
 
     const playersByTeamChart = useMemo(
         () => toSparseCategoryChart(playersByTeam),
         [playersByTeam],
     )
 
-    const playersByField = useMemo(
-        () =>
-            filterByOptionLabel(
-                PLAYERS_BY_FIELD,
-                (row) => row.label,
-                field,
-                ALUMNI_FIELD_OPTIONS,
-            ),
-        [field],
-    )
+    const playersByField = useMemo(() => {
+        if (fields.length === 0) return PLAYERS_BY_FIELD
+        return PLAYERS_BY_FIELD.filter((row) => matchesAnyField(row.label, fields))
+    }, [fields])
 
     const playersByFieldChart = useMemo(
         () => toSparseCategoryChart(playersByField),
@@ -94,27 +70,23 @@ export function AlumniAktivniHraci() {
     )
 
     const studyLevel = useMemo(() => {
-        if (isAllFilter(degree)) return STUDY_LEVEL
-        return STUDY_LEVEL.filter((row) => row.name === degree)
-    }, [degree])
+        if (degrees.length === 0) return STUDY_LEVEL
+        return STUDY_LEVEL.filter((row) => degrees.includes(row.name))
+    }, [degrees])
 
     const yearDegreeSeries = useMemo((): string[] => {
-        if (isAllFilter(degree)) return [...YEAR_DEGREE_SERIES]
-        if (YEAR_DEGREE_SERIES.includes(degree as (typeof YEAR_DEGREE_SERIES)[number])) {
-            return [degree]
-        }
-        return [...YEAR_DEGREE_SERIES]
-    }, [degree])
+        if (degrees.length === 0) return [...YEAR_DEGREE_SERIES]
+        return YEAR_DEGREE_SERIES.filter((key) => degrees.includes(key))
+    }, [degrees])
 
     const detail = useMemo(
         () =>
             ACTIVE_PLAYERS_DETAIL.filter(
                 (row) =>
-                    matchesTeam(row.team, team) &&
-                    matchesFaculty(row.faculty, faculty) &&
-                    matchesDegree(row.degree, degree),
+                    matchesAnyTeam(row.team, teams) &&
+                    matchesAnyDegree(row.degree, degrees),
             ),
-        [team, faculty, degree],
+        [teams, degrees],
     )
 
     const byFieldChartHeight = Math.max(288, Math.max(playersByField.length, 1) * 44 + 80)

@@ -1,80 +1,56 @@
 'use client'
 
-import { FiltersPopover } from '@/components/custom/filters/filters-popover'
-import { SelectFilter } from '@/components/custom/filters/select-filter'
+import { MultiSelectFilter } from '@/components/custom/filters/multi-select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
 import {
-    ALUMNI_FILTER_DEFAULTS,
-    DEGREE_FILTER_OPTIONS,
-    FACULTY_FILTER_OPTIONS,
-    FIELD_FILTER_OPTIONS,
-    TEAM_FILTER_OPTIONS,
+    ALUMNI_DEGREE_OPTIONS,
+    ALUMNI_FIELD_OPTIONS,
+    ALUMNI_TEAM_OPTIONS,
 } from '@/lib/alumni/filters'
-import { useFilterParam } from '@/lib/alumni/use-filter-param'
+import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
 
-const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
-const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
-const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
-const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
+const teamValues = ALUMNI_TEAM_OPTIONS.map((option) => option.value)
+const fieldValues = ALUMNI_FIELD_OPTIONS.map((option) => option.value)
+const degreeValues = ALUMNI_DEGREE_OPTIONS.map((option) => option.value)
 
 export function PageActions() {
-    const [team, setTeam] = useFilterParam(
-        'team',
-        teamValues,
-        ALUMNI_FILTER_DEFAULTS.team,
-    )
-    const [faculty, setFaculty] = useFilterParam(
-        'faculty',
-        facultyValues,
-        ALUMNI_FILTER_DEFAULTS.faculty,
-    )
-    const [field, setField] = useFilterParam(
-        'field',
-        fieldValues,
-        ALUMNI_FILTER_DEFAULTS.field,
-    )
-    const [degree, setDegree] = useFilterParam(
-        'degree',
-        degreeValues,
-        ALUMNI_FILTER_DEFAULTS.degree,
-    )
-
-    const activeCount = [
-        team !== ALUMNI_FILTER_DEFAULTS.team,
-        faculty !== ALUMNI_FILTER_DEFAULTS.faculty,
-        field !== ALUMNI_FILTER_DEFAULTS.field,
-        degree !== ALUMNI_FILTER_DEFAULTS.degree,
-    ].filter(Boolean).length
+    const [teams, setTeams] = useMultiFilterParam('team', teamValues)
+    const [fields, setFields] = useMultiFilterParam('field', fieldValues)
+    const [degrees, setDegrees] = useMultiFilterParam('degree', degreeValues)
 
     return (
         <>
-            <FiltersPopover activeCount={activeCount}>
-                <SelectFilter
-                    label="Tým"
-                    options={TEAM_FILTER_OPTIONS}
-                    value={team}
-                    onChange={setTeam}
-                />
-                <SelectFilter
-                    label="Fakulta"
-                    options={FACULTY_FILTER_OPTIONS}
-                    value={faculty}
-                    onChange={setFaculty}
-                />
-                <SelectFilter
-                    label="Obor"
-                    options={FIELD_FILTER_OPTIONS}
-                    value={field}
-                    onChange={setField}
-                />
-                <SelectFilter
-                    label="Stupeň"
-                    options={DEGREE_FILTER_OPTIONS}
-                    value={degree}
-                    onChange={setDegree}
-                />
-            </FiltersPopover>
+            <MultiSelectFilter
+                options={ALUMNI_TEAM_OPTIONS}
+                value={teams}
+                onChange={(next) => {
+                    void setTeams(next)
+                }}
+                leadingLabel="Tým"
+                placeholder="Vše"
+                className="w-48"
+            />
+            <MultiSelectFilter
+                options={ALUMNI_FIELD_OPTIONS}
+                value={fields}
+                onChange={(next) => {
+                    void setFields(next)
+                }}
+                leadingLabel="Obor"
+                placeholder="Vše"
+                className="w-52"
+            />
+            <MultiSelectFilter
+                options={ALUMNI_DEGREE_OPTIONS}
+                value={degrees}
+                onChange={(next) => {
+                    void setDegrees(next)
+                }}
+                leadingLabel="Stupeň"
+                placeholder="Vše"
+                className="w-44"
+            />
             <ExportButton
                 dashboard="alumni-aktivni-hraci"
                 filename="alumni-aktivni-hraci.pdf"

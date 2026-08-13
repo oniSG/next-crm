@@ -47,7 +47,14 @@ export function useMutedSeries(
         }
 
         const seriesSet = new Set(series)
-        const mutedKeys = mutedParam.filter((key) => seriesSet.has(key))
+        let mutedKeys = mutedParam.filter((key) => seriesSet.has(key))
+
+        // Always keep at least one series visible so the legend stays interactive.
+        if (series.length > 0 && mutedKeys.length >= series.length) {
+            const keepVisible = series[0]
+            mutedKeys = mutedKeys.filter((key) => key !== keepVisible)
+        }
+
         const mutedSet = new Set(mutedKeys)
         const visibleSeries = series.filter((key) => !mutedSet.has(key))
 
@@ -64,11 +71,17 @@ export function useMutedSeries(
     const toggleSeries = useCallback(
         (key: string) => {
             if (!series.includes(key)) return
-            void setMutedParam((current) =>
-                current.includes(key)
-                    ? current.filter((item) => item !== key)
-                    : [...current, key],
-            )
+            void setMutedParam((current) => {
+                if (current.includes(key)) {
+                    return current.filter((item) => item !== key)
+                }
+                const nextMuted = [...current, key]
+                const mutedSet = new Set(nextMuted)
+                const remaining = series.filter((item) => !mutedSet.has(item))
+                // Don't mute the last visible series.
+                if (remaining.length === 0) return current
+                return nextMuted
+            })
         },
         [series, setMutedParam],
     )

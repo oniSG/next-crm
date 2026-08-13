@@ -2,6 +2,7 @@ import type { KpiCardProps } from '@/components/custom/statistics/kpi-card'
 import type { SimpleTableColumn } from '@/components/custom/statistics/simple-table'
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import type { ChartConfig } from '@/components/ui/chart'
+import { buildCategoryConfig } from '@/lib/alumni/sparse-category-chart'
 
 import activePlayersByField from './data/active-players-by-field.json'
 import activePlayersByTeam from './data/active-players-by-team.json'
@@ -46,48 +47,7 @@ export type ActivePlayerStudyLevelPoint = {
     fill: string
 }
 
-export type SparseCategoryPoint = {
-    label: string
-} & Record<string, string | number>
-
-function toCategoryKey(label: string) {
-    return label
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '')
-}
-
-function buildCategoryConfig(
-    rows: { label: string }[],
-): ChartConfig {
-    return Object.fromEntries(
-        rows.map((row, index) => [
-            toCategoryKey(row.label),
-            {
-                label: row.label,
-                color: `var(--chart-${(index % 16) + 1})`,
-            },
-        ]),
-    )
-}
-
-/** One colored series per category row (sparse + stacked in BarChart). */
-export function toSparseCategoryChart(
-    rows: { label: string; count: number }[],
-): { data: SparseCategoryPoint[]; series: string[] } {
-    const series = rows.map((row) => toCategoryKey(row.label))
-    const data = rows.map((row) => {
-        const key = toCategoryKey(row.label)
-        const point: SparseCategoryPoint = { label: row.label }
-        for (const seriesKey of series) {
-            point[seriesKey] = seriesKey === key ? row.count : 0
-        }
-        return point
-    })
-    return { data, series }
-}
+export { toSparseCategoryChart } from '@/lib/alumni/sparse-category-chart'
 
 export const ACTIVE_PLAYERS_KPIS: Omit<KpiCardProps, 'className'>[] = [
     {
