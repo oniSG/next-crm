@@ -155,6 +155,12 @@ const pages: {
             by: 'Tomas',
         },
         {
+            name: 'Sales report',
+            path: '/sales-report',
+            status: 'progress',
+            by: 'Tomas',
+        },
+        {
             name: 'Report membership',
             path: '/report-membership',
             status: 'progress',

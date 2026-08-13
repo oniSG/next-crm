@@ -1,6 +1,12 @@
 'use client'
 
-import { ChartColumnIcon, TableIcon } from 'lucide-react'
+import {
+    ChartColumnIcon,
+    IdCardIcon,
+    TableIcon,
+    TicketCheckIcon,
+    UsersIcon,
+} from 'lucide-react'
 import { parseAsIsoDate, useQueryState } from 'nuqs'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
@@ -100,6 +106,8 @@ export function ReportManagement() {
             <section className="grid gap-4 md:grid-cols-3" aria-label="Přehled výsledků">
                 <KpiCard
                     label="Návštěvníci"
+                    icon={<UsersIcon className="size-4" />}
+                    iconClassName="bg-chart-1/10 text-chart-1"
                     content={[
                         {
                             label: 'Návštěvníků v databázi celkem',
@@ -118,6 +126,8 @@ export function ReportManagement() {
                 />
                 <KpiCard
                     label="Permanentky"
+                    icon={<IdCardIcon className="size-4" />}
+                    iconClassName="bg-chart-2/10 text-chart-2"
                     content={[
                         {
                             label: 'Příjem z prodeje',
@@ -131,6 +141,8 @@ export function ReportManagement() {
                 />
                 <KpiCard
                     label="Vstupenky"
+                    icon={<TicketCheckIcon className="size-4" />}
+                    iconClassName="bg-chart-4/10 text-chart-4"
                     content={[
                         {
                             label: 'Příjem z prodeje',

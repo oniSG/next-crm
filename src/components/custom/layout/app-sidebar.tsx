@@ -17,6 +17,7 @@ import { markActive, type NavGroup } from '@/components/custom/layout/nav-data'
 import {
     AtSignIcon,
     BadgeIcon,
+    BadgePercentIcon,
     BlocksIcon,
     BookUserIcon,
     BriefcaseBusinessIcon,
@@ -143,6 +144,11 @@ const fansGroups: NavGroup[] = [
                         icon: <CoinsIcon />,
                     },
                     {
+                        title: 'Sales report',
+                        url: '/sales-report',
+                        icon: <BadgePercentIcon />,
+                    },
+                    {
                         title: 'Události',
                         url: '/report-event',
                         icon: <CalendarCheckIcon />,
@@ -231,6 +237,11 @@ const businessGroups: NavGroup[] = [
                         title: 'Prodeje vstupenek',
                         url: '/report-sales',
                         icon: <CoinsIcon />,
+                    },
+                    {
+                        title: 'Sales report',
+                        url: '/sales-report',
+                        icon: <BadgePercentIcon />,
                     },
                     {
                         title: 'Události',
