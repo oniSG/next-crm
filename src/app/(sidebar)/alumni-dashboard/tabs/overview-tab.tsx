@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
@@ -9,6 +10,13 @@ import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
+import {
+    filterBySeasonRange,
+    filterByTeamLabel,
+    useAlumniSeasonFrom,
+    useAlumniSeasonTo,
+    useAlumniTeamFilter,
+} from '../alumni-filters'
 import {
     formatGraduationPercent,
     LEAGUE_GRADUATION_COLUMNS,
@@ -23,6 +31,19 @@ import {
 } from '../data'
 
 export function OverviewTab() {
+    const [seasonFrom] = useAlumniSeasonFrom()
+    const [seasonTo] = useAlumniSeasonTo()
+    const [team] = useAlumniTeamFilter()
+
+    const leagueGraduation = useMemo(
+        () => filterBySeasonRange(LEAGUE_GRADUATION_RATE, seasonFrom, seasonTo),
+        [seasonFrom, seasonTo],
+    )
+    const teamComparison = useMemo(
+        () => filterByTeamLabel(TEAM_COMPARISON, team),
+        [team],
+    )
+
     return (
         <>
             <section
@@ -46,7 +67,7 @@ export function OverviewTab() {
                     tableExportable={{
                         filename: 'vyvoj-celoligove-graduation-rate',
                         headers: ['Sezóna', 'Graduation rate (%)'],
-                        rows: LEAGUE_GRADUATION_RATE.map((row) => [row.label, row.rate]),
+                        rows: leagueGraduation.map((row) => [row.label, row.rate]),
                     }}
                     tabs={[
                         {
@@ -55,7 +76,7 @@ export function OverviewTab() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <LineChart
-                                    data={LEAGUE_GRADUATION_RATE}
+                                    data={leagueGraduation}
                                     config={LEAGUE_GRADUATION_CONFIG}
                                     categoryKey="label"
                                     series={[...LEAGUE_GRADUATION_SERIES]}
@@ -76,7 +97,7 @@ export function OverviewTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={LEAGUE_GRADUATION_RATE}
+                                    data={leagueGraduation}
                                     columns={LEAGUE_GRADUATION_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />
@@ -96,7 +117,7 @@ export function OverviewTab() {
                     tableExportable={{
                         filename: 'srovnani-tymu',
                         headers: ['Tým', 'Graduation rate (%)'],
-                        rows: TEAM_COMPARISON.map((row) => [row.label, row.rate]),
+                        rows: teamComparison.map((row) => [row.label, row.rate]),
                     }}
                     tabs={[
                         {
@@ -105,7 +126,7 @@ export function OverviewTab() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <BarChart
-                                    data={TEAM_COMPARISON}
+                                    data={teamComparison}
                                     config={TEAM_COMPARISON_CONFIG}
                                     categoryKey="label"
                                     series={[...TEAM_COMPARISON_SERIES]}
@@ -126,7 +147,7 @@ export function OverviewTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={TEAM_COMPARISON}
+                                    data={teamComparison}
                                     columns={TEAM_COMPARISON_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />

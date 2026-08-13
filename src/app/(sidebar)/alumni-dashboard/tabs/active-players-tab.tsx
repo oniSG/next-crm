@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
@@ -9,6 +10,18 @@ import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
+import {
+    ALL_FILTER_VALUE,
+    filterByFieldLabel,
+    filterByTeamLabel,
+    matchesDegree,
+    matchesFaculty,
+    matchesTeam,
+    useAlumniDegreeFilter,
+    useAlumniFacultyFilter,
+    useAlumniFieldFilter,
+    useAlumniTeamFilter,
+} from '../alumni-filters'
 import {
     ACTIVE_PLAYERS_DETAIL,
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
@@ -31,7 +44,53 @@ import {
 } from '../data'
 
 export function ActivePlayersTab() {
-    const byFieldChartHeight = Math.max(288, PLAYERS_BY_FIELD.length * 44 + 80)
+    const [team] = useAlumniTeamFilter()
+    const [faculty] = useAlumniFacultyFilter()
+    const [field] = useAlumniFieldFilter()
+    const [degree] = useAlumniDegreeFilter()
+
+    const playersByTeam = useMemo(
+        () => filterByTeamLabel(PLAYERS_BY_TEAM, team),
+        [team],
+    )
+
+    const playersByField = useMemo(
+        () => filterByFieldLabel(PLAYERS_BY_FIELD, field),
+        [field],
+    )
+
+    const studyLevel = useMemo(() => {
+        if (degree === ALL_FILTER_VALUE) return STUDY_LEVEL
+        return STUDY_LEVEL.filter((row) => row.name === degree)
+    }, [degree])
+
+    const yearDegreeSeries = useMemo((): string[] => {
+        if (degree === ALL_FILTER_VALUE) return [...YEAR_DEGREE_SERIES]
+        if (
+            YEAR_DEGREE_SERIES.includes(
+                degree as (typeof YEAR_DEGREE_SERIES)[number],
+            )
+        ) {
+            return [degree]
+        }
+        return [...YEAR_DEGREE_SERIES]
+    }, [degree])
+
+    const detail = useMemo(
+        () =>
+            ACTIVE_PLAYERS_DETAIL.filter(
+                (row) =>
+                    matchesTeam(row.team, team) &&
+                    matchesFaculty(row.faculty, faculty) &&
+                    matchesDegree(row.degree, degree),
+            ),
+        [team, faculty, degree],
+    )
+
+    const byFieldChartHeight = Math.max(
+        288,
+        Math.max(playersByField.length, 1) * 44 + 80,
+    )
 
     return (
         <>
@@ -55,7 +114,7 @@ export function ActivePlayersTab() {
                     }
                 >
                     <PieChart
-                        data={STUDY_LEVEL}
+                        data={studyLevel}
                         config={STUDY_LEVEL_CONFIG}
                         innerRadius={60}
                         className="max-h-72"
@@ -73,7 +132,7 @@ export function ActivePlayersTab() {
                     tableExportable={{
                         filename: 'aktivni-hraci-podle-tymu',
                         headers: ['Tým', 'Počet'],
-                        rows: PLAYERS_BY_TEAM.map((row) => [row.label, row.count]),
+                        rows: playersByTeam.map((row) => [row.label, row.count]),
                     }}
                     tabs={[
                         {
@@ -82,7 +141,7 @@ export function ActivePlayersTab() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <BarChart
-                                    data={PLAYERS_BY_TEAM}
+                                    data={playersByTeam}
                                     config={PLAYERS_BY_TEAM_CONFIG}
                                     categoryKey="label"
                                     series={[...PLAYERS_BY_TEAM_SERIES]}
@@ -103,7 +162,7 @@ export function ActivePlayersTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={PLAYERS_BY_TEAM}
+                                    data={playersByTeam}
                                     columns={PLAYERS_BY_TEAM_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />
@@ -140,7 +199,7 @@ export function ActivePlayersTab() {
                                     data={PLAYERS_BY_YEAR_DEGREE}
                                     config={YEAR_DEGREE_CONFIG}
                                     categoryKey="label"
-                                    series={[...YEAR_DEGREE_SERIES]}
+                                    series={yearDegreeSeries}
                                     stacked
                                     showYAxis
                                     xAxisLabel="Ročník"
@@ -177,7 +236,7 @@ export function ActivePlayersTab() {
                     tableExportable={{
                         filename: 'aktivni-hraci-podle-oboru',
                         headers: ['Obor', 'Počet'],
-                        rows: PLAYERS_BY_FIELD.map((row) => [
+                        rows: playersByField.map((row) => [
                             row.label,
                             row.count,
                         ]),
@@ -193,7 +252,7 @@ export function ActivePlayersTab() {
                                     style={{ height: byFieldChartHeight }}
                                 >
                                     <BarChart
-                                        data={PLAYERS_BY_FIELD}
+                                        data={playersByField}
                                         config={PLAYERS_BY_FIELD_CONFIG}
                                         categoryKey="label"
                                         series={[...PLAYERS_BY_FIELD_SERIES]}
@@ -215,7 +274,7 @@ export function ActivePlayersTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={PLAYERS_BY_FIELD}
+                                    data={playersByField}
                                     columns={PLAYERS_BY_FIELD_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />
@@ -236,7 +295,7 @@ export function ActivePlayersTab() {
                 tableExportable={{
                     filename: 'detail-aktivnich-hracu',
                     headers: ['Tým', 'Fakulta', 'Stupeň', 'Ročník'],
-                    rows: ACTIVE_PLAYERS_DETAIL.map((row) => [
+                    rows: detail.map((row) => [
                         row.team,
                         row.faculty,
                         row.degree,
@@ -245,7 +304,7 @@ export function ActivePlayersTab() {
                 }}
             >
                 <SimpleTable
-                    data={ACTIVE_PLAYERS_DETAIL}
+                    data={detail}
                     columns={ACTIVE_PLAYERS_DETAIL_COLUMNS}
                     getRowKey={(row) => row.id}
                 />

@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
@@ -10,6 +11,20 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
+import {
+    ALL_FILTER_VALUE,
+    filterByFieldLabel,
+    filterBySchoolLabel,
+    filterBySeasonRange,
+    matchesFaculty,
+    matchesSchool,
+    useAlumniDegreeFilter,
+    useAlumniFacultyFilter,
+    useAlumniFieldFilter,
+    useAlumniSchoolFilter,
+    useAlumniSeasonFrom,
+    useAlumniSeasonTo,
+} from '../alumni-filters'
 import {
     ALUMNI_BY_UNIVERSITY,
     ALUMNI_BY_UNIVERSITY_COLUMNS,
@@ -33,13 +48,51 @@ import {
 } from '../data'
 
 export function AlumniTab() {
+    const [seasonFrom] = useAlumniSeasonFrom()
+    const [seasonTo] = useAlumniSeasonTo()
+    const [school] = useAlumniSchoolFilter()
+    const [faculty] = useAlumniFacultyFilter()
+    const [field] = useAlumniFieldFilter()
+    const [degree] = useAlumniDegreeFilter()
+
+    const topFields = useMemo(
+        () => filterByFieldLabel(ALUMNI_TOP_FIELDS, field),
+        [field],
+    )
+
+    const degreeStructure = useMemo(
+        () => filterBySeasonRange(ALUMNI_DEGREE_STRUCTURE, seasonFrom, seasonTo),
+        [seasonFrom, seasonTo],
+    )
+
+    const byUniversity = useMemo(
+        () => filterBySchoolLabel(ALUMNI_BY_UNIVERSITY, school),
+        [school],
+    )
+
+    const byUniversityFaculty = useMemo(
+        () =>
+            ALUMNI_BY_UNIVERSITY_FACULTY.filter(
+                (row) =>
+                    matchesSchool(row.school, school) &&
+                    matchesFaculty(row.faculty, faculty),
+            ),
+        [school, faculty],
+    )
+
+    const highestDegree = useMemo(() => {
+        if (degree === ALL_FILTER_VALUE) return ALUMNI_HIGHEST_DEGREE
+        // Mock pie only has středoškolské; hide when filtering university degrees
+        return []
+    }, [degree])
+
     const alumniByUniversityChartHeight = Math.max(
         480,
-        ALUMNI_BY_UNIVERSITY.length * 44 + 80,
+        Math.max(byUniversity.length, 1) * 44 + 80,
     )
     const topFieldsChartHeight = Math.max(
         420,
-        ALUMNI_TOP_FIELDS.length * 48 + 80,
+        Math.max(topFields.length, 1) * 48 + 80,
     )
 
     return (
@@ -70,7 +123,7 @@ export function AlumniTab() {
                         style={{ minHeight: topFieldsChartHeight }}
                     >
                         <PieChart
-                            data={ALUMNI_HIGHEST_DEGREE}
+                            data={highestDegree}
                             config={ALUMNI_HIGHEST_DEGREE_CONFIG}
                             innerRadius={70}
                             className="max-h-80"
@@ -90,10 +143,7 @@ export function AlumniTab() {
                     tableExportable={{
                         filename: 'top-studijni-obory',
                         headers: ['Obor', 'Počet'],
-                        rows: ALUMNI_TOP_FIELDS.map((row) => [
-                            row.label,
-                            row.count,
-                        ]),
+                        rows: topFields.map((row) => [row.label, row.count]),
                     }}
                     tabs={[
                         {
@@ -106,7 +156,7 @@ export function AlumniTab() {
                                     style={{ height: topFieldsChartHeight }}
                                 >
                                     <BarChart
-                                        data={ALUMNI_TOP_FIELDS}
+                                        data={topFields}
                                         config={ALUMNI_TOP_FIELDS_CONFIG}
                                         categoryKey="label"
                                         series={[...ALUMNI_TOP_FIELDS_SERIES]}
@@ -128,7 +178,7 @@ export function AlumniTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={ALUMNI_TOP_FIELDS}
+                                    data={topFields}
                                     columns={ALUMNI_TOP_FIELDS_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />
@@ -149,7 +199,7 @@ export function AlumniTab() {
                 tableExportable={{
                     filename: 'vyvoj-stupnove-struktury-alumni',
                     headers: ['Sezóna', 'Středoškolské (%)'],
-                    rows: ALUMNI_DEGREE_STRUCTURE.map((row) => [
+                    rows: degreeStructure.map((row) => [
                         row.label,
                         row.stredoskolske,
                     ]),
@@ -161,7 +211,7 @@ export function AlumniTab() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={ALUMNI_DEGREE_STRUCTURE}
+                                data={degreeStructure}
                                 config={ALUMNI_DEGREE_STRUCTURE_CONFIG}
                                 categoryKey="label"
                                 series={[...ALUMNI_DEGREE_STRUCTURE_SERIES]}
@@ -184,7 +234,7 @@ export function AlumniTab() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={ALUMNI_DEGREE_STRUCTURE}
+                                data={degreeStructure}
                                 columns={ALUMNI_DEGREE_STRUCTURE_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
@@ -200,7 +250,7 @@ export function AlumniTab() {
                 tableExportable={{
                     filename: 'alumni-podle-univerzity',
                     headers: ['Univerzita', 'Počet alumni'],
-                    rows: ALUMNI_BY_UNIVERSITY.map((row) => [row.label, row.count]),
+                    rows: byUniversity.map((row) => [row.label, row.count]),
                 }}
                 tabs={[
                     {
@@ -213,7 +263,7 @@ export function AlumniTab() {
                                 style={{ height: alumniByUniversityChartHeight }}
                             >
                                 <BarChart
-                                    data={ALUMNI_BY_UNIVERSITY}
+                                    data={byUniversity}
                                     config={ALUMNI_BY_UNIVERSITY_CONFIG}
                                     categoryKey="label"
                                     series={[...ALUMNI_BY_UNIVERSITY_SERIES]}
@@ -235,7 +285,7 @@ export function AlumniTab() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={ALUMNI_BY_UNIVERSITY}
+                                data={byUniversity}
                                 columns={ALUMNI_BY_UNIVERSITY_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
@@ -255,7 +305,7 @@ export function AlumniTab() {
                 tableExportable={{
                     filename: 'seznam-podle-univerzity-a-fakulty',
                     headers: ['Škola | Tým', 'Fakulta', 'Počet alumni', 'Podíl'],
-                    rows: ALUMNI_BY_UNIVERSITY_FACULTY.map((row) => [
+                    rows: byUniversityFaculty.map((row) => [
                         row.school,
                         row.faculty,
                         row.count,
@@ -264,7 +314,7 @@ export function AlumniTab() {
                 }}
             >
                 <SimpleTable
-                    data={ALUMNI_BY_UNIVERSITY_FACULTY}
+                    data={byUniversityFaculty}
                     columns={ALUMNI_BY_UNIVERSITY_FACULTY_COLUMNS}
                     getRowKey={(row) => row.id}
                 />

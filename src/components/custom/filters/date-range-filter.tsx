@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Command, CommandItem, CommandList } from '@/components/ui/command'
 import { Input } from '@/components/ui/input'
@@ -39,7 +38,6 @@ export function DateRangeFilter({
     const [toInput, setToInput] = useState(formatDateInput(value.to))
 
     const activeKey = findPresetKey(value, today)
-    const activeLabel = PRESETS.find((p) => p.key === activeKey)?.label ?? 'Custom'
 
     function handleOpenChange(next: boolean) {
         if (next) {
@@ -83,9 +81,6 @@ export function DateRangeFilter({
                         className={cn('gap-2', className)}
                         aria-label="Change date range"
                     >
-                        <Badge variant="secondary" className="font-medium">
-                            {activeLabel}
-                        </Badge>
                         <span className="text-sm">{formatDateRange(value)}</span>
                         <ChevronDown className="size-4 opacity-50" />
                     </Button>

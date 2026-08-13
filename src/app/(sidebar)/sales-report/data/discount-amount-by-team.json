@@ -1,0 +1,482 @@
+[
+  {
+    "row": "akademiciplzen",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-02",
+    "value": 18500
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-03",
+    "value": 24200
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-04",
+    "value": 9800
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "akademiciplzen",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-02",
+    "value": 7200
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-03",
+    "value": 9100
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-04",
+    "value": 3100
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "boostrava",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-02",
+    "value": 21400
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-03",
+    "value": 26800
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-04",
+    "value": 12500
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "czufarmers",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-01",
+    "value": 2100
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-02",
+    "value": 16800
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-03",
+    "value": 18200
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-04",
+    "value": 7400
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "engineersprague",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-01",
+    "value": 6400
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-02",
+    "value": 41200
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-03",
+    "value": 53800
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-04",
+    "value": 89600
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-05",
+    "value": 1500
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "finalfour",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-02",
+    "value": 13800
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-03",
+    "value": 16100
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-04",
+    "value": 5600
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "hcmuni",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-01",
+    "value": 900
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-02",
+    "value": 25600
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-03",
+    "value": 30100
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-04",
+    "value": 17200
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "hcnorthwings",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-02",
+    "value": 11200
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-03",
+    "value": 14100
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-04",
+    "value": 4800
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "ridersup",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-01",
+    "value": 3800
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-02",
+    "value": 34500
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-03",
+    "value": 38200
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-04",
+    "value": 28900
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "ukhockeyprague",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-02",
+    "value": 8500
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-03",
+    "value": 9200
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-04",
+    "value": 2700
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "unitedhk",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-01",
+    "value": 1500
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-02",
+    "value": 19400
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-03",
+    "value": 22100
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-04",
+    "value": 11900
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "vsefalcons",
+    "column": "2026-08",
+    "value": 0
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-01",
+    "value": 0
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-02",
+    "value": 10200
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-03",
+    "value": 12800
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-04",
+    "value": 4100
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-05",
+    "value": 0
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-06",
+    "value": 0
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-07",
+    "value": 0
+  },
+  {
+    "row": "vutcavaliers",
+    "column": "2026-08",
+    "value": 0
+  }
+]

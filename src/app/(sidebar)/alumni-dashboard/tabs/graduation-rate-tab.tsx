@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
@@ -9,6 +10,14 @@ import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
+import {
+    ALL_FILTER_VALUE,
+    filterBySeasonRange,
+    filterByTeamField,
+    useAlumniSeasonFrom,
+    useAlumniSeasonTo,
+    useAlumniTeamFilter,
+} from '../alumni-filters'
 import {
     COMPLETED_VS_NOT,
     COMPLETED_VS_NOT_COLUMNS,
@@ -29,7 +38,48 @@ import {
     GRADUATION_RATE_OVER_TIME_SERIES,
 } from '../data'
 
+const TEAM_SERIES_BY_VALUE = {
+    sparta: 'sparta',
+    kometa: 'kometa',
+    trinec: 'trinec',
+} as const
+
 export function GraduationRateTab() {
+    const [seasonFrom] = useAlumniSeasonFrom()
+    const [seasonTo] = useAlumniSeasonTo()
+    const [team] = useAlumniTeamFilter()
+
+    const rateOverTime = useMemo(
+        () =>
+            filterBySeasonRange(GRADUATION_RATE_OVER_TIME, seasonFrom, seasonTo),
+        [seasonFrom, seasonTo],
+    )
+
+    const completedVsNot = useMemo(
+        () => filterBySeasonRange(COMPLETED_VS_NOT, seasonFrom, seasonTo),
+        [seasonFrom, seasonTo],
+    )
+
+    const averageByTeam = useMemo(
+        () => filterByTeamField(GRADUATION_AVERAGE_BY_TEAM, team),
+        [team],
+    )
+
+    const byTeamSeason = useMemo(
+        () =>
+            filterBySeasonRange(GRADUATION_BY_TEAM_SEASON, seasonFrom, seasonTo),
+        [seasonFrom, seasonTo],
+    )
+
+    const teamSeasonSeries = useMemo((): string[] => {
+        if (team === ALL_FILTER_VALUE) {
+            return [...GRADUATION_BY_TEAM_SEASON_SERIES]
+        }
+        const seriesKey =
+            TEAM_SERIES_BY_VALUE[team as keyof typeof TEAM_SERIES_BY_VALUE]
+        return seriesKey ? [seriesKey] : [...GRADUATION_BY_TEAM_SEASON_SERIES]
+    }, [team])
+
     return (
         <>
             <section
@@ -52,10 +102,7 @@ export function GraduationRateTab() {
                 tableExportable={{
                     filename: 'vyvoj-graduation-rate-v-case',
                     headers: ['Sezóna', 'Graduation rate (%)'],
-                    rows: GRADUATION_RATE_OVER_TIME.map((row) => [
-                        row.label,
-                        row.rate,
-                    ]),
+                    rows: rateOverTime.map((row) => [row.label, row.rate]),
                 }}
                 tabs={[
                     {
@@ -64,7 +111,7 @@ export function GraduationRateTab() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={GRADUATION_RATE_OVER_TIME}
+                                data={rateOverTime}
                                 config={GRADUATION_RATE_OVER_TIME_CONFIG}
                                 categoryKey="label"
                                 series={[...GRADUATION_RATE_OVER_TIME_SERIES]}
@@ -85,7 +132,7 @@ export function GraduationRateTab() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={GRADUATION_RATE_OVER_TIME}
+                                data={rateOverTime}
                                 columns={GRADUATION_RATE_OVER_TIME_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
@@ -107,7 +154,7 @@ export function GraduationRateTab() {
                     tableExportable={{
                         filename: 'dokoncili-vs-nedokoncili',
                         headers: ['Sezóna', 'Dokončili', 'Nedokončili'],
-                        rows: COMPLETED_VS_NOT.map((row) => [
+                        rows: completedVsNot.map((row) => [
                             row.label,
                             row.dokoncili,
                             row.nedokoncili,
@@ -120,7 +167,7 @@ export function GraduationRateTab() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <BarChart
-                                    data={COMPLETED_VS_NOT}
+                                    data={completedVsNot}
                                     config={COMPLETED_VS_NOT_CONFIG}
                                     categoryKey="label"
                                     series={[...COMPLETED_VS_NOT_SERIES]}
@@ -140,7 +187,7 @@ export function GraduationRateTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={COMPLETED_VS_NOT}
+                                    data={completedVsNot}
                                     columns={COMPLETED_VS_NOT_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />
@@ -161,7 +208,7 @@ export function GraduationRateTab() {
                     tableExportable={{
                         filename: 'prumer-za-obdobi',
                         headers: ['Tým', 'Odchody', 'Graduation rate'],
-                        rows: GRADUATION_AVERAGE_BY_TEAM.map((row) => [
+                        rows: averageByTeam.map((row) => [
                             row.team,
                             row.odchody,
                             row.rate,
@@ -169,7 +216,7 @@ export function GraduationRateTab() {
                     }}
                 >
                     <SimpleTable
-                        data={GRADUATION_AVERAGE_BY_TEAM}
+                        data={averageByTeam}
                         columns={GRADUATION_AVERAGE_BY_TEAM_COLUMNS}
                         getRowKey={(row) => row.id}
                     />
@@ -192,7 +239,7 @@ export function GraduationRateTab() {
                         'HC Kometa Brno',
                         'HC Oceláři Třinec',
                     ],
-                    rows: GRADUATION_BY_TEAM_SEASON.map((row) => [
+                    rows: byTeamSeason.map((row) => [
                         row.label,
                         row.sparta,
                         row.kometa,
@@ -206,10 +253,10 @@ export function GraduationRateTab() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={GRADUATION_BY_TEAM_SEASON}
+                                data={byTeamSeason}
                                 config={GRADUATION_BY_TEAM_SEASON_CONFIG}
                                 categoryKey="label"
-                                series={[...GRADUATION_BY_TEAM_SEASON_SERIES]}
+                                series={teamSeasonSeries}
                                 showYAxis
                                 angledXAxis
                                 showDots
@@ -227,7 +274,7 @@ export function GraduationRateTab() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={GRADUATION_BY_TEAM_SEASON}
+                                data={byTeamSeason}
                                 columns={GRADUATION_BY_TEAM_SEASON_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
