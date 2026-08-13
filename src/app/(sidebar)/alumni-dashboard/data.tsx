@@ -7,6 +7,7 @@ import type { ChartConfig } from '@/components/ui/chart'
 import leagueGraduationRate from './data/league-graduation-rate.json'
 import teamComparison from './data/team-comparison.json'
 import activePlayersStudyLevel from './data/active-players-study-level.json'
+import activePlayersByField from './data/active-players-by-field.json'
 import activePlayersByTeam from './data/active-players-by-team.json'
 import activePlayersByYearDegree from './data/active-players-by-year-degree.json'
 import activePlayersDetail from './data/active-players-detail.json'
@@ -44,6 +45,11 @@ export type TeamComparisonPoint = {
 }
 
 export type ActivePlayerByTeamPoint = {
+    label: string
+    count: number
+}
+
+export type ActivePlayerByFieldPoint = {
     label: string
     count: number
 }
@@ -203,6 +209,32 @@ export const PLAYERS_BY_TEAM_COLUMNS: SimpleTableColumn<ActivePlayerByTeamPoint>
         {
             id: 'label',
             header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'count',
+            header: 'Počet',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.count),
+        },
+    ]
+
+export const PLAYERS_BY_FIELD_SERIES = ['count'] as const
+
+export const PLAYERS_BY_FIELD_CONFIG = {
+    count: { label: 'Počet', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
+export const PLAYERS_BY_FIELD =
+    activePlayersByField as ActivePlayerByFieldPoint[]
+
+export const PLAYERS_BY_FIELD_COLUMNS: SimpleTableColumn<ActivePlayerByFieldPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Obor',
             cellClassName: 'font-medium',
             cell: (row) => row.label,
         },

@@ -14,6 +14,10 @@ import {
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
     ACTIVE_PLAYERS_KPIS,
     formatPlayerCount,
+    PLAYERS_BY_FIELD,
+    PLAYERS_BY_FIELD_COLUMNS,
+    PLAYERS_BY_FIELD_CONFIG,
+    PLAYERS_BY_FIELD_SERIES,
     PLAYERS_BY_TEAM,
     PLAYERS_BY_TEAM_COLUMNS,
     PLAYERS_BY_TEAM_CONFIG,
@@ -27,6 +31,8 @@ import {
 } from '../data'
 
 export function ActivePlayersTab() {
+    const byFieldChartHeight = Math.max(288, PLAYERS_BY_FIELD.length * 44 + 80)
+
     return (
         <>
             <section
@@ -168,20 +174,39 @@ export function ActivePlayersTab() {
                             Rozložení aktivních hráčů podle studijního oboru.
                         </InfoTooltip>
                     }
+                    tableExportable={{
+                        filename: 'aktivni-hraci-podle-oboru',
+                        headers: ['Obor', 'Počet'],
+                        rows: PLAYERS_BY_FIELD.map((row) => [
+                            row.label,
+                            row.count,
+                        ]),
+                    }}
                     tabs={[
                         {
                             name: 'Graf',
                             value: 'chart',
                             icon: <ChartColumnIcon />,
                             content: (
-                                <BarChart
-                                    data={[]}
-                                    config={PLAYERS_BY_TEAM_CONFIG}
-                                    categoryKey="label"
-                                    series={[...PLAYERS_BY_TEAM_SERIES]}
-                                    emptyMessage="Tento graf neobsahuje žádné údaje"
-                                    className="h-72"
-                                />
+                                <div
+                                    className="w-full"
+                                    style={{ height: byFieldChartHeight }}
+                                >
+                                    <BarChart
+                                        data={PLAYERS_BY_FIELD}
+                                        config={PLAYERS_BY_FIELD_CONFIG}
+                                        categoryKey="label"
+                                        series={[...PLAYERS_BY_FIELD_SERIES]}
+                                        orientation="horizontal"
+                                        showYAxis
+                                        categoryMaxLength={22}
+                                        xAxisLabel="Počet"
+                                        yAxisLabel="Obor"
+                                        formatValue={formatPlayerCount}
+                                        legendQueryKey="alumni-by-field-muted"
+                                        className="h-full"
+                                    />
+                                </div>
                             ),
                         },
                         {
@@ -190,10 +215,9 @@ export function ActivePlayersTab() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={[]}
-                                    columns={PLAYERS_BY_TEAM_COLUMNS}
+                                    data={PLAYERS_BY_FIELD}
+                                    columns={PLAYERS_BY_FIELD_COLUMNS}
                                     getRowKey={(row) => row.label}
-                                    emptyMessage="Tento graf neobsahuje žádné údaje"
                                 />
                             ),
                         },
