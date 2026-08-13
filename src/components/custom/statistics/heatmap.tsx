@@ -85,7 +85,7 @@ export function Heatmap({
                     <div role="row" className="contents">
                         <div
                             role="columnheader"
-                            className="bg-background sticky left-0 z-10"
+                            className="bg-background sticky left-0 z-[1]"
                         />
                         {columns.map((column) => (
                             <div
@@ -102,7 +102,7 @@ export function Heatmap({
                         <div key={row} role="row" className="contents">
                             <div
                                 role="rowheader"
-                                className="bg-background sticky left-0 z-10 flex items-center pr-3 text-xs font-medium whitespace-nowrap"
+                                className="bg-background sticky left-0 z-[1] flex items-center pr-3 text-xs font-medium whitespace-nowrap"
                             >
                                 {row}
                             </div>

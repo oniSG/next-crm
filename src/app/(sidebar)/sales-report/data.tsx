@@ -11,6 +11,9 @@ import discountAmountByCategory from './data/discount-amount-by-category.json'
 import discountAmountByTeam from './data/discount-amount-by-team.json'
 import discountsByTeam from './data/discounts-by-team.json'
 import salesReportKpis from './data/sales-report-kpis.json'
+import ticketRevenueByTeam from './data/ticket-revenue-by-team.json'
+import ticketsSoldByTeam from './data/tickets-sold-by-team.json'
+import csobPartnerDiscountByTeam from './data/csob-partner-discount-by-team.json'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const moneyFormatter = new Intl.NumberFormat('cs-CZ', {
@@ -238,6 +241,99 @@ export const DISCOUNTS_BY_TEAM_COLUMNS: SimpleTableColumn<DiscountsByTeamPoint>[
             cellClassName: 'text-right tabular-nums',
             cell: (row: DiscountsByTeamPoint) => numberFormatter.format(row[key]),
         })),
+    ]
+
+export type TicketsSoldByTeamPoint = {
+    label: string
+    count: number
+}
+
+export const TICKETS_SOLD_BY_TEAM_SERIES = ['count'] as const
+
+export const TICKETS_SOLD_BY_TEAM_CONFIG = {
+    count: { label: 'Počet', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
+export const TICKETS_SOLD_BY_TEAM =
+    ticketsSoldByTeam as TicketsSoldByTeamPoint[]
+
+export const TICKETS_SOLD_BY_TEAM_COLUMNS: SimpleTableColumn<TicketsSoldByTeamPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'count',
+            header: 'Počet',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.count),
+        },
+    ]
+
+export type TicketRevenueByTeamPoint = {
+    label: string
+    revenue: number
+}
+
+export const TICKET_REVENUE_BY_TEAM_SERIES = ['revenue'] as const
+
+export const TICKET_REVENUE_BY_TEAM_CONFIG = {
+    revenue: { label: 'Tržba', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
+export const TICKET_REVENUE_BY_TEAM =
+    ticketRevenueByTeam as TicketRevenueByTeamPoint[]
+
+export const TICKET_REVENUE_BY_TEAM_COLUMNS: SimpleTableColumn<TicketRevenueByTeamPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'revenue',
+            header: 'Tržba',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => moneyFormatter.format(row.revenue),
+        },
+    ]
+
+export type CsobPartnerDiscountByTeamPoint = {
+    label: string
+    count: number
+}
+
+export const CSOB_PARTNER_DISCOUNT_BY_TEAM_SERIES = ['count'] as const
+
+export const CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG = {
+    count: { label: 'Počet', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
+export const CSOB_PARTNER_DISCOUNT_BY_TEAM =
+    csobPartnerDiscountByTeam as CsobPartnerDiscountByTeamPoint[]
+
+export const CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS: SimpleTableColumn<CsobPartnerDiscountByTeamPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'count',
+            header: 'Počet',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.count),
+        },
     ]
 
 export type SalesReportKpis = {

@@ -12,6 +12,10 @@ import { ReportHeaderCard } from '@/components/custom/statistics/report-header-c
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
+    CSOB_PARTNER_DISCOUNT_BY_TEAM,
+    CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS,
+    CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG,
+    CSOB_PARTNER_DISCOUNT_BY_TEAM_SERIES,
     DISCOUNT_AMOUNT_BY_CATEGORY,
     DISCOUNT_AMOUNT_BY_CATEGORY_COLUMNS,
     DISCOUNT_AMOUNT_BY_TEAM,
@@ -31,11 +35,30 @@ import {
     formatSalesRevenue,
     formatTicketCount,
     getSalesReportKpis,
+    TICKET_REVENUE_BY_TEAM,
+    TICKET_REVENUE_BY_TEAM_COLUMNS,
+    TICKET_REVENUE_BY_TEAM_CONFIG,
+    TICKET_REVENUE_BY_TEAM_SERIES,
+    TICKETS_SOLD_BY_TEAM,
+    TICKETS_SOLD_BY_TEAM_COLUMNS,
+    TICKETS_SOLD_BY_TEAM_CONFIG,
+    TICKETS_SOLD_BY_TEAM_SERIES,
 } from './data'
-import { SalesReportFilters } from './sales-report-filters'
 
 export function SalesReport() {
     const kpis = getSalesReportKpis()
+    const ticketsSoldByTeamChartHeight = Math.max(
+        320,
+        TICKETS_SOLD_BY_TEAM.length * 36 + 80,
+    )
+    const ticketRevenueByTeamChartHeight = Math.max(
+        320,
+        TICKET_REVENUE_BY_TEAM.length * 36 + 80,
+    )
+    const csobPartnerDiscountByTeamChartHeight = Math.max(
+        320,
+        CSOB_PARTNER_DISCOUNT_BY_TEAM.length * 36 + 80,
+    )
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -43,7 +66,6 @@ export function SalesReport() {
                 title="Sales report"
                 description="Přehled zlevněných vstupenek, slev a jejich využití."
             />
-            <SalesReportFilters />
 
             <section
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
@@ -319,6 +341,186 @@ export function SalesReport() {
                             <SimpleTable
                                 data={DISCOUNTS_BY_TEAM}
                                 columns={DISCOUNTS_BY_TEAM_COLUMNS}
+                                getRowKey={(row) => row.label}
+                            />
+                        ),
+                    },
+                ]}
+            />
+
+            <DataVisulaizationCard
+                title="Počet prodaných vstupenek podle týmů"
+                queryKey="sales-tickets-sold-by-team-view"
+                action={
+                    <InfoTooltip>
+                        Počet prodaných vstupenek podle jednotlivých týmů.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'pocet-prodanych-vstupenek-podle-tymu',
+                    headers: ['Tým', 'Počet'],
+                    rows: TICKETS_SOLD_BY_TEAM.map((row) => [
+                        row.label,
+                        row.count,
+                    ]),
+                }}
+                tabs={[
+                    {
+                        name: 'Graf',
+                        value: 'chart',
+                        icon: <ChartColumnIcon />,
+                        content: (
+                            <div
+                                className="w-full"
+                                style={{ height: ticketsSoldByTeamChartHeight }}
+                            >
+                                <BarChart
+                                    data={TICKETS_SOLD_BY_TEAM}
+                                    config={TICKETS_SOLD_BY_TEAM_CONFIG}
+                                    categoryKey="label"
+                                    series={[...TICKETS_SOLD_BY_TEAM_SERIES]}
+                                    orientation="horizontal"
+                                    showYAxis
+                                    categoryMaxLength={22}
+                                    xAxisLabel="Počet"
+                                    yAxisLabel="Tým"
+                                    formatValue={formatTicketCount}
+                                    legendQueryKey="sales-tickets-sold-by-team-muted"
+                                    className="h-full"
+                                />
+                            </div>
+                        ),
+                    },
+                    {
+                        name: 'Tabulka',
+                        value: 'table',
+                        icon: <TableIcon />,
+                        content: (
+                            <SimpleTable
+                                data={TICKETS_SOLD_BY_TEAM}
+                                columns={TICKETS_SOLD_BY_TEAM_COLUMNS}
+                                getRowKey={(row) => row.label}
+                            />
+                        ),
+                    },
+                ]}
+            />
+
+            <DataVisulaizationCard
+                title="Tržba prodaných vstupenek podle týmů"
+                queryKey="sales-ticket-revenue-by-team-view"
+                action={
+                    <InfoTooltip>
+                        Tržba z prodaných vstupenek podle jednotlivých týmů.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'trzba-prodanych-vstupenek-podle-tymu',
+                    headers: ['Tým', 'Tržba'],
+                    rows: TICKET_REVENUE_BY_TEAM.map((row) => [
+                        row.label,
+                        row.revenue,
+                    ]),
+                }}
+                tabs={[
+                    {
+                        name: 'Graf',
+                        value: 'chart',
+                        icon: <ChartColumnIcon />,
+                        content: (
+                            <div
+                                className="w-full"
+                                style={{
+                                    height: ticketRevenueByTeamChartHeight,
+                                }}
+                            >
+                                <BarChart
+                                    data={TICKET_REVENUE_BY_TEAM}
+                                    config={TICKET_REVENUE_BY_TEAM_CONFIG}
+                                    categoryKey="label"
+                                    series={[...TICKET_REVENUE_BY_TEAM_SERIES]}
+                                    orientation="horizontal"
+                                    showYAxis
+                                    categoryMaxLength={22}
+                                    xAxisLabel="Cena v Kč"
+                                    yAxisLabel="Tým"
+                                    formatValue={formatSalesRevenue}
+                                    legendQueryKey="sales-ticket-revenue-by-team-muted"
+                                    className="h-full"
+                                />
+                            </div>
+                        ),
+                    },
+                    {
+                        name: 'Tabulka',
+                        value: 'table',
+                        icon: <TableIcon />,
+                        content: (
+                            <SimpleTable
+                                data={TICKET_REVENUE_BY_TEAM}
+                                columns={TICKET_REVENUE_BY_TEAM_COLUMNS}
+                                getRowKey={(row) => row.label}
+                            />
+                        ),
+                    },
+                ]}
+            />
+
+            <DataVisulaizationCard
+                title="Partnerská sleva ČSOB"
+                queryKey="sales-csob-partner-discount-by-team-view"
+                action={
+                    <InfoTooltip>
+                        Počet uplatněných partnerských slev ČSOB podle týmů.
+                    </InfoTooltip>
+                }
+                tableExportable={{
+                    filename: 'partnerska-sleva-csob',
+                    headers: ['Tým', 'Počet'],
+                    rows: CSOB_PARTNER_DISCOUNT_BY_TEAM.map((row) => [
+                        row.label,
+                        row.count,
+                    ]),
+                }}
+                tabs={[
+                    {
+                        name: 'Graf',
+                        value: 'chart',
+                        icon: <ChartColumnIcon />,
+                        content: (
+                            <div
+                                className="w-full"
+                                style={{
+                                    height: csobPartnerDiscountByTeamChartHeight,
+                                }}
+                            >
+                                <BarChart
+                                    data={CSOB_PARTNER_DISCOUNT_BY_TEAM}
+                                    config={CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG}
+                                    categoryKey="label"
+                                    series={[
+                                        ...CSOB_PARTNER_DISCOUNT_BY_TEAM_SERIES,
+                                    ]}
+                                    orientation="horizontal"
+                                    showYAxis
+                                    categoryMaxLength={22}
+                                    xAxisLabel="Počet"
+                                    yAxisLabel="Tým"
+                                    formatValue={formatTicketCount}
+                                    legendQueryKey="sales-csob-partner-discount-by-team-muted"
+                                    className="h-full"
+                                />
+                            </div>
+                        ),
+                    },
+                    {
+                        name: 'Tabulka',
+                        value: 'table',
+                        icon: <TableIcon />,
+                        content: (
+                            <SimpleTable
+                                data={CSOB_PARTNER_DISCOUNT_BY_TEAM}
+                                columns={CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
                         ),

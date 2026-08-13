@@ -1,0 +1,15 @@
+[
+  { "label": "akademiciplzen", "revenue": 465000 },
+  { "label": "blackdogsbudweis", "revenue": 28000 },
+  { "label": "boostrava", "revenue": 418000 },
+  { "label": "czufarmers", "revenue": 38000 },
+  { "label": "engineersprague", "revenue": 78000 },
+  { "label": "finalfour", "revenue": 392000 },
+  { "label": "hcmuni", "revenue": 48000 },
+  { "label": "hcnorthwings", "revenue": 32000 },
+  { "label": "ridersup", "revenue": 62000 },
+  { "label": "ukhockeyprague", "revenue": 72000 },
+  { "label": "unitedhk", "revenue": 335000 },
+  { "label": "vsefalcons", "revenue": 42000 },
+  { "label": "vutcavaliers", "revenue": 9000 }
+]
