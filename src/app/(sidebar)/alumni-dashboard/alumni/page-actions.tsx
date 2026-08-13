@@ -1,9 +1,9 @@
 'use client'
 
 import { FiltersPopover } from '@/components/custom/filters/filters-popover'
+import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
-import { AlumniFilterSelect } from '../alumni-filter-select'
 import {
     ALUMNI_FILTER_DEFAULTS,
     DEGREE_FILTER_OPTIONS,
@@ -39,47 +39,41 @@ export function PageActions() {
     return (
         <>
             <FiltersPopover activeCount={activeCount}>
-                <AlumniFilterSelect
+                <SelectFilter
                     label="Sezóna od"
                     options={ALUMNI_SEASON_OPTIONS}
                     value={seasonFrom}
                     onChange={(value) => void setSeasonFrom(value as typeof seasonFrom)}
-                    placeholder="Sezóna od"
                 />
-                <AlumniFilterSelect
+                <SelectFilter
                     label="Sezóna do"
                     options={ALUMNI_SEASON_OPTIONS}
                     value={seasonTo}
                     onChange={(value) => void setSeasonTo(value as typeof seasonTo)}
-                    placeholder="Sezóna do"
                 />
-                <AlumniFilterSelect
+                <SelectFilter
                     label="Škola"
                     options={SCHOOL_FILTER_OPTIONS}
                     value={school}
                     onChange={(value) => void setSchool(value as typeof school)}
-                    placeholder="Škola"
                 />
-                <AlumniFilterSelect
+                <SelectFilter
                     label="Fakulta"
                     options={FACULTY_FILTER_OPTIONS}
                     value={faculty}
                     onChange={(value) => void setFaculty(value as typeof faculty)}
-                    placeholder="Fakulta"
                 />
-                <AlumniFilterSelect
+                <SelectFilter
                     label="Obor"
                     options={FIELD_FILTER_OPTIONS}
                     value={field}
                     onChange={(value) => void setField(value as typeof field)}
-                    placeholder="Obor"
                 />
-                <AlumniFilterSelect
+                <SelectFilter
                     label="Stupeň"
                     options={DEGREE_FILTER_OPTIONS}
                     value={degree}
                     onChange={(value) => void setDegree(value as typeof degree)}
-                    placeholder="Stupeň"
                 />
             </FiltersPopover>
             <ExportButton

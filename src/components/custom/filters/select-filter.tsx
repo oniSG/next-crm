@@ -13,25 +13,32 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
-type AlumniFilterSelectProps = {
-    options: ReadonlyArray<{ label: string; value: string }>
+export type SelectFilterOption = {
+    label: string
     value: string
-    onChange: (value: string) => void
-    placeholder: string
-    /** When set, renders a labeled stack useful inside FiltersPopover. */
-    label?: string
-    className?: string
 }
 
-export function AlumniFilterSelect({
+export type SelectFilterProps = {
+    options: ReadonlyArray<SelectFilterOption>
+    value: string
+    onChange: (value: string) => void
+    placeholder?: string
+    label?: string
+    className?: string
+    contentAlign?: 'start' | 'center' | 'end'
+}
+
+export function SelectFilter({
     options,
     value,
     onChange,
     placeholder,
     label,
     className,
-}: AlumniFilterSelectProps) {
+    contentAlign = 'end',
+}: SelectFilterProps) {
     const id = useId()
+
     const select = (
         <Select
             items={[...options]}
@@ -47,9 +54,9 @@ export function AlumniFilterSelect({
                     className,
                 )}
             >
-                <SelectValue placeholder={placeholder} />
+                <SelectValue placeholder={placeholder ?? label} />
             </SelectTrigger>
-            <SelectContent alignItemWithTrigger={false} align="end">
+            <SelectContent alignItemWithTrigger={false} align={contentAlign}>
                 <SelectGroup>
                     {options.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
