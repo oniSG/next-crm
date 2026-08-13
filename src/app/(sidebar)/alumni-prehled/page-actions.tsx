@@ -7,8 +7,8 @@ import {
     ALUMNI_FILTER_DEFAULTS,
     ALUMNI_SEASON_OPTIONS,
     TEAM_FILTER_OPTIONS,
-} from '../data'
-import { useFilterParam } from '../use-filter-param'
+} from '@/lib/alumni/filters'
+import { useFilterParam } from '@/lib/alumni/use-filter-param'
 
 const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
 const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
@@ -54,8 +54,8 @@ export function PageActions() {
                 className="w-44"
             />
             <ExportButton
-                dashboard="alumni-dashboard"
-                filename="alumni-dashboard-prehled.pdf"
+                dashboard="alumni-prehled"
+                filename="alumni-prehled.pdf"
             />
         </>
     )

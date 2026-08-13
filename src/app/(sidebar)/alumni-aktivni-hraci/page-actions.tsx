@@ -6,35 +6,23 @@ import { ExportButton } from '@/components/custom/statistics/export-button'
 
 import {
     ALUMNI_FILTER_DEFAULTS,
-    ALUMNI_SEASON_OPTIONS,
     DEGREE_FILTER_OPTIONS,
     FACULTY_FILTER_OPTIONS,
     FIELD_FILTER_OPTIONS,
-    SCHOOL_FILTER_OPTIONS,
-} from '../data'
-import { useFilterParam } from '../use-filter-param'
+    TEAM_FILTER_OPTIONS,
+} from '@/lib/alumni/filters'
+import { useFilterParam } from '@/lib/alumni/use-filter-param'
 
-const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
-const schoolValues = SCHOOL_FILTER_OPTIONS.map((option) => option.value)
+const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
 const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
 const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
 const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
 
 export function PageActions() {
-    const [seasonFrom, setSeasonFrom] = useFilterParam(
-        'seasonFrom',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonFrom,
-    )
-    const [seasonTo, setSeasonTo] = useFilterParam(
-        'seasonTo',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonTo,
-    )
-    const [school, setSchool] = useFilterParam(
-        'school',
-        schoolValues,
-        ALUMNI_FILTER_DEFAULTS.school,
+    const [team, setTeam] = useFilterParam(
+        'team',
+        teamValues,
+        ALUMNI_FILTER_DEFAULTS.team,
     )
     const [faculty, setFaculty] = useFilterParam(
         'faculty',
@@ -53,9 +41,7 @@ export function PageActions() {
     )
 
     const activeCount = [
-        seasonFrom !== ALUMNI_FILTER_DEFAULTS.seasonFrom,
-        seasonTo !== ALUMNI_FILTER_DEFAULTS.seasonTo,
-        school !== ALUMNI_FILTER_DEFAULTS.school,
+        team !== ALUMNI_FILTER_DEFAULTS.team,
         faculty !== ALUMNI_FILTER_DEFAULTS.faculty,
         field !== ALUMNI_FILTER_DEFAULTS.field,
         degree !== ALUMNI_FILTER_DEFAULTS.degree,
@@ -65,22 +51,10 @@ export function PageActions() {
         <>
             <FiltersPopover activeCount={activeCount}>
                 <SelectFilter
-                    label="Sezóna od"
-                    options={ALUMNI_SEASON_OPTIONS}
-                    value={seasonFrom}
-                    onChange={setSeasonFrom}
-                />
-                <SelectFilter
-                    label="Sezóna do"
-                    options={ALUMNI_SEASON_OPTIONS}
-                    value={seasonTo}
-                    onChange={setSeasonTo}
-                />
-                <SelectFilter
-                    label="Škola"
-                    options={SCHOOL_FILTER_OPTIONS}
-                    value={school}
-                    onChange={setSchool}
+                    label="Tým"
+                    options={TEAM_FILTER_OPTIONS}
+                    value={team}
+                    onChange={setTeam}
                 />
                 <SelectFilter
                     label="Fakulta"
@@ -102,8 +76,8 @@ export function PageActions() {
                 />
             </FiltersPopover>
             <ExportButton
-                dashboard="alumni-dashboard"
-                filename="alumni-dashboard-alumni.pdf"
+                dashboard="alumni-aktivni-hraci"
+                filename="alumni-aktivni-hraci.pdf"
             />
         </>
     )

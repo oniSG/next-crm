@@ -26,7 +26,7 @@ export function PieChart({ data, config, className, innerRadius }: PieChartProps
         <ChartContainer
             config={config}
             className={cn(
-                'mx-auto aspect-square max-h-[280px] w-full overflow-visible px-0 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-responsive-container]:overflow-visible [&_.recharts-surface]:overflow-visible',
+                'mx-auto aspect-square max-h-[280px] w-full overflow-visible px-0 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-legend-wrapper]:!w-full [&_.recharts-responsive-container]:overflow-visible [&_.recharts-surface]:overflow-visible',
                 className,
             )}
         >

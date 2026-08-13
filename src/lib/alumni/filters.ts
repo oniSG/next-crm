@@ -1,12 +1,3 @@
-import type { NavTabItem } from '@/components/custom/layout/nav-tabs'
-
-export const ALUMNI_DASHBOARD_TABS: NavTabItem[] = [
-    { label: 'Přehled', href: '/alumni-dashboard/prehled' },
-    { label: 'Graduation rate', href: '/alumni-dashboard/graduation-rate' },
-    { label: 'Alumni', href: '/alumni-dashboard/alumni' },
-    { label: 'Aktivní hráči', href: '/alumni-dashboard/aktivni-hraci' },
-]
-
 export const ALL_FILTER_VALUE = 'all'
 
 type FilterOption = { label: string; value: string }

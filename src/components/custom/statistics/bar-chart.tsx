@@ -47,21 +47,11 @@ function truncateCategoryLabel(value: unknown, maxLength: number) {
     return `${label.slice(0, Math.max(0, maxLength - 1))}…`
 }
 
-function getBarRadius(
-    index: number,
-    total: number,
-    stacked: boolean,
-    orientation: 'vertical' | 'horizontal',
-): number | [number, number, number, number] {
-    if (!stacked || total === 1) return 4
-    if (orientation === 'vertical') {
-        if (index === 0) return [0, 0, 4, 4]
-        if (index === total - 1) return [4, 4, 0, 0]
-        return [0, 0, 0, 0]
-    }
-    if (index === 0) return [4, 0, 0, 4]
-    if (index === total - 1) return [0, 4, 4, 0]
-    return [0, 0, 0, 0]
+function rowHasVisibleValue(row: object, keys: string[]) {
+    return keys.some((key) => {
+        const value = (row as Record<string, unknown>)[key]
+        return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+    })
 }
 
 export function BarChart({
@@ -92,7 +82,14 @@ export function BarChart({
         series,
     )
 
-    if (data.length === 0) {
+    const chartData =
+        visibleSeries.length === 0
+            ? []
+            : mutedKeys.length === 0
+              ? data
+              : data.filter((row) => rowHasVisibleValue(row, visibleSeries))
+
+    if (chartData.length === 0) {
         return (
             <div
                 className={cn(
@@ -129,14 +126,14 @@ export function BarChart({
             id={chartId}
             config={config}
             className={cn(
-                'aspect-auto h-full min-h-56 w-full [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto',
+                'aspect-auto h-full min-h-56 w-full [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-legend-wrapper]:!w-full',
                 className,
             )}
         >
             <RechartsBarChart
                 id={chartId}
                 accessibilityLayer
-                data={data}
+                data={chartData}
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
                 margin={
                     isHorizontal
@@ -275,6 +272,7 @@ export function BarChart({
                     </>
                 )}
                 <ChartTooltip
+                    position={{ y: 0 }}
                     content={
                         <ChartTooltipContent
                             valueFormatter={formatValue}
@@ -343,12 +341,6 @@ export function BarChart({
                     }
                 />
                 {visiblePrimarySeries.map((key, i) => {
-                    const radius = getBarRadius(
-                        i,
-                        visiblePrimarySeries.length,
-                        stacked,
-                        orientation,
-                    )
                     return (
                         <Bar
                             // Remount when stack position changes — Recharts won't
@@ -358,18 +350,12 @@ export function BarChart({
                             fill={`var(--color-${key})`}
                             yAxisId={hasSecondaryAxis ? 'left' : undefined}
                             stackId={stacked ? leftStackId : undefined}
-                            radius={radius}
+                            radius={4}
                         />
                     )
                 })}
                 {hasSecondaryAxis &&
                     visibleSecondarySeries.map((key, i) => {
-                        const radius = getBarRadius(
-                            i,
-                            visibleSecondarySeries.length,
-                            stacked,
-                            orientation,
-                        )
                         return (
                             <Bar
                                 key={`${chartId}-${key}-${i}-${visibleSecondarySeries.length}`}
@@ -377,7 +363,7 @@ export function BarChart({
                                 fill={`var(--color-${key})`}
                                 yAxisId="right"
                                 stackId={stacked ? rightStackId : undefined}
-                                radius={radius}
+                                radius={4}
                             />
                         )
                     })}

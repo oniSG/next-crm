@@ -169,9 +169,31 @@ const fansGroups: NavGroup[] = [
                         icon: <ClipboardCheckIcon />,
                     },
                     {
-                        title: 'Alumni dashboard',
-                        url: '/alumni-dashboard/prehled',
+                        title: 'Alumni',
+                        url: '#',
                         icon: <GraduationCapIcon />,
+                        items: [
+                            {
+                                title: 'Přehled',
+                                url: '/alumni-prehled',
+                                icon: <LayoutDashboardIcon />,
+                            },
+                            {
+                                title: 'Graduation rate',
+                                url: '/alumni-graduation-rate',
+                                icon: <PercentIcon />,
+                            },
+                            {
+                                title: 'Alumni',
+                                url: '/alumni',
+                                icon: <BookUserIcon />,
+                            },
+                            {
+                                title: 'Aktivní hráči',
+                                url: '/alumni-aktivni-hraci',
+                                icon: <UsersIcon />,
+                            },
+                        ],
                     },
                 ],
             },

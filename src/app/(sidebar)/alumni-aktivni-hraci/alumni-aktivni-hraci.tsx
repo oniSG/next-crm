@@ -9,6 +9,7 @@ import { DataVisulaizationCard } from '@/components/custom/statistics/data-visua
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     ALUMNI_FIELD_OPTIONS,
@@ -23,8 +24,8 @@ import {
     matchesFaculty,
     matchesTeam,
     TEAM_FILTER_OPTIONS,
-} from '../data'
-import { useFilterParam } from '../use-filter-param'
+} from '@/lib/alumni/filters'
+import { useFilterParam } from '@/lib/alumni/use-filter-param'
 import {
     ACTIVE_PLAYERS_DETAIL,
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
@@ -33,14 +34,13 @@ import {
     PLAYERS_BY_FIELD,
     PLAYERS_BY_FIELD_COLUMNS,
     PLAYERS_BY_FIELD_CONFIG,
-    PLAYERS_BY_FIELD_SERIES,
     PLAYERS_BY_TEAM,
     PLAYERS_BY_TEAM_COLUMNS,
     PLAYERS_BY_TEAM_CONFIG,
-    PLAYERS_BY_TEAM_SERIES,
     PLAYERS_BY_YEAR_DEGREE,
     STUDY_LEVEL,
     STUDY_LEVEL_CONFIG,
+    toSparseCategoryChart,
     YEAR_DEGREE_COLUMNS,
     YEAR_DEGREE_CONFIG,
     YEAR_DEGREE_SERIES,
@@ -51,27 +51,15 @@ const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
 const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
 const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
 
-export function ActivePlayersTab() {
-    const [team] = useFilterParam(
-        'team',
-        teamValues,
-        ALUMNI_FILTER_DEFAULTS.team,
-    )
+export function AlumniAktivniHraci() {
+    const [team] = useFilterParam('team', teamValues, ALUMNI_FILTER_DEFAULTS.team)
     const [faculty] = useFilterParam(
         'faculty',
         facultyValues,
         ALUMNI_FILTER_DEFAULTS.faculty,
     )
-    const [field] = useFilterParam(
-        'field',
-        fieldValues,
-        ALUMNI_FILTER_DEFAULTS.field,
-    )
-    const [degree] = useFilterParam(
-        'degree',
-        degreeValues,
-        ALUMNI_FILTER_DEFAULTS.degree,
-    )
+    const [field] = useFilterParam('field', fieldValues, ALUMNI_FILTER_DEFAULTS.field)
+    const [degree] = useFilterParam('degree', degreeValues, ALUMNI_FILTER_DEFAULTS.degree)
 
     const playersByTeam = useMemo(
         () =>
@@ -82,6 +70,11 @@ export function ActivePlayersTab() {
                 ALUMNI_TEAM_OPTIONS,
             ),
         [team],
+    )
+
+    const playersByTeamChart = useMemo(
+        () => toSparseCategoryChart(playersByTeam),
+        [playersByTeam],
     )
 
     const playersByField = useMemo(
@@ -95,6 +88,11 @@ export function ActivePlayersTab() {
         [field],
     )
 
+    const playersByFieldChart = useMemo(
+        () => toSparseCategoryChart(playersByField),
+        [playersByField],
+    )
+
     const studyLevel = useMemo(() => {
         if (isAllFilter(degree)) return STUDY_LEVEL
         return STUDY_LEVEL.filter((row) => row.name === degree)
@@ -102,11 +100,7 @@ export function ActivePlayersTab() {
 
     const yearDegreeSeries = useMemo((): string[] => {
         if (isAllFilter(degree)) return [...YEAR_DEGREE_SERIES]
-        if (
-            YEAR_DEGREE_SERIES.includes(
-                degree as (typeof YEAR_DEGREE_SERIES)[number],
-            )
-        ) {
+        if (YEAR_DEGREE_SERIES.includes(degree as (typeof YEAR_DEGREE_SERIES)[number])) {
             return [degree]
         }
         return [...YEAR_DEGREE_SERIES]
@@ -123,13 +117,15 @@ export function ActivePlayersTab() {
         [team, faculty, degree],
     )
 
-    const byFieldChartHeight = Math.max(
-        288,
-        Math.max(playersByField.length, 1) * 44 + 80,
-    )
+    const byFieldChartHeight = Math.max(288, Math.max(playersByField.length, 1) * 44 + 80)
 
     return (
-        <>
+        <div className="flex w-full max-w-6xl flex-col gap-4">
+            <ReportHeaderCard
+                title="Aktivní hráči"
+                description="Přehled aktivních hráčů a jejich vzdělání."
+            />
+
             <section
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Aktivní hráči KPI"
@@ -177,14 +173,14 @@ export function ActivePlayersTab() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <BarChart
-                                    data={playersByTeam}
+                                    data={playersByTeamChart.data}
                                     config={PLAYERS_BY_TEAM_CONFIG}
                                     categoryKey="label"
-                                    series={[...PLAYERS_BY_TEAM_SERIES]}
+                                    series={playersByTeamChart.series}
+                                    stacked
                                     showYAxis
                                     angledXAxis
                                     categoryMaxLength={16}
-                                    xAxisLabel="Tým"
                                     yAxisLabel="Počet"
                                     formatValue={formatPlayerCount}
                                     legendQueryKey="alumni-players-by-team-muted"
@@ -272,10 +268,7 @@ export function ActivePlayersTab() {
                     tableExportable={{
                         filename: 'aktivni-hraci-podle-oboru',
                         headers: ['Obor', 'Počet'],
-                        rows: playersByField.map((row) => [
-                            row.label,
-                            row.count,
-                        ]),
+                        rows: playersByField.map((row) => [row.label, row.count]),
                     }}
                     tabs={[
                         {
@@ -288,10 +281,11 @@ export function ActivePlayersTab() {
                                     style={{ height: byFieldChartHeight }}
                                 >
                                     <BarChart
-                                        data={playersByField}
+                                        data={playersByFieldChart.data}
                                         config={PLAYERS_BY_FIELD_CONFIG}
                                         categoryKey="label"
-                                        series={[...PLAYERS_BY_FIELD_SERIES]}
+                                        series={playersByFieldChart.series}
+                                        stacked
                                         orientation="horizontal"
                                         showYAxis
                                         categoryMaxLength={22}
@@ -345,6 +339,6 @@ export function ActivePlayersTab() {
                     getRowKey={(row) => row.id}
                 />
             </DataVisulaizationCard>
-        </>
+        </div>
     )
 }

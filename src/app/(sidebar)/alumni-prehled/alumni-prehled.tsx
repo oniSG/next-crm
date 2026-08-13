@@ -9,6 +9,7 @@ import { DataVisulaizationCard } from '@/components/custom/statistics/data-visua
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     ALUMNI_FILTER_DEFAULTS,
@@ -17,8 +18,8 @@ import {
     filterByOptionLabel,
     filterBySeasonRange,
     TEAM_FILTER_OPTIONS,
-} from '../data'
-import { useFilterParam } from '../use-filter-param'
+} from '@/lib/alumni/filters'
+import { useFilterParam } from '@/lib/alumni/use-filter-param'
 import {
     formatGraduationPercent,
     LEAGUE_GRADUATION_COLUMNS,
@@ -35,7 +36,7 @@ import {
 const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
 const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
 
-export function OverviewTab() {
+export function AlumniPrehled() {
     const [seasonFrom] = useFilterParam(
         'seasonFrom',
         seasonValues,
@@ -68,7 +69,12 @@ export function OverviewTab() {
     )
 
     return (
-        <>
+        <div className="flex w-full max-w-6xl flex-col gap-4">
+            <ReportHeaderCard
+                title="Přehled"
+                description="Souhrn alumni dat a klíčových ukazatelů."
+            />
+
             <section
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Přehled KPI"
@@ -179,6 +185,6 @@ export function OverviewTab() {
                     ]}
                 />
             </section>
-        </>
+        </div>
     )
 }

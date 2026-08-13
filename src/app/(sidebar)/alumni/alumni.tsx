@@ -10,6 +10,7 @@ import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
+import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import {
     ALUMNI_FIELD_OPTIONS,
@@ -24,8 +25,8 @@ import {
     matchesFaculty,
     matchesSchool,
     SCHOOL_FILTER_OPTIONS,
-} from '../data'
-import { useFilterParam } from '../use-filter-param'
+} from '@/lib/alumni/filters'
+import { useFilterParam } from '@/lib/alumni/use-filter-param'
 import {
     ALUMNI_BY_UNIVERSITY,
     ALUMNI_BY_UNIVERSITY_COLUMNS,
@@ -54,7 +55,7 @@ const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
 const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
 const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
 
-export function AlumniTab() {
+export function Alumni() {
     const [seasonFrom] = useFilterParam(
         'seasonFrom',
         seasonValues,
@@ -133,7 +134,12 @@ export function AlumniTab() {
     )
 
     return (
-        <>
+        <div className="flex w-full max-w-6xl flex-col gap-4">
+            <ReportHeaderCard
+                title="Alumni"
+                description="Struktura alumni podle vzdělání, oborů a univerzit."
+            />
+
             <section
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Alumni KPI"
@@ -356,6 +362,6 @@ export function AlumniTab() {
                     getRowKey={(row) => row.id}
                 />
             </DataVisulaizationCard>
-        </>
+        </div>
     )
 }

@@ -46,6 +46,49 @@ export type ActivePlayerStudyLevelPoint = {
     fill: string
 }
 
+export type SparseCategoryPoint = {
+    label: string
+} & Record<string, string | number>
+
+function toCategoryKey(label: string) {
+    return label
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+}
+
+function buildCategoryConfig(
+    rows: { label: string }[],
+): ChartConfig {
+    return Object.fromEntries(
+        rows.map((row, index) => [
+            toCategoryKey(row.label),
+            {
+                label: row.label,
+                color: `var(--chart-${(index % 16) + 1})`,
+            },
+        ]),
+    )
+}
+
+/** One colored series per category row (sparse + stacked in BarChart). */
+export function toSparseCategoryChart(
+    rows: { label: string; count: number }[],
+): { data: SparseCategoryPoint[]; series: string[] } {
+    const series = rows.map((row) => toCategoryKey(row.label))
+    const data = rows.map((row) => {
+        const key = toCategoryKey(row.label)
+        const point: SparseCategoryPoint = { label: row.label }
+        for (const seriesKey of series) {
+            point[seriesKey] = seriesKey === key ? row.count : 0
+        }
+        return point
+    })
+    return { data, series }
+}
+
 export const ACTIVE_PLAYERS_KPIS: Omit<KpiCardProps, 'className'>[] = [
     {
         label: 'Hráči ve výběru',
@@ -83,13 +126,9 @@ export const STUDY_LEVEL_CONFIG = {
 export const STUDY_LEVEL =
     activePlayersStudyLevel as ActivePlayerStudyLevelPoint[]
 
-export const PLAYERS_BY_TEAM_SERIES = ['count'] as const
-
-export const PLAYERS_BY_TEAM_CONFIG = {
-    count: { label: 'Počet', color: 'var(--chart-1)' },
-} satisfies ChartConfig
-
 export const PLAYERS_BY_TEAM = activePlayersByTeam as ActivePlayerByTeamPoint[]
+
+export const PLAYERS_BY_TEAM_CONFIG = buildCategoryConfig(PLAYERS_BY_TEAM)
 
 export const PLAYERS_BY_TEAM_COLUMNS: SimpleTableColumn<ActivePlayerByTeamPoint>[] =
     [
@@ -108,14 +147,10 @@ export const PLAYERS_BY_TEAM_COLUMNS: SimpleTableColumn<ActivePlayerByTeamPoint>
         },
     ]
 
-export const PLAYERS_BY_FIELD_SERIES = ['count'] as const
-
-export const PLAYERS_BY_FIELD_CONFIG = {
-    count: { label: 'Počet', color: 'var(--chart-1)' },
-} satisfies ChartConfig
-
 export const PLAYERS_BY_FIELD =
     activePlayersByField as ActivePlayerByFieldPoint[]
+
+export const PLAYERS_BY_FIELD_CONFIG = buildCategoryConfig(PLAYERS_BY_FIELD)
 
 export const PLAYERS_BY_FIELD_COLUMNS: SimpleTableColumn<ActivePlayerByFieldPoint>[] =
     [

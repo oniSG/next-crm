@@ -167,8 +167,26 @@ const pages: {
             by: 'Tomas',
         },
         {
-            name: 'Alumni dashboard',
-            path: '/alumni-dashboard/prehled',
+            name: 'Alumni – Přehled',
+            path: '/alumni-prehled',
+            status: 'progress',
+            by: 'Tomas',
+        },
+        {
+            name: 'Alumni – Graduation rate',
+            path: '/alumni-graduation-rate',
+            status: 'progress',
+            by: 'Tomas',
+        },
+        {
+            name: 'Alumni – Alumni',
+            path: '/alumni',
+            status: 'progress',
+            by: 'Tomas',
+        },
+        {
+            name: 'Alumni – Aktivní hráči',
+            path: '/alumni-aktivni-hraci',
             status: 'progress',
             by: 'Tomas',
         },
