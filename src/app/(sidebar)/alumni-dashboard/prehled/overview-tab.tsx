@@ -11,12 +11,14 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
+    ALUMNI_FILTER_DEFAULTS,
+    ALUMNI_SEASON_OPTIONS,
+    ALUMNI_TEAM_OPTIONS,
+    filterByOptionLabel,
     filterBySeasonRange,
-    filterByTeamLabel,
-    useAlumniSeasonFrom,
-    useAlumniSeasonTo,
-    useAlumniTeamFilter,
-} from '../alumni-filters'
+    TEAM_FILTER_OPTIONS,
+} from '../data'
+import { useFilterParam } from '../use-filter-param'
 import {
     formatGraduationPercent,
     LEAGUE_GRADUATION_COLUMNS,
@@ -30,17 +32,38 @@ import {
     TEAM_COMPARISON_SERIES,
 } from './data'
 
+const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
+const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
+
 export function OverviewTab() {
-    const [seasonFrom] = useAlumniSeasonFrom()
-    const [seasonTo] = useAlumniSeasonTo()
-    const [team] = useAlumniTeamFilter()
+    const [seasonFrom] = useFilterParam(
+        'seasonFrom',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonFrom,
+    )
+    const [seasonTo] = useFilterParam(
+        'seasonTo',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonTo,
+    )
+    const [team] = useFilterParam(
+        'team',
+        teamValues,
+        ALUMNI_FILTER_DEFAULTS.team,
+    )
 
     const leagueGraduation = useMemo(
         () => filterBySeasonRange(LEAGUE_GRADUATION_RATE, seasonFrom, seasonTo),
         [seasonFrom, seasonTo],
     )
     const teamComparison = useMemo(
-        () => filterByTeamLabel(TEAM_COMPARISON, team),
+        () =>
+            filterByOptionLabel(
+                TEAM_COMPARISON,
+                (row) => row.label,
+                team,
+                ALUMNI_TEAM_OPTIONS,
+            ),
         [team],
     )
 

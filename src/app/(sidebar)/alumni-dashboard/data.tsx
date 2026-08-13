@@ -7,6 +7,14 @@ export const ALUMNI_DASHBOARD_TABS: NavTabItem[] = [
     { label: 'Aktivní hráči', href: '/alumni-dashboard/aktivni-hraci' },
 ]
 
+export const ALL_FILTER_VALUE = 'all'
+
+type FilterOption = { label: string; value: string }
+
+function withAll(options: readonly FilterOption[]): FilterOption[] {
+    return [{ label: 'Vše', value: ALL_FILTER_VALUE }, ...options]
+}
+
 export const ALUMNI_SEASON_OPTIONS = [
     { label: '2015/2016', value: '2015/2016' },
     { label: '2016/2017', value: '2016/2017' },
@@ -64,8 +72,106 @@ export const ALUMNI_DEGREE_OPTIONS = [
     { label: 'Doktorské', value: 'doktorske' },
 ] as const
 
-export const ALUMNI_STATUS_OPTIONS = [
-    { label: 'Dokončil', value: 'dokoncil' },
-    { label: 'Nedokončil', value: 'nedokoncil' },
-    { label: 'Studuje', value: 'studuje' },
-] as const
+export const TEAM_FILTER_OPTIONS = withAll(ALUMNI_TEAM_OPTIONS)
+export const SCHOOL_FILTER_OPTIONS = withAll(ALUMNI_SCHOOL_OPTIONS)
+export const FACULTY_FILTER_OPTIONS = withAll(ALUMNI_FACULTY_OPTIONS)
+export const FIELD_FILTER_OPTIONS = withAll(ALUMNI_FIELD_OPTIONS)
+export const DEGREE_FILTER_OPTIONS = withAll(ALUMNI_DEGREE_OPTIONS)
+
+export const ALUMNI_FILTER_DEFAULTS = {
+    seasonFrom: '2015/2016',
+    seasonTo: '2025/2026',
+    team: ALL_FILTER_VALUE,
+    school: ALL_FILTER_VALUE,
+    faculty: ALL_FILTER_VALUE,
+    field: ALL_FILTER_VALUE,
+    degree: ALL_FILTER_VALUE,
+} as const
+
+export function isAllFilter(value: string) {
+    return value === ALL_FILTER_VALUE
+}
+
+function optionLabel(
+    options: readonly FilterOption[],
+    value: string,
+): string | null {
+    if (isAllFilter(value)) return null
+    return options.find((option) => option.value === value)?.label ?? null
+}
+
+const SCHOOL_ALIASES: Record<string, string[]> = {
+    uk: ['Univerzita Karlova'],
+    muni: ['Masarykova univerzita'],
+    zcu: ['Západočeská univerzita'],
+    cvut: ['České vysoké učení technické', 'ČVUT'],
+    vse: ['Vysoká škola ekonomická'],
+    upol: ['Univerzita Palackého'],
+}
+
+function seasonIndex(season: string) {
+    return ALUMNI_SEASON_OPTIONS.findIndex((option) => option.value === season)
+}
+
+export function filterBySeasonRange<T extends { label: string }>(
+    data: T[],
+    seasonFrom: string,
+    seasonTo: string,
+) {
+    const from = seasonIndex(seasonFrom)
+    const to = seasonIndex(seasonTo)
+    if (from < 0 || to < 0) return data
+    const min = Math.min(from, to)
+    const max = Math.max(from, to)
+    return data.filter((row) => {
+        const index = seasonIndex(row.label)
+        return index < 0 || (index >= min && index <= max)
+    })
+}
+
+export function filterByOptionLabel<T>(
+    data: T[],
+    getText: (row: T) => string,
+    filterValue: string,
+    options: readonly FilterOption[],
+) {
+    const label = optionLabel(options, filterValue)
+    if (!label) return data
+    return data.filter((row) => getText(row) === label)
+}
+
+export function matchesSchool(schoolName: string, schoolValue: string) {
+    if (isAllFilter(schoolValue)) return true
+    const names = SCHOOL_ALIASES[schoolValue]
+    if (!names) return true
+    return names.some(
+        (name) =>
+            schoolName === name ||
+            schoolName.toLowerCase().includes(name.toLowerCase()) ||
+            name.toLowerCase().includes(schoolName.toLowerCase()),
+    )
+}
+
+export function matchesFaculty(facultyName: string, facultyValue: string) {
+    const label = optionLabel(ALUMNI_FACULTY_OPTIONS, facultyValue)
+    if (!label) return true
+    if (facultyName === '-' || facultyName.trim() === '') return false
+    const name = label.split(' | ').at(-1) ?? label
+    return (
+        facultyName === name ||
+        facultyName.toLowerCase().includes(name.toLowerCase()) ||
+        name.toLowerCase().includes(facultyName.toLowerCase())
+    )
+}
+
+export function matchesDegree(degreeName: string, degreeValue: string) {
+    const label = optionLabel(ALUMNI_DEGREE_OPTIONS, degreeValue)
+    if (!label) return true
+    return degreeName === label
+}
+
+export function matchesTeam(teamName: string, teamValue: string) {
+    const label = optionLabel(ALUMNI_TEAM_OPTIONS, teamValue)
+    if (!label) return true
+    return teamName === label
+}

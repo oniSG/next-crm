@@ -12,19 +12,20 @@ import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
-    ALL_FILTER_VALUE,
-    filterByFieldLabel,
-    filterBySchoolLabel,
+    ALUMNI_FIELD_OPTIONS,
+    ALUMNI_FILTER_DEFAULTS,
+    ALUMNI_SEASON_OPTIONS,
+    DEGREE_FILTER_OPTIONS,
+    FACULTY_FILTER_OPTIONS,
+    FIELD_FILTER_OPTIONS,
+    filterByOptionLabel,
     filterBySeasonRange,
+    isAllFilter,
     matchesFaculty,
     matchesSchool,
-    useAlumniDegreeFilter,
-    useAlumniFacultyFilter,
-    useAlumniFieldFilter,
-    useAlumniSchoolFilter,
-    useAlumniSeasonFrom,
-    useAlumniSeasonTo,
-} from '../alumni-filters'
+    SCHOOL_FILTER_OPTIONS,
+} from '../data'
+import { useFilterParam } from '../use-filter-param'
 import {
     ALUMNI_BY_UNIVERSITY,
     ALUMNI_BY_UNIVERSITY_COLUMNS,
@@ -47,16 +48,52 @@ import {
     formatPlayerCount,
 } from './data'
 
+const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
+const schoolValues = SCHOOL_FILTER_OPTIONS.map((option) => option.value)
+const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
+const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
+const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
+
 export function AlumniTab() {
-    const [seasonFrom] = useAlumniSeasonFrom()
-    const [seasonTo] = useAlumniSeasonTo()
-    const [school] = useAlumniSchoolFilter()
-    const [faculty] = useAlumniFacultyFilter()
-    const [field] = useAlumniFieldFilter()
-    const [degree] = useAlumniDegreeFilter()
+    const [seasonFrom] = useFilterParam(
+        'seasonFrom',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonFrom,
+    )
+    const [seasonTo] = useFilterParam(
+        'seasonTo',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonTo,
+    )
+    const [school] = useFilterParam(
+        'school',
+        schoolValues,
+        ALUMNI_FILTER_DEFAULTS.school,
+    )
+    const [faculty] = useFilterParam(
+        'faculty',
+        facultyValues,
+        ALUMNI_FILTER_DEFAULTS.faculty,
+    )
+    const [field] = useFilterParam(
+        'field',
+        fieldValues,
+        ALUMNI_FILTER_DEFAULTS.field,
+    )
+    const [degree] = useFilterParam(
+        'degree',
+        degreeValues,
+        ALUMNI_FILTER_DEFAULTS.degree,
+    )
 
     const topFields = useMemo(
-        () => filterByFieldLabel(ALUMNI_TOP_FIELDS, field),
+        () =>
+            filterByOptionLabel(
+                ALUMNI_TOP_FIELDS,
+                (row) => row.label,
+                field,
+                ALUMNI_FIELD_OPTIONS,
+            ),
         [field],
     )
 
@@ -66,7 +103,7 @@ export function AlumniTab() {
     )
 
     const byUniversity = useMemo(
-        () => filterBySchoolLabel(ALUMNI_BY_UNIVERSITY, school),
+        () => ALUMNI_BY_UNIVERSITY.filter((row) => matchesSchool(row.label, school)),
         [school],
     )
 
@@ -81,7 +118,7 @@ export function AlumniTab() {
     )
 
     const highestDegree = useMemo(() => {
-        if (degree === ALL_FILTER_VALUE) return ALUMNI_HIGHEST_DEGREE
+        if (isAllFilter(degree)) return ALUMNI_HIGHEST_DEGREE
         // Mock pie only has středoškolské; hide when filtering university degrees
         return []
     }, [degree])

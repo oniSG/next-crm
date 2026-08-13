@@ -11,17 +11,20 @@ import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
-    ALL_FILTER_VALUE,
-    filterByFieldLabel,
-    filterByTeamLabel,
+    ALUMNI_FIELD_OPTIONS,
+    ALUMNI_FILTER_DEFAULTS,
+    ALUMNI_TEAM_OPTIONS,
+    DEGREE_FILTER_OPTIONS,
+    FACULTY_FILTER_OPTIONS,
+    FIELD_FILTER_OPTIONS,
+    filterByOptionLabel,
+    isAllFilter,
     matchesDegree,
     matchesFaculty,
     matchesTeam,
-    useAlumniDegreeFilter,
-    useAlumniFacultyFilter,
-    useAlumniFieldFilter,
-    useAlumniTeamFilter,
-} from '../alumni-filters'
+    TEAM_FILTER_OPTIONS,
+} from '../data'
+import { useFilterParam } from '../use-filter-param'
 import {
     ACTIVE_PLAYERS_DETAIL,
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
@@ -43,29 +46,62 @@ import {
     YEAR_DEGREE_SERIES,
 } from './data'
 
+const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
+const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
+const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
+const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
+
 export function ActivePlayersTab() {
-    const [team] = useAlumniTeamFilter()
-    const [faculty] = useAlumniFacultyFilter()
-    const [field] = useAlumniFieldFilter()
-    const [degree] = useAlumniDegreeFilter()
+    const [team] = useFilterParam(
+        'team',
+        teamValues,
+        ALUMNI_FILTER_DEFAULTS.team,
+    )
+    const [faculty] = useFilterParam(
+        'faculty',
+        facultyValues,
+        ALUMNI_FILTER_DEFAULTS.faculty,
+    )
+    const [field] = useFilterParam(
+        'field',
+        fieldValues,
+        ALUMNI_FILTER_DEFAULTS.field,
+    )
+    const [degree] = useFilterParam(
+        'degree',
+        degreeValues,
+        ALUMNI_FILTER_DEFAULTS.degree,
+    )
 
     const playersByTeam = useMemo(
-        () => filterByTeamLabel(PLAYERS_BY_TEAM, team),
+        () =>
+            filterByOptionLabel(
+                PLAYERS_BY_TEAM,
+                (row) => row.label,
+                team,
+                ALUMNI_TEAM_OPTIONS,
+            ),
         [team],
     )
 
     const playersByField = useMemo(
-        () => filterByFieldLabel(PLAYERS_BY_FIELD, field),
+        () =>
+            filterByOptionLabel(
+                PLAYERS_BY_FIELD,
+                (row) => row.label,
+                field,
+                ALUMNI_FIELD_OPTIONS,
+            ),
         [field],
     )
 
     const studyLevel = useMemo(() => {
-        if (degree === ALL_FILTER_VALUE) return STUDY_LEVEL
+        if (isAllFilter(degree)) return STUDY_LEVEL
         return STUDY_LEVEL.filter((row) => row.name === degree)
     }, [degree])
 
     const yearDegreeSeries = useMemo((): string[] => {
-        if (degree === ALL_FILTER_VALUE) return [...YEAR_DEGREE_SERIES]
+        if (isAllFilter(degree)) return [...YEAR_DEGREE_SERIES]
         if (
             YEAR_DEGREE_SERIES.includes(
                 degree as (typeof YEAR_DEGREE_SERIES)[number],

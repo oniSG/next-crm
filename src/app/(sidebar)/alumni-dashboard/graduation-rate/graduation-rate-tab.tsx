@@ -11,13 +11,15 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
-    ALL_FILTER_VALUE,
+    ALUMNI_FILTER_DEFAULTS,
+    ALUMNI_SEASON_OPTIONS,
+    ALUMNI_TEAM_OPTIONS,
+    filterByOptionLabel,
     filterBySeasonRange,
-    filterByTeamField,
-    useAlumniSeasonFrom,
-    useAlumniSeasonTo,
-    useAlumniTeamFilter,
-} from '../alumni-filters'
+    isAllFilter,
+    TEAM_FILTER_OPTIONS,
+} from '../data'
+import { useFilterParam } from '../use-filter-param'
 import {
     COMPLETED_VS_NOT,
     COMPLETED_VS_NOT_COLUMNS,
@@ -44,10 +46,25 @@ const TEAM_SERIES_BY_VALUE = {
     trinec: 'trinec',
 } as const
 
+const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
+const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
+
 export function GraduationRateTab() {
-    const [seasonFrom] = useAlumniSeasonFrom()
-    const [seasonTo] = useAlumniSeasonTo()
-    const [team] = useAlumniTeamFilter()
+    const [seasonFrom] = useFilterParam(
+        'seasonFrom',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonFrom,
+    )
+    const [seasonTo] = useFilterParam(
+        'seasonTo',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonTo,
+    )
+    const [team] = useFilterParam(
+        'team',
+        teamValues,
+        ALUMNI_FILTER_DEFAULTS.team,
+    )
 
     const rateOverTime = useMemo(
         () =>
@@ -61,7 +78,13 @@ export function GraduationRateTab() {
     )
 
     const averageByTeam = useMemo(
-        () => filterByTeamField(GRADUATION_AVERAGE_BY_TEAM, team),
+        () =>
+            filterByOptionLabel(
+                GRADUATION_AVERAGE_BY_TEAM,
+                (row) => row.team,
+                team,
+                ALUMNI_TEAM_OPTIONS,
+            ),
         [team],
     )
 
@@ -72,7 +95,7 @@ export function GraduationRateTab() {
     )
 
     const teamSeasonSeries = useMemo((): string[] => {
-        if (team === ALL_FILTER_VALUE) {
+        if (isAllFilter(team)) {
             return [...GRADUATION_BY_TEAM_SEASON_SERIES]
         }
         const seriesKey =

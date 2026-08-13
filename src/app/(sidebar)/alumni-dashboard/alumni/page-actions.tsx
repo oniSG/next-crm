@@ -6,26 +6,51 @@ import { ExportButton } from '@/components/custom/statistics/export-button'
 
 import {
     ALUMNI_FILTER_DEFAULTS,
+    ALUMNI_SEASON_OPTIONS,
     DEGREE_FILTER_OPTIONS,
     FACULTY_FILTER_OPTIONS,
     FIELD_FILTER_OPTIONS,
     SCHOOL_FILTER_OPTIONS,
-    useAlumniDegreeFilter,
-    useAlumniFacultyFilter,
-    useAlumniFieldFilter,
-    useAlumniSchoolFilter,
-    useAlumniSeasonFrom,
-    useAlumniSeasonTo,
-} from '../alumni-filters'
-import { ALUMNI_SEASON_OPTIONS } from '../data'
+} from '../data'
+import { useFilterParam } from '../use-filter-param'
+
+const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
+const schoolValues = SCHOOL_FILTER_OPTIONS.map((option) => option.value)
+const facultyValues = FACULTY_FILTER_OPTIONS.map((option) => option.value)
+const fieldValues = FIELD_FILTER_OPTIONS.map((option) => option.value)
+const degreeValues = DEGREE_FILTER_OPTIONS.map((option) => option.value)
 
 export function PageActions() {
-    const [seasonFrom, setSeasonFrom] = useAlumniSeasonFrom()
-    const [seasonTo, setSeasonTo] = useAlumniSeasonTo()
-    const [school, setSchool] = useAlumniSchoolFilter()
-    const [faculty, setFaculty] = useAlumniFacultyFilter()
-    const [field, setField] = useAlumniFieldFilter()
-    const [degree, setDegree] = useAlumniDegreeFilter()
+    const [seasonFrom, setSeasonFrom] = useFilterParam(
+        'seasonFrom',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonFrom,
+    )
+    const [seasonTo, setSeasonTo] = useFilterParam(
+        'seasonTo',
+        seasonValues,
+        ALUMNI_FILTER_DEFAULTS.seasonTo,
+    )
+    const [school, setSchool] = useFilterParam(
+        'school',
+        schoolValues,
+        ALUMNI_FILTER_DEFAULTS.school,
+    )
+    const [faculty, setFaculty] = useFilterParam(
+        'faculty',
+        facultyValues,
+        ALUMNI_FILTER_DEFAULTS.faculty,
+    )
+    const [field, setField] = useFilterParam(
+        'field',
+        fieldValues,
+        ALUMNI_FILTER_DEFAULTS.field,
+    )
+    const [degree, setDegree] = useFilterParam(
+        'degree',
+        degreeValues,
+        ALUMNI_FILTER_DEFAULTS.degree,
+    )
 
     const activeCount = [
         seasonFrom !== ALUMNI_FILTER_DEFAULTS.seasonFrom,
@@ -43,37 +68,37 @@ export function PageActions() {
                     label="Sezóna od"
                     options={ALUMNI_SEASON_OPTIONS}
                     value={seasonFrom}
-                    onChange={(value) => void setSeasonFrom(value as typeof seasonFrom)}
+                    onChange={setSeasonFrom}
                 />
                 <SelectFilter
                     label="Sezóna do"
                     options={ALUMNI_SEASON_OPTIONS}
                     value={seasonTo}
-                    onChange={(value) => void setSeasonTo(value as typeof seasonTo)}
+                    onChange={setSeasonTo}
                 />
                 <SelectFilter
                     label="Škola"
                     options={SCHOOL_FILTER_OPTIONS}
                     value={school}
-                    onChange={(value) => void setSchool(value as typeof school)}
+                    onChange={setSchool}
                 />
                 <SelectFilter
                     label="Fakulta"
                     options={FACULTY_FILTER_OPTIONS}
                     value={faculty}
-                    onChange={(value) => void setFaculty(value as typeof faculty)}
+                    onChange={setFaculty}
                 />
                 <SelectFilter
                     label="Obor"
                     options={FIELD_FILTER_OPTIONS}
                     value={field}
-                    onChange={(value) => void setField(value as typeof field)}
+                    onChange={setField}
                 />
                 <SelectFilter
                     label="Stupeň"
                     options={DEGREE_FILTER_OPTIONS}
                     value={degree}
-                    onChange={(value) => void setDegree(value as typeof degree)}
+                    onChange={setDegree}
                 />
             </FiltersPopover>
             <ExportButton
