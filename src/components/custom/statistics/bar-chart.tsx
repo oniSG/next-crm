@@ -287,64 +287,138 @@ export function BarChart({
                     </>
                 )}
                 <ChartTooltip
-                    position={{ y: 0 }}
-                    content={
-                        <ChartTooltipContent
-                            valueFormatter={formatValue}
-                            formatter={
-                                hasSecondaryAxis
-                                    ? (value, name, item) => {
-                                          const key = String(
-                                              typeof item.dataKey === 'function'
-                                                  ? name
-                                                  : (item.dataKey ?? name),
-                                          )
-                                          const numeric = Number(value)
-                                          const formatted =
-                                              secondaryKeys.has(key) &&
-                                              formatSecondaryValue
-                                                  ? formatSecondaryValue(numeric)
-                                                  : formatValue
+                    content={(tooltipProps) => {
+                        const { content: _content, ...tooltipContentProps } =
+                            tooltipProps
+
+                        if (!tooltipProps.active) {
+                            return null
+                        }
+
+                        const filteredPayload = stacked
+                            ? tooltipProps.payload?.filter(
+                                  (item) =>
+                                      item.type !== 'none' &&
+                                      Number(item.value) !== 0,
+                              )
+                            : tooltipProps.payload
+
+                        if (!filteredPayload?.length) {
+                            return null
+                        }
+
+                        const singleValueTooltip =
+                            !hasSecondaryAxis && filteredPayload.length === 1
+
+                        const tooltipPayload = singleValueTooltip
+                            ? filteredPayload.map((item) => {
+                                  const key = String(item.dataKey ?? item.name)
+                                  return {
+                                      ...item,
+                                      name: xAxisLabel ?? 'Hodnota',
+                                      color:
+                                          config[key]?.color ??
+                                          `var(--color-${key})`,
+                                  }
+                              })
+                            : filteredPayload
+
+                        return (
+                            <ChartTooltipContent
+                                {...tooltipContentProps}
+                                payload={tooltipPayload}
+                                valueFormatter={formatValue}
+                                formatter={
+                                    hasSecondaryAxis
+                                        ? (value, name, item) => {
+                                              const key = String(
+                                                  typeof item.dataKey === 'function'
+                                                      ? name
+                                                      : (item.dataKey ?? name),
+                                              )
+                                              const numeric = Number(value)
+                                              const formatted =
+                                                  secondaryKeys.has(key) &&
+                                                  formatSecondaryValue
+                                                      ? formatSecondaryValue(numeric)
+                                                      : formatValue
+                                                        ? formatValue(numeric)
+                                                        : formatCompactNumber(numeric)
+                                              const itemConfig = config[key]
+                                              const color =
+                                                  itemConfig?.color ??
+                                                  item.color ??
+                                                  (
+                                                      item.payload as
+                                                          | { fill?: string }
+                                                          | undefined
+                                                  )?.fill
+
+                                              return (
+                                                  <div className="flex w-full items-center gap-2">
+                                                      <div
+                                                          className="h-2 w-2 shrink-0 rounded-[2px]"
+                                                          style={{
+                                                              backgroundColor: color,
+                                                          }}
+                                                      />
+                                                      <div className="flex flex-1 items-center justify-between gap-4 leading-none">
+                                                          <span className="text-muted-foreground">
+                                                              {itemConfig?.label ??
+                                                                  String(name)}
+                                                          </span>
+                                                          <span className="font-mono font-medium tabular-nums">
+                                                              {formatted}
+                                                          </span>
+                                                      </div>
+                                                  </div>
+                                              )
+                                          }
+                                        : singleValueTooltip
+                                          ? (value, name, item) => {
+                                                const key = String(
+                                                    item.dataKey ?? item.name,
+                                                )
+                                                const numeric = Number(value)
+                                                const formatted = formatValue
                                                     ? formatValue(numeric)
                                                     : formatCompactNumber(numeric)
-                                          const itemConfig = config[key]
-                                          const color =
-                                              item.color ??
-                                              (
-                                                  item.payload as
-                                                      { fill?: string } | undefined
-                                              )?.fill
+                                                const color =
+                                                    config[key]?.color ??
+                                                    item.color ??
+                                                    `var(--color-${key})`
 
-                                          return (
-                                              <div className="flex w-full items-center gap-2">
-                                                  <div
-                                                      className="h-2 w-2 shrink-0 rounded-[2px]"
-                                                      style={{
-                                                          backgroundColor: color,
-                                                      }}
-                                                  />
-                                                  <div className="flex flex-1 items-center justify-between gap-4 leading-none">
-                                                      <span className="text-muted-foreground">
-                                                          {itemConfig?.label ??
-                                                              String(name)}
-                                                      </span>
-                                                      <span className="font-mono font-medium tabular-nums">
-                                                          {formatted}
-                                                      </span>
-                                                  </div>
-                                              </div>
-                                          )
-                                      }
-                                    : undefined
-                            }
-                            labelFormatter={(_value, tooltipPayload) => {
-                                const row = tooltipPayload?.[0]?.payload as
-                                    Record<string, unknown> | undefined
-                                const category = row?.[categoryKey]
-                                return category != null ? String(category) : ''
-                            }}
-                        />
-                    }
+                                                return (
+                                                    <div className="flex w-full items-center gap-2">
+                                                        <div
+                                                            className="h-2 w-2 shrink-0 rounded-[2px]"
+                                                            style={{
+                                                                backgroundColor: color,
+                                                            }}
+                                                        />
+                                                        <div className="flex flex-1 items-center justify-between gap-4 leading-none">
+                                                            <span className="text-muted-foreground">
+                                                                {String(name)}
+                                                            </span>
+                                                            <span className="font-mono font-medium tabular-nums">
+                                                                {formatted}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+                                          : undefined
+                                }
+                                labelFormatter={(_value, tooltipPayload) => {
+                                    const row = tooltipPayload?.[0]?.payload as
+                                        | Record<string, unknown>
+                                        | undefined
+                                    const category = row?.[categoryKey]
+                                    return category != null ? String(category) : ''
+                                }}
+                            />
+                        )
+                    }}
                 />
                 <ChartLegend
                     content={

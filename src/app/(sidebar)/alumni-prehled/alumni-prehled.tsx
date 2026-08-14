@@ -11,61 +11,70 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
+import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
 import {
-    ALUMNI_FILTER_DEFAULTS,
-    ALUMNI_SEASON_OPTIONS,
-    ALUMNI_TEAM_OPTIONS,
-    filterByOptionLabel,
-    filterBySeasonRange,
-    TEAM_FILTER_OPTIONS,
-} from '@/lib/alumni/filters'
-import { useFilterParam } from '@/lib/alumni/use-filter-param'
+    buildCategoryConfig,
+    toSparseCategoryChart,
+} from '@/lib/alumni/sparse-category-chart'
 import {
+    buildGraduationByTeamColumns,
+    filterOverviewRows,
     formatGraduationPercent,
-    LEAGUE_GRADUATION_COLUMNS,
-    LEAGUE_GRADUATION_CONFIG,
-    LEAGUE_GRADUATION_RATE,
-    LEAGUE_GRADUATION_SERIES,
-    OVERVIEW_KPIS,
-    TEAM_COMPARISON,
+    getGraduationByTeamSeries,
+    getLeagueGraduationRate,
+    getOverviewKpis,
+    getTeamComparison,
+    GRADUATION_BY_TEAM_CONFIG,
     TEAM_COMPARISON_COLUMNS,
-    TEAM_COMPARISON_CONFIG,
-    TEAM_COMPARISON_SERIES,
 } from './data'
 
-const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
-const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
-
 export function AlumniPrehled() {
-    const [seasonFrom] = useFilterParam(
-        'seasonFrom',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonFrom,
+    const { seasonFrom, seasonTo, teams } = useAlumniFilters()
+
+    const filteredRows = useMemo(
+        () => filterOverviewRows(seasonFrom, seasonTo, teams),
+        [seasonFrom, seasonTo, teams],
     )
-    const [seasonTo] = useFilterParam(
-        'seasonTo',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonTo,
-    )
-    const [team] = useFilterParam(
-        'team',
-        teamValues,
-        ALUMNI_FILTER_DEFAULTS.team,
+
+    const kpis = useMemo(
+        () => getOverviewKpis(filteredRows, seasonFrom, seasonTo),
+        [filteredRows, seasonFrom, seasonTo],
     )
 
     const leagueGraduation = useMemo(
-        () => filterBySeasonRange(LEAGUE_GRADUATION_RATE, seasonFrom, seasonTo),
-        [seasonFrom, seasonTo],
+        () => getLeagueGraduationRate(filteredRows),
+        [filteredRows],
     )
+
+    const graduationSeries = useMemo(
+        () => getGraduationByTeamSeries(filteredRows),
+        [filteredRows],
+    )
+
+    const graduationColumns = useMemo(
+        () => buildGraduationByTeamColumns(graduationSeries),
+        [graduationSeries],
+    )
+
     const teamComparison = useMemo(
+        () => getTeamComparison(filteredRows),
+        [filteredRows],
+    )
+
+    const teamComparisonConfig = useMemo(
+        () => buildCategoryConfig(teamComparison),
+        [teamComparison],
+    )
+
+    const teamComparisonChart = useMemo(
         () =>
-            filterByOptionLabel(
-                TEAM_COMPARISON,
-                (row) => row.label,
-                team,
-                ALUMNI_TEAM_OPTIONS,
+            toSparseCategoryChart(
+                teamComparison.map((row) => ({
+                    label: row.label,
+                    count: row.rate,
+                })),
             ),
-        [team],
+        [teamComparison],
     )
 
     return (
@@ -79,24 +88,32 @@ export function AlumniPrehled() {
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Přehled KPI"
             >
-                {OVERVIEW_KPIS.map((kpi) => (
+                {kpis.map((kpi) => (
                     <KpiCard key={kpi.label} {...kpi} />
                 ))}
             </section>
 
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <DataVisulaizationCard
-                    title="Vývoj celoligové graduation rate"
+                    title="Vývoj graduation rate podle týmu"
                     queryKey="alumni-league-graduation-view"
                     action={
                         <InfoTooltip>
-                            Vývoj průměrné graduation rate napříč ligou podle sezón.
+                            Vývoj graduation rate jednotlivých týmů podle sezón.
                         </InfoTooltip>
                     }
                     tableExportable={{
-                        filename: 'vyvoj-celoligove-graduation-rate',
-                        headers: ['Sezóna', 'Graduation rate (%)'],
-                        rows: leagueGraduation.map((row) => [row.label, row.rate]),
+                        filename: 'vyvoj-graduation-rate-podle-tymu',
+                        headers: [
+                            'Sezóna',
+                            ...graduationSeries.map(
+                                (key) => GRADUATION_BY_TEAM_CONFIG[key].label,
+                            ),
+                        ],
+                        rows: leagueGraduation.map((row) => [
+                            row.label,
+                            ...graduationSeries.map((key) => row[key]),
+                        ]),
                     }}
                     tabs={[
                         {
@@ -106,9 +123,9 @@ export function AlumniPrehled() {
                             content: (
                                 <LineChart
                                     data={leagueGraduation}
-                                    config={LEAGUE_GRADUATION_CONFIG}
+                                    config={GRADUATION_BY_TEAM_CONFIG}
                                     categoryKey="label"
-                                    series={[...LEAGUE_GRADUATION_SERIES]}
+                                    series={[...graduationSeries]}
                                     showYAxis
                                     angledXAxis
                                     showDots
@@ -127,7 +144,7 @@ export function AlumniPrehled() {
                             content: (
                                 <SimpleTable
                                     data={leagueGraduation}
-                                    columns={LEAGUE_GRADUATION_COLUMNS}
+                                    columns={graduationColumns}
                                     getRowKey={(row) => row.label}
                                 />
                             ),
@@ -155,15 +172,16 @@ export function AlumniPrehled() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <BarChart
-                                    data={teamComparison}
-                                    config={TEAM_COMPARISON_CONFIG}
+                                    data={teamComparisonChart.data}
+                                    config={teamComparisonConfig}
                                     categoryKey="label"
-                                    series={[...TEAM_COMPARISON_SERIES]}
+                                    series={teamComparisonChart.series}
+                                    stacked
+                                    orientation="horizontal"
                                     showYAxis
-                                    angledXAxis
-                                    categoryMaxLength={16}
-                                    xAxisLabel="Tým"
-                                    yAxisLabel="Graduation rate (%)"
+                                    categoryMaxLength={22}
+                                    xAxisLabel="Graduation rate (%)"
+                                    yAxisLabel="Tým"
                                     formatValue={formatGraduationPercent}
                                     legendQueryKey="alumni-team-comparison-muted"
                                     className="h-72"

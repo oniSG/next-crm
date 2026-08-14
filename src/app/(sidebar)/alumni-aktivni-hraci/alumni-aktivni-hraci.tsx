@@ -11,28 +11,21 @@ import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
+import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
 import {
-    ALUMNI_DEGREE_OPTIONS,
-    ALUMNI_FIELD_OPTIONS,
-    ALUMNI_TEAM_OPTIONS,
-    matchesAnyDegree,
-    matchesAnyField,
-    matchesAnyTeam,
-} from '@/lib/alumni/filters'
-import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
-import {
-    ACTIVE_PLAYERS_DETAIL,
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
-    ACTIVE_PLAYERS_KPIS,
+    buildPlayersByFieldConfig,
+    buildPlayersByTeamConfig,
+    filterActivePlayerRows,
     formatPlayerCount,
-    PLAYERS_BY_FIELD,
+    getActivePlayersDetail,
+    getActivePlayersKpis,
+    getPlayersByField,
+    getPlayersByTeam,
+    getPlayersByYearDegree,
+    getStudyLevel,
     PLAYERS_BY_FIELD_COLUMNS,
-    PLAYERS_BY_FIELD_CONFIG,
-    PLAYERS_BY_TEAM,
     PLAYERS_BY_TEAM_COLUMNS,
-    PLAYERS_BY_TEAM_CONFIG,
-    PLAYERS_BY_YEAR_DEGREE,
-    STUDY_LEVEL,
     STUDY_LEVEL_CONFIG,
     toSparseCategoryChart,
     YEAR_DEGREE_COLUMNS,
@@ -40,39 +33,68 @@ import {
     YEAR_DEGREE_SERIES,
 } from './data'
 
-const teamValues = ALUMNI_TEAM_OPTIONS.map((option) => option.value)
-const fieldValues = ALUMNI_FIELD_OPTIONS.map((option) => option.value)
-const degreeValues = ALUMNI_DEGREE_OPTIONS.map((option) => option.value)
-
 export function AlumniAktivniHraci() {
-    const [teams] = useMultiFilterParam('team', teamValues)
-    const [fields] = useMultiFilterParam('field', fieldValues)
-    const [degrees] = useMultiFilterParam('degree', degreeValues)
+    const {
+        seasonFrom,
+        seasonTo,
+        teams,
+        fields,
+        degrees,
+    } = useAlumniFilters()
 
-    const playersByTeam = useMemo(() => {
-        if (teams.length === 0) return PLAYERS_BY_TEAM
-        return PLAYERS_BY_TEAM.filter((row) => matchesAnyTeam(row.label, teams))
-    }, [teams])
+    const filteredRows = useMemo(
+        () =>
+            filterActivePlayerRows(
+                seasonFrom,
+                seasonTo,
+                teams,
+                fields,
+                degrees,
+            ),
+        [seasonFrom, seasonTo, teams, fields, degrees],
+    )
+
+    const kpis = useMemo(
+        () => getActivePlayersKpis(filteredRows, seasonFrom, seasonTo),
+        [filteredRows, seasonFrom, seasonTo],
+    )
+
+    const playersByTeam = useMemo(
+        () => getPlayersByTeam(filteredRows),
+        [filteredRows],
+    )
+
+    const playersByTeamConfig = useMemo(
+        () => buildPlayersByTeamConfig(playersByTeam),
+        [playersByTeam],
+    )
 
     const playersByTeamChart = useMemo(
         () => toSparseCategoryChart(playersByTeam),
         [playersByTeam],
     )
 
-    const playersByField = useMemo(() => {
-        if (fields.length === 0) return PLAYERS_BY_FIELD
-        return PLAYERS_BY_FIELD.filter((row) => matchesAnyField(row.label, fields))
-    }, [fields])
+    const playersByField = useMemo(
+        () => getPlayersByField(filteredRows),
+        [filteredRows],
+    )
+
+    const playersByFieldConfig = useMemo(
+        () => buildPlayersByFieldConfig(playersByField),
+        [playersByField],
+    )
 
     const playersByFieldChart = useMemo(
         () => toSparseCategoryChart(playersByField),
         [playersByField],
     )
 
-    const studyLevel = useMemo(() => {
-        if (degrees.length === 0) return STUDY_LEVEL
-        return STUDY_LEVEL.filter((row) => degrees.includes(row.name))
-    }, [degrees])
+    const studyLevel = useMemo(() => getStudyLevel(filteredRows), [filteredRows])
+
+    const yearDegree = useMemo(
+        () => getPlayersByYearDegree(filteredRows),
+        [filteredRows],
+    )
 
     const yearDegreeSeries = useMemo((): string[] => {
         if (degrees.length === 0) return [...YEAR_DEGREE_SERIES]
@@ -80,13 +102,8 @@ export function AlumniAktivniHraci() {
     }, [degrees])
 
     const detail = useMemo(
-        () =>
-            ACTIVE_PLAYERS_DETAIL.filter(
-                (row) =>
-                    matchesAnyTeam(row.team, teams) &&
-                    matchesAnyDegree(row.degree, degrees),
-            ),
-        [teams, degrees],
+        () => getActivePlayersDetail(filteredRows),
+        [filteredRows],
     )
 
     const byFieldChartHeight = Math.max(288, Math.max(playersByField.length, 1) * 44 + 80)
@@ -102,7 +119,7 @@ export function AlumniAktivniHraci() {
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Aktivní hráči KPI"
             >
-                {ACTIVE_PLAYERS_KPIS.map((kpi) => (
+                {kpis.map((kpi) => (
                     <KpiCard key={kpi.label} {...kpi} />
                 ))}
             </section>
@@ -146,7 +163,7 @@ export function AlumniAktivniHraci() {
                             content: (
                                 <BarChart
                                     data={playersByTeamChart.data}
-                                    config={PLAYERS_BY_TEAM_CONFIG}
+                                    config={playersByTeamConfig}
                                     categoryKey="label"
                                     series={playersByTeamChart.series}
                                     stacked
@@ -186,7 +203,7 @@ export function AlumniAktivniHraci() {
                     tableExportable={{
                         filename: 'rocnik-stupen',
                         headers: ['Ročník', 'Bakalářské', 'Magisterské', 'Doktorské'],
-                        rows: PLAYERS_BY_YEAR_DEGREE.map((row) => [
+                        rows: yearDegree.map((row) => [
                             row.label,
                             row.bakalarske,
                             row.magisterske,
@@ -200,7 +217,7 @@ export function AlumniAktivniHraci() {
                             icon: <ChartColumnIcon />,
                             content: (
                                 <BarChart
-                                    data={PLAYERS_BY_YEAR_DEGREE}
+                                    data={yearDegree}
                                     config={YEAR_DEGREE_CONFIG}
                                     categoryKey="label"
                                     series={yearDegreeSeries}
@@ -220,7 +237,7 @@ export function AlumniAktivniHraci() {
                             icon: <TableIcon />,
                             content: (
                                 <SimpleTable
-                                    data={PLAYERS_BY_YEAR_DEGREE}
+                                    data={yearDegree}
                                     columns={YEAR_DEGREE_COLUMNS}
                                     getRowKey={(row) => row.label}
                                 />
@@ -230,11 +247,11 @@ export function AlumniAktivniHraci() {
                 />
 
                 <DataVisulaizationCard
-                    title="Podle oboru"
-                    queryKey="alumni-by-field-view"
+                    title="Aktivní hráči podle oboru"
+                    queryKey="alumni-players-by-field-view"
                     action={
                         <InfoTooltip>
-                            Rozložení aktivních hráčů podle studijního oboru.
+                            Počet aktivních hráčů podle studijního oboru.
                         </InfoTooltip>
                     }
                     tableExportable={{
@@ -254,7 +271,7 @@ export function AlumniAktivniHraci() {
                                 >
                                     <BarChart
                                         data={playersByFieldChart.data}
-                                        config={PLAYERS_BY_FIELD_CONFIG}
+                                        config={playersByFieldConfig}
                                         categoryKey="label"
                                         series={playersByFieldChart.series}
                                         stacked
@@ -264,7 +281,7 @@ export function AlumniAktivniHraci() {
                                         xAxisLabel="Počet"
                                         yAxisLabel="Obor"
                                         formatValue={formatPlayerCount}
-                                        legendQueryKey="alumni-by-field-muted"
+                                        legendQueryKey="alumni-players-by-field-muted"
                                         className="h-full"
                                     />
                                 </div>
@@ -291,7 +308,7 @@ export function AlumniAktivniHraci() {
                 queryKey="alumni-active-players-detail"
                 action={
                     <InfoTooltip>
-                        Seznam aktivních hráčů s týmem, fakultou, stupněm a ročníkem.
+                        Přehled aktivních hráčů podle týmu, fakulty a stupně.
                     </InfoTooltip>
                 }
                 tableExportable={{

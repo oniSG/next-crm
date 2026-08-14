@@ -53,7 +53,11 @@ export function SelectFilter({
             <SelectTrigger
                 id={label ? id : undefined}
                 className={cn(
-                    label ? 'w-full min-w-0 overflow-hidden' : 'w-40 min-w-0 overflow-hidden',
+                    label
+                        ? 'w-full min-w-0 overflow-hidden'
+                        : leadingLabel
+                          ? 'min-w-56 w-auto'
+                          : 'w-40 min-w-0 overflow-hidden',
                     leadingLabel && 'gap-2',
                     className,
                 )}
@@ -63,7 +67,12 @@ export function SelectFilter({
                         {leadingLabel}
                     </span>
                 ) : null}
-                <SelectValue placeholder={placeholder ?? label} />
+                <SelectValue
+                    placeholder={placeholder ?? label}
+                    className={
+                        leadingLabel ? 'flex-none shrink-0 truncate-none' : undefined
+                    }
+                />
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false} align={contentAlign}>
                 <SelectGroup>

@@ -1,34 +1,21 @@
 'use client'
 
+import { MultiSelectFilter } from '@/components/custom/filters/multi-select-filter'
 import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
-import {
-    ALUMNI_FILTER_DEFAULTS,
-    ALUMNI_SEASON_OPTIONS,
-    TEAM_FILTER_OPTIONS,
-} from '@/lib/alumni/filters'
-import { useFilterParam } from '@/lib/alumni/use-filter-param'
-
-const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
-const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
+import { ALUMNI_SEASON_OPTIONS, ALUMNI_TEAM_OPTIONS } from '@/lib/alumni/filters'
+import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
 
 export function PageActions() {
-    const [seasonFrom, setSeasonFrom] = useFilterParam(
-        'seasonFrom',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonFrom,
-    )
-    const [seasonTo, setSeasonTo] = useFilterParam(
-        'seasonTo',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonTo,
-    )
-    const [team, setTeam] = useFilterParam(
-        'team',
-        teamValues,
-        ALUMNI_FILTER_DEFAULTS.team,
-    )
+    const {
+        seasonFrom,
+        setSeasonFrom,
+        seasonTo,
+        setSeasonTo,
+        teams,
+        setTeams,
+    } = useAlumniFilters()
 
     return (
         <>
@@ -36,22 +23,23 @@ export function PageActions() {
                 options={ALUMNI_SEASON_OPTIONS}
                 value={seasonFrom}
                 onChange={setSeasonFrom}
-                placeholder="Sezóna od"
-                className="w-36"
+                leadingLabel="Sezóna od"
             />
             <SelectFilter
                 options={ALUMNI_SEASON_OPTIONS}
                 value={seasonTo}
                 onChange={setSeasonTo}
-                placeholder="Sezóna do"
-                className="w-36"
+                leadingLabel="Sezóna do"
             />
-            <SelectFilter
-                options={TEAM_FILTER_OPTIONS}
-                value={team}
-                onChange={setTeam}
-                placeholder="Tým"
-                className="w-44"
+            <MultiSelectFilter
+                options={ALUMNI_TEAM_OPTIONS}
+                value={teams}
+                onChange={(next) => {
+                    void setTeams(next)
+                }}
+                leadingLabel="Tým"
+                placeholder="Vše"
+                className="w-52"
             />
             <ExportButton
                 dashboard="alumni-prehled"

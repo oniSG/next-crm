@@ -133,10 +133,10 @@ export function DataVisulaizationCard({
                                     className="h-8"
                                 />
                             )}
+                            {action}
                             {tableExportable && (
                                 <TableExportButton exportable={tableExportable} />
                             )}
-                            {action}
                         </div>
                     </CardAction>
                 )}

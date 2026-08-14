@@ -1,0 +1,596 @@
+[
+  {
+    "season": "2015/2016",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2269,
+    "activePlayers": 778,
+    "alumni": 1491,
+    "completed": 913,
+    "incomplete": 237
+  },
+  {
+    "season": "2015/2016",
+    "team": "sparta",
+    "playersInSelection": 3034,
+    "activePlayers": 1000,
+    "alumni": 2034,
+    "completed": 1231,
+    "incomplete": 396
+  },
+  {
+    "season": "2015/2016",
+    "team": "kometa",
+    "playersInSelection": 2689,
+    "activePlayers": 907,
+    "alumni": 1782,
+    "completed": 1102,
+    "incomplete": 310
+  },
+  {
+    "season": "2015/2016",
+    "team": "dynamo",
+    "playersInSelection": 2681,
+    "activePlayers": 895,
+    "alumni": 1786,
+    "completed": 1079,
+    "incomplete": 304
+  },
+  {
+    "season": "2015/2016",
+    "team": "mountfield",
+    "playersInSelection": 2536,
+    "activePlayers": 859,
+    "alumni": 1677,
+    "completed": 1020,
+    "incomplete": 283
+  },
+  {
+    "season": "2015/2016",
+    "team": "trinec",
+    "playersInSelection": 2924,
+    "activePlayers": 974,
+    "alumni": 1950,
+    "completed": 1201,
+    "incomplete": 353
+  },
+  {
+    "season": "2016/2017",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2275,
+    "activePlayers": 772,
+    "alumni": 1503,
+    "completed": 917,
+    "incomplete": 238
+  },
+  {
+    "season": "2016/2017",
+    "team": "sparta",
+    "playersInSelection": 2998,
+    "activePlayers": 1005,
+    "alumni": 1993,
+    "completed": 1215,
+    "incomplete": 350
+  },
+  {
+    "season": "2016/2017",
+    "team": "kometa",
+    "playersInSelection": 2797,
+    "activePlayers": 924,
+    "alumni": 1873,
+    "completed": 1158,
+    "incomplete": 329
+  },
+  {
+    "season": "2016/2017",
+    "team": "dynamo",
+    "playersInSelection": 2582,
+    "activePlayers": 857,
+    "alumni": 1725,
+    "completed": 1045,
+    "incomplete": 308
+  },
+  {
+    "season": "2016/2017",
+    "team": "mountfield",
+    "playersInSelection": 2494,
+    "activePlayers": 841,
+    "alumni": 1653,
+    "completed": 1018,
+    "incomplete": 284
+  },
+  {
+    "season": "2016/2017",
+    "team": "trinec",
+    "playersInSelection": 2972,
+    "activePlayers": 993,
+    "alumni": 1979,
+    "completed": 1221,
+    "incomplete": 340
+  },
+  {
+    "season": "2017/2018",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2307,
+    "activePlayers": 786,
+    "alumni": 1521,
+    "completed": 939,
+    "incomplete": 266
+  },
+  {
+    "season": "2017/2018",
+    "team": "sparta",
+    "playersInSelection": 3149,
+    "activePlayers": 1040,
+    "alumni": 2109,
+    "completed": 1308,
+    "incomplete": 368
+  },
+  {
+    "season": "2017/2018",
+    "team": "kometa",
+    "playersInSelection": 2831,
+    "activePlayers": 937,
+    "alumni": 1894,
+    "completed": 1146,
+    "incomplete": 341
+  },
+  {
+    "season": "2017/2018",
+    "team": "dynamo",
+    "playersInSelection": 2679,
+    "activePlayers": 888,
+    "alumni": 1791,
+    "completed": 1102,
+    "incomplete": 298
+  },
+  {
+    "season": "2017/2018",
+    "team": "mountfield",
+    "playersInSelection": 2583,
+    "activePlayers": 865,
+    "alumni": 1718,
+    "completed": 1051,
+    "incomplete": 295
+  },
+  {
+    "season": "2017/2018",
+    "team": "trinec",
+    "playersInSelection": 2988,
+    "activePlayers": 993,
+    "alumni": 1995,
+    "completed": 1231,
+    "incomplete": 351
+  },
+  {
+    "season": "2018/2019",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2248,
+    "activePlayers": 761,
+    "alumni": 1487,
+    "completed": 917,
+    "incomplete": 252
+  },
+  {
+    "season": "2018/2019",
+    "team": "sparta",
+    "playersInSelection": 3078,
+    "activePlayers": 1014,
+    "alumni": 2064,
+    "completed": 1239,
+    "incomplete": 370
+  },
+  {
+    "season": "2018/2019",
+    "team": "kometa",
+    "playersInSelection": 2878,
+    "activePlayers": 952,
+    "alumni": 1926,
+    "completed": 1192,
+    "incomplete": 369
+  },
+  {
+    "season": "2018/2019",
+    "team": "dynamo",
+    "playersInSelection": 2736,
+    "activePlayers": 917,
+    "alumni": 1819,
+    "completed": 1119,
+    "incomplete": 320
+  },
+  {
+    "season": "2018/2019",
+    "team": "mountfield",
+    "playersInSelection": 2675,
+    "activePlayers": 908,
+    "alumni": 1767,
+    "completed": 1079,
+    "incomplete": 315
+  },
+  {
+    "season": "2018/2019",
+    "team": "trinec",
+    "playersInSelection": 2954,
+    "activePlayers": 976,
+    "alumni": 1978,
+    "completed": 1202,
+    "incomplete": 379
+  },
+  {
+    "season": "2019/2020",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 1255,
+    "activePlayers": 516,
+    "alumni": 739,
+    "completed": 484,
+    "incomplete": 76
+  },
+  {
+    "season": "2019/2020",
+    "team": "sparta",
+    "playersInSelection": 1559,
+    "activePlayers": 578,
+    "alumni": 981,
+    "completed": 645,
+    "incomplete": 132
+  },
+  {
+    "season": "2019/2020",
+    "team": "kometa",
+    "playersInSelection": 1538,
+    "activePlayers": 581,
+    "alumni": 957,
+    "completed": 622,
+    "incomplete": 132
+  },
+  {
+    "season": "2019/2020",
+    "team": "dynamo",
+    "playersInSelection": 1469,
+    "activePlayers": 566,
+    "alumni": 903,
+    "completed": 575,
+    "incomplete": 110
+  },
+  {
+    "season": "2019/2020",
+    "team": "mountfield",
+    "playersInSelection": 1439,
+    "activePlayers": 550,
+    "alumni": 889,
+    "completed": 584,
+    "incomplete": 105
+  },
+  {
+    "season": "2019/2020",
+    "team": "trinec",
+    "playersInSelection": 1515,
+    "activePlayers": 573,
+    "alumni": 942,
+    "completed": 615,
+    "incomplete": 117
+  },
+  {
+    "season": "2020/2021",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2479,
+    "activePlayers": 836,
+    "alumni": 1643,
+    "completed": 997,
+    "incomplete": 276
+  },
+  {
+    "season": "2020/2021",
+    "team": "sparta",
+    "playersInSelection": 3326,
+    "activePlayers": 1106,
+    "alumni": 2220,
+    "completed": 1356,
+    "incomplete": 415
+  },
+  {
+    "season": "2020/2021",
+    "team": "kometa",
+    "playersInSelection": 2933,
+    "activePlayers": 965,
+    "alumni": 1968,
+    "completed": 1202,
+    "incomplete": 350
+  },
+  {
+    "season": "2020/2021",
+    "team": "dynamo",
+    "playersInSelection": 2938,
+    "activePlayers": 971,
+    "alumni": 1967,
+    "completed": 1213,
+    "incomplete": 360
+  },
+  {
+    "season": "2020/2021",
+    "team": "mountfield",
+    "playersInSelection": 2749,
+    "activePlayers": 920,
+    "alumni": 1829,
+    "completed": 1130,
+    "incomplete": 327
+  },
+  {
+    "season": "2020/2021",
+    "team": "trinec",
+    "playersInSelection": 3148,
+    "activePlayers": 1032,
+    "alumni": 2116,
+    "completed": 1275,
+    "incomplete": 381
+  },
+  {
+    "season": "2021/2022",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2412,
+    "activePlayers": 812,
+    "alumni": 1600,
+    "completed": 984,
+    "incomplete": 276
+  },
+  {
+    "season": "2021/2022",
+    "team": "sparta",
+    "playersInSelection": 3350,
+    "activePlayers": 1104,
+    "alumni": 2246,
+    "completed": 1337,
+    "incomplete": 408
+  },
+  {
+    "season": "2021/2022",
+    "team": "kometa",
+    "playersInSelection": 3016,
+    "activePlayers": 999,
+    "alumni": 2017,
+    "completed": 1231,
+    "incomplete": 368
+  },
+  {
+    "season": "2021/2022",
+    "team": "dynamo",
+    "playersInSelection": 2951,
+    "activePlayers": 982,
+    "alumni": 1969,
+    "completed": 1193,
+    "incomplete": 365
+  },
+  {
+    "season": "2021/2022",
+    "team": "mountfield",
+    "playersInSelection": 2731,
+    "activePlayers": 911,
+    "alumni": 1820,
+    "completed": 1118,
+    "incomplete": 308
+  },
+  {
+    "season": "2021/2022",
+    "team": "trinec",
+    "playersInSelection": 3238,
+    "activePlayers": 1078,
+    "alumni": 2160,
+    "completed": 1296,
+    "incomplete": 384
+  },
+  {
+    "season": "2022/2023",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2591,
+    "activePlayers": 868,
+    "alumni": 1723,
+    "completed": 1054,
+    "incomplete": 289
+  },
+  {
+    "season": "2022/2023",
+    "team": "sparta",
+    "playersInSelection": 3370,
+    "activePlayers": 1114,
+    "alumni": 2256,
+    "completed": 1395,
+    "incomplete": 396
+  },
+  {
+    "season": "2022/2023",
+    "team": "kometa",
+    "playersInSelection": 3081,
+    "activePlayers": 1014,
+    "alumni": 2067,
+    "completed": 1258,
+    "incomplete": 391
+  },
+  {
+    "season": "2022/2023",
+    "team": "dynamo",
+    "playersInSelection": 2842,
+    "activePlayers": 935,
+    "alumni": 1907,
+    "completed": 1160,
+    "incomplete": 329
+  },
+  {
+    "season": "2022/2023",
+    "team": "mountfield",
+    "playersInSelection": 2710,
+    "activePlayers": 911,
+    "alumni": 1799,
+    "completed": 1122,
+    "incomplete": 314
+  },
+  {
+    "season": "2022/2023",
+    "team": "trinec",
+    "playersInSelection": 3251,
+    "activePlayers": 1063,
+    "alumni": 2188,
+    "completed": 1340,
+    "incomplete": 386
+  },
+  {
+    "season": "2023/2024",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2576,
+    "activePlayers": 867,
+    "alumni": 1709,
+    "completed": 1042,
+    "incomplete": 297
+  },
+  {
+    "season": "2023/2024",
+    "team": "sparta",
+    "playersInSelection": 3481,
+    "activePlayers": 1119,
+    "alumni": 2362,
+    "completed": 1429,
+    "incomplete": 432
+  },
+  {
+    "season": "2023/2024",
+    "team": "kometa",
+    "playersInSelection": 3068,
+    "activePlayers": 990,
+    "alumni": 2078,
+    "completed": 1277,
+    "incomplete": 355
+  },
+  {
+    "season": "2023/2024",
+    "team": "dynamo",
+    "playersInSelection": 2864,
+    "activePlayers": 942,
+    "alumni": 1922,
+    "completed": 1164,
+    "incomplete": 359
+  },
+  {
+    "season": "2023/2024",
+    "team": "mountfield",
+    "playersInSelection": 2913,
+    "activePlayers": 970,
+    "alumni": 1943,
+    "completed": 1204,
+    "incomplete": 368
+  },
+  {
+    "season": "2023/2024",
+    "team": "trinec",
+    "playersInSelection": 3326,
+    "activePlayers": 1085,
+    "alumni": 2241,
+    "completed": 1337,
+    "incomplete": 409
+  },
+  {
+    "season": "2024/2025",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 2508,
+    "activePlayers": 840,
+    "alumni": 1668,
+    "completed": 1020,
+    "incomplete": 286
+  },
+  {
+    "season": "2024/2025",
+    "team": "sparta",
+    "playersInSelection": 3565,
+    "activePlayers": 1172,
+    "alumni": 2393,
+    "completed": 1419,
+    "incomplete": 444
+  },
+  {
+    "season": "2024/2025",
+    "team": "kometa",
+    "playersInSelection": 3239,
+    "activePlayers": 1070,
+    "alumni": 2169,
+    "completed": 1325,
+    "incomplete": 375
+  },
+  {
+    "season": "2024/2025",
+    "team": "dynamo",
+    "playersInSelection": 2917,
+    "activePlayers": 973,
+    "alumni": 1944,
+    "completed": 1197,
+    "incomplete": 341
+  },
+  {
+    "season": "2024/2025",
+    "team": "mountfield",
+    "playersInSelection": 2903,
+    "activePlayers": 956,
+    "alumni": 1947,
+    "completed": 1191,
+    "incomplete": 357
+  },
+  {
+    "season": "2024/2025",
+    "team": "trinec",
+    "playersInSelection": 3305,
+    "activePlayers": 1087,
+    "alumni": 2218,
+    "completed": 1374,
+    "incomplete": 417
+  },
+  {
+    "season": "2025/2026",
+    "team": "black-dogs-budweis",
+    "playersInSelection": 1373,
+    "activePlayers": 534,
+    "alumni": 839,
+    "completed": 535,
+    "incomplete": 97
+  },
+  {
+    "season": "2025/2026",
+    "team": "sparta",
+    "playersInSelection": 1728,
+    "activePlayers": 624,
+    "alumni": 1104,
+    "completed": 694,
+    "incomplete": 155
+  },
+  {
+    "season": "2025/2026",
+    "team": "kometa",
+    "playersInSelection": 1600,
+    "activePlayers": 591,
+    "alumni": 1009,
+    "completed": 653,
+    "incomplete": 136
+  },
+  {
+    "season": "2025/2026",
+    "team": "dynamo",
+    "playersInSelection": 1554,
+    "activePlayers": 590,
+    "alumni": 964,
+    "completed": 615,
+    "incomplete": 116
+  },
+  {
+    "season": "2025/2026",
+    "team": "mountfield",
+    "playersInSelection": 1512,
+    "activePlayers": 577,
+    "alumni": 935,
+    "completed": 584,
+    "incomplete": 115
+  },
+  {
+    "season": "2025/2026",
+    "team": "trinec",
+    "playersInSelection": 1692,
+    "activePlayers": 612,
+    "alumni": 1080,
+    "completed": 673,
+    "incomplete": 155
+  }
+]

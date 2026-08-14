@@ -1,26 +1,45 @@
 'use client'
 
 import { MultiSelectFilter } from '@/components/custom/filters/multi-select-filter'
+import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
 import {
     ALUMNI_DEGREE_OPTIONS,
     ALUMNI_FIELD_OPTIONS,
+    ALUMNI_SEASON_OPTIONS,
     ALUMNI_TEAM_OPTIONS,
 } from '@/lib/alumni/filters'
-import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
-
-const teamValues = ALUMNI_TEAM_OPTIONS.map((option) => option.value)
-const fieldValues = ALUMNI_FIELD_OPTIONS.map((option) => option.value)
-const degreeValues = ALUMNI_DEGREE_OPTIONS.map((option) => option.value)
+import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
 
 export function PageActions() {
-    const [teams, setTeams] = useMultiFilterParam('team', teamValues)
-    const [fields, setFields] = useMultiFilterParam('field', fieldValues)
-    const [degrees, setDegrees] = useMultiFilterParam('degree', degreeValues)
+    const {
+        seasonFrom,
+        setSeasonFrom,
+        seasonTo,
+        setSeasonTo,
+        teams,
+        setTeams,
+        fields,
+        setFields,
+        degrees,
+        setDegrees,
+    } = useAlumniFilters()
 
     return (
         <>
+            <SelectFilter
+                options={ALUMNI_SEASON_OPTIONS}
+                value={seasonFrom}
+                onChange={setSeasonFrom}
+                leadingLabel="Sezóna od"
+            />
+            <SelectFilter
+                options={ALUMNI_SEASON_OPTIONS}
+                value={seasonTo}
+                onChange={setSeasonTo}
+                leadingLabel="Sezóna do"
+            />
             <MultiSelectFilter
                 options={ALUMNI_TEAM_OPTIONS}
                 value={teams}
@@ -49,6 +68,7 @@ export function PageActions() {
                 }}
                 leadingLabel="Stupeň"
                 placeholder="Vše"
+                searchable={false}
                 className="w-44"
             />
             <ExportButton

@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import type { LucideIcon } from 'lucide-react'
 import { ChevronDown, ListFilter } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
@@ -14,6 +15,7 @@ export type FiltersPopoverProps = {
     activeCount?: number
     className?: string
     label?: string
+    icon?: LucideIcon
 }
 
 export function FiltersPopover({
@@ -21,6 +23,7 @@ export function FiltersPopover({
     activeCount = 0,
     className,
     label = 'Filtry',
+    icon: Icon = ListFilter,
 }: FiltersPopoverProps) {
     return (
         <Popover>
@@ -31,7 +34,7 @@ export function FiltersPopover({
                         className={cn('gap-2', className)}
                         aria-label={label}
                     >
-                        <ListFilter data-icon="inline-start" />
+                        <Icon data-icon="inline-start" />
                         <span>{label}</span>
                         {activeCount > 0 ? (
                             <Badge variant="secondary" className="h-5 min-w-5 px-1.5">

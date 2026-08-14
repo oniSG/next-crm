@@ -31,6 +31,7 @@ export type MultiSelectFilterProps = {
     leadingLabel?: string
     searchPlaceholder?: string
     emptyMessage?: string
+    searchable?: boolean
     className?: string
 }
 
@@ -43,6 +44,7 @@ export function MultiSelectFilter({
     leadingLabel,
     searchPlaceholder = 'Hledat…',
     emptyMessage = 'Žádné výsledky.',
+    searchable = true,
     className,
 }: MultiSelectFilterProps) {
     const id = useId()
@@ -50,6 +52,11 @@ export function MultiSelectFilter({
     const selectedLabels = options
         .filter((option) => value.includes(option.value))
         .map((option) => option.label)
+
+    const orderedOptions = [
+        ...options.filter((option) => value.includes(option.value)),
+        ...options.filter((option) => !value.includes(option.value)),
+    ]
 
     const display =
         selectedLabels.length === 0
@@ -95,11 +102,13 @@ export function MultiSelectFilter({
             />
             <PopoverContent className="w-64 p-0" align="end">
                 <Command>
-                    <CommandInput placeholder={searchPlaceholder} />
+                    {searchable ? (
+                        <CommandInput placeholder={searchPlaceholder} />
+                    ) : null}
                     <CommandList>
                         <CommandEmpty>{emptyMessage}</CommandEmpty>
                         <CommandGroup>
-                            {options.map((option) => {
+                            {orderedOptions.map((option) => {
                                 const selected = value.includes(option.value)
                                 return (
                                     <CommandItem

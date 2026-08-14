@@ -11,98 +11,66 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
+import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
 import {
-    ALUMNI_FILTER_DEFAULTS,
-    ALUMNI_SEASON_OPTIONS,
-    ALUMNI_TEAM_OPTIONS,
-    filterByOptionLabel,
-    filterBySeasonRange,
-    isAllFilter,
-    TEAM_FILTER_OPTIONS,
-} from '@/lib/alumni/filters'
-import { useFilterParam } from '@/lib/alumni/use-filter-param'
-import {
-    COMPLETED_VS_NOT,
     COMPLETED_VS_NOT_COLUMNS,
     COMPLETED_VS_NOT_CONFIG,
     COMPLETED_VS_NOT_SERIES,
+    filterGraduationRows,
     formatGraduationPercent,
     formatPlayerCount,
-    GRADUATION_AVERAGE_BY_TEAM,
+    getAverageByTeam,
+    getCompletedVsNot,
+    getGraduationByTeamSeason,
+    getGraduationByTeamSeries,
+    getGraduationRateKpis,
+    getGraduationRateOverTime,
     GRADUATION_AVERAGE_BY_TEAM_COLUMNS,
-    GRADUATION_BY_TEAM_SEASON,
     GRADUATION_BY_TEAM_SEASON_COLUMNS,
     GRADUATION_BY_TEAM_SEASON_CONFIG,
     GRADUATION_BY_TEAM_SEASON_SERIES,
-    GRADUATION_RATE_KPIS,
-    GRADUATION_RATE_OVER_TIME,
     GRADUATION_RATE_OVER_TIME_COLUMNS,
     GRADUATION_RATE_OVER_TIME_CONFIG,
     GRADUATION_RATE_OVER_TIME_SERIES,
 } from './data'
 
-const TEAM_SERIES_BY_VALUE = {
-    sparta: 'sparta',
-    kometa: 'kometa',
-    trinec: 'trinec',
-} as const
-
-const seasonValues = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
-const teamValues = TEAM_FILTER_OPTIONS.map((option) => option.value)
-
 export function AlumniGraduationRate() {
-    const [seasonFrom] = useFilterParam(
-        'seasonFrom',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonFrom,
+    const { seasonFrom, seasonTo, teams } = useAlumniFilters()
+
+    const filteredRows = useMemo(
+        () => filterGraduationRows(seasonFrom, seasonTo, teams),
+        [seasonFrom, seasonTo, teams],
     )
-    const [seasonTo] = useFilterParam(
-        'seasonTo',
-        seasonValues,
-        ALUMNI_FILTER_DEFAULTS.seasonTo,
-    )
-    const [team] = useFilterParam(
-        'team',
-        teamValues,
-        ALUMNI_FILTER_DEFAULTS.team,
+
+    const kpis = useMemo(
+        () => getGraduationRateKpis(filteredRows, seasonFrom, seasonTo),
+        [filteredRows, seasonFrom, seasonTo],
     )
 
     const rateOverTime = useMemo(
-        () =>
-            filterBySeasonRange(GRADUATION_RATE_OVER_TIME, seasonFrom, seasonTo),
-        [seasonFrom, seasonTo],
+        () => getGraduationRateOverTime(filteredRows),
+        [filteredRows],
     )
 
     const completedVsNot = useMemo(
-        () => filterBySeasonRange(COMPLETED_VS_NOT, seasonFrom, seasonTo),
-        [seasonFrom, seasonTo],
+        () => getCompletedVsNot(filteredRows),
+        [filteredRows],
     )
 
     const averageByTeam = useMemo(
-        () =>
-            filterByOptionLabel(
-                GRADUATION_AVERAGE_BY_TEAM,
-                (row) => row.team,
-                team,
-                ALUMNI_TEAM_OPTIONS,
-            ),
-        [team],
+        () => getAverageByTeam(filteredRows),
+        [filteredRows],
     )
 
     const byTeamSeason = useMemo(
-        () =>
-            filterBySeasonRange(GRADUATION_BY_TEAM_SEASON, seasonFrom, seasonTo),
-        [seasonFrom, seasonTo],
+        () => getGraduationByTeamSeason(filteredRows),
+        [filteredRows],
     )
 
-    const teamSeasonSeries = useMemo((): string[] => {
-        if (isAllFilter(team)) {
-            return [...GRADUATION_BY_TEAM_SEASON_SERIES]
-        }
-        const seriesKey =
-            TEAM_SERIES_BY_VALUE[team as keyof typeof TEAM_SERIES_BY_VALUE]
-        return seriesKey ? [seriesKey] : [...GRADUATION_BY_TEAM_SEASON_SERIES]
-    }, [team])
+    const teamSeasonSeries = useMemo(
+        () => getGraduationByTeamSeries(filteredRows),
+        [filteredRows],
+    )
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -115,7 +83,7 @@ export function AlumniGraduationRate() {
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Graduation rate KPI"
             >
-                {GRADUATION_RATE_KPIS.map((kpi) => (
+                {kpis.map((kpi) => (
                     <KpiCard key={kpi.label} {...kpi} />
                 ))}
             </section>
@@ -181,12 +149,12 @@ export function AlumniGraduationRate() {
                         </InfoTooltip>
                     }
                     tableExportable={{
-                        filename: 'dokoncili-vs-nedokoncili',
+                        filename: 'completed-vs-incomplete',
                         headers: ['Sezóna', 'Dokončili', 'Nedokončili'],
                         rows: completedVsNot.map((row) => [
                             row.label,
-                            row.dokoncili,
-                            row.nedokoncili,
+                            row.completed,
+                            row.incomplete,
                         ]),
                     }}
                     tabs={[
@@ -230,8 +198,8 @@ export function AlumniGraduationRate() {
                     queryKey="graduation-average-by-team"
                     action={
                         <InfoTooltip>
-                            Průměrný počet odchodů a graduation rate podle týmu
-                            za zvolené období.
+                            Počet odchodů a graduation rate podle týmu za
+                            zvolené období.
                         </InfoTooltip>
                     }
                     tableExportable={{
@@ -239,7 +207,7 @@ export function AlumniGraduationRate() {
                         headers: ['Tým', 'Odchody', 'Graduation rate'],
                         rows: averageByTeam.map((row) => [
                             row.team,
-                            row.odchody,
+                            row.departures,
                             row.rate,
                         ]),
                     }}
@@ -264,15 +232,13 @@ export function AlumniGraduationRate() {
                     filename: 'graduation-rate-podle-tymu-a-sezony',
                     headers: [
                         'Sezóna',
-                        'HC Sparta Praha',
-                        'HC Kometa Brno',
-                        'HC Oceláři Třinec',
+                        ...GRADUATION_BY_TEAM_SEASON_SERIES.map(
+                            (key) => GRADUATION_BY_TEAM_SEASON_CONFIG[key].label,
+                        ),
                     ],
                     rows: byTeamSeason.map((row) => [
                         row.label,
-                        row.sparta,
-                        row.kometa,
-                        row.trinec,
+                        ...GRADUATION_BY_TEAM_SEASON_SERIES.map((key) => row[key]),
                     ]),
                 }}
                 tabs={[

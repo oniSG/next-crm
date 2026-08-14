@@ -1,11 +1,3 @@
-export const ALL_FILTER_VALUE = 'all'
-
-type FilterOption = { label: string; value: string }
-
-function withAll(options: readonly FilterOption[]): FilterOption[] {
-    return [{ label: 'Vše', value: ALL_FILTER_VALUE }, ...options]
-}
-
 export const ALUMNI_SEASON_OPTIONS = [
     { label: '2015/2016', value: '2015/2016' },
     { label: '2016/2017', value: '2016/2017' },
@@ -42,19 +34,114 @@ export const ALUMNI_FACULTY_OPTIONS = [
     { label: 'UK | Právnická fakulta', value: 'uk-prf' },
     { label: 'UK | Fakulta tělesné výchovy a sportu', value: 'uk-ftvs' },
     { label: 'UK | Filozofická fakulta', value: 'uk-ff' },
+    { label: 'UK | Matematicko-fyzikální fakulta', value: 'uk-mff' },
+    { label: 'UK | Fakulta sociálních věd', value: 'uk-fsv' },
     { label: 'MUNI | Fakulta sportovních studií', value: 'muni-fss' },
     { label: 'MUNI | Ekonomicko-správní fakulta', value: 'muni-esf' },
+    { label: 'MUNI | Fakulta informatiky', value: 'muni-fi' },
+    { label: 'MUNI | Lékařská fakulta', value: 'muni-med' },
+    { label: 'MUNI | Právnická fakulta', value: 'muni-prf' },
     { label: 'ZČU | Fakulta aplikovaných věd', value: 'zcu-fav' },
+    { label: 'ZČU | Fakulta pedagogická', value: 'zcu-fpe' },
+    { label: 'ZČU | Strojní fakulta', value: 'zcu-zf' },
+    { label: 'ZČU | Fakulta designu a umění', value: 'zcu-ffd' },
+    { label: 'ČVUT | Fakulta elektrotechnická', value: 'cvut-fel' },
+    { label: 'ČVUT | Fakulta jaderná a fyzikálně inženýrská', value: 'cvut-fjfi' },
+    { label: 'ČVUT | Fakulta strojní', value: 'cvut-fs' },
+    { label: 'ČVUT | Fakulta architektury', value: 'cvut-fak' },
+    { label: 'ČVUT | Fakulta biomedicínského inženýrství', value: 'cvut-fbmi' },
+    { label: 'VŠE | Fakulta informatiky a statistiky', value: 'vse-fis' },
+    { label: 'VŠE | Fakulta financí a účetnictví', value: 'vse-fph' },
+    { label: 'VŠE | Národohospodářská fakulta', value: 'vse-nhf' },
+    { label: 'UPOL | Filozofická fakulta', value: 'upol-ff' },
+    { label: 'UPOL | Právnická fakulta', value: 'upol-prf' },
+    { label: 'UPOL | Pedagogická fakulta', value: 'upol-mef' },
+    { label: 'UPOL | Fakulta tělesné kultury', value: 'upol-ftk' },
 ] as const
 
 export const ALUMNI_FIELD_OPTIONS = [
-    { label: 'Strojírenství, materiály a výroba', value: 'strojirenstvi' },
-    { label: 'Management sportu', value: 'management-sportu' },
-    { label: 'Tělesná výchova a sport', value: 'tvs' },
-    { label: 'Ekonomika a management', value: 'ekonomika' },
     { label: 'Právo', value: 'pravo' },
-    { label: 'Informatika', value: 'informatika' },
+    { label: 'Mezinárodní právo', value: 'mezinarodni-pravo' },
+    { label: 'Obchodní právo', value: 'obchodni-pravo' },
+    { label: 'Trestní právo', value: 'trestni-pravo' },
+    { label: 'Správní právo', value: 'spravni-pravo' },
+    { label: 'Ústavní právo', value: 'ustavni-pravo' },
+    { label: 'Evropské právo', value: 'evropske-pravo' },
+    { label: 'Tělesná výchova a sport', value: 'tvs' },
+    { label: 'Management sportu', value: 'management-sportu' },
     { label: 'Fyzioterapie', value: 'fyzioterapie' },
+    { label: 'Sportovní trénink', value: 'sportovni-trenink' },
+    { label: 'Outdoor edukace', value: 'outdoor-edukace' },
+    { label: 'Sportovní management', value: 'sportovni-management' },
+    { label: 'Tělovýchova', value: 'telocvik' },
+    { label: 'Filozofie', value: 'filozofie' },
+    { label: 'Psychologie', value: 'psychologie' },
+    { label: 'Sociologie', value: 'sociologie' },
+    { label: 'Historie', value: 'historie' },
+    { label: 'Politologie', value: 'politologie' },
+    { label: 'Andragogika', value: 'andragogika' },
+    { label: 'Matematika', value: 'matematika' },
+    { label: 'Fyzika', value: 'fyzika' },
+    { label: 'Informatika', value: 'informatika' },
+    { label: 'Aplikovaná matematika', value: 'aplikovana-matematika' },
+    { label: 'Bioinformatika', value: 'bioinformatika' },
+    { label: 'Statistika', value: 'statistika' },
+    { label: 'Sociální práce', value: 'socialni-prace' },
+    { label: 'Sociální politika', value: 'socialni-politika' },
+    { label: 'Humanitní studia', value: 'humanitni-studia' },
+    { label: 'Gender studia', value: 'gender-studia' },
+    { label: 'Mediální studia', value: 'media-studia' },
+    { label: 'Veřejná politika', value: 'verejna-politika' },
+    { label: 'Ekonomika a management', value: 'ekonomika' },
+    { label: 'Management', value: 'management' },
+    { label: 'Finanční řízení', value: 'financni-rizeni' },
+    { label: 'Účetnictví', value: 'ucetnictvi' },
+    { label: 'Marketing', value: 'marketing' },
+    { label: 'Podnikání', value: 'podnikani' },
+    { label: 'Aplikovaná informatika', value: 'aplikovana-informatika' },
+    { label: 'Kybernetika', value: 'kybernetika' },
+    { label: 'Datová analýza', value: 'datova-analyza' },
+    { label: 'Umělá inteligence', value: 'umele-inteligence' },
+    { label: 'Počítačové sítě', value: 'pocitacove-site' },
+    { label: 'Všeobecné lékařství', value: 'vseobecne-lekarstvi' },
+    { label: 'Zdravotnictví', value: 'zdravotnictvi' },
+    { label: 'Ošetřovatelství', value: 'osetrovatelstvi' },
+    { label: 'Veřejné zdraví', value: 'verejne-zdravi' },
+    { label: 'Farmaceutika', value: 'farmaceutika' },
+    { label: 'Strojírenství, materiály a výroba', value: 'strojirenstvi' },
+    { label: 'Materiálové inženýrství', value: 'materialove-inzenyrstvi' },
+    { label: 'Výroba', value: 'vyrba' },
+    { label: 'Konstrukce', value: 'konstrukce' },
+    { label: 'Mechatronika', value: 'mechatronika' },
+    { label: 'Energetika', value: 'energetika' },
+    { label: 'Design', value: 'design' },
+    { label: 'Výtvarné umění', value: 'vytvarne-umeni' },
+    { label: 'Architektura', value: 'architektura' },
+    { label: 'Urbanismus', value: 'urbanismus' },
+    { label: 'Interiérový design', value: 'interierovy-design' },
+    { label: 'Grafický design', value: 'graficky-design' },
+    { label: 'Elektrotechnika', value: 'elektrotechnika' },
+    { label: 'Robotika', value: 'robotika' },
+    { label: 'Telekomunikace', value: 'telekomunikace' },
+    { label: 'Jaderná fyzika', value: 'jaderna-fyzika' },
+    { label: 'Optika', value: 'optika' },
+    { label: 'Stavebnictví', value: 'stavebnictvi' },
+    { label: 'Pozemní stavby', value: 'pozemni-stavby' },
+    { label: 'Biotechnologie', value: 'biotechnologie' },
+    { label: 'Lékařská informatika', value: 'lekarska-informatika' },
+    { label: 'Klinická bioinformatika', value: 'klinicka-bioinformatika' },
+    { label: 'Biomedicína', value: 'biomedicina' },
+    { label: 'Finanční trhy', value: 'financni-trhy' },
+    { label: 'Bankovnictví', value: 'bankovnictvi' },
+    { label: 'Pojistovnictví', value: 'pojistovnictvi' },
+    { label: 'Investiční řízení', value: 'investicni-rizeni' },
+    { label: 'Daňová správa', value: 'danova-sprava' },
+    { label: 'Mezinárodní obchod', value: 'mezinarodni-obchod' },
+    { label: 'Cestovní ruch', value: 'cestovni-ruch' },
+    { label: 'Hotelnictví', value: 'hotelnictvi' },
+    { label: 'Logistika', value: 'logistika' },
+    { label: 'Dodavatelské řetězce', value: 'dodavatelske-retezce' },
+    { label: 'Obchodní management', value: 'obchodni-management' },
 ] as const
 
 export const ALUMNI_DEGREE_OPTIONS = [
@@ -63,133 +150,30 @@ export const ALUMNI_DEGREE_OPTIONS = [
     { label: 'Doktorské', value: 'doktorske' },
 ] as const
 
-export const TEAM_FILTER_OPTIONS = withAll(ALUMNI_TEAM_OPTIONS)
-export const SCHOOL_FILTER_OPTIONS = withAll(ALUMNI_SCHOOL_OPTIONS)
-export const FACULTY_FILTER_OPTIONS = withAll(ALUMNI_FACULTY_OPTIONS)
-export const FIELD_FILTER_OPTIONS = withAll(ALUMNI_FIELD_OPTIONS)
-export const DEGREE_FILTER_OPTIONS = withAll(ALUMNI_DEGREE_OPTIONS)
-
 export const ALUMNI_FILTER_DEFAULTS = {
     seasonFrom: '2015/2016',
     seasonTo: '2025/2026',
-    team: ALL_FILTER_VALUE,
-    school: ALL_FILTER_VALUE,
-    faculty: ALL_FILTER_VALUE,
-    field: ALL_FILTER_VALUE,
-    degree: ALL_FILTER_VALUE,
 } as const
 
-export function isAllFilter(value: string) {
-    return value === ALL_FILTER_VALUE
+export function schoolLabel(value: string) {
+    return ALUMNI_SCHOOL_OPTIONS.find((option) => option.value === value)?.label ?? value
 }
 
-function optionLabel(
-    options: readonly FilterOption[],
-    value: string,
-): string | null {
-    if (isAllFilter(value)) return null
-    return options.find((option) => option.value === value)?.label ?? null
+export function fieldLabel(value: string) {
+    return ALUMNI_FIELD_OPTIONS.find((option) => option.value === value)?.label ?? value
 }
 
-const SCHOOL_ALIASES: Record<string, string[]> = {
-    uk: ['Univerzita Karlova'],
-    muni: ['Masarykova univerzita'],
-    zcu: ['Západočeská univerzita'],
-    cvut: ['České vysoké učení technické', 'ČVUT'],
-    vse: ['Vysoká škola ekonomická'],
-    upol: ['Univerzita Palackého'],
+export function facultyLabel(value: string) {
+    if (!value) return '-'
+    const label =
+        ALUMNI_FACULTY_OPTIONS.find((option) => option.value === value)?.label ?? value
+    return label.split(' | ').at(-1) ?? label
 }
 
-function seasonIndex(season: string) {
-    return ALUMNI_SEASON_OPTIONS.findIndex((option) => option.value === season)
+export function hockeyTeamLabel(value: string) {
+    return ALUMNI_TEAM_OPTIONS.find((option) => option.value === value)?.label ?? value
 }
 
-export function filterBySeasonRange<T extends { label: string }>(
-    data: T[],
-    seasonFrom: string,
-    seasonTo: string,
-) {
-    const from = seasonIndex(seasonFrom)
-    const to = seasonIndex(seasonTo)
-    if (from < 0 || to < 0) return data
-    const min = Math.min(from, to)
-    const max = Math.max(from, to)
-    return data.filter((row) => {
-        const index = seasonIndex(row.label)
-        return index < 0 || (index >= min && index <= max)
-    })
-}
-
-export function filterByOptionLabel<T>(
-    data: T[],
-    getText: (row: T) => string,
-    filterValue: string,
-    options: readonly FilterOption[],
-) {
-    const label = optionLabel(options, filterValue)
-    if (!label) return data
-    return data.filter((row) => getText(row) === label)
-}
-
-export function matchesSchool(schoolName: string, schoolValue: string) {
-    if (isAllFilter(schoolValue)) return true
-    const names = SCHOOL_ALIASES[schoolValue]
-    if (!names) return true
-    return names.some(
-        (name) =>
-            schoolName === name ||
-            schoolName.toLowerCase().includes(name.toLowerCase()) ||
-            name.toLowerCase().includes(schoolName.toLowerCase()),
-    )
-}
-
-export function matchesFaculty(facultyName: string, facultyValue: string) {
-    const label = optionLabel(ALUMNI_FACULTY_OPTIONS, facultyValue)
-    if (!label) return true
-    if (facultyName === '-' || facultyName.trim() === '') return false
-    const name = label.split(' | ').at(-1) ?? label
-    return (
-        facultyName === name ||
-        facultyName.toLowerCase().includes(name.toLowerCase()) ||
-        name.toLowerCase().includes(facultyName.toLowerCase())
-    )
-}
-
-export function matchesDegree(degreeName: string, degreeValue: string) {
-    const label = optionLabel(ALUMNI_DEGREE_OPTIONS, degreeValue)
-    if (!label) return true
-    return degreeName === label
-}
-
-export function matchesField(fieldName: string, fieldValue: string) {
-    const label = optionLabel(ALUMNI_FIELD_OPTIONS, fieldValue)
-    if (!label) return true
-    return fieldName === label
-}
-
-export function matchesTeam(teamName: string, teamValue: string) {
-    const label = optionLabel(ALUMNI_TEAM_OPTIONS, teamValue)
-    if (!label) return true
-    return teamName === label
-}
-
-/** Empty selection means all teams. */
-export function matchesAnyTeam(teamName: string, teamValues: readonly string[]) {
-    if (teamValues.length === 0) return true
-    return teamValues.some((value) => matchesTeam(teamName, value))
-}
-
-/** Empty selection means all fields. */
-export function matchesAnyField(fieldName: string, fieldValues: readonly string[]) {
-    if (fieldValues.length === 0) return true
-    return fieldValues.some((value) => matchesField(fieldName, value))
-}
-
-/** Empty selection means all degrees. */
-export function matchesAnyDegree(
-    degreeName: string,
-    degreeValues: readonly string[],
-) {
-    if (degreeValues.length === 0) return true
-    return degreeValues.some((value) => matchesDegree(degreeName, value))
+export function degreeLabel(value: string) {
+    return ALUMNI_DEGREE_OPTIONS.find((option) => option.value === value)?.label ?? value
 }
