@@ -13,6 +13,7 @@ import { ReportHeaderCard } from '@/components/custom/statistics/report-header-c
 
 import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
 import {
+    buildGraduationByTeamColumns,
     COMPLETED_VS_NOT_COLUMNS,
     COMPLETED_VS_NOT_CONFIG,
     COMPLETED_VS_NOT_SERIES,
@@ -24,14 +25,8 @@ import {
     getGraduationByTeamSeason,
     getGraduationByTeamSeries,
     getGraduationRateKpis,
-    getGraduationRateOverTime,
     GRADUATION_AVERAGE_BY_TEAM_COLUMNS,
-    GRADUATION_BY_TEAM_SEASON_COLUMNS,
     GRADUATION_BY_TEAM_SEASON_CONFIG,
-    GRADUATION_BY_TEAM_SEASON_SERIES,
-    GRADUATION_RATE_OVER_TIME_COLUMNS,
-    GRADUATION_RATE_OVER_TIME_CONFIG,
-    GRADUATION_RATE_OVER_TIME_SERIES,
 } from './data'
 
 export function AlumniGraduationRate() {
@@ -47,9 +42,19 @@ export function AlumniGraduationRate() {
         [filteredRows, seasonFrom, seasonTo],
     )
 
-    const rateOverTime = useMemo(
-        () => getGraduationRateOverTime(filteredRows),
+    const byTeamSeason = useMemo(
+        () => getGraduationByTeamSeason(filteredRows),
         [filteredRows],
+    )
+
+    const teamSeasonSeries = useMemo(
+        () => getGraduationByTeamSeries(filteredRows),
+        [filteredRows],
+    )
+
+    const rateOverTimeColumns = useMemo(
+        () => buildGraduationByTeamColumns(teamSeasonSeries),
+        [teamSeasonSeries],
     )
 
     const completedVsNot = useMemo(
@@ -59,16 +64,6 @@ export function AlumniGraduationRate() {
 
     const averageByTeam = useMemo(
         () => getAverageByTeam(filteredRows),
-        [filteredRows],
-    )
-
-    const byTeamSeason = useMemo(
-        () => getGraduationByTeamSeason(filteredRows),
-        [filteredRows],
-    )
-
-    const teamSeasonSeries = useMemo(
-        () => getGraduationByTeamSeries(filteredRows),
         [filteredRows],
     )
 
@@ -93,13 +88,21 @@ export function AlumniGraduationRate() {
                 queryKey="graduation-rate-over-time-view"
                 action={
                     <InfoTooltip>
-                        Vývoj graduation rate napříč sezónami.
+                        Vývoj graduation rate jednotlivých týmů napříč sezónami.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'vyvoj-graduation-rate-v-case',
-                    headers: ['Sezóna', 'Graduation rate (%)'],
-                    rows: rateOverTime.map((row) => [row.label, row.rate]),
+                    headers: [
+                        'Sezóna',
+                        ...teamSeasonSeries.map(
+                            (key) => GRADUATION_BY_TEAM_SEASON_CONFIG[key].label,
+                        ),
+                    ],
+                    rows: byTeamSeason.map((row) => [
+                        row.label,
+                        ...teamSeasonSeries.map((key) => row[key]),
+                    ]),
                 }}
                 tabs={[
                     {
@@ -108,10 +111,10 @@ export function AlumniGraduationRate() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={rateOverTime}
-                                config={GRADUATION_RATE_OVER_TIME_CONFIG}
+                                data={byTeamSeason}
+                                config={GRADUATION_BY_TEAM_SEASON_CONFIG}
                                 categoryKey="label"
-                                series={[...GRADUATION_RATE_OVER_TIME_SERIES]}
+                                series={teamSeasonSeries}
                                 showYAxis
                                 angledXAxis
                                 showDots
@@ -129,8 +132,8 @@ export function AlumniGraduationRate() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={rateOverTime}
-                                columns={GRADUATION_RATE_OVER_TIME_COLUMNS}
+                                data={byTeamSeason}
+                                columns={rateOverTimeColumns}
                                 getRowKey={(row) => row.label}
                             />
                         ),
@@ -219,64 +222,6 @@ export function AlumniGraduationRate() {
                     />
                 </DataVisulaizationCard>
             </section>
-
-            <DataVisulaizationCard
-                title="Graduation rate podle týmu a sezóny"
-                queryKey="graduation-by-team-season-view"
-                action={
-                    <InfoTooltip>
-                        Graduation rate vybraných týmů v jednotlivých sezónách.
-                    </InfoTooltip>
-                }
-                tableExportable={{
-                    filename: 'graduation-rate-podle-tymu-a-sezony',
-                    headers: [
-                        'Sezóna',
-                        ...GRADUATION_BY_TEAM_SEASON_SERIES.map(
-                            (key) => GRADUATION_BY_TEAM_SEASON_CONFIG[key].label,
-                        ),
-                    ],
-                    rows: byTeamSeason.map((row) => [
-                        row.label,
-                        ...GRADUATION_BY_TEAM_SEASON_SERIES.map((key) => row[key]),
-                    ]),
-                }}
-                tabs={[
-                    {
-                        name: 'Graf',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content: (
-                            <LineChart
-                                data={byTeamSeason}
-                                config={GRADUATION_BY_TEAM_SEASON_CONFIG}
-                                categoryKey="label"
-                                series={teamSeasonSeries}
-                                showYAxis
-                                angledXAxis
-                                showDots
-                                xAxisLabel="Sezóna"
-                                yAxisLabel="Graduation rate (%)"
-                                formatValue={formatGraduationPercent}
-                                legendQueryKey="graduation-by-team-season-muted"
-                                className="h-80"
-                            />
-                        ),
-                    },
-                    {
-                        name: 'Tabulka',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content: (
-                            <SimpleTable
-                                data={byTeamSeason}
-                                columns={GRADUATION_BY_TEAM_SEASON_COLUMNS}
-                                getRowKey={(row) => row.label}
-                            />
-                        ),
-                    },
-                ]}
-            />
         </div>
     )
 }

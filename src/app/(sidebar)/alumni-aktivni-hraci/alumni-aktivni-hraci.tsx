@@ -310,17 +310,18 @@ export function AlumniAktivniHraci() {
                 queryKey="alumni-active-players-detail"
                 action={
                     <InfoTooltip>
-                        Přehled aktivních hráčů podle týmu, fakulty a stupně.
+                        Přehled aktivních hráčů podle týmu, fakulty, stupně a ročníku.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'detail-aktivnich-hracu',
-                    headers: ['Tým', 'Fakulta', 'Stupeň', 'Ročník'],
+                    headers: ['Tým', 'Fakulta', 'Stupeň', 'Ročník', 'Počet'],
                     rows: detail.map((row) => [
                         row.team,
                         row.faculty,
                         row.degree,
                         row.year,
+                        row.count,
                     ]),
                 }}
             >

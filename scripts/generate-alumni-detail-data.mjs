@@ -355,6 +355,32 @@ function randInt(min, max) {
     return Math.floor(rand() * (max - min + 1)) + min
 }
 
+function yearCountForDegree(degree) {
+    if (degree === 'magisterske') return 2
+    if (degree === 'doktorske') return 4
+    return 3
+}
+
+/** Split `total` into `parts` positive-ish integers that sum back to `total`. */
+function distributeAcrossYears(total, parts) {
+    if (parts <= 0) return []
+    if (total <= 0) return Array.from({ length: parts }, () => 0)
+
+    const weights = Array.from({ length: parts }, () => 0.7 + rand() * 0.6)
+    const weightSum = weights.reduce((sum, weight) => sum + weight, 0)
+    const counts = weights.map((weight) =>
+        Math.floor((total * weight) / weightSum),
+    )
+    let remainder = total - counts.reduce((sum, count) => sum + count, 0)
+    let index = 0
+    while (remainder > 0) {
+        counts[index % parts] += 1
+        remainder -= 1
+        index += 1
+    }
+    return counts
+}
+
 const rows = []
 for (const season of seasons) {
     const seasonIndex = seasons.indexOf(season)
@@ -397,6 +423,12 @@ for (const season of seasons) {
                             Math.round(alumni * (0.35 + rand() * 0.25)),
                         )
                         const playersInSlice = alumni + extraActive
+                        const yearParts = yearCountForDegree(degree)
+                        const activeByYear = distributeAcrossYears(
+                            extraActive,
+                            yearParts,
+                        )
+                        while (activeByYear.length < 4) activeByYear.push(0)
 
                         const row = {
                             season,
@@ -409,6 +441,7 @@ for (const season of seasons) {
                             activePlayers: 0,
                             activeInSlice: extraActive,
                             playersInSlice,
+                            activeByYear,
                             teamSeasonAlumni: 0,
                             teamSeasonDepartures: 0,
                             alumni,

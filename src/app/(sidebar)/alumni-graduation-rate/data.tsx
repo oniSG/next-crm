@@ -7,9 +7,9 @@ import {
     getAlumniKpis,
     numberFormatter,
     percentFormatter,
-    rateFromDepartures,
 } from '@/lib/alumni/metrics'
 import {
+    buildGraduationByTeamColumns,
     filterTeamSeasonRows,
     getAverageByTeam,
     getGraduationByTeamSeason,
@@ -30,6 +30,7 @@ export type {
 }
 
 export {
+    buildGraduationByTeamColumns,
     formatGraduationPercent,
     formatPlayerCount,
     getAverageByTeam,
@@ -61,35 +62,10 @@ export function getGraduationRateKpis(
     return getAlumniKpis(rows, seasonFrom, seasonTo)
 }
 
-export type GraduationRatePoint = {
-    label: string
-    rate: number
-}
-
 export type GraduationCompletedVsNotPoint = {
     label: string
     completed: number
     incomplete: number
-}
-
-export function getGraduationRateOverTime(
-    rows: AlumniTeamSeasonRow[],
-): GraduationRatePoint[] {
-    const bySeason = new Map<string, { completed: number; incomplete: number }>()
-    for (const row of rows) {
-        const current = bySeason.get(row.season) ?? { completed: 0, incomplete: 0 }
-        current.completed += row.completed
-        current.incomplete += row.incomplete
-        bySeason.set(row.season, current)
-    }
-
-    return SEASON_VALUES.filter((season) => bySeason.has(season)).map((season) => {
-        const totals = bySeason.get(season)!
-        return {
-            label: season,
-            rate: rateFromDepartures(totals.completed, totals.incomplete),
-        }
-    })
 }
 
 export function getCompletedVsNot(
@@ -112,29 +88,6 @@ export function getCompletedVsNot(
         }
     })
 }
-
-export const GRADUATION_RATE_OVER_TIME_SERIES = ['rate'] as const
-
-export const GRADUATION_RATE_OVER_TIME_CONFIG = {
-    rate: { label: 'Graduation rate (%)', color: 'var(--chart-1)' },
-} satisfies ChartConfig
-
-export const GRADUATION_RATE_OVER_TIME_COLUMNS: SimpleTableColumn<GraduationRatePoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Sezóna',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'rate',
-            header: 'Graduation rate (%)',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => percentFormatter.format(row.rate),
-        },
-    ]
 
 export const COMPLETED_VS_NOT_SERIES = ['completed', 'incomplete'] as const
 
@@ -189,22 +142,4 @@ export const GRADUATION_AVERAGE_BY_TEAM_COLUMNS: SimpleTableColumn<GraduationAve
             cellClassName: 'text-right tabular-nums',
             cell: (row) => `${percentFormatter.format(row.rate)} %`,
         },
-    ]
-
-export const GRADUATION_BY_TEAM_SEASON_COLUMNS: SimpleTableColumn<GraduationByTeamSeasonPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Sezóna',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        ...GRADUATION_BY_TEAM_SERIES.map((key) => ({
-            id: key,
-            header: GRADUATION_BY_TEAM_CONFIG[key].label,
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row: GraduationByTeamSeasonPoint) =>
-                percentFormatter.format(row[key]),
-        })),
     ]

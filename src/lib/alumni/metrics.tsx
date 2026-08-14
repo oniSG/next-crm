@@ -32,6 +32,7 @@ export function seasonIndex(season: string) {
 
 /**
  * Whether `season` lies inclusively between `seasonFrom` and `seasonTo`.
+ * If `seasonFrom` is after `seasonTo`, the range is empty (no matches).
  * Unknown seasons / bounds are treated as in-range (no accidental filtering).
  */
 export function inSeasonRange(season: string, seasonFrom: string, seasonTo: string) {
@@ -39,7 +40,8 @@ export function inSeasonRange(season: string, seasonFrom: string, seasonTo: stri
     const from = seasonIndex(seasonFrom)
     const to = seasonIndex(seasonTo)
     if (index < 0 || from < 0 || to < 0) return true
-    return index >= Math.min(from, to) && index <= Math.max(from, to)
+    if (from > to) return false
+    return index >= from && index <= to
 }
 
 /**

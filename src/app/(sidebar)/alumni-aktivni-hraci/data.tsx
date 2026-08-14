@@ -47,6 +47,7 @@ export type ActivePlayerDetailRow = {
     faculty: string
     degree: string
     year: number
+    count: number
 }
 
 export type ActivePlayerStudyLevelPoint = {
@@ -204,28 +205,38 @@ export const YEAR_DEGREE_CONFIG = STUDY_LEVEL_CONFIG
 export function getPlayersByYearDegree(
     rows: AlumniSeasonDetailRow[],
 ): ActivePlayerByYearDegreePoint[] {
-    const byDegree = new Map<string, number>()
+    const byYear = new Map<
+        number,
+        { bakalarske: number; magisterske: number; doktorske: number }
+    >()
+
     for (const row of rows) {
-        byDegree.set(
-            row.degree,
-            (byDegree.get(row.degree) ?? 0) + row.activeInSlice,
-        )
+        const years = row.activeByYear ?? []
+        for (let index = 0; index < years.length; index += 1) {
+            const count = years[index] ?? 0
+            if (count <= 0) continue
+            const year = index + 1
+            const counts = byYear.get(year) ?? {
+                bakalarske: 0,
+                magisterske: 0,
+                doktorske: 0,
+            }
+            counts[row.degree as keyof typeof counts] += count
+            byYear.set(year, counts)
+        }
     }
 
-    const bakalarske = byDegree.get('bakalarske') ?? 0
-    const magisterske = byDegree.get('magisterske') ?? 0
-    const doktorske = byDegree.get('doktorske') ?? 0
-    const total = bakalarske + magisterske + doktorske
-    if (total === 0) return []
-
-    const yearShares = [0.28, 0.26, 0.24, 0.22]
-
-    return yearShares.map((share, index) => ({
-        label: `${index + 1}. ročník`,
-        bakalarske: Math.round(bakalarske * share),
-        magisterske: Math.round(magisterske * share),
-        doktorske: Math.round(doktorske * share),
-    }))
+    return [...byYear.entries()]
+        .sort(([a], [b]) => a - b)
+        .map(([year, counts]) => ({
+            label: `${year}. ročník`,
+            bakalarske: counts.bakalarske,
+            magisterske: counts.magisterske,
+            doktorske: counts.doktorske,
+        }))
+        .filter(
+            (row) => row.bakalarske + row.magisterske + row.doktorske > 0,
+        )
 }
 
 export const YEAR_DEGREE_COLUMNS: SimpleTableColumn<ActivePlayerByYearDegreePoint>[] =
@@ -264,31 +275,44 @@ export function getActivePlayersDetail(
 ): ActivePlayerDetailRow[] {
     const byKey = new Map<
         string,
-        { team: string; faculty: string; degree: string; count: number }
+        {
+            team: string
+            faculty: string
+            degree: string
+            year: number
+            count: number
+        }
     >()
 
     for (const row of rows) {
-        if (row.activeInSlice <= 0) continue
-        const key = `${row.team}|${row.faculty}|${row.degree}`
-        const existing = byKey.get(key) ?? {
-            team: hockeyTeamLabel(row.team),
-            faculty: facultyLabel(row.faculty),
-            degree: degreeLabel(row.degree),
-            count: 0,
+        const years = row.activeByYear ?? []
+        for (let index = 0; index < years.length; index += 1) {
+            const count = years[index] ?? 0
+            if (count <= 0) continue
+            const year = index + 1
+            const key = `${row.team}|${row.faculty}|${row.degree}|${year}`
+            const existing = byKey.get(key) ?? {
+                team: hockeyTeamLabel(row.team),
+                faculty: facultyLabel(row.faculty),
+                degree: degreeLabel(row.degree),
+                year,
+                count: 0,
+            }
+            existing.count += count
+            byKey.set(key, existing)
         }
-        existing.count += row.activeInSlice
-        byKey.set(key, existing)
     }
 
     return [...byKey.values()]
-        .sort((a, b) => b.count - a.count)
+        .sort((a, b) => b.count - a.count || a.year - b.year)
         .slice(0, 50)
         .map((entry, index) => ({
             id: `AP-${String(index + 1).padStart(3, '0')}`,
             team: entry.team,
             faculty: entry.faculty,
             degree: entry.degree,
-            year: (index % 4) + 1,
+            year: entry.year,
+            count: entry.count,
         }))
 }
 
@@ -316,5 +340,12 @@ export const ACTIVE_PLAYERS_DETAIL_COLUMNS: SimpleTableColumn<ActivePlayerDetail
             headerClassName: 'text-right',
             cellClassName: 'text-right tabular-nums',
             cell: (row) => numberFormatter.format(row.year),
+        },
+        {
+            id: 'count',
+            header: 'Počet',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.count),
         },
     ]

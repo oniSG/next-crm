@@ -35,6 +35,12 @@ export type AlumniSeasonDetailRow = {
     activeInSlice: number
     /** Share of team selection in this study slice (for filtered KPIs). */
     playersInSlice: number
+    /**
+     * Active players in this slice by year within the degree
+     * (index 0 = 1st year). Length 4; unused years are 0.
+     * Sum equals `activeInSlice`.
+     */
+    activeByYear: number[]
     /** Total alumni for team in season — same on all breakdown rows. */
     teamSeasonAlumni: number
     /** Total departures for team in season — same on all breakdown rows. */
