@@ -38,6 +38,7 @@ export function AlumniAktivniHraci() {
         seasonFrom,
         seasonTo,
         teams,
+        faculties,
         fields,
         degrees,
     } = useAlumniFilters()
@@ -48,10 +49,11 @@ export function AlumniAktivniHraci() {
                 seasonFrom,
                 seasonTo,
                 teams,
+                faculties,
                 fields,
                 degrees,
             ),
-        [seasonFrom, seasonTo, teams, fields, degrees],
+        [seasonFrom, seasonTo, teams, faculties, fields, degrees],
     )
 
     const kpis = useMemo(

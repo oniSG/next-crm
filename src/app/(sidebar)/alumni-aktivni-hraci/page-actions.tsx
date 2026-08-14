@@ -1,16 +1,33 @@
 'use client'
 
+import { useMemo } from 'react'
+import { School } from 'lucide-react'
+
+import { FiltersPopover } from '@/components/custom/filters/filters-popover'
 import { MultiSelectFilter } from '@/components/custom/filters/multi-select-filter'
 import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
 import {
+    getAlumniFacultyOptionsForSelection,
+    getAlumniFieldOptionsForSelection,
+    pruneAlumniFacultySelection,
+    pruneAlumniFieldSelection,
+} from '@/lib/alumni/filter-options'
+import {
     ALUMNI_DEGREE_OPTIONS,
-    ALUMNI_FIELD_OPTIONS,
     ALUMNI_SEASON_OPTIONS,
     ALUMNI_TEAM_OPTIONS,
 } from '@/lib/alumni/filters'
 import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+
+function selectionChanged(current: readonly string[], next: readonly string[]) {
+    return (
+        current.length !== next.length ||
+        current.some((value) => !next.includes(value)) ||
+        next.some((value) => !current.includes(value))
+    )
+}
 
 export function PageActions() {
     const {
@@ -20,11 +37,58 @@ export function PageActions() {
         setSeasonTo,
         teams,
         setTeams,
+        faculties,
+        setFaculties,
         fields,
         setFields,
         degrees,
         setDegrees,
     } = useAlumniFilters()
+
+    const facultyOptions = useMemo(
+        () => getAlumniFacultyOptionsForSelection(teams, []),
+        [teams],
+    )
+
+    const fieldOptions = useMemo(
+        () => getAlumniFieldOptionsForSelection(teams, [], faculties),
+        [teams, faculties],
+    )
+
+    const handleTeamsChange = (nextTeams: string[]) => {
+        void setTeams(nextTeams)
+
+        const nextFaculties = pruneAlumniFacultySelection(faculties, nextTeams, [])
+        const nextFields = pruneAlumniFieldSelection(
+            fields,
+            nextTeams,
+            [],
+            nextFaculties,
+        )
+
+        if (selectionChanged(faculties, nextFaculties)) {
+            void setFaculties([...nextFaculties])
+        }
+        if (selectionChanged(fields, nextFields)) void setFields([...nextFields])
+    }
+
+    const handleFacultiesChange = (nextFaculties: string[]) => {
+        void setFaculties(nextFaculties)
+
+        const nextFields = pruneAlumniFieldSelection(
+            fields,
+            teams,
+            [],
+            nextFaculties,
+        )
+        if (selectionChanged(fields, nextFields)) void setFields([...nextFields])
+    }
+
+    const studyActiveCount = [
+        faculties.length > 0,
+        fields.length > 0,
+        degrees.length > 0,
+    ].filter(Boolean).length
 
     return (
         <>
@@ -43,34 +107,42 @@ export function PageActions() {
             <MultiSelectFilter
                 options={ALUMNI_TEAM_OPTIONS}
                 value={teams}
-                onChange={(next) => {
-                    void setTeams(next)
-                }}
+                onChange={handleTeamsChange}
                 leadingLabel="Tým"
-                placeholder="Vše"
-                className="w-48"
-            />
-            <MultiSelectFilter
-                options={ALUMNI_FIELD_OPTIONS}
-                value={fields}
-                onChange={(next) => {
-                    void setFields(next)
-                }}
-                leadingLabel="Obor"
                 placeholder="Vše"
                 className="w-52"
             />
-            <MultiSelectFilter
-                options={ALUMNI_DEGREE_OPTIONS}
-                value={degrees}
-                onChange={(next) => {
-                    void setDegrees(next)
-                }}
-                leadingLabel="Stupeň"
-                placeholder="Vše"
-                searchable={false}
-                className="w-44"
-            />
+            <FiltersPopover activeCount={studyActiveCount} label="Studium" icon={School}>
+                <MultiSelectFilter
+                    label="Fakulta"
+                    options={facultyOptions}
+                    value={faculties}
+                    onChange={handleFacultiesChange}
+                    placeholder="Vše"
+                    className="w-full"
+                />
+                <MultiSelectFilter
+                    label="Obor"
+                    options={fieldOptions}
+                    value={fields}
+                    onChange={(next) => {
+                        void setFields(next)
+                    }}
+                    placeholder="Vše"
+                    className="w-full"
+                />
+                <MultiSelectFilter
+                    label="Stupeň"
+                    options={ALUMNI_DEGREE_OPTIONS}
+                    value={degrees}
+                    onChange={(next) => {
+                        void setDegrees(next)
+                    }}
+                    placeholder="Vše"
+                    searchable={false}
+                    className="w-full"
+                />
+            </FiltersPopover>
             <ExportButton
                 dashboard="alumni-aktivni-hraci"
                 filename="alumni-aktivni-hraci.pdf"

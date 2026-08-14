@@ -59,6 +59,7 @@ export function filterActivePlayerRows(
     seasonFrom: string,
     seasonTo: string,
     teams: readonly string[],
+    faculties: readonly string[],
     fields: readonly string[],
     degrees: readonly string[],
     rows: AlumniSeasonDetailRow[] = ALUMNI_BY_SEASON_DETAIL,
@@ -66,6 +67,7 @@ export function filterActivePlayerRows(
     return rows.filter((row) => {
         if (!inSeasonRange(row.season, seasonFrom, seasonTo)) return false
         if (teams.length > 0 && !teams.includes(row.team)) return false
+        if (faculties.length > 0 && !faculties.includes(row.faculty)) return false
         if (fields.length > 0 && !fields.includes(row.field)) return false
         if (degrees.length > 0 && !degrees.includes(row.degree)) return false
         return true
