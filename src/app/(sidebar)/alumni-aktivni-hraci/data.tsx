@@ -236,36 +236,26 @@ export function getPlayersByYearDegree(
         )
 }
 
-export const YEAR_DEGREE_COLUMNS: SimpleTableColumn<ActivePlayerByYearDegreePoint>[] =
-    [
+export function buildYearDegreeColumns(
+    series: readonly (typeof YEAR_DEGREE_SERIES)[number][],
+): SimpleTableColumn<ActivePlayerByYearDegreePoint>[] {
+    return [
         {
             id: 'label',
             header: 'Ročník',
             cellClassName: 'font-medium',
             cell: (row) => row.label,
         },
-        {
-            id: 'bakalarske',
-            header: 'Bakalářské',
+        ...series.map((key) => ({
+            id: key,
+            header: YEAR_DEGREE_CONFIG[key].label,
             headerClassName: 'text-right',
             cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.bakalarske),
-        },
-        {
-            id: 'magisterske',
-            header: 'Magisterské',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.magisterske),
-        },
-        {
-            id: 'doktorske',
-            header: 'Doktorské',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.doktorske),
-        },
+            cell: (row: ActivePlayerByYearDegreePoint) =>
+                numberFormatter.format(row[key]),
+        })),
     ]
+}
 
 export function getActivePlayersDetail(
     rows: AlumniSeasonDetailRow[],

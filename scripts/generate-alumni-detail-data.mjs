@@ -47,15 +47,6 @@ const teamIntensity = {
     trinec: 1.1,
 }
 
-const teamDisplayNames = {
-    'black-dogs-budweis': 'Black Dogs Budweis',
-    sparta: 'HC Sparta Praha',
-    kometa: 'HC Kometa Brno',
-    dynamo: 'HC Dynamo Pardubice',
-    mountfield: 'Mountfield HK',
-    trinec: 'HC Oceláři Třinec',
-}
-
 let seed = 42
 function rand() {
     seed = (seed * 1664525 + 1013904223) >>> 0
@@ -71,22 +62,14 @@ function yearCountForDegree(degree) {
     return 3
 }
 
-/** Split `total` into `parts` positive-ish integers that sum back to `total`. */
+/** Split `total` into `parts` non-negative integers that sum to `total`. */
 function distributeAcrossYears(total, parts) {
     if (parts <= 0) return []
     if (total <= 0) return Array.from({ length: parts }, () => 0)
 
-    const weights = Array.from({ length: parts }, () => 0.7 + rand() * 0.6)
-    const weightSum = weights.reduce((sum, weight) => sum + weight, 0)
-    const counts = weights.map((weight) =>
-        Math.floor((total * weight) / weightSum),
-    )
-    let remainder = total - counts.reduce((sum, count) => sum + count, 0)
-    let index = 0
-    while (remainder > 0) {
-        counts[index % parts] += 1
-        remainder -= 1
-        index += 1
+    const counts = Array.from({ length: parts }, () => 0)
+    for (let i = 0; i < total; i += 1) {
+        counts[Math.floor(rand() * parts)] += 1
     }
     return counts
 }
@@ -157,10 +140,6 @@ for (const season of seasons) {
                             alumni,
                             completed,
                             incomplete,
-                        }
-
-                        if (rand() < 0.08) {
-                            row.teamLabel = teamDisplayNames[team]
                         }
 
                         teamSeasonRows.push(row)

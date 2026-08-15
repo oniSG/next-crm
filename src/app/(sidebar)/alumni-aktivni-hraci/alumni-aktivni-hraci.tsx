@@ -21,6 +21,7 @@ import {
     ACTIVE_PLAYERS_DETAIL_COLUMNS,
     buildPlayersByFieldConfig,
     buildPlayersByTeamConfig,
+    buildYearDegreeColumns,
     filterActivePlayerRows,
     formatPlayerCount,
     getActivePlayersDetail,
@@ -33,7 +34,6 @@ import {
     PLAYERS_BY_TEAM_COLUMNS,
     STUDY_LEVEL_CONFIG,
     toSparseCategoryChart,
-    YEAR_DEGREE_COLUMNS,
     YEAR_DEGREE_CONFIG,
     YEAR_DEGREE_SERIES,
 } from './data'
@@ -109,10 +109,15 @@ export function AlumniAktivniHraci() {
         [filteredRows],
     )
 
-    const yearDegreeSeries = useMemo((): string[] => {
+    const yearDegreeSeries = useMemo((): (typeof YEAR_DEGREE_SERIES)[number][] => {
         if (degrees.length === 0) return [...YEAR_DEGREE_SERIES]
         return YEAR_DEGREE_SERIES.filter((key) => degrees.includes(key))
     }, [degrees])
+
+    const yearDegreeColumns = useMemo(
+        () => buildYearDegreeColumns(yearDegreeSeries),
+        [yearDegreeSeries],
+    )
 
     const detail = useMemo(
         () => getActivePlayersDetail(filteredRows),
@@ -257,12 +262,15 @@ export function AlumniAktivniHraci() {
                     }
                     tableExportable={{
                         filename: 'rocnik-stupen',
-                        headers: ['Ročník', 'Bakalářské', 'Magisterské', 'Doktorské'],
+                        headers: [
+                            'Ročník',
+                            ...yearDegreeSeries.map(
+                                (key) => YEAR_DEGREE_CONFIG[key].label,
+                            ),
+                        ],
                         rows: yearDegree.map((row) => [
                             row.label,
-                            row.bakalarske,
-                            row.magisterske,
-                            row.doktorske,
+                            ...yearDegreeSeries.map((key) => row[key]),
                         ]),
                     }}
                     tabs={[
@@ -293,7 +301,7 @@ export function AlumniAktivniHraci() {
                             content: (
                                 <SimpleTable
                                     data={yearDegree}
-                                    columns={YEAR_DEGREE_COLUMNS}
+                                    columns={yearDegreeColumns}
                                     getRowKey={(row) => row.label}
                                 />
                             ),

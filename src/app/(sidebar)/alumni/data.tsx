@@ -49,8 +49,6 @@ export type AlumniSeasonDetailRow = {
     alumni: number
     completed: number
     incomplete: number
-    /** Custom display name; when omitted, the hockey team label is used. */
-    teamLabel?: string
 }
 
 export type AlumniByUniversityPoint = {
@@ -87,11 +85,6 @@ export type AlumniHighestDegreePoint = {
 
 export const ALUMNI_BY_SEASON_DETAIL =
     alumniBySeasonDetail as AlumniSeasonDetailRow[]
-
-function alumniTeamDisplayName(row: Pick<AlumniSeasonDetailRow, 'team' | 'teamLabel'>) {
-    if (row.teamLabel) return row.teamLabel
-    return hockeyTeamLabel(row.team)
-}
 
 export function filterAlumniRows(
     seasonFrom: string,
@@ -166,7 +159,7 @@ export function getAlumniByUniversityFaculty(
 
     for (const row of rows) {
         const school = schoolLabel(row.school)
-        const team = alumniTeamDisplayName(row)
+        const team = hockeyTeamLabel(row.team)
         const faculty = facultyLabel(row.faculty)
         const key = `${school}|${row.team}|${faculty}`
         const existing = byKey.get(key) ?? { school, team, faculty, count: 0 }
