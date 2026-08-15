@@ -1,7 +1,14 @@
 'use client'
 
 import { useId } from 'react'
-import { Bar, BarChart as RechartsBarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import {
+    Bar,
+    BarChart as RechartsBarChart,
+    CartesianGrid,
+    Rectangle,
+    XAxis,
+    YAxis,
+} from 'recharts'
 
 import {
     ChartContainer,
@@ -52,6 +59,45 @@ function rowHasVisibleValue(row: object, keys: string[]) {
         const value = (row as Record<string, unknown>)[key]
         return typeof value === 'number' ? value !== 0 : value != null && value !== ''
     })
+}
+
+function isNonZeroValue(value: unknown) {
+    return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+}
+
+type BarRadius = number | [number, number, number, number]
+
+/** Round only the outer ends of a stack; middle segments stay square. */
+function stackedSegmentRadius(
+    payload: Record<string, unknown> | undefined,
+    dataKey: string,
+    seriesKeys: readonly string[],
+    isHorizontal: boolean,
+): BarRadius {
+    if (!payload) return 4
+
+    const active = seriesKeys.filter((key) => isNonZeroValue(payload[key]))
+    if (active.length <= 1) return 4
+
+    const index = active.indexOf(dataKey)
+    if (index < 0) return 0
+
+    const isFirst = index === 0
+    const isLast = index === active.length - 1
+
+    if (isHorizontal) {
+        // Stack grows rightward: round left of first, right of last.
+        if (isFirst && isLast) return 4
+        if (isFirst) return [4, 0, 0, 4]
+        if (isLast) return [0, 4, 4, 0]
+        return 0
+    }
+
+    // Stack grows upward: round bottom of first, top of last.
+    if (isFirst && isLast) return 4
+    if (isFirst) return [0, 0, 4, 4]
+    if (isLast) return [4, 4, 0, 0]
+    return 0
 }
 
 export function BarChart({
@@ -430,6 +476,9 @@ export function BarChart({
                     }
                 />
                 {visiblePrimarySeries.map((key, i) => {
+                    const barRadius: BarRadius = stacked
+                        ? 0
+                        : 4
                     return (
                         <Bar
                             // Remount when stack position changes — Recharts won't
@@ -439,12 +488,33 @@ export function BarChart({
                             fill={`var(--color-${key})`}
                             yAxisId={hasSecondaryAxis ? 'left' : undefined}
                             stackId={stacked ? leftStackId : undefined}
-                            radius={4}
+                            radius={barRadius}
+                            shape={
+                                stacked
+                                    ? (props) => {
+                                          const radius = stackedSegmentRadius(
+                                              props.payload as
+                                                  | Record<string, unknown>
+                                                  | undefined,
+                                              key,
+                                              visiblePrimarySeries,
+                                              isHorizontal,
+                                          )
+                                          return (
+                                              <Rectangle
+                                                  {...props}
+                                                  radius={radius}
+                                              />
+                                          )
+                                      }
+                                    : undefined
+                            }
                         />
                     )
                 })}
                 {hasSecondaryAxis &&
                     visibleSecondarySeries.map((key, i) => {
+                        const barRadius: BarRadius = stacked ? 0 : 4
                         return (
                             <Bar
                                 key={`${chartId}-${key}-${i}-${visibleSecondarySeries.length}`}
@@ -452,7 +522,27 @@ export function BarChart({
                                 fill={`var(--color-${key})`}
                                 yAxisId="right"
                                 stackId={stacked ? rightStackId : undefined}
-                                radius={4}
+                                radius={barRadius}
+                                shape={
+                                    stacked
+                                        ? (props) => {
+                                              const radius = stackedSegmentRadius(
+                                                  props.payload as
+                                                      | Record<string, unknown>
+                                                      | undefined,
+                                                  key,
+                                                  visibleSecondarySeries,
+                                                  isHorizontal,
+                                              )
+                                              return (
+                                                  <Rectangle
+                                                      {...props}
+                                                      radius={radius}
+                                                  />
+                                              )
+                                          }
+                                        : undefined
+                                }
                             />
                         )
                     })}
