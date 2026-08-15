@@ -49,10 +49,10 @@ export const DISCOUNT_TEAM_SERIES = [
 
 export type DiscountTeamKey = (typeof DISCOUNT_TEAM_SERIES)[number]
 
-export const TEAM_OPTIONS = [
-    { label: 'Vše', value: 'all' },
-    ...DISCOUNT_TEAM_SERIES.map((value) => ({ label: value, value })),
-] as const
+export const TEAM_OPTIONS = DISCOUNT_TEAM_SERIES.map((value) => ({
+    label: value,
+    value,
+}))
 
 export const DISCOUNT_CATEGORY_SERIES = [
     'happyMonday',
@@ -221,18 +221,19 @@ function discountKeysForCategory(category: string): readonly DiscountCategoryKey
     return CATEGORY_TO_DISCOUNT_KEYS[category] ?? DISCOUNT_CATEGORY_SERIES
 }
 
-function teamsForFilter(team: string): readonly DiscountTeamKey[] {
-    if (team === 'all') return DISCOUNT_TEAM_SERIES
-    if ((DISCOUNT_TEAM_SERIES as readonly string[]).includes(team)) {
-        return [team as DiscountTeamKey]
-    }
-    return DISCOUNT_TEAM_SERIES
+function teamsForFilter(teams: readonly string[]): readonly DiscountTeamKey[] {
+    if (teams.length === 0) return DISCOUNT_TEAM_SERIES
+    const allowed = new Set(DISCOUNT_TEAM_SERIES)
+    const selected = teams.filter((team): team is DiscountTeamKey =>
+        allowed.has(team as DiscountTeamKey),
+    )
+    return selected.length > 0 ? selected : DISCOUNT_TEAM_SERIES
 }
 
 export function filterSalesFacts(
     from: Date,
     to: Date,
-    team: string,
+    teams: readonly string[],
     category: string,
     rows: readonly SalesFactRow[] = SALES_FACTS,
 ): SalesFactRow[] {
@@ -241,11 +242,14 @@ export function filterSalesFacts(
     const fromKey = toDateKey(from)
     const toKey = toDateKey(to)
     const discountKeys = new Set(discountKeysForCategory(category))
-    const teamFilter = team === 'all' ? null : team
+    const teamFilter =
+        teams.length > 0 ? new Set(teamsForFilter(teams)) : null
 
     return rows.filter((row) => {
         if (row.date < fromKey || row.date > toKey) return false
-        if (teamFilter && row.team !== teamFilter) return false
+        if (teamFilter && !teamFilter.has(row.team as DiscountTeamKey)) {
+            return false
+        }
         if (!discountKeys.has(row.discountKey)) return false
         return true
     })
@@ -255,8 +259,8 @@ export function getDiscountCategorySeries(category: string): DiscountCategoryKey
     return [...discountKeysForCategory(category)]
 }
 
-export function getDiscountTeamSeries(team: string): DiscountTeamKey[] {
-    return [...teamsForFilter(team)]
+export function getDiscountTeamSeries(teams: readonly string[]): DiscountTeamKey[] {
+    return [...teamsForFilter(teams)]
 }
 
 export function getDiscountedTicketRevenue(
@@ -369,10 +373,10 @@ export function getDiscountAmountByCategory(
 
 export function getDiscountsByTeam(
     rows: readonly SalesFactRow[],
-    team: string,
+    teams: readonly string[],
     category: string,
 ): DiscountsByTeamPoint[] {
-    const teamSeries = getDiscountTeamSeries(team)
+    const teamSeries = getDiscountTeamSeries(teams)
     const discountSeries = getDiscountCategorySeries(category)
     const byDiscount = new Map<string, DiscountsByTeamPoint>()
 
@@ -399,9 +403,9 @@ export function getDiscountsByTeam(
 
 export function getTicketsSoldByTeam(
     rows: readonly SalesFactRow[],
-    team: string,
+    teams: readonly string[],
 ): TicketsSoldByTeamPoint[] {
-    const teamSeries = getDiscountTeamSeries(team)
+    const teamSeries = getDiscountTeamSeries(teams)
     const byTeam = new Map<string, number>()
     for (const row of rows) {
         byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.totalTickets)
@@ -414,9 +418,9 @@ export function getTicketsSoldByTeam(
 
 export function getTicketRevenueByTeam(
     rows: readonly SalesFactRow[],
-    team: string,
+    teams: readonly string[],
 ): TicketRevenueByTeamPoint[] {
-    const teamSeries = getDiscountTeamSeries(team)
+    const teamSeries = getDiscountTeamSeries(teams)
     const byTeam = new Map<string, number>()
     for (const row of rows) {
         byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.revenue)
@@ -431,9 +435,9 @@ const CSOB_KEYS = new Set<DiscountCategoryKey>(['ostravar', 'slevovyKod'])
 
 export function getCsobPartnerDiscountByTeam(
     rows: readonly SalesFactRow[],
-    team: string,
+    teams: readonly string[],
 ): CsobPartnerDiscountByTeamPoint[] {
-    const teamSeries = getDiscountTeamSeries(team)
+    const teamSeries = getDiscountTeamSeries(teams)
     const byTeam = new Map<string, number>()
     for (const row of rows) {
         if (!CSOB_KEYS.has(row.discountKey)) continue
@@ -462,7 +466,7 @@ export type SalesReportKpis = {
 
 export function computeSalesReportKpis(
     rows: readonly SalesFactRow[],
-    team: string,
+    teams: readonly string[],
 ): SalesReportKpis {
     let discountedTickets = 0
     let totalTickets = 0
@@ -482,7 +486,7 @@ export function computeSalesReportKpis(
         if (CSOB_KEYS.has(row.discountKey)) csobDiscountsUsed += row.tickets
     }
 
-    const teamsTotal = teamsForFilter(team).length
+    const teamsTotal = teamsForFilter(teams).length
     const teamsUsingDiscount = teamsWithDiscount.size
     const priceBeforeDiscount = revenue + totalDiscount
 

@@ -4,7 +4,6 @@ import { ALUMNI_SEASON_OPTIONS } from '@/lib/alumni/filters'
 import {
     formatGraduationPercent,
     formatPlayerCount,
-    getAlumniKpis,
     numberFormatter,
     percentFormatter,
 } from '@/lib/alumni/metrics'
@@ -52,14 +51,6 @@ export function filterGraduationRows(
     rows: AlumniTeamSeasonRow[] = GRADUATION_BY_SEASON_TEAM,
 ) {
     return filterTeamSeasonRows(seasonFrom, seasonTo, teams, rows)
-}
-
-export function getGraduationRateKpis(
-    rows: AlumniTeamSeasonRow[],
-    seasonFrom: string,
-    seasonTo: string,
-) {
-    return getAlumniKpis(rows, seasonFrom, seasonTo)
 }
 
 export type GraduationCompletedVsNotPoint = {

@@ -1,6 +1,7 @@
 'use client'
 
 import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
+import { MultiSelectFilter } from '@/components/custom/filters/multi-select-filter'
 import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
@@ -21,8 +22,8 @@ export function PageActions() {
         setDateRange,
         period,
         setPeriod,
-        team,
-        setTeam,
+        teams,
+        setTeams,
         category,
         setCategory,
     } = useSalesReportFilters()
@@ -45,11 +46,15 @@ export function PageActions() {
                 leadingLabel="Období"
                 className="min-w-0 w-auto"
             />
-            <SelectFilter
+            <MultiSelectFilter
                 options={TEAM_OPTIONS}
-                value={team}
-                onChange={(value) => void setTeam(value as typeof team)}
+                value={teams}
+                onChange={(next) => {
+                    void setTeams(next)
+                }}
                 leadingLabel="Tým"
+                placeholder="Vše"
+                className="w-52"
             />
             <SelectFilter
                 options={DISCOUNT_CATEGORY_OPTIONS}

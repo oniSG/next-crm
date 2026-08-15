@@ -19,8 +19,6 @@ import {
     buildDiscountsByTeamColumns,
     computeSalesReportKpis,
     CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS,
-    CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG,
-    CSOB_PARTNER_DISCOUNT_BY_TEAM_SERIES,
     DISCOUNT_CATEGORY_CONFIG,
     DISCOUNT_TEAM_CONFIG,
     DISCOUNTED_TICKET_REVENUE_CONFIG,
@@ -42,31 +40,31 @@ import {
     getTicketsSoldByTeam,
     periodColumnLabel,
     TICKET_REVENUE_BY_TEAM_COLUMNS,
-    TICKET_REVENUE_BY_TEAM_CONFIG,
-    TICKET_REVENUE_BY_TEAM_SERIES,
     TICKETS_SOLD_BY_TEAM_COLUMNS,
-    TICKETS_SOLD_BY_TEAM_CONFIG,
-    TICKETS_SOLD_BY_TEAM_SERIES,
 } from './data'
 import { useSalesReportFilters } from './use-sales-report-filters'
+import {
+    buildCategoryConfig,
+    toSparseCategoryChart,
+} from '@/lib/alumni/sparse-category-chart'
 
 export function SalesReport() {
-    const { dateRange, period, team, category } = useSalesReportFilters()
+    const { dateRange, period, teams, category } = useSalesReportFilters()
 
     const filteredRows = useMemo(
         () =>
             filterSalesFacts(
                 dateRange.from,
                 dateRange.to,
-                team,
+                teams,
                 category,
             ),
-        [dateRange.from, dateRange.to, team, category],
+        [dateRange.from, dateRange.to, teams, category],
     )
 
     const kpis = useMemo(
-        () => getSalesReportKpis(computeSalesReportKpis(filteredRows, team)),
-        [filteredRows, team],
+        () => getSalesReportKpis(computeSalesReportKpis(filteredRows, teams)),
+        [filteredRows, teams],
     )
 
     const categorySeries = useMemo(
@@ -74,7 +72,7 @@ export function SalesReport() {
         [category],
     )
 
-    const teamSeries = useMemo(() => getDiscountTeamSeries(team), [team])
+    const teamSeries = useMemo(() => getDiscountTeamSeries(teams), [teams])
 
     const discountedTicketRevenue = useMemo(
         () => getDiscountedTicketRevenue(filteredRows, period),
@@ -117,8 +115,8 @@ export function SalesReport() {
     )
 
     const discountsByTeam = useMemo(
-        () => getDiscountsByTeam(filteredRows, team, category),
-        [filteredRows, team, category],
+        () => getDiscountsByTeam(filteredRows, teams, category),
+        [filteredRows, teams, category],
     )
 
     const discountsByTeamColumns = useMemo(
@@ -127,18 +125,54 @@ export function SalesReport() {
     )
 
     const ticketsSoldByTeam = useMemo(
-        () => getTicketsSoldByTeam(filteredRows, team),
-        [filteredRows, team],
+        () => getTicketsSoldByTeam(filteredRows, teams),
+        [filteredRows, teams],
+    )
+
+    const ticketsSoldByTeamChart = useMemo(
+        () => toSparseCategoryChart(ticketsSoldByTeam),
+        [ticketsSoldByTeam],
+    )
+
+    const ticketsSoldByTeamConfig = useMemo(
+        () => buildCategoryConfig(ticketsSoldByTeam),
+        [ticketsSoldByTeam],
     )
 
     const ticketRevenueByTeam = useMemo(
-        () => getTicketRevenueByTeam(filteredRows, team),
-        [filteredRows, team],
+        () => getTicketRevenueByTeam(filteredRows, teams),
+        [filteredRows, teams],
+    )
+
+    const ticketRevenueByTeamChart = useMemo(
+        () =>
+            toSparseCategoryChart(
+                ticketRevenueByTeam.map((row) => ({
+                    label: row.label,
+                    count: row.revenue,
+                })),
+            ),
+        [ticketRevenueByTeam],
+    )
+
+    const ticketRevenueByTeamConfig = useMemo(
+        () => buildCategoryConfig(ticketRevenueByTeam),
+        [ticketRevenueByTeam],
     )
 
     const csobPartnerDiscountByTeam = useMemo(
-        () => getCsobPartnerDiscountByTeam(filteredRows, team),
-        [filteredRows, team],
+        () => getCsobPartnerDiscountByTeam(filteredRows, teams),
+        [filteredRows, teams],
+    )
+
+    const csobPartnerDiscountByTeamChart = useMemo(
+        () => toSparseCategoryChart(csobPartnerDiscountByTeam),
+        [csobPartnerDiscountByTeam],
+    )
+
+    const csobPartnerDiscountByTeamConfig = useMemo(
+        () => buildCategoryConfig(csobPartnerDiscountByTeam),
+        [csobPartnerDiscountByTeam],
     )
 
     const periodLabel = periodColumnLabel(period)
@@ -468,10 +502,11 @@ export function SalesReport() {
                                 style={{ height: ticketsSoldByTeamChartHeight }}
                             >
                                 <BarChart
-                                    data={ticketsSoldByTeam}
-                                    config={TICKETS_SOLD_BY_TEAM_CONFIG}
+                                    data={ticketsSoldByTeamChart.data}
+                                    config={ticketsSoldByTeamConfig}
                                     categoryKey="label"
-                                    series={[...TICKETS_SOLD_BY_TEAM_SERIES]}
+                                    series={ticketsSoldByTeamChart.series}
+                                    stacked
                                     orientation="horizontal"
                                     showYAxis
                                     categoryMaxLength={22}
@@ -528,10 +563,11 @@ export function SalesReport() {
                                 }}
                             >
                                 <BarChart
-                                    data={ticketRevenueByTeam}
-                                    config={TICKET_REVENUE_BY_TEAM_CONFIG}
+                                    data={ticketRevenueByTeamChart.data}
+                                    config={ticketRevenueByTeamConfig}
                                     categoryKey="label"
-                                    series={[...TICKET_REVENUE_BY_TEAM_SERIES]}
+                                    series={ticketRevenueByTeamChart.series}
+                                    stacked
                                     orientation="horizontal"
                                     showYAxis
                                     categoryMaxLength={22}
@@ -588,12 +624,11 @@ export function SalesReport() {
                                 }}
                             >
                                 <BarChart
-                                    data={csobPartnerDiscountByTeam}
-                                    config={CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG}
+                                    data={csobPartnerDiscountByTeamChart.data}
+                                    config={csobPartnerDiscountByTeamConfig}
                                     categoryKey="label"
-                                    series={[
-                                        ...CSOB_PARTNER_DISCOUNT_BY_TEAM_SERIES,
-                                    ]}
+                                    series={csobPartnerDiscountByTeamChart.series}
+                                    stacked
                                     orientation="horizontal"
                                     showYAxis
                                     categoryMaxLength={22}

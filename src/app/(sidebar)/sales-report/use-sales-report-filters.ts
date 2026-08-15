@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { parseAsIsoDate, parseAsStringLiteral, useQueryState } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
+import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
 
 import {
     DISCOUNT_CATEGORY_OPTIONS,
@@ -30,10 +31,7 @@ export function useSalesReportFilters() {
         'period',
         parseAsStringLiteral(periodValues).withDefault('month'),
     )
-    const [team, setTeam] = useQueryState(
-        'team',
-        parseAsStringLiteral(teamValues).withDefault('all'),
-    )
+    const [teams, setTeams] = useMultiFilterParam('team', teamValues)
     const [category, setCategory] = useQueryState(
         'category',
         parseAsStringLiteral(categoryValues).withDefault('all'),
@@ -55,8 +53,8 @@ export function useSalesReportFilters() {
         setDateRange,
         period: period as Period,
         setPeriod,
-        team,
-        setTeam,
+        teams,
+        setTeams,
         category,
         setCategory,
     }
