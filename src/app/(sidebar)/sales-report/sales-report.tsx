@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
@@ -12,52 +13,146 @@ import { ReportHeaderCard } from '@/components/custom/statistics/report-header-c
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
-    CSOB_PARTNER_DISCOUNT_BY_TEAM,
+    buildDiscountAmountByCategoryColumns,
+    buildDiscountedTicketRevenueColumns,
+    buildDiscountedTicketsByCategoryColumns,
+    buildDiscountsByTeamColumns,
+    computeSalesReportKpis,
     CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS,
     CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG,
     CSOB_PARTNER_DISCOUNT_BY_TEAM_SERIES,
-    DISCOUNT_AMOUNT_BY_CATEGORY,
-    DISCOUNT_AMOUNT_BY_CATEGORY_COLUMNS,
-    DISCOUNT_AMOUNT_BY_TEAM,
     DISCOUNT_CATEGORY_CONFIG,
-    DISCOUNT_CATEGORY_SERIES,
     DISCOUNT_TEAM_CONFIG,
-    DISCOUNT_TEAM_SERIES,
-    DISCOUNTED_TICKET_REVENUE,
-    DISCOUNTED_TICKET_REVENUE_COLUMNS,
     DISCOUNTED_TICKET_REVENUE_CONFIG,
     DISCOUNTED_TICKET_REVENUE_SERIES,
-    DISCOUNTED_TICKETS_BY_CATEGORY,
-    DISCOUNTED_TICKETS_BY_CATEGORY_COLUMNS,
-    DISCOUNTED_TICKETS_BY_TEAM,
-    DISCOUNTS_BY_TEAM,
-    DISCOUNTS_BY_TEAM_COLUMNS,
+    filterSalesFacts,
     formatSalesRevenue,
     formatTicketCount,
+    getCsobPartnerDiscountByTeam,
+    getDiscountAmountByCategory,
+    getDiscountAmountByTeamHeatmap,
+    getDiscountCategorySeries,
+    getDiscountedTicketRevenue,
+    getDiscountedTicketsByCategory,
+    getDiscountedTicketsByTeamHeatmap,
+    getDiscountsByTeam,
+    getDiscountTeamSeries,
     getSalesReportKpis,
-    TICKET_REVENUE_BY_TEAM,
+    getTicketRevenueByTeam,
+    getTicketsSoldByTeam,
+    periodColumnLabel,
     TICKET_REVENUE_BY_TEAM_COLUMNS,
     TICKET_REVENUE_BY_TEAM_CONFIG,
     TICKET_REVENUE_BY_TEAM_SERIES,
-    TICKETS_SOLD_BY_TEAM,
     TICKETS_SOLD_BY_TEAM_COLUMNS,
     TICKETS_SOLD_BY_TEAM_CONFIG,
     TICKETS_SOLD_BY_TEAM_SERIES,
 } from './data'
+import { useSalesReportFilters } from './use-sales-report-filters'
 
 export function SalesReport() {
-    const kpis = getSalesReportKpis()
+    const { dateRange, period, team, category } = useSalesReportFilters()
+
+    const filteredRows = useMemo(
+        () =>
+            filterSalesFacts(
+                dateRange.from,
+                dateRange.to,
+                team,
+                category,
+            ),
+        [dateRange.from, dateRange.to, team, category],
+    )
+
+    const kpis = useMemo(
+        () => getSalesReportKpis(computeSalesReportKpis(filteredRows, team)),
+        [filteredRows, team],
+    )
+
+    const categorySeries = useMemo(
+        () => getDiscountCategorySeries(category),
+        [category],
+    )
+
+    const teamSeries = useMemo(() => getDiscountTeamSeries(team), [team])
+
+    const discountedTicketRevenue = useMemo(
+        () => getDiscountedTicketRevenue(filteredRows, period),
+        [filteredRows, period],
+    )
+
+    const revenueColumns = useMemo(
+        () => buildDiscountedTicketRevenueColumns(period),
+        [period],
+    )
+
+    const ticketsByTeamHeatmap = useMemo(
+        () => getDiscountedTicketsByTeamHeatmap(filteredRows, period),
+        [filteredRows, period],
+    )
+
+    const discountAmountByTeamHeatmap = useMemo(
+        () => getDiscountAmountByTeamHeatmap(filteredRows, period),
+        [filteredRows, period],
+    )
+
+    const ticketsByCategory = useMemo(
+        () => getDiscountedTicketsByCategory(filteredRows, period, category),
+        [filteredRows, period, category],
+    )
+
+    const ticketsByCategoryColumns = useMemo(
+        () => buildDiscountedTicketsByCategoryColumns(period, categorySeries),
+        [period, categorySeries],
+    )
+
+    const discountAmountByCategory = useMemo(
+        () => getDiscountAmountByCategory(filteredRows, period, category),
+        [filteredRows, period, category],
+    )
+
+    const discountAmountByCategoryColumns = useMemo(
+        () => buildDiscountAmountByCategoryColumns(period, categorySeries),
+        [period, categorySeries],
+    )
+
+    const discountsByTeam = useMemo(
+        () => getDiscountsByTeam(filteredRows, team, category),
+        [filteredRows, team, category],
+    )
+
+    const discountsByTeamColumns = useMemo(
+        () => buildDiscountsByTeamColumns(teamSeries),
+        [teamSeries],
+    )
+
+    const ticketsSoldByTeam = useMemo(
+        () => getTicketsSoldByTeam(filteredRows, team),
+        [filteredRows, team],
+    )
+
+    const ticketRevenueByTeam = useMemo(
+        () => getTicketRevenueByTeam(filteredRows, team),
+        [filteredRows, team],
+    )
+
+    const csobPartnerDiscountByTeam = useMemo(
+        () => getCsobPartnerDiscountByTeam(filteredRows, team),
+        [filteredRows, team],
+    )
+
+    const periodLabel = periodColumnLabel(period)
     const ticketsSoldByTeamChartHeight = Math.max(
         320,
-        TICKETS_SOLD_BY_TEAM.length * 36 + 80,
+        ticketsSoldByTeam.length * 36 + 80,
     )
     const ticketRevenueByTeamChartHeight = Math.max(
         320,
-        TICKET_REVENUE_BY_TEAM.length * 36 + 80,
+        ticketRevenueByTeam.length * 36 + 80,
     )
     const csobPartnerDiscountByTeamChartHeight = Math.max(
         320,
-        CSOB_PARTNER_DISCOUNT_BY_TEAM.length * 36 + 80,
+        csobPartnerDiscountByTeam.length * 36 + 80,
     )
 
     return (
@@ -81,13 +176,13 @@ export function SalesReport() {
                 queryKey="sales-discounted-ticket-revenue-view"
                 action={
                     <InfoTooltip>
-                        Vývoj tržby ze zlevněných vstupenek podle měsíců.
+                        Vývoj tržby ze zlevněných vstupenek podle zvoleného období.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'vyvoj-trzby-prodanych-vstupenek-se-slevou',
-                    headers: ['Měsíc', 'Tržba'],
-                    rows: DISCOUNTED_TICKET_REVENUE.map((row) => [
+                    headers: [periodLabel, 'Tržba'],
+                    rows: discountedTicketRevenue.map((row) => [
                         row.label,
                         row.revenue,
                     ]),
@@ -99,14 +194,14 @@ export function SalesReport() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={DISCOUNTED_TICKET_REVENUE}
+                                data={discountedTicketRevenue}
                                 config={DISCOUNTED_TICKET_REVENUE_CONFIG}
                                 categoryKey="label"
                                 series={[...DISCOUNTED_TICKET_REVENUE_SERIES]}
                                 showYAxis
                                 angledXAxis
                                 showDots
-                                xAxisLabel="Měsíc"
+                                xAxisLabel={periodLabel}
                                 yAxisLabel="Tržba v Kč"
                                 formatValue={formatSalesRevenue}
                                 legendQueryKey="sales-discounted-ticket-revenue-muted"
@@ -120,8 +215,8 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={DISCOUNTED_TICKET_REVENUE}
-                                columns={DISCOUNTED_TICKET_REVENUE_COLUMNS}
+                                data={discountedTicketRevenue}
+                                columns={revenueColumns}
                                 getRowKey={(row) => row.label}
                             />
                         ),
@@ -134,13 +229,13 @@ export function SalesReport() {
                 queryKey="sales-discounted-tickets-by-team-view"
                 action={
                     <InfoTooltip>
-                        Heatmapa počtu zlevněných vstupenek podle týmu a měsíce.
+                        Heatmapa počtu zlevněných vstupenek podle týmu a období.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'pocet-zlevnenych-vstupenek-podle-tymu',
-                    headers: ['Tým', 'Měsíc', 'Počet'],
-                    rows: DISCOUNTED_TICKETS_BY_TEAM.map((cell) => [
+                    headers: ['Tým', periodLabel, 'Počet'],
+                    rows: ticketsByTeamHeatmap.map((cell) => [
                         cell.row,
                         cell.column,
                         cell.value,
@@ -148,7 +243,7 @@ export function SalesReport() {
                 }}
             >
                 <Heatmap
-                    data={DISCOUNTED_TICKETS_BY_TEAM}
+                    data={ticketsByTeamHeatmap}
                     formatValue={formatTicketCount}
                 />
             </DataVisulaizationCard>
@@ -158,13 +253,13 @@ export function SalesReport() {
                 queryKey="sales-discount-amount-by-team-view"
                 action={
                     <InfoTooltip>
-                        Heatmapa výše poskytnutých slev podle týmu a měsíce.
+                        Heatmapa výše poskytnutých slev podle týmu a období.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'vyse-poskytnutych-slev-podle-tymu',
-                    headers: ['Tým', 'Měsíc', 'Sleva'],
-                    rows: DISCOUNT_AMOUNT_BY_TEAM.map((cell) => [
+                    headers: ['Tým', periodLabel, 'Sleva'],
+                    rows: discountAmountByTeamHeatmap.map((cell) => [
                         cell.row,
                         cell.column,
                         cell.value,
@@ -172,7 +267,7 @@ export function SalesReport() {
                 }}
             >
                 <Heatmap
-                    data={DISCOUNT_AMOUNT_BY_TEAM}
+                    data={discountAmountByTeamHeatmap}
                     formatValue={formatSalesRevenue}
                 />
             </DataVisulaizationCard>
@@ -182,20 +277,20 @@ export function SalesReport() {
                 queryKey="sales-discounted-tickets-by-category-view"
                 action={
                     <InfoTooltip>
-                        Počet zlevněných vstupenek podle kategorií slev a měsíců.
+                        Počet zlevněných vstupenek podle kategorií slev a období.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'pocet-zlevnenych-vstupenek-podle-kategorii-slev',
                     headers: [
-                        'Měsíc',
-                        ...DISCOUNT_CATEGORY_SERIES.map(
+                        periodLabel,
+                        ...categorySeries.map(
                             (key) => DISCOUNT_CATEGORY_CONFIG[key].label,
                         ),
                     ],
-                    rows: DISCOUNTED_TICKETS_BY_CATEGORY.map((row) => [
+                    rows: ticketsByCategory.map((row) => [
                         row.label,
-                        ...DISCOUNT_CATEGORY_SERIES.map((key) => row[key]),
+                        ...categorySeries.map((key) => row[key] ?? 0),
                     ]),
                 }}
                 tabs={[
@@ -205,13 +300,13 @@ export function SalesReport() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <BarChart
-                                data={DISCOUNTED_TICKETS_BY_CATEGORY}
+                                data={ticketsByCategory}
                                 config={DISCOUNT_CATEGORY_CONFIG}
                                 categoryKey="label"
-                                series={[...DISCOUNT_CATEGORY_SERIES]}
+                                series={categorySeries}
                                 showYAxis
                                 angledXAxis
-                                xAxisLabel="Měsíc"
+                                xAxisLabel={periodLabel}
                                 yAxisLabel="Počet"
                                 formatValue={formatTicketCount}
                                 legendQueryKey="sales-discounted-tickets-by-category-muted"
@@ -225,8 +320,8 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={DISCOUNTED_TICKETS_BY_CATEGORY}
-                                columns={DISCOUNTED_TICKETS_BY_CATEGORY_COLUMNS}
+                                data={ticketsByCategory}
+                                columns={ticketsByCategoryColumns}
                                 getRowKey={(row) => row.label}
                             />
                         ),
@@ -239,20 +334,20 @@ export function SalesReport() {
                 queryKey="sales-discount-amount-by-category-view"
                 action={
                     <InfoTooltip>
-                        Výše poskytnutých slev podle kategorií slev a měsíců.
+                        Výše poskytnutých slev podle kategorií slev a období.
                     </InfoTooltip>
                 }
                 tableExportable={{
                     filename: 'vyse-poskytnutych-slev-podle-kategorii',
                     headers: [
-                        'Měsíc',
-                        ...DISCOUNT_CATEGORY_SERIES.map(
+                        periodLabel,
+                        ...categorySeries.map(
                             (key) => DISCOUNT_CATEGORY_CONFIG[key].label,
                         ),
                     ],
-                    rows: DISCOUNT_AMOUNT_BY_CATEGORY.map((row) => [
+                    rows: discountAmountByCategory.map((row) => [
                         row.label,
-                        ...DISCOUNT_CATEGORY_SERIES.map((key) => row[key]),
+                        ...categorySeries.map((key) => row[key] ?? 0),
                     ]),
                 }}
                 tabs={[
@@ -262,14 +357,14 @@ export function SalesReport() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <LineChart
-                                data={DISCOUNT_AMOUNT_BY_CATEGORY}
+                                data={discountAmountByCategory}
                                 config={DISCOUNT_CATEGORY_CONFIG}
                                 categoryKey="label"
-                                series={[...DISCOUNT_CATEGORY_SERIES]}
+                                series={categorySeries}
                                 showYAxis
                                 angledXAxis
                                 showDots
-                                xAxisLabel="Měsíc"
+                                xAxisLabel={periodLabel}
                                 yAxisLabel="Cena v Kč"
                                 formatValue={formatSalesRevenue}
                                 legendQueryKey="sales-discount-amount-by-category-muted"
@@ -283,8 +378,8 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={DISCOUNT_AMOUNT_BY_CATEGORY}
-                                columns={DISCOUNT_AMOUNT_BY_CATEGORY_COLUMNS}
+                                data={discountAmountByCategory}
+                                columns={discountAmountByCategoryColumns}
                                 getRowKey={(row) => row.label}
                             />
                         ),
@@ -304,13 +399,11 @@ export function SalesReport() {
                     filename: 'rozdeleni-slev-podle-tymu',
                     headers: [
                         'Kategorie slevy',
-                        ...DISCOUNT_TEAM_SERIES.map(
-                            (key) => DISCOUNT_TEAM_CONFIG[key].label,
-                        ),
+                        ...teamSeries,
                     ],
-                    rows: DISCOUNTS_BY_TEAM.map((row) => [
+                    rows: discountsByTeam.map((row) => [
                         row.label,
-                        ...DISCOUNT_TEAM_SERIES.map((key) => row[key]),
+                        ...teamSeries.map((key) => row[key] ?? 0),
                     ]),
                 }}
                 tabs={[
@@ -320,10 +413,10 @@ export function SalesReport() {
                         icon: <ChartColumnIcon />,
                         content: (
                             <BarChart
-                                data={DISCOUNTS_BY_TEAM}
+                                data={discountsByTeam}
                                 config={DISCOUNT_TEAM_CONFIG}
                                 categoryKey="label"
-                                series={[...DISCOUNT_TEAM_SERIES]}
+                                series={teamSeries}
                                 showYAxis
                                 angledXAxis
                                 yAxisLabel="Počet"
@@ -339,8 +432,8 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={DISCOUNTS_BY_TEAM}
-                                columns={DISCOUNTS_BY_TEAM_COLUMNS}
+                                data={discountsByTeam}
+                                columns={discountsByTeamColumns}
                                 getRowKey={(row) => row.label}
                             />
                         ),
@@ -359,7 +452,7 @@ export function SalesReport() {
                 tableExportable={{
                     filename: 'pocet-prodanych-vstupenek-podle-tymu',
                     headers: ['Tým', 'Počet'],
-                    rows: TICKETS_SOLD_BY_TEAM.map((row) => [
+                    rows: ticketsSoldByTeam.map((row) => [
                         row.label,
                         row.count,
                     ]),
@@ -375,7 +468,7 @@ export function SalesReport() {
                                 style={{ height: ticketsSoldByTeamChartHeight }}
                             >
                                 <BarChart
-                                    data={TICKETS_SOLD_BY_TEAM}
+                                    data={ticketsSoldByTeam}
                                     config={TICKETS_SOLD_BY_TEAM_CONFIG}
                                     categoryKey="label"
                                     series={[...TICKETS_SOLD_BY_TEAM_SERIES]}
@@ -397,7 +490,7 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={TICKETS_SOLD_BY_TEAM}
+                                data={ticketsSoldByTeam}
                                 columns={TICKETS_SOLD_BY_TEAM_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
@@ -417,7 +510,7 @@ export function SalesReport() {
                 tableExportable={{
                     filename: 'trzba-prodanych-vstupenek-podle-tymu',
                     headers: ['Tým', 'Tržba'],
-                    rows: TICKET_REVENUE_BY_TEAM.map((row) => [
+                    rows: ticketRevenueByTeam.map((row) => [
                         row.label,
                         row.revenue,
                     ]),
@@ -435,7 +528,7 @@ export function SalesReport() {
                                 }}
                             >
                                 <BarChart
-                                    data={TICKET_REVENUE_BY_TEAM}
+                                    data={ticketRevenueByTeam}
                                     config={TICKET_REVENUE_BY_TEAM_CONFIG}
                                     categoryKey="label"
                                     series={[...TICKET_REVENUE_BY_TEAM_SERIES]}
@@ -457,7 +550,7 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={TICKET_REVENUE_BY_TEAM}
+                                data={ticketRevenueByTeam}
                                 columns={TICKET_REVENUE_BY_TEAM_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />
@@ -477,7 +570,7 @@ export function SalesReport() {
                 tableExportable={{
                     filename: 'partnerska-sleva-csob',
                     headers: ['Tým', 'Počet'],
-                    rows: CSOB_PARTNER_DISCOUNT_BY_TEAM.map((row) => [
+                    rows: csobPartnerDiscountByTeam.map((row) => [
                         row.label,
                         row.count,
                     ]),
@@ -495,7 +588,7 @@ export function SalesReport() {
                                 }}
                             >
                                 <BarChart
-                                    data={CSOB_PARTNER_DISCOUNT_BY_TEAM}
+                                    data={csobPartnerDiscountByTeam}
                                     config={CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG}
                                     categoryKey="label"
                                     series={[
@@ -519,7 +612,7 @@ export function SalesReport() {
                         icon: <TableIcon />,
                         content: (
                             <SimpleTable
-                                data={CSOB_PARTNER_DISCOUNT_BY_TEAM}
+                                data={csobPartnerDiscountByTeam}
                                 columns={CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS}
                                 getRowKey={(row) => row.label}
                             />

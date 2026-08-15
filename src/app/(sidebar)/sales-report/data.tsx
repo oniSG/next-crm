@@ -4,16 +4,7 @@ import type { SimpleTableColumn } from '@/components/custom/statistics/simple-ta
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import type { ChartConfig } from '@/components/ui/chart'
 
-import discountedTicketRevenue from './data/discounted-ticket-revenue.json'
-import discountedTicketsByCategory from './data/discounted-tickets-by-category.json'
-import discountedTicketsByTeam from './data/discounted-tickets-by-team.json'
-import discountAmountByCategory from './data/discount-amount-by-category.json'
-import discountAmountByTeam from './data/discount-amount-by-team.json'
-import discountsByTeam from './data/discounts-by-team.json'
-import salesReportKpis from './data/sales-report-kpis.json'
-import ticketRevenueByTeam from './data/ticket-revenue-by-team.json'
-import ticketsSoldByTeam from './data/tickets-sold-by-team.json'
-import csobPartnerDiscountByTeam from './data/csob-partner-discount-by-team.json'
+import salesFacts from './data/sales-facts.json'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const moneyFormatter = new Intl.NumberFormat('cs-CZ', {
@@ -40,69 +31,28 @@ export const PERIOD_OPTIONS = [
     { label: 'Rok', value: 'year' },
 ] as const
 
+export const DISCOUNT_TEAM_SERIES = [
+    'akademiciplzen',
+    'blackdogsbudweis',
+    'boostrava',
+    'czufarmers',
+    'engineersprague',
+    'finalfour',
+    'hcmuni',
+    'hcnorthwings',
+    'ridersup',
+    'ukhockeyprague',
+    'unitedhk',
+    'vsefalcons',
+    'vutcavaliers',
+] as const
+
+export type DiscountTeamKey = (typeof DISCOUNT_TEAM_SERIES)[number]
+
 export const TEAM_OPTIONS = [
-    { label: 'blackdogsbudweis', value: 'blackdogsbudweis' },
-    { label: 'HC Sparta Praha', value: 'sparta' },
-    { label: 'HC Kometa Brno', value: 'kometa' },
-    { label: 'HC Dynamo Pardubice', value: 'dynamo' },
-    {
-        label: 'HC Energie Karlovy Vary – testovací velmi dlouhý název týmu pro ellipsis',
-        value: 'energie-long',
-    },
-    { label: 'Mountfield HK', value: 'mountfield' },
+    { label: 'Vše', value: 'all' },
+    ...DISCOUNT_TEAM_SERIES.map((value) => ({ label: value, value })),
 ] as const
-
-export const DISCOUNT_CATEGORY_OPTIONS = [
-    { label: 'ZDARMA', value: 'zdarma' },
-    { label: 'ČSOB', value: 'csob' },
-    { label: 'Studentská', value: 'studentska' },
-    { label: 'Dětská', value: 'detska' },
-    { label: 'Senioři', value: 'seniori' },
-] as const
-
-export type DiscountedTicketRevenuePoint = {
-    label: string
-    revenue: number
-}
-
-export const DISCOUNTED_TICKET_REVENUE_SERIES = ['revenue'] as const
-
-export const DISCOUNTED_TICKET_REVENUE_CONFIG = {
-    revenue: { label: 'Tržba', color: 'var(--chart-1)' },
-} satisfies ChartConfig
-
-export const DISCOUNTED_TICKET_REVENUE =
-    discountedTicketRevenue as DiscountedTicketRevenuePoint[]
-
-export const DISCOUNTED_TICKET_REVENUE_COLUMNS: SimpleTableColumn<DiscountedTicketRevenuePoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Měsíc',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'revenue',
-            header: 'Tržba',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => moneyFormatter.format(row.revenue),
-        },
-    ]
-
-export function formatSalesRevenue(value: number) {
-    return moneyFormatter.format(value)
-}
-
-export function formatTicketCount(value: number) {
-    return numberFormatter.format(value)
-}
-
-export const DISCOUNTED_TICKETS_BY_TEAM =
-    discountedTicketsByTeam as HeatmapCell[]
-
-export const DISCOUNT_AMOUNT_BY_TEAM = discountAmountByTeam as HeatmapCell[]
 
 export const DISCOUNT_CATEGORY_SERIES = [
     'happyMonday',
@@ -123,6 +73,43 @@ export const DISCOUNT_CATEGORY_SERIES = [
     'sleva50',
 ] as const
 
+export type DiscountCategoryKey = (typeof DISCOUNT_CATEGORY_SERIES)[number]
+
+/** Coarse toolbar category → fine discount series keys. */
+export const CATEGORY_TO_DISCOUNT_KEYS: Record<
+    string,
+    readonly DiscountCategoryKey[]
+> = {
+    all: DISCOUNT_CATEGORY_SERIES,
+    zdarma: ['zdarma'],
+    csob: ['ostravar', 'slevovyKod'],
+    studentska: ['student', 'erasmus', 'zapasSkoly'],
+    detska: ['happyMonday', 'zapas', 'zapasAfter'],
+    seniori: ['duchodce'],
+}
+
+export const DISCOUNT_CATEGORY_OPTIONS = [
+    { label: 'Vše', value: 'all' },
+    { label: 'ZDARMA', value: 'zdarma' },
+    { label: 'ČSOB', value: 'csob' },
+    { label: 'Studentská', value: 'studentska' },
+    { label: 'Dětská', value: 'detska' },
+    { label: 'Senioři', value: 'seniori' },
+] as const
+
+export type SalesFactRow = {
+    date: string
+    team: string
+    discountKey: DiscountCategoryKey
+    tickets: number
+    totalTickets: number
+    revenue: number
+    discount: number
+    users: number
+}
+
+export const SALES_FACTS = salesFacts as SalesFactRow[]
+
 export const DISCOUNT_CATEGORY_CONFIG = {
     happyMonday: { label: 'Happy Monday', color: 'var(--chart-1)' },
     hraciPromo: { label: 'Hráči promo', color: 'var(--chart-2)' },
@@ -142,106 +129,33 @@ export const DISCOUNT_CATEGORY_CONFIG = {
     sleva50: { label: 'Sleva 50%', color: 'var(--chart-16)' },
 } satisfies ChartConfig
 
+export const DISCOUNT_TEAM_CONFIG = Object.fromEntries(
+    DISCOUNT_TEAM_SERIES.map((team, index) => [
+        team,
+        { label: team, color: `var(--chart-${(index % 16) + 1})` },
+    ]),
+) as ChartConfig
+
+export type DiscountedTicketRevenuePoint = {
+    label: string
+    revenue: number
+}
+
+export const DISCOUNTED_TICKET_REVENUE_SERIES = ['revenue'] as const
+
+export const DISCOUNTED_TICKET_REVENUE_CONFIG = {
+    revenue: { label: 'Tržba', color: 'var(--chart-1)' },
+} satisfies ChartConfig
+
 export type DiscountedTicketsByCategoryPoint = {
     label: string
-} & Record<(typeof DISCOUNT_CATEGORY_SERIES)[number], number>
-
-export const DISCOUNTED_TICKETS_BY_CATEGORY =
-    discountedTicketsByCategory as DiscountedTicketsByCategoryPoint[]
-
-export const DISCOUNTED_TICKETS_BY_CATEGORY_COLUMNS: SimpleTableColumn<DiscountedTicketsByCategoryPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Měsíc',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        ...DISCOUNT_CATEGORY_SERIES.map((key) => ({
-            id: key,
-            header: DISCOUNT_CATEGORY_CONFIG[key].label,
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row: DiscountedTicketsByCategoryPoint) =>
-                numberFormatter.format(row[key]),
-        })),
-    ]
+} & Partial<Record<DiscountCategoryKey, number>>
 
 export type DiscountAmountByCategoryPoint = DiscountedTicketsByCategoryPoint
 
-export const DISCOUNT_AMOUNT_BY_CATEGORY =
-    discountAmountByCategory as DiscountAmountByCategoryPoint[]
-
-export const DISCOUNT_AMOUNT_BY_CATEGORY_COLUMNS: SimpleTableColumn<DiscountAmountByCategoryPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Měsíc',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        ...DISCOUNT_CATEGORY_SERIES.map((key) => ({
-            id: key,
-            header: DISCOUNT_CATEGORY_CONFIG[key].label,
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row: DiscountAmountByCategoryPoint) =>
-                moneyFormatter.format(row[key]),
-        })),
-    ]
-
-export const DISCOUNT_TEAM_SERIES = [
-    'akademiciplzen',
-    'boostrava',
-    'czufarmers',
-    'engineersprague',
-    'finalfour',
-    'hcmuni',
-    'hcnorthwings',
-    'ridersup',
-    'ukhockeyprague',
-    'unitedhk',
-    'vsefalcons',
-    'vutcavaliers',
-] as const
-
-export const DISCOUNT_TEAM_CONFIG = {
-    akademiciplzen: { label: 'akademiciplzen', color: 'var(--chart-1)' },
-    boostrava: { label: 'boostrava', color: 'var(--chart-2)' },
-    czufarmers: { label: 'czufarmers', color: 'var(--chart-3)' },
-    engineersprague: { label: 'engineersprague', color: 'var(--chart-4)' },
-    finalfour: { label: 'finalfour', color: 'var(--chart-5)' },
-    hcmuni: { label: 'hcmuni', color: 'var(--chart-6)' },
-    hcnorthwings: { label: 'hcnorthwings', color: 'var(--chart-7)' },
-    ridersup: { label: 'ridersup', color: 'var(--chart-8)' },
-    ukhockeyprague: { label: 'ukhockeyprague', color: 'var(--chart-9)' },
-    unitedhk: { label: 'unitedhk', color: 'var(--chart-10)' },
-    vsefalcons: { label: 'vsefalcons', color: 'var(--chart-11)' },
-    vutcavaliers: { label: 'vutcavaliers', color: 'var(--chart-12)' },
-} satisfies ChartConfig
-
 export type DiscountsByTeamPoint = {
     label: string
-} & Record<(typeof DISCOUNT_TEAM_SERIES)[number], number>
-
-export const DISCOUNTS_BY_TEAM = discountsByTeam as DiscountsByTeamPoint[]
-
-export const DISCOUNTS_BY_TEAM_COLUMNS: SimpleTableColumn<DiscountsByTeamPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Kategorie slevy',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        ...DISCOUNT_TEAM_SERIES.map((key) => ({
-            id: key,
-            header: DISCOUNT_TEAM_CONFIG[key].label,
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row: DiscountsByTeamPoint) => numberFormatter.format(row[key]),
-        })),
-    ]
+} & Partial<Record<DiscountTeamKey, number>>
 
 export type TicketsSoldByTeamPoint = {
     label: string
@@ -254,26 +168,6 @@ export const TICKETS_SOLD_BY_TEAM_CONFIG = {
     count: { label: 'Počet', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
-export const TICKETS_SOLD_BY_TEAM =
-    ticketsSoldByTeam as TicketsSoldByTeamPoint[]
-
-export const TICKETS_SOLD_BY_TEAM_COLUMNS: SimpleTableColumn<TicketsSoldByTeamPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Tým',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'count',
-            header: 'Počet',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.count),
-        },
-    ]
-
 export type TicketRevenueByTeamPoint = {
     label: string
     revenue: number
@@ -284,26 +178,6 @@ export const TICKET_REVENUE_BY_TEAM_SERIES = ['revenue'] as const
 export const TICKET_REVENUE_BY_TEAM_CONFIG = {
     revenue: { label: 'Tržba', color: 'var(--chart-1)' },
 } satisfies ChartConfig
-
-export const TICKET_REVENUE_BY_TEAM =
-    ticketRevenueByTeam as TicketRevenueByTeamPoint[]
-
-export const TICKET_REVENUE_BY_TEAM_COLUMNS: SimpleTableColumn<TicketRevenueByTeamPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Tým',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'revenue',
-            header: 'Tržba',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => moneyFormatter.format(row.revenue),
-        },
-    ]
 
 export type CsobPartnerDiscountByTeamPoint = {
     label: string
@@ -316,25 +190,260 @@ export const CSOB_PARTNER_DISCOUNT_BY_TEAM_CONFIG = {
     count: { label: 'Počet', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
-export const CSOB_PARTNER_DISCOUNT_BY_TEAM =
-    csobPartnerDiscountByTeam as CsobPartnerDiscountByTeamPoint[]
+export function formatSalesRevenue(value: number) {
+    return moneyFormatter.format(value)
+}
 
-export const CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS: SimpleTableColumn<CsobPartnerDiscountByTeamPoint>[] =
-    [
-        {
-            id: 'label',
-            header: 'Tým',
-            cellClassName: 'font-medium',
-            cell: (row) => row.label,
-        },
-        {
-            id: 'count',
-            header: 'Počet',
-            headerClassName: 'text-right',
-            cellClassName: 'text-right tabular-nums',
-            cell: (row) => numberFormatter.format(row.count),
-        },
-    ]
+export function formatTicketCount(value: number) {
+    return numberFormatter.format(value)
+}
+
+export function toDateKey(date: Date) {
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, '0')
+    const d = String(date.getDate()).padStart(2, '0')
+    return `${y}-${m}-${d}`
+}
+
+export function periodColumnLabel(period: Period) {
+    if (period === 'day') return 'Datum'
+    if (period === 'month') return 'Měsíc'
+    return 'Rok'
+}
+
+function periodBucket(date: string, period: Period) {
+    if (period === 'day') return date
+    if (period === 'month') return date.slice(0, 7)
+    return date.slice(0, 4)
+}
+
+function discountKeysForCategory(category: string): readonly DiscountCategoryKey[] {
+    return CATEGORY_TO_DISCOUNT_KEYS[category] ?? DISCOUNT_CATEGORY_SERIES
+}
+
+function teamsForFilter(team: string): readonly DiscountTeamKey[] {
+    if (team === 'all') return DISCOUNT_TEAM_SERIES
+    if ((DISCOUNT_TEAM_SERIES as readonly string[]).includes(team)) {
+        return [team as DiscountTeamKey]
+    }
+    return DISCOUNT_TEAM_SERIES
+}
+
+export function filterSalesFacts(
+    from: Date,
+    to: Date,
+    team: string,
+    category: string,
+    rows: readonly SalesFactRow[] = SALES_FACTS,
+): SalesFactRow[] {
+    if (from > to) return []
+
+    const fromKey = toDateKey(from)
+    const toKey = toDateKey(to)
+    const discountKeys = new Set(discountKeysForCategory(category))
+    const teamFilter = team === 'all' ? null : team
+
+    return rows.filter((row) => {
+        if (row.date < fromKey || row.date > toKey) return false
+        if (teamFilter && row.team !== teamFilter) return false
+        if (!discountKeys.has(row.discountKey)) return false
+        return true
+    })
+}
+
+export function getDiscountCategorySeries(category: string): DiscountCategoryKey[] {
+    return [...discountKeysForCategory(category)]
+}
+
+export function getDiscountTeamSeries(team: string): DiscountTeamKey[] {
+    return [...teamsForFilter(team)]
+}
+
+export function getDiscountedTicketRevenue(
+    rows: readonly SalesFactRow[],
+    period: Period,
+): DiscountedTicketRevenuePoint[] {
+    const byBucket = new Map<string, number>()
+    for (const row of rows) {
+        const key = periodBucket(row.date, period)
+        byBucket.set(key, (byBucket.get(key) ?? 0) + row.revenue)
+    }
+    return [...byBucket.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([label, revenue]) => ({ label, revenue }))
+}
+
+export function getDiscountedTicketsByTeamHeatmap(
+    rows: readonly SalesFactRow[],
+    period: Period,
+): HeatmapCell[] {
+    const cells = new Map<string, HeatmapCell>()
+    for (const row of rows) {
+        const column = periodBucket(row.date, period)
+        const key = `${row.team}|${column}`
+        const existing = cells.get(key) ?? {
+            row: row.team,
+            column,
+            value: 0,
+        }
+        existing.value += row.tickets
+        cells.set(key, existing)
+    }
+    return [...cells.values()].sort(
+        (a, b) =>
+            a.row.localeCompare(b.row) || a.column.localeCompare(b.column),
+    )
+}
+
+export function getDiscountAmountByTeamHeatmap(
+    rows: readonly SalesFactRow[],
+    period: Period,
+): HeatmapCell[] {
+    const cells = new Map<string, HeatmapCell>()
+    for (const row of rows) {
+        const column = periodBucket(row.date, period)
+        const key = `${row.team}|${column}`
+        const existing = cells.get(key) ?? {
+            row: row.team,
+            column,
+            value: 0,
+        }
+        existing.value += row.discount
+        cells.set(key, existing)
+    }
+    return [...cells.values()].sort(
+        (a, b) =>
+            a.row.localeCompare(b.row) || a.column.localeCompare(b.column),
+    )
+}
+
+export function getDiscountedTicketsByCategory(
+    rows: readonly SalesFactRow[],
+    period: Period,
+    category: string,
+): DiscountedTicketsByCategoryPoint[] {
+    const series = getDiscountCategorySeries(category)
+    const byBucket = new Map<string, DiscountedTicketsByCategoryPoint>()
+
+    for (const row of rows) {
+        const label = periodBucket(row.date, period)
+        const current =
+            byBucket.get(label) ??
+            ({
+                label,
+                ...Object.fromEntries(series.map((key) => [key, 0])),
+            } as DiscountedTicketsByCategoryPoint)
+        current[row.discountKey] = (current[row.discountKey] ?? 0) + row.tickets
+        byBucket.set(label, current)
+    }
+
+    return [...byBucket.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([, point]) => point)
+}
+
+export function getDiscountAmountByCategory(
+    rows: readonly SalesFactRow[],
+    period: Period,
+    category: string,
+): DiscountAmountByCategoryPoint[] {
+    const series = getDiscountCategorySeries(category)
+    const byBucket = new Map<string, DiscountAmountByCategoryPoint>()
+
+    for (const row of rows) {
+        const label = periodBucket(row.date, period)
+        const current =
+            byBucket.get(label) ??
+            ({
+                label,
+                ...Object.fromEntries(series.map((key) => [key, 0])),
+            } as DiscountAmountByCategoryPoint)
+        current[row.discountKey] = (current[row.discountKey] ?? 0) + row.discount
+        byBucket.set(label, current)
+    }
+
+    return [...byBucket.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([, point]) => point)
+}
+
+export function getDiscountsByTeam(
+    rows: readonly SalesFactRow[],
+    team: string,
+    category: string,
+): DiscountsByTeamPoint[] {
+    const teamSeries = getDiscountTeamSeries(team)
+    const discountSeries = getDiscountCategorySeries(category)
+    const byDiscount = new Map<string, DiscountsByTeamPoint>()
+
+    for (const key of discountSeries) {
+        byDiscount.set(key, {
+            label: DISCOUNT_CATEGORY_CONFIG[key].label,
+            ...Object.fromEntries(teamSeries.map((teamKey) => [teamKey, 0])),
+        } as DiscountsByTeamPoint)
+    }
+
+    for (const row of rows) {
+        const point = byDiscount.get(row.discountKey)
+        if (!point) continue
+        const teamKey = row.team as DiscountTeamKey
+        point[teamKey] = (point[teamKey] ?? 0) + row.tickets
+    }
+
+    return discountSeries
+        .map((key) => byDiscount.get(key)!)
+        .filter((point) =>
+            teamSeries.some((teamKey) => (point[teamKey] ?? 0) > 0),
+        )
+}
+
+export function getTicketsSoldByTeam(
+    rows: readonly SalesFactRow[],
+    team: string,
+): TicketsSoldByTeamPoint[] {
+    const teamSeries = getDiscountTeamSeries(team)
+    const byTeam = new Map<string, number>()
+    for (const row of rows) {
+        byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.totalTickets)
+    }
+    return teamSeries
+        .map((key) => ({ label: key, count: byTeam.get(key) ?? 0 }))
+        .filter((row) => row.count > 0)
+        .sort((a, b) => b.count - a.count)
+}
+
+export function getTicketRevenueByTeam(
+    rows: readonly SalesFactRow[],
+    team: string,
+): TicketRevenueByTeamPoint[] {
+    const teamSeries = getDiscountTeamSeries(team)
+    const byTeam = new Map<string, number>()
+    for (const row of rows) {
+        byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.revenue)
+    }
+    return teamSeries
+        .map((key) => ({ label: key, revenue: byTeam.get(key) ?? 0 }))
+        .filter((row) => row.revenue > 0)
+        .sort((a, b) => b.revenue - a.revenue)
+}
+
+const CSOB_KEYS = new Set<DiscountCategoryKey>(['ostravar', 'slevovyKod'])
+
+export function getCsobPartnerDiscountByTeam(
+    rows: readonly SalesFactRow[],
+    team: string,
+): CsobPartnerDiscountByTeamPoint[] {
+    const teamSeries = getDiscountTeamSeries(team)
+    const byTeam = new Map<string, number>()
+    for (const row of rows) {
+        if (!CSOB_KEYS.has(row.discountKey)) continue
+        byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.tickets)
+    }
+    return teamSeries
+        .map((key) => ({ label: key, count: byTeam.get(key) ?? 0 }))
+        .filter((row) => row.count > 0)
+        .sort((a, b) => b.count - a.count)
+}
 
 export type SalesReportKpis = {
     discountedTickets: number
@@ -351,10 +460,54 @@ export type SalesReportKpis = {
     csobDiscountsUsed: number
 }
 
-export const SALES_REPORT_KPIS_DATA = salesReportKpis[0] as SalesReportKpis
+export function computeSalesReportKpis(
+    rows: readonly SalesFactRow[],
+    team: string,
+): SalesReportKpis {
+    let discountedTickets = 0
+    let totalTickets = 0
+    let totalDiscount = 0
+    let revenue = 0
+    let users = 0
+    let csobDiscountsUsed = 0
+    const teamsWithDiscount = new Set<string>()
+
+    for (const row of rows) {
+        discountedTickets += row.tickets
+        totalTickets += row.totalTickets
+        totalDiscount += row.discount
+        revenue += row.revenue
+        users += row.users
+        if (row.tickets > 0) teamsWithDiscount.add(row.team)
+        if (CSOB_KEYS.has(row.discountKey)) csobDiscountsUsed += row.tickets
+    }
+
+    const teamsTotal = teamsForFilter(team).length
+    const teamsUsingDiscount = teamsWithDiscount.size
+    const priceBeforeDiscount = revenue + totalDiscount
+
+    return {
+        discountedTickets,
+        totalTickets,
+        totalDiscount,
+        averageDiscount:
+            discountedTickets > 0 ? totalDiscount / discountedTickets : 0,
+        revenue,
+        discountSharePercent:
+            priceBeforeDiscount > 0
+                ? (totalDiscount / priceBeforeDiscount) * 100
+                : 0,
+        users,
+        usersSharePercent: 12.5,
+        teamsTotal,
+        teamsUsingDiscount,
+        teamsNotUsingDiscount: Math.max(0, teamsTotal - teamsUsingDiscount),
+        csobDiscountsUsed,
+    }
+}
 
 export function getSalesReportKpis(
-    data: SalesReportKpis = SALES_REPORT_KPIS_DATA,
+    data: SalesReportKpis,
 ): Omit<KpiCardProps, 'className'>[] {
     return [
         {
@@ -443,3 +596,139 @@ export function getSalesReportKpis(
         },
     ]
 }
+
+export function buildDiscountedTicketRevenueColumns(
+    period: Period,
+): SimpleTableColumn<DiscountedTicketRevenuePoint>[] {
+    return [
+        {
+            id: 'label',
+            header: periodColumnLabel(period),
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'revenue',
+            header: 'Tržba',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => moneyFormatter.format(row.revenue),
+        },
+    ]
+}
+
+export function buildDiscountedTicketsByCategoryColumns(
+    period: Period,
+    series: readonly DiscountCategoryKey[],
+): SimpleTableColumn<DiscountedTicketsByCategoryPoint>[] {
+    return [
+        {
+            id: 'label',
+            header: periodColumnLabel(period),
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        ...series.map((key) => ({
+            id: key,
+            header: DISCOUNT_CATEGORY_CONFIG[key].label,
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row: DiscountedTicketsByCategoryPoint) =>
+                numberFormatter.format(row[key] ?? 0),
+        })),
+    ]
+}
+
+export function buildDiscountAmountByCategoryColumns(
+    period: Period,
+    series: readonly DiscountCategoryKey[],
+): SimpleTableColumn<DiscountAmountByCategoryPoint>[] {
+    return [
+        {
+            id: 'label',
+            header: periodColumnLabel(period),
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        ...series.map((key) => ({
+            id: key,
+            header: DISCOUNT_CATEGORY_CONFIG[key].label,
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row: DiscountAmountByCategoryPoint) =>
+                moneyFormatter.format(row[key] ?? 0),
+        })),
+    ]
+}
+
+export function buildDiscountsByTeamColumns(
+    series: readonly DiscountTeamKey[],
+): SimpleTableColumn<DiscountsByTeamPoint>[] {
+    return [
+        {
+            id: 'label',
+            header: 'Kategorie slevy',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        ...series.map((key) => ({
+            id: key,
+            header: DISCOUNT_TEAM_CONFIG[key]?.label ?? key,
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row: DiscountsByTeamPoint) =>
+                numberFormatter.format(row[key] ?? 0),
+        })),
+    ]
+}
+
+export const TICKETS_SOLD_BY_TEAM_COLUMNS: SimpleTableColumn<TicketsSoldByTeamPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'count',
+            header: 'Počet',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.count),
+        },
+    ]
+
+export const TICKET_REVENUE_BY_TEAM_COLUMNS: SimpleTableColumn<TicketRevenueByTeamPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'revenue',
+            header: 'Tržba',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => moneyFormatter.format(row.revenue),
+        },
+    ]
+
+export const CSOB_PARTNER_DISCOUNT_BY_TEAM_COLUMNS: SimpleTableColumn<CsobPartnerDiscountByTeamPoint>[] =
+    [
+        {
+            id: 'label',
+            header: 'Tým',
+            cellClassName: 'font-medium',
+            cell: (row) => row.label,
+        },
+        {
+            id: 'count',
+            header: 'Počet',
+            headerClassName: 'text-right',
+            cellClassName: 'text-right tabular-nums',
+            cell: (row) => numberFormatter.format(row.count),
+        },
+    ]

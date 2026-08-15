@@ -1,6 +1,6 @@
 'use client'
 
-import { useId } from 'react'
+import { useId, useMemo } from 'react'
 import {
     CartesianGrid,
     Line,
@@ -22,6 +22,8 @@ import { cn } from '@/lib/utils'
 import { formatCompactNumber } from './format-compact-number'
 import { useMutedSeries } from './use-muted-series'
 
+const AVERAGE_KEY = 'average'
+
 export type LineChartProps = {
     data: object[]
     config: ChartConfig
@@ -33,9 +35,25 @@ export type LineChartProps = {
     showYAxis?: boolean
     angledXAxis?: boolean
     showDots?: boolean
+    /**
+     * When true, draws a gray “Průměr” line averaging the (visible) series
+     * values at each category.
+     */
+    showAverage?: boolean
     formatValue?: (value: number) => string
     /** When set, legend clicks mute/unmute series and persist state in the URL. */
     legendQueryKey?: string
+}
+
+function averageOfRow(
+    row: object,
+    keys: readonly string[],
+): number | undefined {
+    const values = keys
+        .map((key) => Number((row as Record<string, unknown>)[key]))
+        .filter((value) => Number.isFinite(value))
+    if (values.length === 0) return undefined
+    return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
 export function LineChart({
@@ -49,15 +67,49 @@ export function LineChart({
     showYAxis = false,
     angledXAxis = false,
     showDots = false,
+    showAverage = false,
     formatValue,
     legendQueryKey,
 }: LineChartProps) {
     const reactId = useId().replace(/:/g, '')
     const chartId = legendQueryKey ?? `line-chart-${reactId}`
-    const { orderedSeries, visibleSeries, mutedKeys, toggleSeries } = useMutedSeries(
-        legendQueryKey,
-        series,
+
+    const chartSeries = useMemo(
+        () => (showAverage ? [...series, AVERAGE_KEY] : series),
+        [series, showAverage],
     )
+
+    const chartConfig = useMemo(
+        () =>
+            showAverage
+                ? ({
+                      ...config,
+                      [AVERAGE_KEY]: {
+                          label: 'Průměr',
+                          color: 'var(--muted-foreground)',
+                      },
+                  } satisfies ChartConfig)
+                : config,
+        [config, showAverage],
+    )
+
+    const { orderedSeries, visibleSeries, mutedKeys, toggleSeries } =
+        useMutedSeries(legendQueryKey, chartSeries)
+
+    const dataWithAverage = useMemo(() => {
+        if (!showAverage) return data
+
+        const unmutedDataSeries = series.filter((key) =>
+            visibleSeries.includes(key),
+        )
+        const keysForAverage =
+            unmutedDataSeries.length > 0 ? unmutedDataSeries : series
+
+        return data.map((row) => ({
+            ...row,
+            [AVERAGE_KEY]: averageOfRow(row, keysForAverage),
+        }))
+    }, [data, series, showAverage, visibleSeries])
 
     const xAxisHeight = angledXAxis
         ? xAxisLabel
@@ -70,13 +122,13 @@ export function LineChart({
         (angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4) + 24
     const legendItems = orderedSeries.map((key) => ({
         dataKey: key,
-        color: config[key]?.color ?? `var(--color-${key})`,
+        color: chartConfig[key]?.color ?? `var(--color-${key})`,
     }))
 
     return (
         <ChartContainer
             id={chartId}
-            config={config}
+            config={chartConfig}
             className={cn(
                 'aspect-auto min-h-56 w-full flex-1 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-legend-wrapper]:!w-full',
                 className,
@@ -85,7 +137,7 @@ export function LineChart({
             <RechartsLineChart
                 id={chartId}
                 accessibilityLayer
-                data={data}
+                data={dataWithAverage}
                 margin={{
                     top: showDots ? 12 : 8,
                     left: showYAxis ? (yAxisLabel ? 16 : 0) : 12,
@@ -151,26 +203,30 @@ export function LineChart({
                         />
                     }
                 />
-                {visibleSeries.map((key) => (
-                    <Line
-                        key={key}
-                        dataKey={key}
-                        type="monotone"
-                        stroke={`var(--color-${key})`}
-                        strokeWidth={2}
-                        dot={
-                            showDots
-                                ? {
-                                      r: 3,
-                                      fill: 'var(--background)',
-                                      stroke: `var(--color-${key})`,
-                                      strokeWidth: 2,
-                                  }
-                                : false
-                        }
-                        activeDot={{ r: 4 }}
-                    />
-                ))}
+                {visibleSeries.map((key) => {
+                    const isAverage = key === AVERAGE_KEY
+                    return (
+                        <Line
+                            key={key}
+                            dataKey={key}
+                            type="monotone"
+                            stroke={`var(--color-${key})`}
+                            strokeWidth={2}
+                            strokeDasharray={isAverage ? '6 4' : undefined}
+                            dot={
+                                showDots && !isAverage
+                                    ? {
+                                          r: 3,
+                                          fill: 'var(--background)',
+                                          stroke: `var(--color-${key})`,
+                                          strokeWidth: 2,
+                                      }
+                                    : false
+                            }
+                            activeDot={isAverage ? false : { r: 4 }}
+                        />
+                    )
+                })}
             </RechartsLineChart>
         </ChartContainer>
     )

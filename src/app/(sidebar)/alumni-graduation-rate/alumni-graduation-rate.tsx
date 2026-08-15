@@ -118,6 +118,7 @@ export function AlumniGraduationRate() {
                                 showYAxis
                                 angledXAxis
                                 showDots
+                                showAverage
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Graduation rate (%)"
                                 formatValue={formatGraduationPercent}
