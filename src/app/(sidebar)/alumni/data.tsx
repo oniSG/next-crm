@@ -11,10 +11,11 @@ import {
 import {
     formatGraduationPercent,
     formatPlayerCount,
-    getAlumniKpis as getSharedAlumniKpis,
     inSeasonRange,
     numberFormatter,
     percentFormatter,
+    sumAlumniMetrics,
+    type AlumniMetricTotals,
 } from '@/lib/alumni/metrics'
 import { buildCategoryConfig } from '@/lib/alumni/sparse-category-chart'
 
@@ -113,7 +114,7 @@ export function filterAlumniRows(
     })
 }
 
-function toMetricRows(rows: AlumniSeasonDetailRow[]) {
+function toMetricRows(rows: AlumniSeasonDetailRow[]): AlumniMetricTotals[] {
     return rows.map((row) => ({
         playersInSelection: row.playersInSlice,
         activePlayers: row.activeInSlice,
@@ -123,12 +124,8 @@ function toMetricRows(rows: AlumniSeasonDetailRow[]) {
     }))
 }
 
-export function getAlumniKpis(
-    rows: AlumniSeasonDetailRow[],
-    seasonFrom: string,
-    seasonTo: string,
-) {
-    return getSharedAlumniKpis(toMetricRows(rows), seasonFrom, seasonTo)
+export function getAlumniTotals(rows: AlumniSeasonDetailRow[]) {
+    return sumAlumniMetrics(toMetricRows(rows))
 }
 
 export function getAlumniTopFields(

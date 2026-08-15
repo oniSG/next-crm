@@ -1,7 +1,4 @@
-import {
-    formatGraduationPercent,
-    getAlumniKpis,
-} from '@/lib/alumni/metrics'
+import { formatGraduationPercent } from '@/lib/alumni/metrics'
 import {
     buildGraduationByTeamColumns,
     filterTeamSeasonRows,
@@ -45,12 +42,4 @@ export function filterOverviewRows(
     rows: AlumniTeamSeasonRow[] = OVERVIEW_BY_SEASON_TEAM,
 ) {
     return filterTeamSeasonRows(seasonFrom, seasonTo, teams, rows)
-}
-
-export function getOverviewKpis(
-    rows: AlumniTeamSeasonRow[],
-    seasonFrom: string,
-    seasonTo: string,
-) {
-    return getAlumniKpis(rows, seasonFrom, seasonTo)
 }

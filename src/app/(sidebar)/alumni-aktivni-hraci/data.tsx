@@ -10,9 +10,10 @@ import {
 } from '@/lib/alumni/filters'
 import {
     formatPlayerCount,
-    getAlumniKpis,
     inSeasonRange,
     numberFormatter,
+    sumAlumniMetrics,
+    type AlumniMetricTotals,
 } from '@/lib/alumni/metrics'
 import { buildCategoryConfig } from '@/lib/alumni/sparse-category-chart'
 
@@ -75,7 +76,7 @@ export function filterActivePlayerRows(
     })
 }
 
-function toMetricRows(rows: AlumniSeasonDetailRow[]) {
+function toMetricRows(rows: AlumniSeasonDetailRow[]): AlumniMetricTotals[] {
     return rows.map((row) => ({
         playersInSelection: row.playersInSlice,
         activePlayers: row.activeInSlice,
@@ -85,12 +86,8 @@ function toMetricRows(rows: AlumniSeasonDetailRow[]) {
     }))
 }
 
-export function getActivePlayersKpis(
-    rows: AlumniSeasonDetailRow[],
-    seasonFrom: string,
-    seasonTo: string,
-) {
-    return getAlumniKpis(toMetricRows(rows), seasonFrom, seasonTo)
+export function getActivePlayerTotals(rows: AlumniSeasonDetailRow[]) {
+    return sumAlumniMetrics(toMetricRows(rows))
 }
 
 export function getPlayersByTeam(

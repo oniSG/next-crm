@@ -1,6 +1,3 @@
-import type { KpiCardProps } from '@/components/custom/statistics/kpi-card'
-import InfoTooltip from '@/components/custom/other/info-tooltip'
-
 import { ALUMNI_SEASON_OPTIONS } from './filters'
 
 /** Czech locale integer formatting (e.g. 58 426). */
@@ -84,68 +81,4 @@ export function sumAlumniMetrics(
             incomplete: 0,
         },
     )
-}
-
-/**
- * Builds the five shared alumni `KpiCard` props from filtered metric rows.
- *
- * Cards: Hráči ve výběru, Aktivní hráči, Alumni, Odchody, Graduation rate.
- * `seasonFrom` / `seasonTo` are only used in tooltip copy.
- */
-export function getAlumniKpis(
-    rows: readonly AlumniMetricTotals[],
-    seasonFrom: string,
-    seasonTo: string,
-): Omit<KpiCardProps, 'className'>[] {
-    const totals = sumAlumniMetrics(rows)
-    const departures = totals.completed + totals.incomplete
-    const rate = rateFromDepartures(totals.completed, totals.incomplete)
-
-    return [
-        {
-            label: 'Hráči ve výběru',
-            value: numberFormatter.format(totals.playersInSelection),
-            action: (
-                <InfoTooltip>
-                    Všichni hráči, kterých se filtry v období {seasonFrom} – {seasonTo}{' '}
-                    týkají.
-                </InfoTooltip>
-            ),
-        },
-        {
-            label: 'Aktivní hráči',
-            value: numberFormatter.format(totals.activePlayers),
-            action: (
-                <InfoTooltip>
-                    Aktivní hráči v týmech odpovídajících filtrům v období {seasonFrom} –{' '}
-                    {seasonTo}.
-                </InfoTooltip>
-            ),
-        },
-        {
-            label: 'Alumni',
-            value: numberFormatter.format(totals.alumni),
-            action: (
-                <InfoTooltip>
-                    Alumni v týmech odpovídajících filtrům v období {seasonFrom} –{' '}
-                    {seasonTo}.
-                </InfoTooltip>
-            ),
-        },
-        {
-            label: 'Odchody',
-            value: numberFormatter.format(departures),
-            action: <InfoTooltip>Ve zvoleném období.</InfoTooltip>,
-        },
-        {
-            label: 'Graduation rate',
-            value: `${percentFormatter.format(rate)} %`,
-            action: (
-                <InfoTooltip>
-                    {numberFormatter.format(totals.completed)} z{' '}
-                    {numberFormatter.format(departures)} odchodů
-                </InfoTooltip>
-            ),
-        },
-    ]
 }

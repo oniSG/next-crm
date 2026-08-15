@@ -13,6 +13,11 @@ import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
 import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import {
+    numberFormatter,
+    percentFormatter,
+    rateFromDepartures,
+} from '@/lib/alumni/metrics'
 import { toSparseCategoryChart } from '@/lib/alumni/sparse-category-chart'
 import {
     ALUMNI_BY_UNIVERSITY_COLUMNS,
@@ -31,8 +36,8 @@ import {
     getAlumniDegreeStructure,
     getAlumniDegreeStructureSeries,
     getAlumniHighestDegree,
-    getAlumniKpis,
     getAlumniTopFields,
+    getAlumniTotals,
 } from './data'
 
 export function Alumni() {
@@ -60,9 +65,15 @@ export function Alumni() {
         [seasonFrom, seasonTo, teams, schools, faculties, fields, degrees],
     )
 
-    const kpis = useMemo(
-        () => getAlumniKpis(filteredRows, seasonFrom, seasonTo),
-        [filteredRows, seasonFrom, seasonTo],
+    const totals = useMemo(
+        () => getAlumniTotals(filteredRows),
+        [filteredRows],
+    )
+
+    const departures = totals.completed + totals.incomplete
+    const graduationRate = rateFromDepartures(
+        totals.completed,
+        totals.incomplete,
     )
 
     const topFields = useMemo(() => getAlumniTopFields(filteredRows), [filteredRows])
@@ -147,9 +158,51 @@ export function Alumni() {
                 className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                 aria-label="Alumni KPI"
             >
-                {kpis.map((kpi) => (
-                    <KpiCard key={kpi.label} {...kpi} />
-                ))}
+                <KpiCard
+                    label="Hráči ve výběru"
+                    value={numberFormatter.format(totals.playersInSelection)}
+                    action={
+                        <InfoTooltip>
+                            Všichni hráči, kterých se filtry v období{' '}
+                            {seasonFrom} – {seasonTo} týkají.
+                        </InfoTooltip>
+                    }
+                />
+                <KpiCard
+                    label="Aktivní hráči"
+                    value={numberFormatter.format(totals.activePlayers)}
+                    action={
+                        <InfoTooltip>
+                            Aktivní hráči v týmech odpovídajících filtrům v období{' '}
+                            {seasonFrom} – {seasonTo}.
+                        </InfoTooltip>
+                    }
+                />
+                <KpiCard
+                    label="Alumni"
+                    value={numberFormatter.format(totals.alumni)}
+                    action={
+                        <InfoTooltip>
+                            Alumni v týmech odpovídajících filtrům v období{' '}
+                            {seasonFrom} – {seasonTo}.
+                        </InfoTooltip>
+                    }
+                />
+                <KpiCard
+                    label="Odchody"
+                    value={numberFormatter.format(departures)}
+                    action={<InfoTooltip>Ve zvoleném období.</InfoTooltip>}
+                />
+                <KpiCard
+                    label="Graduation rate"
+                    value={`${percentFormatter.format(graduationRate)} %`}
+                    action={
+                        <InfoTooltip>
+                            {numberFormatter.format(totals.completed)} z{' '}
+                            {numberFormatter.format(departures)} odchodů
+                        </InfoTooltip>
+                    }
+                />
             </section>
 
             <section className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
