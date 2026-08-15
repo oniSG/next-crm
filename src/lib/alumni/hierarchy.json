@@ -1,0 +1,788 @@
+{
+  "schools": {
+    "uk": {
+      "label": "Univerzita Karlova",
+      "faculties": {
+        "uk-prf": {
+          "label": "UK | Právnická fakulta",
+          "fields": [
+            {
+              "value": "pravo",
+              "label": "Právo"
+            },
+            {
+              "value": "mezinarodni-pravo",
+              "label": "Mezinárodní právo"
+            },
+            {
+              "value": "obchodni-pravo",
+              "label": "Obchodní právo"
+            },
+            {
+              "value": "trestni-pravo",
+              "label": "Trestní právo"
+            },
+            {
+              "value": "spravni-pravo",
+              "label": "Správní právo"
+            },
+            {
+              "value": "ustavni-pravo",
+              "label": "Ústavní právo"
+            }
+          ]
+        },
+        "uk-ftvs": {
+          "label": "UK | Fakulta tělesné výchovy a sportu",
+          "fields": [
+            {
+              "value": "tvs",
+              "label": "Tělesná výchova a sport"
+            },
+            {
+              "value": "management-sportu",
+              "label": "Management sportu"
+            },
+            {
+              "value": "fyzioterapie",
+              "label": "Fyzioterapie"
+            },
+            {
+              "value": "sportovni-trenink",
+              "label": "Sportovní trénink"
+            },
+            {
+              "value": "outdoor-edukace",
+              "label": "Outdoor edukace"
+            },
+            {
+              "value": "sportovni-management",
+              "label": "Sportovní management"
+            }
+          ]
+        },
+        "uk-ff": {
+          "label": "UK | Filozofická fakulta",
+          "fields": [
+            {
+              "value": "filozofie",
+              "label": "Filozofie"
+            },
+            {
+              "value": "psychologie",
+              "label": "Psychologie"
+            },
+            {
+              "value": "sociologie",
+              "label": "Sociologie"
+            },
+            {
+              "value": "historie",
+              "label": "Historie"
+            },
+            {
+              "value": "politologie",
+              "label": "Politologie"
+            },
+            {
+              "value": "andragogika",
+              "label": "Andragogika"
+            }
+          ]
+        },
+        "uk-mff": {
+          "label": "UK | Matematicko-fyzikální fakulta",
+          "fields": [
+            {
+              "value": "matematika",
+              "label": "Matematika"
+            },
+            {
+              "value": "fyzika",
+              "label": "Fyzika"
+            },
+            {
+              "value": "informatika",
+              "label": "Informatika"
+            },
+            {
+              "value": "aplikovana-matematika",
+              "label": "Aplikovaná matematika"
+            },
+            {
+              "value": "bioinformatika",
+              "label": "Bioinformatika"
+            },
+            {
+              "value": "statistika",
+              "label": "Statistika"
+            }
+          ]
+        },
+        "uk-fsv": {
+          "label": "UK | Fakulta sociálních věd",
+          "fields": [
+            {
+              "value": "socialni-prace",
+              "label": "Sociální práce"
+            },
+            {
+              "value": "socialni-politika",
+              "label": "Sociální politika"
+            },
+            {
+              "value": "humanitni-studia",
+              "label": "Humanitní studia"
+            },
+            {
+              "value": "gender-studia",
+              "label": "Gender studia"
+            },
+            {
+              "value": "media-studia",
+              "label": "Mediální studia"
+            },
+            {
+              "value": "verejna-politika",
+              "label": "Veřejná politika"
+            }
+          ]
+        }
+      }
+    },
+    "muni": {
+      "label": "Masarykova univerzita",
+      "faculties": {
+        "muni-fss": {
+          "label": "MUNI | Fakulta sportovních studií",
+          "fields": [
+            {
+              "value": "tvs",
+              "label": "Tělesná výchova a sport"
+            },
+            {
+              "value": "management-sportu",
+              "label": "Management sportu"
+            },
+            {
+              "value": "socialni-prace",
+              "label": "Sociální práce"
+            },
+            {
+              "value": "sociologie",
+              "label": "Sociologie"
+            },
+            {
+              "value": "gender-studia",
+              "label": "Gender studia"
+            },
+            {
+              "value": "andragogika",
+              "label": "Andragogika"
+            }
+          ]
+        },
+        "muni-esf": {
+          "label": "MUNI | Ekonomicko-správní fakulta",
+          "fields": [
+            {
+              "value": "ekonomika",
+              "label": "Ekonomika a management"
+            },
+            {
+              "value": "management",
+              "label": "Management"
+            },
+            {
+              "value": "financni-rizeni",
+              "label": "Finanční řízení"
+            },
+            {
+              "value": "ucetnictvi",
+              "label": "Účetnictví"
+            },
+            {
+              "value": "marketing",
+              "label": "Marketing"
+            },
+            {
+              "value": "podnikani",
+              "label": "Podnikání"
+            }
+          ]
+        },
+        "muni-fi": {
+          "label": "MUNI | Fakulta informatiky",
+          "fields": [
+            {
+              "value": "informatika",
+              "label": "Informatika"
+            },
+            {
+              "value": "aplikovana-informatika",
+              "label": "Aplikovaná informatika"
+            },
+            {
+              "value": "kybernetika",
+              "label": "Kybernetika"
+            },
+            {
+              "value": "bioinformatika",
+              "label": "Bioinformatika"
+            },
+            {
+              "value": "datova-analyza",
+              "label": "Datová analýza"
+            },
+            {
+              "value": "umele-inteligence",
+              "label": "Umělá inteligence"
+            }
+          ]
+        },
+        "muni-med": {
+          "label": "MUNI | Lékařská fakulta",
+          "fields": [
+            {
+              "value": "vseobecne-lekarstvi",
+              "label": "Všeobecné lékařství"
+            },
+            {
+              "value": "zdravotnictvi",
+              "label": "Zdravotnictví"
+            },
+            {
+              "value": "osetrovatelstvi",
+              "label": "Ošetřovatelství"
+            },
+            {
+              "value": "fyzioterapie",
+              "label": "Fyzioterapie"
+            },
+            {
+              "value": "verejne-zdravi",
+              "label": "Veřejné zdraví"
+            },
+            {
+              "value": "farmaceutika",
+              "label": "Farmaceutika"
+            }
+          ]
+        },
+        "muni-prf": {
+          "label": "MUNI | Právnická fakulta",
+          "fields": [
+            {
+              "value": "pravo",
+              "label": "Právo"
+            },
+            {
+              "value": "mezinarodni-pravo",
+              "label": "Mezinárodní právo"
+            },
+            {
+              "value": "obchodni-pravo",
+              "label": "Obchodní právo"
+            },
+            {
+              "value": "trestni-pravo",
+              "label": "Trestní právo"
+            },
+            {
+              "value": "evropske-pravo",
+              "label": "Evropské právo"
+            },
+            {
+              "value": "spravni-pravo",
+              "label": "Správní právo"
+            }
+          ]
+        }
+      }
+    },
+    "zcu": {
+      "label": "Západočeská univerzita",
+      "faculties": {
+        "zcu-fav": {
+          "label": "ZČU | Fakulta aplikovaných věd",
+          "fields": [
+            {
+              "value": "informatika",
+              "label": "Informatika"
+            },
+            {
+              "value": "kybernetika",
+              "label": "Kybernetika"
+            },
+            {
+              "value": "aplikovana-informatika",
+              "label": "Aplikovaná informatika"
+            },
+            {
+              "value": "datova-analyza",
+              "label": "Datová analýza"
+            },
+            {
+              "value": "pocitacove-site",
+              "label": "Počítačové sítě"
+            },
+            {
+              "value": "umele-inteligence",
+              "label": "Umělá inteligence"
+            }
+          ]
+        },
+        "zcu-fpe": {
+          "label": "ZČU | Fakulta pedagogická",
+          "fields": [
+            {
+              "value": "tvs",
+              "label": "Tělesná výchova a sport"
+            },
+            {
+              "value": "management-sportu",
+              "label": "Management sportu"
+            },
+            {
+              "value": "fyzioterapie",
+              "label": "Fyzioterapie"
+            },
+            {
+              "value": "outdoor-edukace",
+              "label": "Outdoor edukace"
+            },
+            {
+              "value": "telocvik",
+              "label": "Tělovýchova"
+            },
+            {
+              "value": "sportovni-trenink",
+              "label": "Sportovní trénink"
+            }
+          ]
+        },
+        "zcu-zf": {
+          "label": "ZČU | Strojní fakulta",
+          "fields": [
+            {
+              "value": "strojirenstvi",
+              "label": "Strojírenství, materiály a výroba"
+            },
+            {
+              "value": "materialove-inzenyrstvi",
+              "label": "Materiálové inženýrství"
+            },
+            {
+              "value": "vyrba",
+              "label": "Výroba"
+            },
+            {
+              "value": "konstrukce",
+              "label": "Konstrukce"
+            },
+            {
+              "value": "mechatronika",
+              "label": "Mechatronika"
+            },
+            {
+              "value": "energetika",
+              "label": "Energetika"
+            }
+          ]
+        },
+        "zcu-ffd": {
+          "label": "ZČU | Fakulta designu a umění",
+          "fields": [
+            {
+              "value": "design",
+              "label": "Design"
+            },
+            {
+              "value": "vytvarne-umeni",
+              "label": "Výtvarné umění"
+            },
+            {
+              "value": "architektura",
+              "label": "Architektura"
+            },
+            {
+              "value": "urbanismus",
+              "label": "Urbanismus"
+            },
+            {
+              "value": "interierovy-design",
+              "label": "Interiérový design"
+            },
+            {
+              "value": "graficky-design",
+              "label": "Grafický design"
+            }
+          ]
+        }
+      }
+    },
+    "cvut": {
+      "label": "České vysoké učení technické",
+      "faculties": {
+        "cvut-fel": {
+          "label": "ČVUT | Fakulta elektrotechnická",
+          "fields": [
+            {
+              "value": "elektrotechnika",
+              "label": "Elektrotechnika"
+            },
+            {
+              "value": "kybernetika",
+              "label": "Kybernetika"
+            },
+            {
+              "value": "informatika",
+              "label": "Informatika"
+            },
+            {
+              "value": "pocitacove-site",
+              "label": "Počítačové sítě"
+            },
+            {
+              "value": "robotika",
+              "label": "Robotika"
+            },
+            {
+              "value": "telekomunikace",
+              "label": "Telekomunikace"
+            }
+          ]
+        },
+        "cvut-fjfi": {
+          "label": "ČVUT | Fakulta jaderná a fyzikálně inženýrská",
+          "fields": [
+            {
+              "value": "fyzika",
+              "label": "Fyzika"
+            },
+            {
+              "value": "matematika",
+              "label": "Matematika"
+            },
+            {
+              "value": "aplikovana-matematika",
+              "label": "Aplikovaná matematika"
+            },
+            {
+              "value": "jaderna-fyzika",
+              "label": "Jaderná fyzika"
+            },
+            {
+              "value": "optika",
+              "label": "Optika"
+            },
+            {
+              "value": "statistika",
+              "label": "Statistika"
+            }
+          ]
+        },
+        "cvut-fs": {
+          "label": "ČVUT | Fakulta strojní",
+          "fields": [
+            {
+              "value": "strojirenstvi",
+              "label": "Strojírenství, materiály a výroba"
+            },
+            {
+              "value": "materialove-inzenyrstvi",
+              "label": "Materiálové inženýrství"
+            },
+            {
+              "value": "konstrukce",
+              "label": "Konstrukce"
+            },
+            {
+              "value": "mechatronika",
+              "label": "Mechatronika"
+            },
+            {
+              "value": "vyrba",
+              "label": "Výroba"
+            },
+            {
+              "value": "energetika",
+              "label": "Energetika"
+            }
+          ]
+        },
+        "cvut-fak": {
+          "label": "ČVUT | Fakulta architektury",
+          "fields": [
+            {
+              "value": "architektura",
+              "label": "Architektura"
+            },
+            {
+              "value": "urbanismus",
+              "label": "Urbanismus"
+            },
+            {
+              "value": "stavebnictvi",
+              "label": "Stavebnictví"
+            },
+            {
+              "value": "pozemni-stavby",
+              "label": "Pozemní stavby"
+            },
+            {
+              "value": "interierovy-design",
+              "label": "Interiérový design"
+            },
+            {
+              "value": "design",
+              "label": "Design"
+            }
+          ]
+        },
+        "cvut-fbmi": {
+          "label": "ČVUT | Fakulta biomedicínského inženýrství",
+          "fields": [
+            {
+              "value": "bioinformatika",
+              "label": "Bioinformatika"
+            },
+            {
+              "value": "biotechnologie",
+              "label": "Biotechnologie"
+            },
+            {
+              "value": "lekarska-informatika",
+              "label": "Lékařská informatika"
+            },
+            {
+              "value": "klinicka-bioinformatika",
+              "label": "Klinická bioinformatika"
+            },
+            {
+              "value": "biomedicina",
+              "label": "Biomedicína"
+            },
+            {
+              "value": "zdravotnictvi",
+              "label": "Zdravotnictví"
+            }
+          ]
+        }
+      }
+    },
+    "vse": {
+      "label": "Vysoká škola ekonomická",
+      "faculties": {
+        "vse-fis": {
+          "label": "VŠE | Fakulta informatiky a statistiky",
+          "fields": [
+            {
+              "value": "ekonomika",
+              "label": "Ekonomika a management"
+            },
+            {
+              "value": "management",
+              "label": "Management"
+            },
+            {
+              "value": "financni-rizeni",
+              "label": "Finanční řízení"
+            },
+            {
+              "value": "ucetnictvi",
+              "label": "Účetnictví"
+            },
+            {
+              "value": "marketing",
+              "label": "Marketing"
+            },
+            {
+              "value": "podnikani",
+              "label": "Podnikání"
+            }
+          ]
+        },
+        "vse-fph": {
+          "label": "VŠE | Fakulta financí a účetnictví",
+          "fields": [
+            {
+              "value": "financni-trhy",
+              "label": "Finanční trhy"
+            },
+            {
+              "value": "bankovnictvi",
+              "label": "Bankovnictví"
+            },
+            {
+              "value": "pojistovnictvi",
+              "label": "Pojistovnictví"
+            },
+            {
+              "value": "investicni-rizeni",
+              "label": "Investiční řízení"
+            },
+            {
+              "value": "danova-sprava",
+              "label": "Daňová správa"
+            },
+            {
+              "value": "ucetnictvi",
+              "label": "Účetnictví"
+            }
+          ]
+        },
+        "vse-nhf": {
+          "label": "VŠE | Národohospodářská fakulta",
+          "fields": [
+            {
+              "value": "mezinarodni-obchod",
+              "label": "Mezinárodní obchod"
+            },
+            {
+              "value": "cestovni-ruch",
+              "label": "Cestovní ruch"
+            },
+            {
+              "value": "hotelnictvi",
+              "label": "Hotelnictví"
+            },
+            {
+              "value": "logistika",
+              "label": "Logistika"
+            },
+            {
+              "value": "dodavatelske-retezce",
+              "label": "Dodavatelské řetězce"
+            },
+            {
+              "value": "obchodni-management",
+              "label": "Obchodní management"
+            }
+          ]
+        }
+      }
+    },
+    "upol": {
+      "label": "Univerzita Palackého",
+      "faculties": {
+        "upol-ff": {
+          "label": "UPOL | Filozofická fakulta",
+          "fields": [
+            {
+              "value": "filozofie",
+              "label": "Filozofie"
+            },
+            {
+              "value": "historie",
+              "label": "Historie"
+            },
+            {
+              "value": "psychologie",
+              "label": "Psychologie"
+            },
+            {
+              "value": "sociologie",
+              "label": "Sociologie"
+            },
+            {
+              "value": "politologie",
+              "label": "Politologie"
+            },
+            {
+              "value": "andragogika",
+              "label": "Andragogika"
+            }
+          ]
+        },
+        "upol-prf": {
+          "label": "UPOL | Právnická fakulta",
+          "fields": [
+            {
+              "value": "pravo",
+              "label": "Právo"
+            },
+            {
+              "value": "mezinarodni-pravo",
+              "label": "Mezinárodní právo"
+            },
+            {
+              "value": "obchodni-pravo",
+              "label": "Obchodní právo"
+            },
+            {
+              "value": "evropske-pravo",
+              "label": "Evropské právo"
+            },
+            {
+              "value": "trestni-pravo",
+              "label": "Trestní právo"
+            },
+            {
+              "value": "spravni-pravo",
+              "label": "Správní právo"
+            }
+          ]
+        },
+        "upol-mef": {
+          "label": "UPOL | Pedagogická fakulta",
+          "fields": [
+            {
+              "value": "ekonomika",
+              "label": "Ekonomika a management"
+            },
+            {
+              "value": "management",
+              "label": "Management"
+            },
+            {
+              "value": "marketing",
+              "label": "Marketing"
+            },
+            {
+              "value": "financni-rizeni",
+              "label": "Finanční řízení"
+            },
+            {
+              "value": "ucetnictvi",
+              "label": "Účetnictví"
+            },
+            {
+              "value": "podnikani",
+              "label": "Podnikání"
+            }
+          ]
+        },
+        "upol-ftk": {
+          "label": "UPOL | Fakulta tělesné kultury",
+          "fields": [
+            {
+              "value": "tvs",
+              "label": "Tělesná výchova a sport"
+            },
+            {
+              "value": "management-sportu",
+              "label": "Management sportu"
+            },
+            {
+              "value": "fyzioterapie",
+              "label": "Fyzioterapie"
+            },
+            {
+              "value": "sportovni-trenink",
+              "label": "Sportovní trénink"
+            },
+            {
+              "value": "outdoor-edukace",
+              "label": "Outdoor edukace"
+            },
+            {
+              "value": "telocvik",
+              "label": "Tělovýchova"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

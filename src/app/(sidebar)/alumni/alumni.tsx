@@ -218,8 +218,7 @@ export function Alumni() {
                     }
                 >
                     <div
-                        className="flex w-full items-center justify-center"
-                        style={{ minHeight: topFieldsChartHeight }}
+                        className="flex min-h-80 w-full items-center justify-center"
                     >
                         <PieChart
                             data={highestDegree}

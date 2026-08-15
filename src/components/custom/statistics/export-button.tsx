@@ -47,7 +47,7 @@ export function ExportButton({ dashboard, filename }: ExportButtonProps) {
             type="button"
             onClick={handleClick}
             disabled={loading}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
+            className={cn(buttonVariants({ variant: 'outline' }))}
         >
             {loading ? <Loader2 className="animate-spin" /> : <Download />}
             {loading ? 'Exporting…' : 'Export'}
