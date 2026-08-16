@@ -130,7 +130,7 @@ export function LineChart({
             id={chartId}
             config={chartConfig}
             className={cn(
-                'aspect-auto min-h-56 w-full flex-1 [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-legend-wrapper]:!w-full',
+                'aspect-auto h-full min-h-56 w-full [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-legend-wrapper]:!w-full',
                 className,
             )}
         >

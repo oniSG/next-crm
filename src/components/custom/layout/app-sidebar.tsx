@@ -99,6 +99,11 @@ const fansGroups: NavGroup[] = [
     {
         items: [
             {
+                title: 'Example',
+                url: '/example',
+                icon: <LayoutDashboardIcon />,
+            },
+            {
                 title: 'Reporty',
                 url: '#',
                 icon: <ChartBarIcon />,

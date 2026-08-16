@@ -1,5 +1,6 @@
 'use client'
 
+import { useId } from 'react'
 import {
     Area,
     AreaChart as RechartsAreaChart,
@@ -18,6 +19,8 @@ import {
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
 
+import { useMutedSeries } from './use-muted-series'
+
 export type AreaChartProps = {
     data: object[]
     config: ChartConfig
@@ -25,6 +28,8 @@ export type AreaChartProps = {
     series: string[]
     stacked?: boolean
     className?: string
+    /** When set, legend clicks mute/unmute series and persist state in the URL. */
+    legendQueryKey?: string
 }
 
 export function AreaChart({
@@ -34,9 +39,21 @@ export function AreaChart({
     series,
     stacked = true,
     className,
+    legendQueryKey,
 }: AreaChartProps) {
+    const reactId = useId().replace(/:/g, '')
+    const chartId = legendQueryKey ?? `area-chart-${reactId}`
+    const { orderedSeries, visibleSeries, mutedKeys, toggleSeries } =
+        useMutedSeries(legendQueryKey, series)
+
+    const legendItems = orderedSeries.map((key) => ({
+        dataKey: key,
+        color: config[key]?.color ?? `var(--color-${key})`,
+    }))
+
     return (
         <ChartContainer
+            id={chartId}
             config={config}
             className={cn('aspect-auto h-full min-h-56 w-full', className)}
         >
@@ -54,8 +71,16 @@ export function AreaChart({
                 />
                 <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                {series.map((key) => (
+                <ChartLegend
+                    content={
+                        <ChartLegendContent
+                            items={legendItems}
+                            mutedKeys={mutedKeys}
+                            onItemClick={toggleSeries}
+                        />
+                    }
+                />
+                {visibleSeries.map((key) => (
                     <Area
                         key={key}
                         dataKey={key}
