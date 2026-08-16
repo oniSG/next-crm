@@ -93,8 +93,8 @@ export function ExampleDashboard() {
             />
 
             <section
-                className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
-                aria-label="Varianty KPI karet"
+                className="grid grid-cols-1 gap-4 md:grid-cols-3"
+                aria-label="Základní KPI karty"
             >
                 <KpiCard label="Kartička s hodnotou" value={data.kpis.totalVisitors} />
 
@@ -116,138 +116,6 @@ export function ExampleDashboard() {
                         delta: '−0,34 %',
                         hint: 'oproti minulému měsíci',
                     }}
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou a tooltipem"
-                    value={data.kpis.openRate}
-                    action={
-                        <InfoTooltip>
-                            `action` — typicky InfoTooltip nebo InfoSheet. Hodnota reaguje
-                            na filtry.
-                        </InfoTooltip>
-                    }
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou a ikonou"
-                    value={data.kpis.totalSessions}
-                    icon={<UsersIcon className="size-4" />}
-                    iconClassName="bg-chart-1/10 text-chart-1"
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou a metrikou"
-                    value={data.kpis.openRate}
-                    metric={{
-                        label: 'Odesláno',
-                        value: data.kpis.campaignSent,
-                    }}
-                />
-
-                <KpiCard label="Kartička s contentem" content={KPI_DETAIL_ROWS} />
-
-                <KpiCard
-                    label="Kartička s contentem a trendem"
-                    content={[
-                        { label: 'Příjem', value: '320 000 Kč' },
-                        { label: 'Kusů', value: '1 240' },
-                    ]}
-                    trend={{
-                        direction: 'up',
-                        delta: '+180',
-                        hint: 'návštěvníků',
-                    }}
-                />
-
-                <KpiCard
-                    label="Kartička s contentem a ikonou"
-                    icon={<MailIcon className="size-4" />}
-                    iconClassName="bg-chart-2/10 text-chart-2"
-                    content={KPI_DETAIL_ROWS}
-                    action={
-                        <InfoTooltip>
-                            Content bez velké hodnoty — seznam řádků.
-                        </InfoTooltip>
-                    }
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou a contentem"
-                    value="12 450"
-                    content={[{ label: 'Z celkem prodaných', value: '48 200' }]}
-                    action={
-                        <InfoTooltip>
-                            Velká hodnota nahoře, detaily v `content` pod oddělovačem.
-                        </InfoTooltip>
-                    }
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou, contentem a trendem"
-                    value="3,63"
-                    content={[{ label: 'Pořadí mezi tenanty', value: '14' }]}
-                    trend={{
-                        direction: 'up',
-                        delta: '+0,59',
-                        hint: 'za posledních 30 dní',
-                    }}
-                    action={
-                        <InfoSheet>
-                            <h2>Kartička s hodnotou, contentem a trendem</h2>
-                            <p>
-                                Kombinace jako u Relatoo indexu — hlavní číslo, jeden
-                                detail a footer s trendem.
-                            </p>
-                        </InfoSheet>
-                    }
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou, metrikou a contentem"
-                    value="72,5 %"
-                    icon={<TicketCheckIcon className="size-4" />}
-                    iconClassName="bg-chart-1/10 text-chart-1"
-                    metric={{ label: 'Počet', value: '6 840' }}
-                    content={[
-                        { label: 'Paid', value: '5 120' },
-                        { label: 'Free', value: '1 720' },
-                    ]}
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou, metrikou a trendem"
-                    value="214 500 Kč"
-                    icon={<CircleDollarSignIcon className="size-4" />}
-                    iconClassName="bg-chart-4/10 text-chart-4"
-                    metric={{ label: 'Ø lístek', value: '480 Kč' }}
-                    trend={{
-                        direction: 'up',
-                        delta: '+8,2 %',
-                        hint: 'oproti minulé akci',
-                    }}
-                />
-
-                <KpiCard
-                    label="Kartička s hodnotou, ikonou, metrikou, contentem a trendem"
-                    value="9 180"
-                    icon={<UsersIcon className="size-4" />}
-                    iconClassName="bg-chart-3/10 text-chart-3"
-                    metric={{ label: 'Cíl', value: '10 000' }}
-                    content={[
-                        { label: 'Noví', value: '1 240' },
-                        { label: 'Vracející se', value: '7 940' },
-                    ]}
-                    trend={{
-                        direction: 'down',
-                        delta: '−1,2 %',
-                        hint: 'oproti minulému měsíci',
-                    }}
-                    action={
-                        <InfoTooltip>
-                            Ikona + value + metric + content + trend + action.
-                        </InfoTooltip>
-                    }
                 />
             </section>
 
@@ -314,6 +182,38 @@ export function ExampleDashboard() {
                 />
             </section>
 
+            <section
+                className="grid grid-cols-1 gap-4 md:grid-cols-3"
+                aria-label="KPI s tooltipem, ikonou a metrikou"
+            >
+                <KpiCard
+                    label="Kartička s hodnotou a tooltipem"
+                    value={data.kpis.openRate}
+                    action={
+                        <InfoTooltip>
+                            `action` — typicky InfoTooltip nebo InfoSheet. Hodnota reaguje
+                            na filtry.
+                        </InfoTooltip>
+                    }
+                />
+
+                <KpiCard
+                    label="Kartička s hodnotou a ikonou"
+                    value={data.kpis.totalSessions}
+                    icon={<UsersIcon className="size-4" />}
+                    iconClassName="bg-chart-1/10 text-chart-1"
+                />
+
+                <KpiCard
+                    label="Kartička s hodnotou a metrikou"
+                    value={data.kpis.openRate}
+                    metric={{
+                        label: 'Odesláno',
+                        value: data.kpis.campaignSent,
+                    }}
+                />
+            </section>
+
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <DataVisulaizationCard
                     title="Čárový graf + průměr"
@@ -377,6 +277,38 @@ export function ExampleDashboard() {
                 />
             </section>
 
+            <section
+                className="grid grid-cols-1 gap-4 md:grid-cols-3"
+                aria-label="KPI s contentem"
+            >
+                <KpiCard label="Kartička s contentem" content={KPI_DETAIL_ROWS} />
+
+                <KpiCard
+                    label="Kartička s contentem a trendem"
+                    content={[
+                        { label: 'Příjem', value: '320 000 Kč' },
+                        { label: 'Kusů', value: '1 240' },
+                    ]}
+                    trend={{
+                        direction: 'up',
+                        delta: '+180',
+                        hint: 'návštěvníků',
+                    }}
+                />
+
+                <KpiCard
+                    label="Kartička s contentem a ikonou"
+                    icon={<MailIcon className="size-4" />}
+                    iconClassName="bg-chart-2/10 text-chart-2"
+                    content={KPI_DETAIL_ROWS}
+                    action={
+                        <InfoTooltip>
+                            Content bez velké hodnoty — seznam řádků.
+                        </InfoTooltip>
+                    }
+                />
+            </section>
+
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <DataVisulaizationCard
                     title="Horizontální sloupce"
@@ -435,6 +367,42 @@ export function ExampleDashboard() {
                 />
             </section>
 
+            <section
+                className="grid grid-cols-1 gap-4 md:grid-cols-2"
+                aria-label="KPI value + content"
+            >
+                <KpiCard
+                    label="Kartička s hodnotou a contentem"
+                    value="12 450"
+                    content={[{ label: 'Z celkem prodaných', value: '48 200' }]}
+                    action={
+                        <InfoTooltip>
+                            Velká hodnota nahoře, detaily v `content` pod oddělovačem.
+                        </InfoTooltip>
+                    }
+                />
+
+                <KpiCard
+                    label="Kartička s hodnotou, contentem a trendem"
+                    value="3,63"
+                    content={[{ label: 'Pořadí mezi tenanty', value: '14' }]}
+                    trend={{
+                        direction: 'up',
+                        delta: '+0,59',
+                        hint: 'za posledních 30 dní',
+                    }}
+                    action={
+                        <InfoSheet>
+                            <h2>Kartička s hodnotou, contentem a trendem</h2>
+                            <p>
+                                Kombinace jako u Relatoo indexu — hlavní číslo, jeden
+                                detail a footer s trendem.
+                            </p>
+                        </InfoSheet>
+                    }
+                />
+            </section>
+
             <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <DataVisulaizationCard
                     title="Labeled bar"
@@ -489,6 +457,58 @@ export function ExampleDashboard() {
                             getRowKey={(row) => row.month}
                         />,
                     )}
+                />
+            </section>
+
+            <section
+                className="grid grid-cols-1 gap-4 md:grid-cols-3"
+                aria-label="Pokročilé KPI kombinace"
+            >
+                <KpiCard
+                    label="Kartička s hodnotou, metrikou a contentem"
+                    value="72,5 %"
+                    icon={<TicketCheckIcon className="size-4" />}
+                    iconClassName="bg-chart-1/10 text-chart-1"
+                    metric={{ label: 'Počet', value: '6 840' }}
+                    content={[
+                        { label: 'Paid', value: '5 120' },
+                        { label: 'Free', value: '1 720' },
+                    ]}
+                />
+
+                <KpiCard
+                    label="Kartička s hodnotou, metrikou a trendem"
+                    value="214 500 Kč"
+                    icon={<CircleDollarSignIcon className="size-4" />}
+                    iconClassName="bg-chart-4/10 text-chart-4"
+                    metric={{ label: 'Ø lístek', value: '480 Kč' }}
+                    trend={{
+                        direction: 'up',
+                        delta: '+8,2 %',
+                        hint: 'oproti minulé akci',
+                    }}
+                />
+
+                <KpiCard
+                    label="Kartička kompletní"
+                    value="9 180"
+                    icon={<UsersIcon className="size-4" />}
+                    iconClassName="bg-chart-3/10 text-chart-3"
+                    metric={{ label: 'Cíl', value: '10 000' }}
+                    content={[
+                        { label: 'Noví', value: '1 240' },
+                        { label: 'Vracející se', value: '7 940' },
+                    ]}
+                    trend={{
+                        direction: 'down',
+                        delta: '−1,2 %',
+                        hint: 'oproti minulému měsíci',
+                    }}
+                    action={
+                        <InfoTooltip>
+                            Ikona + value + metric + content + trend + action.
+                        </InfoTooltip>
+                    }
                 />
             </section>
 
