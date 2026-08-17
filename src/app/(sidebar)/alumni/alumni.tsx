@@ -7,12 +7,11 @@ import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
 import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
-import { LineChart } from '@/components/custom/statistics/line-chart'
 import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
-import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import { useFilters } from './use-filters'
 import {
     numberFormatter,
     percentFormatter,
@@ -41,15 +40,8 @@ import {
 } from './data'
 
 export function Alumni() {
-    const {
-        seasonFrom,
-        seasonTo,
-        teams,
-        schools,
-        faculties,
-        fields,
-        degrees,
-    } = useAlumniFilters()
+    const { seasonFrom, seasonTo, teams, schools, faculties, fields, degrees } =
+        useFilters()
 
     const filteredRows = useMemo(
         () =>
@@ -65,16 +57,10 @@ export function Alumni() {
         [seasonFrom, seasonTo, teams, schools, faculties, fields, degrees],
     )
 
-    const totals = useMemo(
-        () => getAlumniTotals(filteredRows),
-        [filteredRows],
-    )
+    const totals = useMemo(() => getAlumniTotals(filteredRows), [filteredRows])
 
     const departures = totals.completed + totals.incomplete
-    const graduationRate = rateFromDepartures(
-        totals.completed,
-        totals.incomplete,
-    )
+    const graduationRate = rateFromDepartures(totals.completed, totals.incomplete)
 
     const topFields = useMemo(() => getAlumniTopFields(filteredRows), [filteredRows])
 
@@ -83,10 +69,7 @@ export function Alumni() {
         [topFields],
     )
 
-    const topFieldsChart = useMemo(
-        () => toSparseCategoryChart(topFields),
-        [topFields],
-    )
+    const topFieldsChart = useMemo(() => toSparseCategoryChart(topFields), [topFields])
 
     const degreeStructure = useMemo(
         () => getAlumniDegreeStructure(filteredRows),
@@ -142,10 +125,7 @@ export function Alumni() {
         480,
         Math.max(byUniversity.length, 1) * 44 + 80,
     )
-    const topFieldsChartHeight = Math.max(
-        420,
-        Math.max(topFields.length, 1) * 48 + 80,
-    )
+    const topFieldsChartHeight = Math.max(420, Math.max(topFields.length, 1) * 48 + 80)
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-4">
@@ -163,8 +143,8 @@ export function Alumni() {
                     value={numberFormatter.format(totals.playersInSelection)}
                     action={
                         <InfoTooltip>
-                            Všichni hráči, kterých se filtry v období{' '}
-                            {seasonFrom} – {seasonTo} týkají.
+                            Všichni hráči, kterých se filtry v období {seasonFrom} –{' '}
+                            {seasonTo} týkají.
                         </InfoTooltip>
                     }
                 />
@@ -183,8 +163,8 @@ export function Alumni() {
                     value={numberFormatter.format(totals.alumni)}
                     action={
                         <InfoTooltip>
-                            Alumni v týmech odpovídajících filtrům v období{' '}
-                            {seasonFrom} – {seasonTo}.
+                            Alumni v týmech odpovídajících filtrům v období {seasonFrom} –{' '}
+                            {seasonTo}.
                         </InfoTooltip>
                     }
                 />
@@ -212,14 +192,11 @@ export function Alumni() {
                     className="h-full"
                     action={
                         <InfoTooltip>
-                            Rozložení alumni podle nejvyššího dokončeného stupně
-                            vzdělání.
+                            Rozložení alumni podle nejvyššího dokončeného stupně vzdělání.
                         </InfoTooltip>
                     }
                 >
-                    <div
-                        className="flex min-h-80 w-full items-center justify-center"
-                    >
+                    <div className="flex min-h-80 w-full items-center justify-center">
                         <PieChart
                             data={highestDegree}
                             config={highestDegreeConfig}
@@ -234,9 +211,7 @@ export function Alumni() {
                     queryKey="alumni-top-fields-view"
                     className="h-full"
                     action={
-                        <InfoTooltip>
-                            Nejčastější studijní obory mezi alumni.
-                        </InfoTooltip>
+                        <InfoTooltip>Nejčastější studijní obory mezi alumni.</InfoTooltip>
                     }
                     tableExportable={{
                         filename: 'top-studijni-obory',
@@ -314,14 +289,16 @@ export function Alumni() {
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
-                            <LineChart
+                            <BarChart
                                 data={degreeStructure}
                                 config={degreeStructureConfig}
                                 categoryKey="label"
                                 series={[...degreeStructureSeries]}
+                                stacked
+                                barCategoryGap={0}
                                 showYAxis
+                                yAxisMax={100}
                                 angledXAxis
-                                showDots
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Podíl (%)"
                                 formatValue={(value) =>

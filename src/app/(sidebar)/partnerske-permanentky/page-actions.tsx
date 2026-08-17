@@ -9,11 +9,11 @@ import {
     PARTNER_FILTER_OPTIONS,
     SEASON_OPTIONS,
 } from './data'
-import { usePartnerSeasonTicketsFilters } from './use-partner-season-tickets-filters'
+import { useFilters } from './use-filters'
 
 export function PageActions() {
     const { partners, setPartners, categories, setCategories, season, setSeason } =
-        usePartnerSeasonTicketsFilters()
+        useFilters()
 
     return (
         <>

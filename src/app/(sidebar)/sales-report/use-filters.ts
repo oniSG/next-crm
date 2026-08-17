@@ -1,10 +1,14 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { parseAsIsoDate, parseAsStringLiteral, useQueryState } from 'nuqs'
+import {
+    parseAsArrayOf,
+    parseAsIsoDate,
+    parseAsStringLiteral,
+    useQueryState,
+} from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
-import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
 
 import {
     DISCOUNT_CATEGORY_OPTIONS,
@@ -13,14 +17,14 @@ import {
     type Period,
 } from './data'
 
-const periodValues = PERIOD_OPTIONS.map((option) => option.value)
-const teamValues = TEAM_OPTIONS.map((option) => option.value)
-const categoryValues = DISCOUNT_CATEGORY_OPTIONS.map((option) => option.value)
+const periodValues: string[] = PERIOD_OPTIONS.map((option) => option.value)
+const teamValues: string[] = TEAM_OPTIONS.map((option) => option.value)
+const categoryValues: string[] = DISCOUNT_CATEGORY_OPTIONS.map((option) => option.value)
 
 const defaultFrom = new Date(2024, 4, 17)
 const defaultTo = new Date(2026, 7, 15)
 
-export function useSalesReportFilters() {
+export function useFilters() {
     const [today] = useState(() => new Date())
     const [from, setFrom] = useQueryState(
         'from',
@@ -31,7 +35,12 @@ export function useSalesReportFilters() {
         'period',
         parseAsStringLiteral(periodValues).withDefault('month'),
     )
-    const [teams, setTeams] = useMultiFilterParam('team', teamValues)
+    const [teams, setTeams] = useQueryState(
+        'team',
+        parseAsArrayOf(parseAsStringLiteral(teamValues))
+            .withDefault([])
+            .withOptions({ clearOnDefault: true }),
+    )
     const [category, setCategory] = useQueryState(
         'category',
         parseAsStringLiteral(categoryValues).withDefault('all'),

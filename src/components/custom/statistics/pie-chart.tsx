@@ -104,6 +104,8 @@ export function PieChart({
                     nameKey="name"
                     innerRadius={innerRadius}
                     outerRadius="68%"
+                    startAngle={90}
+                    endAngle={-270}
                     labelLine={false}
                     label={({ payload, ...props }) => {
                         const value =
@@ -126,7 +128,17 @@ export function PieChart({
                         )
                     }}
                 />
-                <ChartLegend content={<ChartLegendContent nameKey="name" />} />
+                <ChartLegend
+                    content={
+                        <ChartLegendContent
+                            nameKey="name"
+                            items={data.map((item) => ({
+                                dataKey: item.name,
+                                color: item.fill,
+                            }))}
+                        />
+                    }
+                />
             </RechartsPieChart>
         </ChartContainer>
     )

@@ -7,7 +7,6 @@ import {
     TicketCheckIcon,
     UsersIcon,
 } from 'lucide-react'
-import { parseAsIsoDate, useQueryState } from 'nuqs'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
@@ -32,6 +31,7 @@ import {
     VISITOR_TOTAL_COLUMNS,
     VISITOR_TOTAL_SERIES,
 } from './data'
+import { useFilters } from './use-filters'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 const moneyFormatter = new Intl.NumberFormat('cs-CZ', {
@@ -51,9 +51,6 @@ const dateTimeFormatter = new Intl.DateTimeFormat('cs-CZ', {
     minute: '2-digit',
 })
 
-const defaultFrom = new Date(2026, 0, 1)
-const defaultTo = new Date(2026, 5, 30)
-
 const TICKET_CHANNEL_CONFIG = toChartConfig(TICKET_CHANNEL_SERIES)
 const TICKET_CHANNEL_KEYS = TICKET_CHANNEL_SERIES.map((item) => item.key)
 const VISITOR_TOTAL_CONFIG = toChartConfig(VISITOR_TOTAL_SERIES)
@@ -63,9 +60,8 @@ const VISITOR_GROWTH_KEYS = VISITOR_GROWTH_SERIES.map((item) => item.key)
 
 export function ReportManagement() {
     const { meta } = MANAGEMENT_REPORT_DATA
-    const [from] = useQueryState('from', parseAsIsoDate.withDefault(defaultFrom))
-    const [to] = useQueryState('to', parseAsIsoDate.withDefault(defaultTo))
-    const dateRange = { from, to }
+    const { dateRange } = useFilters()
+    const { from, to } = dateRange
     const periodKey = `${from.toISOString()}-${to.toISOString()}`
     const {
         fanDevelopment,

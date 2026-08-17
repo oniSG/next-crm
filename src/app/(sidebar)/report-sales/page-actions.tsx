@@ -1,47 +1,30 @@
 'use client'
 
 import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
+import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select'
 
-import { PERIOD_OPTIONS } from './data'
-import { useReportDateRange, useReportPeriod } from './report-utils'
+import { PERIOD_OPTIONS, type Period } from './data'
+import { useFilters } from './use-filters'
+
+const periodValues = PERIOD_OPTIONS.map((option) => option.value)
 
 export function PageActions() {
-    const [period, setPeriod] = useReportPeriod()
-    const { dateRange, setDateRange, today } = useReportDateRange()
+    const { period, setPeriod, dateRange, setDateRange, today } = useFilters()
 
     return (
         <>
-            <Select
-                items={PERIOD_OPTIONS}
+            <SelectFilter
+                options={PERIOD_OPTIONS}
                 value={period}
-                onValueChange={(value) => {
-                    if (value === 'day' || value === 'month' || value === 'year') {
-                        void setPeriod(value)
+                onChange={(value) => {
+                    if (periodValues.includes(value as Period)) {
+                        void setPeriod(value as Period)
                     }
                 }}
-            >
-                <SelectTrigger className="w-36">
-                    <SelectValue />
-                </SelectTrigger>
-                <SelectContent alignItemWithTrigger={false} align="end">
-                    <SelectGroup>
-                        {PERIOD_OPTIONS.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                            </SelectItem>
-                        ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
+                leadingLabel="Období"
+                className="min-w-0 w-auto"
+            />
             <DateRangeFilter value={dateRange} onChange={setDateRange} today={today} />
             <ExportButton dashboard="report-sales" filename="report-sales.pdf" />
         </>

@@ -11,7 +11,7 @@ import { PieChart } from '@/components/custom/statistics/pie-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
-import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import { useFilters } from './use-filters'
 import {
     numberFormatter,
     percentFormatter,
@@ -39,14 +39,7 @@ import {
 } from './data'
 
 export function AlumniAktivniHraci() {
-    const {
-        seasonFrom,
-        seasonTo,
-        teams,
-        faculties,
-        fields,
-        degrees,
-    } = useAlumniFilters()
+    const { seasonFrom, seasonTo, teams, faculties, fields, degrees } = useFilters()
 
     const filteredRows = useMemo(
         () =>
@@ -61,21 +54,12 @@ export function AlumniAktivniHraci() {
         [seasonFrom, seasonTo, teams, faculties, fields, degrees],
     )
 
-    const totals = useMemo(
-        () => getActivePlayerTotals(filteredRows),
-        [filteredRows],
-    )
+    const totals = useMemo(() => getActivePlayerTotals(filteredRows), [filteredRows])
 
     const departures = totals.completed + totals.incomplete
-    const graduationRate = rateFromDepartures(
-        totals.completed,
-        totals.incomplete,
-    )
+    const graduationRate = rateFromDepartures(totals.completed, totals.incomplete)
 
-    const playersByTeam = useMemo(
-        () => getPlayersByTeam(filteredRows),
-        [filteredRows],
-    )
+    const playersByTeam = useMemo(() => getPlayersByTeam(filteredRows), [filteredRows])
 
     const playersByTeamConfig = useMemo(
         () => buildPlayersByTeamConfig(playersByTeam),
@@ -87,10 +71,7 @@ export function AlumniAktivniHraci() {
         [playersByTeam],
     )
 
-    const playersByField = useMemo(
-        () => getPlayersByField(filteredRows),
-        [filteredRows],
-    )
+    const playersByField = useMemo(() => getPlayersByField(filteredRows), [filteredRows])
 
     const playersByFieldConfig = useMemo(
         () => buildPlayersByFieldConfig(playersByField),
@@ -104,10 +85,7 @@ export function AlumniAktivniHraci() {
 
     const studyLevel = useMemo(() => getStudyLevel(filteredRows), [filteredRows])
 
-    const yearDegree = useMemo(
-        () => getPlayersByYearDegree(filteredRows),
-        [filteredRows],
-    )
+    const yearDegree = useMemo(() => getPlayersByYearDegree(filteredRows), [filteredRows])
 
     const yearDegreeSeries = useMemo((): (typeof YEAR_DEGREE_SERIES)[number][] => {
         if (degrees.length === 0) return [...YEAR_DEGREE_SERIES]
@@ -119,10 +97,7 @@ export function AlumniAktivniHraci() {
         [yearDegreeSeries],
     )
 
-    const detail = useMemo(
-        () => getActivePlayersDetail(filteredRows),
-        [filteredRows],
-    )
+    const detail = useMemo(() => getActivePlayersDetail(filteredRows), [filteredRows])
 
     const byFieldChartHeight = Math.max(288, Math.max(playersByField.length, 1) * 44 + 80)
 
@@ -142,8 +117,8 @@ export function AlumniAktivniHraci() {
                     value={numberFormatter.format(totals.playersInSelection)}
                     action={
                         <InfoTooltip>
-                            Všichni hráči, kterých se filtry v období{' '}
-                            {seasonFrom} – {seasonTo} týkají.
+                            Všichni hráči, kterých se filtry v období {seasonFrom} –{' '}
+                            {seasonTo} týkají.
                         </InfoTooltip>
                     }
                 />
@@ -162,8 +137,8 @@ export function AlumniAktivniHraci() {
                     value={numberFormatter.format(totals.alumni)}
                     action={
                         <InfoTooltip>
-                            Alumni v týmech odpovídajících filtrům v období{' '}
-                            {seasonFrom} – {seasonTo}.
+                            Alumni v týmech odpovídajících filtrům v období {seasonFrom} –{' '}
+                            {seasonTo}.
                         </InfoTooltip>
                     }
                 />
@@ -255,6 +230,7 @@ export function AlumniAktivniHraci() {
                 <DataVisulaizationCard
                     title="Ročník + stupeň"
                     queryKey="alumni-year-degree-view"
+                    className="lg:col-span-2"
                     action={
                         <InfoTooltip>
                             Počet aktivních hráčů podle ročníku a stupně studia.
@@ -312,6 +288,7 @@ export function AlumniAktivniHraci() {
                 <DataVisulaizationCard
                     title="Aktivní hráči podle oboru"
                     queryKey="alumni-players-by-field-view"
+                    className="lg:col-span-2"
                     action={
                         <InfoTooltip>
                             Počet aktivních hráčů podle studijního oboru.

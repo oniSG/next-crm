@@ -1,11 +1,12 @@
 'use client'
 
-import { useId } from 'react'
+import { useId, useMemo } from 'react'
 import {
     Bar,
     BarChart as RechartsBarChart,
     CartesianGrid,
     Rectangle,
+    ReferenceLine,
     XAxis,
     YAxis,
 } from 'recharts'
@@ -23,6 +24,10 @@ import { cn } from '@/lib/utils'
 import { formatCompactNumber } from './format-compact-number'
 import { useMutedSeries } from './use-muted-series'
 
+const AVERAGE_KEY = 'average'
+const AVERAGE_COLOR = '#000'
+const AVERAGE_OPACITY = 0.6
+
 export type BarChartProps = {
     data: object[]
     config: ChartConfig
@@ -32,6 +37,8 @@ export type BarChartProps = {
     secondarySeries?: string[]
     orientation?: 'vertical' | 'horizontal'
     stacked?: boolean
+    /** Gap between category groups; use `0` for bars without spacing. */
+    barCategoryGap?: number | string
     showYAxis?: boolean
     hideCategoryTicks?: boolean
     angledXAxis?: boolean
@@ -39,11 +46,17 @@ export type BarChartProps = {
     categoryMaxLength?: number
     xAxisLabel?: string
     yAxisLabel?: string
+    /** Caps the left/value Y-axis (vertical charts) at this number. */
+    yAxisMax?: number
     secondaryYAxisLabel?: string
     className?: string
     formatValue?: (value: number) => string
     formatSecondaryValue?: (value: number) => string
     emptyMessage?: string
+    /** When true, draws a dashed reference line at the mean of bar totals. */
+    showAverage?: boolean
+    /** When false, hides the average entry from the legend (line still renders). */
+    showAverageInLegend?: boolean
     /** When set, legend clicks mute/unmute series and persist state in the URL. */
     legendQueryKey?: string
 }
@@ -52,6 +65,16 @@ function truncateCategoryLabel(value: unknown, maxLength: number) {
     const label = String(value)
     if (label.length <= maxLength) return label
     return `${label.slice(0, Math.max(0, maxLength - 1))}…`
+}
+
+/** Fit Y-axis ticks to the longest displayed label, without leftover gutter. */
+function categoryYAxisWidth(labels: readonly string[], maxLength?: number) {
+    const longest = labels.reduce((max, label) => {
+        const displayed = maxLength ? truncateCategoryLabel(label, maxLength) : label
+        return Math.max(max, displayed.length)
+    }, 0)
+
+    return Math.min(240, Math.max(72, longest * 7 + 16))
 }
 
 function rowHasVisibleValue(row: object, keys: string[]) {
@@ -63,6 +86,20 @@ function rowHasVisibleValue(row: object, keys: string[]) {
 
 function isNonZeroValue(value: unknown) {
     return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+}
+
+function rowSeriesTotal(row: object, keys: readonly string[]) {
+    return keys.reduce((sum, key) => {
+        const value = (row as Record<string, unknown>)[key]
+        return sum + (typeof value === 'number' && Number.isFinite(value) ? value : 0)
+    }, 0)
+}
+
+function averageOfChartRows(rows: object[], keys: readonly string[]) {
+    if (rows.length === 0 || keys.length === 0) return undefined
+
+    const total = rows.reduce((sum, row) => sum + rowSeriesTotal(row, keys), 0)
+    return total / rows.length
 }
 
 type BarRadius = number | [number, number, number, number]
@@ -108,21 +145,40 @@ export function BarChart({
     secondarySeries = [],
     orientation = 'vertical',
     stacked = false,
+    barCategoryGap,
     showYAxis = false,
     hideCategoryTicks = false,
     angledXAxis = false,
     categoryMaxLength,
     xAxisLabel,
     yAxisLabel,
+    yAxisMax,
     secondaryYAxisLabel,
     className,
     formatValue,
     formatSecondaryValue,
     emptyMessage = 'No data for the selected period.',
+    showAverage = false,
+    showAverageInLegend = true,
     legendQueryKey,
 }: BarChartProps) {
     const reactId = useId().replace(/:/g, '')
     const chartId = legendQueryKey ?? `bar-chart-${reactId}`
+
+    const chartConfig = useMemo(
+        () =>
+            showAverage && showAverageInLegend
+                ? ({
+                      ...config,
+                      [AVERAGE_KEY]: {
+                          label: 'Průměr',
+                          color: AVERAGE_COLOR,
+                      },
+                  } satisfies ChartConfig)
+                : config,
+        [config, showAverage, showAverageInLegend],
+    )
+
     const { orderedSeries, visibleSeries, mutedKeys, toggleSeries } = useMutedSeries(
         legendQueryKey,
         series,
@@ -131,14 +187,23 @@ export function BarChart({
     const chartData =
         visibleSeries.length === 0
             ? []
-            : mutedKeys.length === 0
-              ? data
-              : data.filter((row) => rowHasVisibleValue(row, visibleSeries))
+            : data.filter((row) => rowHasVisibleValue(row, visibleSeries))
 
-    const legendItems = orderedSeries.map((key) => ({
-        dataKey: key,
-        color: config[key]?.color ?? `var(--color-${key})`,
-    }))
+    const keysForAverage = visibleSeries.length > 0 ? visibleSeries : series
+    const averageValue = useMemo(() => {
+        if (!showAverage) return undefined
+        return averageOfChartRows(chartData, keysForAverage)
+    }, [showAverage, chartData, keysForAverage])
+
+    const legendItems = [
+        ...orderedSeries.map((key) => ({
+            dataKey: key,
+            color: chartConfig[key]?.color ?? `var(--color-${key})`,
+        })),
+        ...(showAverage && showAverageInLegend && averageValue != null
+            ? [{ dataKey: AVERAGE_KEY, color: AVERAGE_COLOR }]
+            : []),
+    ]
 
     if (
         chartData.length === 0 ||
@@ -164,6 +229,12 @@ export function BarChart({
     const formatCategoryTick = categoryMaxLength
         ? (value: unknown) => truncateCategoryLabel(value, categoryMaxLength)
         : undefined
+    const categoryAxisWidth = categoryYAxisWidth(
+        chartData.map((row) =>
+            String((row as Record<string, unknown>)[categoryKey] ?? ''),
+        ),
+        categoryMaxLength,
+    )
     const xAxisHeight = angledXAxis ? (xAxisLabel ? 78 : 56) : xAxisLabel ? 40 : undefined
     // Room for axis label + legend row; legend is pinned to container bottom.
     const bottomMargin = (angledXAxis ? (xAxisLabel ? 28 : 12) : xAxisLabel ? 12 : 4) + 24
@@ -174,7 +245,7 @@ export function BarChart({
     return (
         <ChartContainer
             id={chartId}
-            config={config}
+            config={chartConfig}
             className={cn(
                 'aspect-auto h-full min-h-56 w-full [&_.recharts-legend-wrapper]:!bottom-0 [&_.recharts-legend-wrapper]:!h-auto [&_.recharts-legend-wrapper]:!w-full',
                 className,
@@ -185,10 +256,11 @@ export function BarChart({
                 accessibilityLayer
                 data={chartData}
                 layout={isHorizontal ? 'vertical' : 'horizontal'}
+                barCategoryGap={barCategoryGap}
                 margin={
                     isHorizontal
                         ? {
-                              left: yAxisLabel ? 16 : 8,
+                              left: yAxisLabel ? 20 : 0,
                               right: 12,
                               bottom: bottomMargin,
                           }
@@ -230,7 +302,7 @@ export function BarChart({
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            width={categoryMaxLength ? 112 : 88}
+                            width={categoryAxisWidth}
                             tickFormatter={formatCategoryTick}
                             label={
                                 yAxisLabel
@@ -238,7 +310,7 @@ export function BarChart({
                                           value: yAxisLabel,
                                           angle: -90,
                                           position: 'left',
-                                          offset: 8,
+                                          offset: 12,
                                           style: { textAnchor: 'middle' },
                                       }
                                     : undefined
@@ -279,6 +351,8 @@ export function BarChart({
                                 axisLine={false}
                                 tickMargin={8}
                                 width={48}
+                                domain={yAxisMax != null ? [0, yAxisMax] : undefined}
+                                allowDataOverflow={yAxisMax != null}
                                 tickFormatter={(value) =>
                                     formatCompactNumber(Number(value))
                                 }
@@ -323,8 +397,7 @@ export function BarChart({
                 )}
                 <ChartTooltip
                     content={(tooltipProps) => {
-                        const { content: _content, ...tooltipContentProps } =
-                            tooltipProps
+                        const { content: _content, ...tooltipContentProps } = tooltipProps
 
                         if (!tooltipProps.active) {
                             return null
@@ -333,8 +406,7 @@ export function BarChart({
                         const filteredPayload = stacked
                             ? tooltipProps.payload?.filter(
                                   (item) =>
-                                      item.type !== 'none' &&
-                                      Number(item.value) !== 0,
+                                      item.type !== 'none' && Number(item.value) !== 0,
                               )
                             : tooltipProps.payload
 
@@ -351,9 +423,7 @@ export function BarChart({
                                   return {
                                       ...item,
                                       name: xAxisLabel ?? 'Hodnota',
-                                      color:
-                                          config[key]?.color ??
-                                          `var(--color-${key})`,
+                                      color: config[key]?.color ?? `var(--color-${key})`,
                                   }
                               })
                             : filteredPayload
@@ -385,8 +455,7 @@ export function BarChart({
                                                   item.color ??
                                                   (
                                                       item.payload as
-                                                          | { fill?: string }
-                                                          | undefined
+                                                          { fill?: string } | undefined
                                                   )?.fill
 
                                               return (
@@ -446,8 +515,7 @@ export function BarChart({
                                 }
                                 labelFormatter={(_value, tooltipPayload) => {
                                     const row = tooltipPayload?.[0]?.payload as
-                                        | Record<string, unknown>
-                                        | undefined
+                                        Record<string, unknown> | undefined
                                     const category = row?.[categoryKey]
                                     return category != null ? String(category) : ''
                                 }}
@@ -465,9 +533,7 @@ export function BarChart({
                     }
                 />
                 {visiblePrimarySeries.map((key, i) => {
-                    const barRadius: BarRadius = stacked
-                        ? 0
-                        : 4
+                    const barRadius: BarRadius = stacked ? 0 : 4
                     return (
                         <Bar
                             // Remount when stack position changes — Recharts won't
@@ -483,18 +549,12 @@ export function BarChart({
                                     ? (props) => {
                                           const radius = stackedSegmentRadius(
                                               props.payload as
-                                                  | Record<string, unknown>
-                                                  | undefined,
+                                                  Record<string, unknown> | undefined,
                                               key,
                                               visiblePrimarySeries,
                                               isHorizontal,
                                           )
-                                          return (
-                                              <Rectangle
-                                                  {...props}
-                                                  radius={radius}
-                                              />
-                                          )
+                                          return <Rectangle {...props} radius={radius} />
                                       }
                                     : undefined
                             }
@@ -517,17 +577,13 @@ export function BarChart({
                                         ? (props) => {
                                               const radius = stackedSegmentRadius(
                                                   props.payload as
-                                                      | Record<string, unknown>
-                                                      | undefined,
+                                                      Record<string, unknown> | undefined,
                                                   key,
                                                   visibleSecondarySeries,
                                                   isHorizontal,
                                               )
                                               return (
-                                                  <Rectangle
-                                                      {...props}
-                                                      radius={radius}
-                                                  />
+                                                  <Rectangle {...props} radius={radius} />
                                               )
                                           }
                                         : undefined
@@ -535,6 +591,26 @@ export function BarChart({
                             />
                         )
                     })}
+                {showAverage && averageValue != null ? (
+                    isHorizontal ? (
+                        <ReferenceLine
+                            x={averageValue}
+                            stroke={AVERAGE_COLOR}
+                            strokeDasharray="6 4"
+                            strokeWidth={2}
+                            strokeOpacity={AVERAGE_OPACITY}
+                        />
+                    ) : (
+                        <ReferenceLine
+                            y={averageValue}
+                            yAxisId={hasSecondaryAxis ? 'left' : undefined}
+                            stroke={AVERAGE_COLOR}
+                            strokeDasharray="6 4"
+                            strokeWidth={2}
+                            strokeOpacity={AVERAGE_OPACITY}
+                        />
+                    )
+                ) : null}
             </RechartsBarChart>
         </ChartContainer>
     )

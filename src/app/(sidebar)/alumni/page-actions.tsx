@@ -19,7 +19,7 @@ import {
     pruneAlumniTeamSelection,
 } from '@/lib/alumni/filter-options'
 import { ALUMNI_DEGREE_OPTIONS, ALUMNI_SEASON_OPTIONS } from '@/lib/alumni/filters'
-import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import { useFilters } from './use-filters'
 
 function selectionChanged(current: readonly string[], next: readonly string[]) {
     return (
@@ -45,7 +45,7 @@ export function PageActions() {
         setFields,
         degrees,
         setDegrees,
-    } = useAlumniFilters()
+    } = useFilters()
 
     const teamOptions = useMemo(
         () => getAlumniTeamOptionsForSchools(schools),

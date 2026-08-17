@@ -23,13 +23,11 @@ import {
     aggregateByPeriod,
     filterByDateRange,
     scaleChannelsToPeriodTotal,
-    useReportDateRange,
-    useReportPeriod,
-} from './report-utils'
+} from './filter-data'
+import { useFilters } from './use-filters'
 
 export function ReportSales() {
-    const [period] = useReportPeriod()
-    const { dateRange } = useReportDateRange()
+    const { period, dateRange } = useFilters()
 
     const report = SALES_REPORT_DATA
     const filteredByDate = filterByDateRange(report.revenueByDate, dateRange)

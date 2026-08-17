@@ -42,14 +42,14 @@ import {
     TICKET_REVENUE_BY_TEAM_COLUMNS,
     TICKETS_SOLD_BY_TEAM_COLUMNS,
 } from './data'
-import { useSalesReportFilters } from './use-sales-report-filters'
+import { useFilters } from './use-filters'
 import {
     buildCategoryConfig,
     toSparseCategoryChart,
 } from '@/lib/alumni/sparse-category-chart'
 
 export function SalesReport() {
-    const { dateRange, period, teams, category } = useSalesReportFilters()
+    const { dateRange, period, teams, category } = useFilters()
 
     const filteredRows = useMemo(
         () =>

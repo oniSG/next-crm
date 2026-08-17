@@ -86,6 +86,21 @@ export const ALUMNI_DEGREE_OPTIONS = [
     { label: 'Doktorské', value: 'doktorske' },
 ] as const
 
+const ALUMNI_DEGREE_ORDER = new Map<string, number>(
+    ALUMNI_DEGREE_OPTIONS.map((option, index) => [option.value, index]),
+)
+
+export function sortByAlumniDegree<T>(
+    items: readonly T[],
+    getDegree: (item: T) => string,
+): T[] {
+    return [...items].sort(
+        (a, b) =>
+            (ALUMNI_DEGREE_ORDER.get(getDegree(a)) ?? Number.MAX_SAFE_INTEGER) -
+            (ALUMNI_DEGREE_ORDER.get(getDegree(b)) ?? Number.MAX_SAFE_INTEGER),
+    )
+}
+
 export const ALUMNI_FILTER_DEFAULTS = {
     seasonFrom: '2015/2016',
     seasonTo: '2025/2026',

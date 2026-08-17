@@ -5,7 +5,7 @@ import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
 import { ALUMNI_SEASON_OPTIONS, ALUMNI_TEAM_OPTIONS } from '@/lib/alumni/filters'
-import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import { useFilters } from './use-filters'
 
 export function PageActions() {
     const {
@@ -15,7 +15,7 @@ export function PageActions() {
         setSeasonTo,
         teams,
         setTeams,
-    } = useAlumniFilters()
+    } = useFilters()
 
     return (
         <>

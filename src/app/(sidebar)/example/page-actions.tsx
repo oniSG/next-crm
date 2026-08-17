@@ -14,7 +14,7 @@ import {
     SEGMENT_OPTIONS,
     TEAM_OPTIONS,
 } from './data'
-import { useExampleFilters } from './use-example-filters'
+import { useFilters } from './use-filters'
 
 export function PageActions() {
     const {
@@ -29,7 +29,7 @@ export function PageActions() {
         setChannels,
         regions,
         setRegions,
-    } = useExampleFilters()
+    } = useFilters()
 
     const activeCount = [
         segment !== 'all',

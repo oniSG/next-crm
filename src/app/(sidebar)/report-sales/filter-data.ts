@@ -1,14 +1,8 @@
-'use client'
-
-import { useMemo, useState } from 'react'
 import { format } from 'date-fns'
-import { parseAsIsoDate, parseAsStringLiteral, useQueryState } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
 
 import type { Period, RevenueByDatePoint, RevenuePoint } from './data'
-
-const PERIODS = ['day', 'month', 'year'] as const satisfies readonly Period[]
 
 const MONTH_LABELS = [
     'Led',
@@ -24,38 +18,6 @@ const MONTH_LABELS = [
     'Lis',
     'Pro',
 ] as const
-
-export function useReportPeriod() {
-    return useQueryState(
-        'period',
-        parseAsStringLiteral(PERIODS)
-            .withDefault('day')
-            .withOptions({ clearOnDefault: true }),
-    )
-}
-
-export function useReportDateRange() {
-    const [today] = useState(() => new Date())
-    const defaultFrom = useMemo(
-        () => new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()),
-        [today],
-    )
-
-    const [from, setFrom] = useQueryState('from', parseAsIsoDate)
-    const [to, setTo] = useQueryState('to', parseAsIsoDate)
-
-    const dateRange: DateRange = {
-        from: from ?? defaultFrom,
-        to: to ?? today,
-    }
-
-    function setDateRange(range: DateRange) {
-        void setFrom(range.from)
-        void setTo(range.to)
-    }
-
-    return { today, dateRange, setDateRange }
-}
 
 function formatDayLabel(date: string) {
     const [year, month, day] = date.split('-')

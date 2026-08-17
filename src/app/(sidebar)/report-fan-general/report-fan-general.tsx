@@ -27,10 +27,9 @@ import {
 import {
     aggregateByPeriod,
     filterByDateRange,
-    useReportDateRange,
-    useReportPeriod,
     type ChartRow,
-} from './report-utils'
+} from './filter-data'
+import { useFilters } from './use-filters'
 
 const numberFormatter = new Intl.NumberFormat('cs-CZ')
 
@@ -64,8 +63,7 @@ function reportTableColumns(
 }
 
 export function ReportFanGeneral() {
-    const [period] = useReportPeriod()
-    const { dateRange } = useReportDateRange()
+    const { period, dateRange } = useFilters()
 
     const emailData = aggregateByPeriod(
         filterByDateRange(EMAIL_REPORT_BY_DAY, dateRange),

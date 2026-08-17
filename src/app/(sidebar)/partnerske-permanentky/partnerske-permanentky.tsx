@@ -35,7 +35,7 @@ import {
     CATEGORY_UTILIZATION_COLUMNS,
 } from './data'
 import { getPartnerSeasonTicketsData } from './filter-data'
-import { usePartnerSeasonTicketsFilters } from './use-partner-season-tickets-filters'
+import { useFilters } from './use-filters'
 import {
     buildCategoryConfig,
     toSparseCategoryChart,
@@ -59,7 +59,7 @@ function chartTableTabs(chart: ReactNode, table: ReactNode): GraphCardTab[] {
 }
 
 export function PartnerSeasonTickets() {
-    const { partners, categories, season } = usePartnerSeasonTicketsFilters()
+    const { partners, categories, season } = useFilters()
 
     const dashboardData = useMemo(
         () =>
@@ -91,10 +91,7 @@ export function PartnerSeasonTickets() {
         [topEvents],
     )
 
-    const topEventsConfig = useMemo(
-        () => buildCategoryConfig(topEvents),
-        [topEvents],
-    )
+    const topEventsConfig = useMemo(() => buildCategoryConfig(topEvents), [topEvents])
 
     const categoryChart = useMemo(
         () =>
@@ -117,10 +114,7 @@ export function PartnerSeasonTickets() {
         [selectedCategories],
     )
 
-    const categoryChartHeight = Math.max(
-        280,
-        categoryUtilization.length * 36 + 80,
-    )
+    const categoryChartHeight = Math.max(280, categoryUtilization.length * 36 + 80)
     const partnerChartHeight = Math.max(360, partnerUsage.length * 36 + 88)
 
     return (
@@ -145,8 +139,8 @@ export function PartnerSeasonTickets() {
                     }}
                     action={
                         <InfoTooltip>
-                            Počet rozdaných partnerských permanentek pro zvolenou
-                            sezónu a filtry.
+                            Počet rozdaných partnerských permanentek pro zvolenou sezónu a
+                            filtry.
                         </InfoTooltip>
                     }
                 />
@@ -176,8 +170,8 @@ export function PartnerSeasonTickets() {
                     }}
                     action={
                         <InfoTooltip>
-                            Součet návštěv partnerských permanentek napříč
-                            událostmi ve zvoleném období.
+                            Součet návštěv partnerských permanentek napříč událostmi ve
+                            zvoleném období.
                         </InfoTooltip>
                     }
                 />
@@ -192,8 +186,8 @@ export function PartnerSeasonTickets() {
                     }}
                     action={
                         <InfoTooltip>
-                            Průměrné využití z dostupných permanentek × počet
-                            událostí ve zvoleném období.
+                            Průměrné využití z dostupných permanentek × počet událostí ve
+                            zvoleném období.
                         </InfoTooltip>
                     }
                 />
@@ -206,18 +200,14 @@ export function PartnerSeasonTickets() {
                     queryKey="partner-tickets-usage-timeline"
                     action={
                         <InfoTooltip>
-                            Každý bod je jedna událost. Návštěva = použití
-                            partnerské permanentky na dané akci.
+                            Každý bod je jedna událost. Návštěva = použití partnerské
+                            permanentky na dané akci.
                         </InfoTooltip>
                     }
                     tableExportable={{
                         filename: 'casova-osa-vyuziti',
                         headers: ['Datum', 'Událost', 'Návštěvy'],
-                        rows: timeline.map((row) => [
-                            row.date,
-                            row.event,
-                            row.visits,
-                        ]),
+                        rows: timeline.map((row) => [row.date, row.event, row.visits]),
                     }}
                     tabs={chartTableTabs(
                         <LineChart
@@ -231,7 +221,6 @@ export function PartnerSeasonTickets() {
                             xAxisLabel="Datum události"
                             yAxisLabel="Počet návštěv"
                             formatValue={formatCount}
-                            emptyMessage="Pro zvolené filtry nejsou k dispozici žádné události."
                             legendQueryKey="partner-tickets-usage-timeline-muted"
                             className="h-80"
                         />,
@@ -251,17 +240,14 @@ export function PartnerSeasonTickets() {
                     queryKey="partner-tickets-top-events"
                     action={
                         <InfoTooltip>
-                            Tři události s nejvyšším počtem použití
-                            partnerských permanentek.
+                            Tři události s nejvyšším počtem použití partnerských
+                            permanentek.
                         </InfoTooltip>
                     }
                     tableExportable={{
                         filename: 'top-3-udalosti',
                         headers: ['Událost', 'Návštěvy'],
-                        rows: topEvents.map((row) => [
-                            row.event,
-                            row.visits,
-                        ]),
+                        rows: topEvents.map((row) => [row.event, row.visits]),
                     }}
                     tabs={chartTableTabs(
                         <BarChart
@@ -274,7 +260,6 @@ export function PartnerSeasonTickets() {
                             showYAxis
                             xAxisLabel="Návštěvy"
                             formatValue={formatCount}
-                            emptyMessage="Pro zvolené filtry nejsou k dispozici žádné události."
                             legendQueryKey="partner-tickets-top-events-muted"
                             className="h-72"
                         />,
@@ -292,8 +277,8 @@ export function PartnerSeasonTickets() {
                     queryKey="partner-tickets-categories"
                     action={
                         <InfoTooltip>
-                            Průměrné využití vydaných partnerských
-                            permanentek podle kategorie.
+                            Průměrné využití vydaných partnerských permanentek podle
+                            kategorie.
                         </InfoTooltip>
                     }
                     tableExportable={{
@@ -322,7 +307,6 @@ export function PartnerSeasonTickets() {
                                 categoryMaxLength={22}
                                 xAxisLabel="Využití"
                                 formatValue={formatPercent}
-                                emptyMessage="Pro zvolené filtry nejsou k dispozici žádné kategorie."
                                 legendQueryKey="partner-tickets-categories-muted"
                                 className="h-full"
                             />
@@ -342,9 +326,8 @@ export function PartnerSeasonTickets() {
                 queryKey="partner-tickets-top-partners"
                 action={
                     <InfoTooltip>
-                        Průměrné využití permanentek jednotlivých partnerů,
-                        rozdělené podle kategorie. Filtry Partner a Kategorie
-                        zužují zobrazená data.
+                        Průměrné využití permanentek jednotlivých partnerů, rozdělené
+                        podle kategorie. Filtry Partner a Kategorie zužují zobrazená data.
                     </InfoTooltip>
                 }
                 tableExportable={{
@@ -361,17 +344,12 @@ export function PartnerSeasonTickets() {
                         ...selectedCategories.map((key) => row[key] ?? 0),
                         selectedCategories.reduce((sum, key) => {
                             const value = row[key]
-                            return (
-                                sum + (typeof value === 'number' ? value : 0)
-                            )
+                            return sum + (typeof value === 'number' ? value : 0)
                         }, 0),
                     ]),
                 }}
                 tabs={chartTableTabs(
-                    <div
-                        className="w-full"
-                        style={{ height: partnerChartHeight }}
-                    >
+                    <div className="w-full" style={{ height: partnerChartHeight }}>
                         <BarChart
                             data={partnerUsage}
                             config={TICKET_CATEGORY_CONFIG}
@@ -381,10 +359,8 @@ export function PartnerSeasonTickets() {
                             orientation="horizontal"
                             showYAxis
                             categoryMaxLength={24}
-                            xAxisLabel="Průměrné využití permanentek (%)"
-                            yAxisLabel="Partner"
+                            xAxisLabel="Průměrné využití permanentek"
                             formatValue={formatPercent}
-                            emptyMessage="Pro zvolené filtry nejsou k dispozici žádní partneři."
                             legendQueryKey="partner-tickets-top-partners-muted"
                             className="h-full"
                         />

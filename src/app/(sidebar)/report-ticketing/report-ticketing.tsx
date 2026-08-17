@@ -1,8 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
 import { ChartColumnIcon, TableIcon } from 'lucide-react'
-import { parseAsIsoDate, useQueryState } from 'nuqs'
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
@@ -20,29 +18,16 @@ import {
     sumTicketsVsSeasonTickets,
     TICKETING_REPORT_DATA,
     TICKETS_BY_EVENT_CONFIG,
-    TICKETS_BY_EVENT_DEFAULT_FROM,
-    TICKETS_BY_EVENT_DEFAULT_TO,
     TICKETS_SOLD_USED_CONFIG,
     TICKETS_VS_SEASON_TICKETS_COLUMNS,
     TICKETS_VS_SEASON_TICKETS_CONFIG,
     TICKETS_VS_SEASON_TICKETS_SERIES,
     topSoldUsedByTotal,
 } from './data'
+import { useFilters } from './use-filters'
 
 export function ReportTicketing() {
-    const [today] = useState(() => new Date())
-    const [eventFrom, setEventFrom] = useQueryState(
-        'event-from',
-        parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_FROM),
-    )
-    const [eventTo, setEventTo] = useQueryState(
-        'event-to',
-        parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_TO),
-    )
-    const eventDateRange = useMemo(
-        () => ({ from: eventFrom, to: eventTo }),
-        [eventFrom, eventTo],
-    )
+    const { today, eventDateRange, setEventDateRange } = useFilters()
 
     const report = TICKETING_REPORT_DATA
     const ticketsByEvent = topSoldUsedByTotal(
@@ -81,10 +66,7 @@ export function ReportTicketing() {
                 dateRange={{
                     value: eventDateRange,
                     today,
-                    onChange: (range) => {
-                        void setEventFrom(range.from)
-                        void setEventTo(range.to)
-                    },
+                    onChange: setEventDateRange,
                 }}
                 tabs={[
                     {

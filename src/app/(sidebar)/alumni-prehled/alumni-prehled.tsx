@@ -11,7 +11,7 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
-import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import { useFilters } from './use-filters'
 import {
     numberFormatter,
     percentFormatter,
@@ -34,23 +34,17 @@ import {
 } from './data'
 
 export function AlumniPrehled() {
-    const { seasonFrom, seasonTo, teams } = useAlumniFilters()
+    const { seasonFrom, seasonTo, teams } = useFilters()
 
     const filteredRows = useMemo(
         () => filterOverviewRows(seasonFrom, seasonTo, teams),
         [seasonFrom, seasonTo, teams],
     )
 
-    const totals = useMemo(
-        () => sumAlumniMetrics(filteredRows),
-        [filteredRows],
-    )
+    const totals = useMemo(() => sumAlumniMetrics(filteredRows), [filteredRows])
 
     const departures = totals.completed + totals.incomplete
-    const graduationRate = rateFromDepartures(
-        totals.completed,
-        totals.incomplete,
-    )
+    const graduationRate = rateFromDepartures(totals.completed, totals.incomplete)
 
     const leagueGraduation = useMemo(
         () => getLeagueGraduationRate(filteredRows),
@@ -67,10 +61,7 @@ export function AlumniPrehled() {
         [graduationSeries],
     )
 
-    const teamComparison = useMemo(
-        () => getTeamComparison(filteredRows),
-        [filteredRows],
-    )
+    const teamComparison = useMemo(() => getTeamComparison(filteredRows), [filteredRows])
 
     const teamComparisonConfig = useMemo(
         () => buildCategoryConfig(teamComparison),
@@ -104,8 +95,8 @@ export function AlumniPrehled() {
                     value={numberFormatter.format(totals.playersInSelection)}
                     action={
                         <InfoTooltip>
-                            Všichni hráči, kterých se filtry v období{' '}
-                            {seasonFrom} – {seasonTo} týkají.
+                            Všichni hráči, kterých se filtry v období {seasonFrom} –{' '}
+                            {seasonTo} týkají.
                         </InfoTooltip>
                     }
                 />
@@ -124,8 +115,8 @@ export function AlumniPrehled() {
                     value={numberFormatter.format(totals.alumni)}
                     action={
                         <InfoTooltip>
-                            Alumni v týmech odpovídajících filtrům v období{' '}
-                            {seasonFrom} – {seasonTo}.
+                            Alumni v týmech odpovídajících filtrům v období {seasonFrom} –{' '}
+                            {seasonTo}.
                         </InfoTooltip>
                     }
                 />
@@ -146,7 +137,7 @@ export function AlumniPrehled() {
                 />
             </section>
 
-            <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <section className="grid grid-cols-1 gap-4">
                 <DataVisulaizationCard
                     title="Vývoj graduation rate podle týmu"
                     queryKey="alumni-league-graduation-view"
@@ -233,6 +224,8 @@ export function AlumniPrehled() {
                                     stacked
                                     orientation="horizontal"
                                     showYAxis
+                                    showAverage
+                                    showAverageInLegend={false}
                                     categoryMaxLength={22}
                                     xAxisLabel="Graduation rate (%)"
                                     yAxisLabel="Tým"

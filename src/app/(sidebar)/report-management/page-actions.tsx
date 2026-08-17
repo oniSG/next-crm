@@ -1,30 +1,18 @@
 'use client'
 
-import { useState } from 'react'
-import { parseAsIsoDate, useQueryState } from 'nuqs'
-
 import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
-const defaultFrom = new Date(2026, 0, 1)
-const defaultTo = new Date(2026, 5, 30)
+import { useFilters } from './use-filters'
 
 export function PageActions() {
-    const [today] = useState(() => new Date())
-    const [from, setFrom] = useQueryState(
-        'from',
-        parseAsIsoDate.withDefault(defaultFrom),
-    )
-    const [to, setTo] = useQueryState('to', parseAsIsoDate.withDefault(defaultTo))
+    const { dateRange, setDateRange, today } = useFilters()
 
     return (
         <>
             <DateRangeFilter
-                value={{ from, to }}
-                onChange={(range) => {
-                    void setFrom(range.from)
-                    void setTo(range.to)
-                }}
+                value={dateRange}
+                onChange={setDateRange}
                 today={today}
             />
             <ExportButton

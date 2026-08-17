@@ -51,7 +51,7 @@ import {
     VISITS_TABLE_COLUMNS,
 } from './data'
 import { getExampleDashboardData } from './filter-data'
-import { useExampleFilters } from './use-example-filters'
+import { useFilters } from './use-filters'
 
 function chartTableTabs(chart: ReactNode, table: ReactNode): GraphCardTab[] {
     return [
@@ -71,7 +71,7 @@ function chartTableTabs(chart: ReactNode, table: ReactNode): GraphCardTab[] {
 }
 
 export function ExampleDashboard() {
-    const { dateRange, segment, teams, channels, regions } = useExampleFilters()
+    const { dateRange, segment, teams, channels, regions } = useFilters()
 
     const data = useMemo(
         () =>

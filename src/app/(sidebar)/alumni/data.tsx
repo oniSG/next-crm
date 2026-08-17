@@ -7,6 +7,7 @@ import {
     fieldLabel,
     hockeyTeamLabel,
     schoolLabel,
+    sortByAlumniDegree,
 } from '@/lib/alumni/filters'
 import {
     formatGraduationPercent,
@@ -188,11 +189,14 @@ export function getAlumniHighestDegree(
         byDegree.set(row.degree, (byDegree.get(row.degree) ?? 0) + row.alumni)
     }
 
-    return ALUMNI_DEGREE_OPTIONS.map((option) => ({
-        name: option.value,
-        value: Math.round(byDegree.get(option.value) ?? 0),
-        fill: `var(--color-${option.value})`,
-    })).filter((point) => point.value > 0)
+    return sortByAlumniDegree(
+        ALUMNI_DEGREE_OPTIONS.map((option) => ({
+            name: option.value,
+            value: Math.round(byDegree.get(option.value) ?? 0),
+            fill: `var(--color-${option.value})`,
+        })).filter((point) => point.value > 0),
+        (point) => point.name,
+    )
 }
 
 export function getAlumniDegreeStructure(

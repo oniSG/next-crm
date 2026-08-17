@@ -61,10 +61,7 @@ function monthsInRange(range: DateRange): Set<string> {
     )
 }
 
-function filterByMonth<T extends { month: string }>(
-    rows: T[],
-    months: Set<string>,
-): T[] {
+function filterByMonth<T extends { month: string }>(rows: T[], months: Set<string>): T[] {
     return rows.filter((row) => months.has(row.month))
 }
 
@@ -102,9 +99,7 @@ export function getExampleDashboardData(filters: ExampleFilterState) {
     const categoryShare =
         filters.segment === 'all'
             ? CATEGORY_SHARE
-            : CATEGORY_SHARE.filter(
-                  (row) => row.name === SEGMENT_LABEL[filters.segment],
-              )
+            : CATEGORY_SHARE.filter((row) => row.name === SEGMENT_LABEL[filters.segment])
 
     const visitsByDay = VISITS_BY_DAY
     const mrrByMonth = filterByMonth(MRR_BY_MONTH, months)
@@ -114,11 +109,7 @@ export function getExampleDashboardData(filters: ExampleFilterState) {
     const teamLabels =
         filters.teams.length === 0
             ? null
-            : new Set(
-                  filters.teams
-                      .map((id) => TEAM_LABEL_BY_ID[id])
-                      .filter(Boolean),
-              )
+            : new Set(filters.teams.map((id) => TEAM_LABEL_BY_ID[id]).filter(Boolean))
 
     const heatmapByTeam: HeatmapCell[] = HEATMAP_BY_TEAM.filter((cell) => {
         if (teamLabels && !teamLabels.has(cell.row)) return false
@@ -131,16 +122,10 @@ export function getExampleDashboardData(filters: ExampleFilterState) {
     })
 
     const campaignRows = CAMPAIGN_TABLE_ROWS.filter((row) => {
-        if (
-            filters.channels.length > 0 &&
-            !filters.channels.includes(row.channelId)
-        ) {
+        if (filters.channels.length > 0 && !filters.channels.includes(row.channelId)) {
             return false
         }
-        if (
-            filters.regions.length > 0 &&
-            !filters.regions.includes(row.regionId)
-        ) {
+        if (filters.regions.length > 0 && !filters.regions.includes(row.regionId)) {
             return false
         }
         return true
@@ -150,23 +135,12 @@ export function getExampleDashboardData(filters: ExampleFilterState) {
     const funnelFlowTableRows = toFunnelRows()
 
     const totalRevenue = revenueTableRows.reduce((sum, row) => sum + row.total, 0)
-    const totalVisitors = visitorsByMonth.reduce(
-        (sum, row) => sum + row.desktop,
-        0,
-    )
-    const totalSessions = sessionsByChannel.reduce(
-        (sum, row) => sum + row.sessions,
-        0,
-    )
+    const totalVisitors = visitorsByMonth.reduce((sum, row) => sum + row.desktop, 0)
+    const totalSessions = sessionsByChannel.reduce((sum, row) => sum + row.sessions, 0)
     const totalCampaignSent = campaignRows.reduce((sum, row) => sum + row.sent, 0)
-    const totalCampaignOpened = campaignRows.reduce(
-        (sum, row) => sum + row.opened,
-        0,
-    )
+    const totalCampaignOpened = campaignRows.reduce((sum, row) => sum + row.opened, 0)
     const openRate =
-        totalCampaignSent > 0
-            ? (totalCampaignOpened / totalCampaignSent) * 100
-            : 0
+        totalCampaignSent > 0 ? (totalCampaignOpened / totalCampaignSent) * 100 : 0
 
     return {
         revenueByMonth,
@@ -183,7 +157,7 @@ export function getExampleDashboardData(filters: ExampleFilterState) {
         funnelFlow,
         funnelFlowTableRows,
         kpis: {
-            totalRevenue: `${totalRevenue.toLocaleString('cs-CZ')} tis.`,
+            totalRevenue: totalRevenue.toLocaleString('cs-CZ'),
             totalVisitors: totalVisitors.toLocaleString('cs-CZ'),
             totalSessions: totalSessions.toLocaleString('cs-CZ'),
             openRate: `${openRate.toFixed(1).replace('.', ',')} %`,

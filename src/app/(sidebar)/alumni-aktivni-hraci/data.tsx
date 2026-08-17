@@ -7,6 +7,7 @@ import {
     degreeLabel,
     facultyLabel,
     hockeyTeamLabel,
+    sortByAlumniDegree,
 } from '@/lib/alumni/filters'
 import {
     formatPlayerCount,
@@ -136,11 +137,14 @@ export function getStudyLevel(
         )
     }
 
-    return ALUMNI_DEGREE_OPTIONS.map((option) => ({
-        name: option.value,
-        value: byDegree.get(option.value) ?? 0,
-        fill: `var(--color-${option.value})`,
-    })).filter((point) => point.value > 0)
+    return sortByAlumniDegree(
+        ALUMNI_DEGREE_OPTIONS.map((option) => ({
+            name: option.value,
+            value: byDegree.get(option.value) ?? 0,
+            fill: `var(--color-${option.value})`,
+        })).filter((point) => point.value > 0),
+        (point) => point.name,
+    )
 }
 
 export const STUDY_LEVEL_CONFIG = {

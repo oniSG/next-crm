@@ -417,12 +417,7 @@ export function getCategoryUtilization(
                 ? averagePartnerCategoryUtil(partners, category.key)
                 : CATEGORY_UTILIZATION[category.key],
         }))
-        .filter(
-            (row) =>
-                partnerIds.length === 0 ||
-                row.utilization > 0 ||
-                categories.length === 1,
-        )
+        .filter((row) => row.utilization > 0)
         .sort((a, b) => b.utilization - a.utilization)
 }
 
@@ -446,6 +441,7 @@ export function getPartnerUsageRows(
             }
             return row
         })
+        .filter((row) => partnerTotal(row, categories) > 0)
         .sort((a, b) => partnerTotal(b, categories) - partnerTotal(a, categories))
         .slice(0, partnerIds.length === 0 ? limit : undefined)
 }

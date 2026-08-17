@@ -11,7 +11,7 @@ import { LineChart } from '@/components/custom/statistics/line-chart'
 import { SimpleTable } from '@/components/custom/statistics/simple-table'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
 
-import { useAlumniFilters } from '@/lib/alumni/use-alumni-filters'
+import { useFilters } from './use-filters'
 import {
     numberFormatter,
     percentFormatter,
@@ -35,7 +35,7 @@ import {
 } from './data'
 
 export function AlumniGraduationRate() {
-    const { seasonFrom, seasonTo, teams } = useAlumniFilters()
+    const { seasonFrom, seasonTo, teams } = useFilters()
 
     const filteredRows = useMemo(
         () => filterGraduationRows(seasonFrom, seasonTo, teams),
@@ -226,6 +226,8 @@ export function AlumniGraduationRate() {
                                     categoryKey="label"
                                     series={[...COMPLETED_VS_NOT_SERIES]}
                                     showYAxis
+                                    showAverage
+                                    showAverageInLegend={false}
                                     angledXAxis
                                     xAxisLabel="Sezóna"
                                     yAxisLabel="Počet"

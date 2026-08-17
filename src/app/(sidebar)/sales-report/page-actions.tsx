@@ -11,7 +11,7 @@ import {
     TEAM_OPTIONS,
     type Period,
 } from './data'
-import { useSalesReportFilters } from './use-sales-report-filters'
+import { useFilters } from './use-filters'
 
 const periodValues = PERIOD_OPTIONS.map((option) => option.value)
 
@@ -26,7 +26,7 @@ export function PageActions() {
         setTeams,
         category,
         setCategory,
-    } = useSalesReportFilters()
+    } = useFilters()
 
     return (
         <>
