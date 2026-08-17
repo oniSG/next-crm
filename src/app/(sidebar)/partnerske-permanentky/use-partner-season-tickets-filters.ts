@@ -1,33 +1,30 @@
 'use client'
 
-import { useFilterParam } from '@/lib/alumni/use-filter-param'
+import {
+    useFilterParam,
+    useMultiFilterParam,
+} from '@/lib/alumni/use-filter-param'
 
 import {
-    ALL_CATEGORIES_VALUE,
-    ALL_PARTNERS_VALUE,
     CATEGORY_FILTER_OPTIONS,
     DEFAULT_SEASON,
     PARTNER_FILTER_OPTIONS,
     SEASON_OPTIONS,
-    type CategoryFilterValue,
-    type PartnerFilterValue,
+    TICKET_CATEGORY_SERIES,
+    type PartnerId,
     type SeasonKey,
+    type TicketCategoryKey,
 } from './data'
 
 const partnerValues = PARTNER_FILTER_OPTIONS.map((option) => option.value)
-const categoryValues = CATEGORY_FILTER_OPTIONS.map((option) => option.value)
+const categoryValues = TICKET_CATEGORY_SERIES
 const seasonValues = SEASON_OPTIONS.map((option) => option.value)
 
 export function usePartnerSeasonTicketsFilters() {
-    const [partner, setPartner] = useFilterParam(
-        'partner',
-        partnerValues,
-        ALL_PARTNERS_VALUE,
-    )
-    const [category, setCategory] = useFilterParam(
+    const [partners, setPartners] = useMultiFilterParam('partner', partnerValues)
+    const [categories, setCategories] = useMultiFilterParam(
         'category',
         categoryValues,
-        ALL_CATEGORIES_VALUE,
     )
     const [season, setSeason] = useFilterParam(
         'season',
@@ -36,10 +33,10 @@ export function usePartnerSeasonTicketsFilters() {
     )
 
     return {
-        partner: partner as PartnerFilterValue,
-        setPartner,
-        category: category as CategoryFilterValue,
-        setCategory,
+        partners: partners as PartnerId[],
+        setPartners,
+        categories: categories as TicketCategoryKey[],
+        setCategories,
         season: season as SeasonKey,
         setSeason,
     }

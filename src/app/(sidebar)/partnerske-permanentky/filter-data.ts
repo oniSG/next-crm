@@ -1,6 +1,4 @@
 import {
-    ALL_CATEGORIES_VALUE,
-    ALL_PARTNERS_VALUE,
     PARTNER_EVENTS,
     SEASON_STATS,
     PARTNERS_TOTAL,
@@ -13,34 +11,29 @@ import {
     getSeasonDateRange,
     getTopEvents,
     getUsageTimeline,
-    type CategoryFilterValue,
-    type PartnerFilterValue,
+    type PartnerId,
     type SeasonKey,
     type TicketCategoryKey,
 } from './data'
 
 export type PartnerSeasonTicketsFilterState = {
-    partner: PartnerFilterValue
-    category: CategoryFilterValue
+    partners: PartnerId[]
+    categories: TicketCategoryKey[]
     season: SeasonKey
 }
 
-function resolveCategories(
-    category: CategoryFilterValue,
-): TicketCategoryKey[] {
-    return category === ALL_CATEGORIES_VALUE
-        ? [...TICKET_CATEGORY_SERIES]
-        : [category]
+function resolveCategories(categories: TicketCategoryKey[]): TicketCategoryKey[] {
+    return categories.length === 0 ? [...TICKET_CATEGORY_SERIES] : categories
 }
 
 export function getPartnerSeasonTicketsData(
     filters: PartnerSeasonTicketsFilterState,
 ) {
     const { from, to } = getSeasonDateRange(filters.season)
-    const selectedCategories = resolveCategories(filters.category)
-    const filterScale = getFilterScale(filters.partner, filters.category)
+    const selectedCategories = resolveCategories(filters.categories)
+    const filterScale = getFilterScale(filters.partners, filters.categories)
     const seasonStats = SEASON_STATS[filters.season]
-    const partnerFiltered = filters.partner !== ALL_PARTNERS_VALUE
+    const partnerFiltered = filters.partners.length > 0
 
     const filteredEvents = filterEventsByDate(PARTNER_EVENTS, from, to).map(
         (event) => ({
@@ -55,8 +48,12 @@ export function getPartnerSeasonTicketsData(
     const kpis = computeKpis(filteredEvents, {
         issued: scaledIssued,
         used: scaledUsed,
-        partnersTotal: partnerFiltered ? 1 : PARTNERS_TOTAL,
-        partnersActive: partnerFiltered ? 1 : seasonStats.partnersActive,
+        partnersTotal: partnerFiltered
+            ? filters.partners.length
+            : PARTNERS_TOTAL,
+        partnersActive: partnerFiltered
+            ? filters.partners.length
+            : seasonStats.partnersActive,
     })
 
     return {
@@ -65,13 +62,12 @@ export function getPartnerSeasonTicketsData(
         topEvents: getTopEvents(filteredEvents),
         categoryUtilization: getCategoryUtilization(
             selectedCategories,
-            filters.partner,
+            filters.partners,
         ),
         partnerUsage: getPartnerUsageRows(
             selectedCategories,
-            filters.partner,
+            filters.partners,
         ),
         selectedCategories,
-        hasEvents: filteredEvents.length > 0,
     }
 }

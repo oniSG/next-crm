@@ -118,7 +118,7 @@ export function BarChart({
     className,
     formatValue,
     formatSecondaryValue,
-    emptyMessage,
+    emptyMessage = 'No data for the selected period.',
     legendQueryKey,
 }: BarChartProps) {
     const reactId = useId().replace(/:/g, '')
@@ -140,30 +140,19 @@ export function BarChart({
         color: config[key]?.color ?? `var(--color-${key})`,
     }))
 
-    if (chartData.length === 0) {
+    if (
+        chartData.length === 0 ||
+        !chartData.some((row) => rowHasVisibleValue(row, visibleSeries))
+    ) {
         return (
-            <ChartContainer
-                id={chartId}
-                config={config}
+            <div
                 className={cn(
-                    'aspect-auto h-full min-h-56 w-full',
+                    'text-muted-foreground flex h-full min-h-56 w-full items-center justify-center px-4 text-center text-sm',
                     className,
                 )}
             >
-                <div className="flex h-full min-h-56 w-full flex-col">
-                    <div className="text-muted-foreground flex flex-1 items-center justify-center text-sm">
-                        {emptyMessage ?? 'No data for the selected period.'}
-                    </div>
-                    {legendItems.length > 0 ? (
-                        <ChartLegendContent
-                            items={legendItems}
-                            mutedKeys={mutedKeys}
-                            onItemClick={toggleSeries}
-                            className="pt-2"
-                        />
-                    ) : null}
-                </div>
-            </ChartContainer>
+                {emptyMessage}
+            </div>
         )
     }
 

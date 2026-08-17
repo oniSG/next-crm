@@ -160,8 +160,6 @@ export type PartnerUsage = {
     byCategory: Partial<Record<TicketCategoryKey, number>>
 }
 
-export const ALL_PARTNERS_VALUE = 'all'
-export const ALL_CATEGORIES_VALUE = 'all'
 export const DEFAULT_SEASON = '2025-26'
 
 export const SEASON_OPTIONS = [
@@ -277,21 +275,13 @@ export const PARTNER_USAGE: PartnerUsage[] = [
 ]
 
 export type PartnerId = (typeof PARTNER_USAGE)[number]['id']
-export type PartnerFilterValue = typeof ALL_PARTNERS_VALUE | PartnerId
-export type CategoryFilterValue = typeof ALL_CATEGORIES_VALUE | TicketCategoryKey
 
-export const PARTNER_FILTER_OPTIONS = [
-    { value: ALL_PARTNERS_VALUE, label: 'Všechny' },
-    ...PARTNER_USAGE.map((partner) => ({
-        value: partner.id,
-        label: partner.name,
-    })),
-]
+export const PARTNER_FILTER_OPTIONS = PARTNER_USAGE.map((partner) => ({
+    value: partner.id,
+    label: partner.name,
+}))
 
-export const CATEGORY_FILTER_OPTIONS = [
-    { value: ALL_CATEGORIES_VALUE, label: 'Všechny' },
-    ...TICKET_CATEGORY_OPTIONS,
-]
+export const CATEGORY_FILTER_OPTIONS = TICKET_CATEGORY_OPTIONS
 
 export type UsageTimelinePoint = {
     date: string
@@ -361,57 +351,75 @@ export function partnerUsageWeight(
     return categories.reduce((sum, key) => sum + (partner.byCategory[key] ?? 0), 0)
 }
 
-export function getPartnerShare(partnerId: PartnerFilterValue) {
-    if (partnerId === ALL_PARTNERS_VALUE) return 1
+export function getPartnersShare(partnerIds: readonly PartnerId[]) {
+    if (partnerIds.length === 0) return 1
 
-    const selected = PARTNER_USAGE.find((row) => row.id === partnerId)
-    if (!selected) return 1
-
-    const selectedWeight = partnerUsageWeight(selected)
     const totalWeight = PARTNER_USAGE.reduce(
         (sum, row) => sum + partnerUsageWeight(row),
         0,
     )
+    const selectedWeight = PARTNER_USAGE.filter((row) =>
+        partnerIds.includes(row.id),
+    ).reduce((sum, row) => sum + partnerUsageWeight(row), 0)
+
     return totalWeight > 0 ? selectedWeight / totalWeight : 1
 }
 
-export function getCategoryShare(category: CategoryFilterValue) {
-    if (category === ALL_CATEGORIES_VALUE) return 1
+export function getCategoriesShare(categoryKeys: readonly TicketCategoryKey[]) {
+    if (categoryKeys.length === 0) return 1
 
-    const categoryUtil = CATEGORY_UTILIZATION[category]
-    const averageUtil =
-        TICKET_CATEGORY_SERIES.reduce((sum, key) => sum + CATEGORY_UTILIZATION[key], 0) /
-        TICKET_CATEGORY_SERIES.length
-    return averageUtil > 0 ? categoryUtil / averageUtil : 1
+    const totalSum = TICKET_CATEGORY_SERIES.reduce(
+        (sum, key) => sum + CATEGORY_UTILIZATION[key],
+        0,
+    )
+    const selectedSum = categoryKeys.reduce(
+        (sum, key) => sum + CATEGORY_UTILIZATION[key],
+        0,
+    )
+
+    return totalSum > 0 ? selectedSum / totalSum : 1
 }
 
 export function getFilterScale(
-    partner: PartnerFilterValue,
-    category: CategoryFilterValue,
+    partners: readonly PartnerId[],
+    categories: readonly TicketCategoryKey[],
 ) {
-    return getPartnerShare(partner) * getCategoryShare(category)
+    return getPartnersShare(partners) * getCategoriesShare(categories)
+}
+
+function averagePartnerCategoryUtil(
+    partners: PartnerUsage[],
+    categoryKey: TicketCategoryKey,
+) {
+    const values = partners
+        .map((partner) => partner.byCategory[categoryKey] ?? 0)
+        .filter((value) => value > 0)
+
+    if (values.length === 0) return 0
+
+    return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
 export function getCategoryUtilization(
     categories: readonly TicketCategoryKey[],
-    partnerId: PartnerFilterValue = ALL_PARTNERS_VALUE,
+    partnerIds: readonly PartnerId[] = [],
 ): CategoryUtilizationPoint[] {
-    const partner =
-        partnerId === ALL_PARTNERS_VALUE
+    const partners =
+        partnerIds.length === 0
             ? null
-            : PARTNER_USAGE.find((row) => row.id === partnerId)
+            : PARTNER_USAGE.filter((row) => partnerIds.includes(row.id))
 
     return TICKET_CATEGORIES.filter((category) => categories.includes(category.key))
         .map((category) => ({
             label: category.label,
             key: category.key,
-            utilization: partner
-                ? (partner.byCategory[category.key] ?? 0)
+            utilization: partners
+                ? averagePartnerCategoryUtil(partners, category.key)
                 : CATEGORY_UTILIZATION[category.key],
         }))
         .filter(
             (row) =>
-                partnerId === ALL_PARTNERS_VALUE ||
+                partnerIds.length === 0 ||
                 row.utilization > 0 ||
                 categories.length === 1,
         )
@@ -420,14 +428,14 @@ export function getCategoryUtilization(
 
 export function getPartnerUsageRows(
     categories: readonly TicketCategoryKey[],
-    partnerId: PartnerFilterValue = ALL_PARTNERS_VALUE,
+    partnerIds: readonly PartnerId[] = [],
     limit: number = TOP_PARTNERS_LIMIT,
 ): PartnerUsagePoint[] {
     const categorySet = new Set(categories)
     const partners =
-        partnerId === ALL_PARTNERS_VALUE
+        partnerIds.length === 0
             ? PARTNER_USAGE
-            : PARTNER_USAGE.filter((partner) => partner.id === partnerId)
+            : PARTNER_USAGE.filter((partner) => partnerIds.includes(partner.id))
 
     return partners
         .map((partner) => {
@@ -439,7 +447,7 @@ export function getPartnerUsageRows(
             return row
         })
         .sort((a, b) => partnerTotal(b, categories) - partnerTotal(a, categories))
-        .slice(0, partnerId === ALL_PARTNERS_VALUE ? limit : undefined)
+        .slice(0, partnerIds.length === 0 ? limit : undefined)
 }
 
 function partnerTotal(row: PartnerUsagePoint, categories: readonly TicketCategoryKey[]) {

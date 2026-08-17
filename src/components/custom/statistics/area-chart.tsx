@@ -21,6 +21,13 @@ import { cn } from '@/lib/utils'
 
 import { useMutedSeries } from './use-muted-series'
 
+function rowHasVisibleValue(row: object, keys: readonly string[]) {
+    return keys.some((key) => {
+        const value = (row as Record<string, unknown>)[key]
+        return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+    })
+}
+
 export type AreaChartProps = {
     data: object[]
     config: ChartConfig
@@ -28,6 +35,7 @@ export type AreaChartProps = {
     series: string[]
     stacked?: boolean
     className?: string
+    emptyMessage?: string
     /** When set, legend clicks mute/unmute series and persist state in the URL. */
     legendQueryKey?: string
 }
@@ -39,6 +47,7 @@ export function AreaChart({
     series,
     stacked = true,
     className,
+    emptyMessage = 'No data for the selected period.',
     legendQueryKey,
 }: AreaChartProps) {
     const reactId = useId().replace(/:/g, '')
@@ -50,6 +59,22 @@ export function AreaChart({
         dataKey: key,
         color: config[key]?.color ?? `var(--color-${key})`,
     }))
+
+    if (
+        data.length === 0 ||
+        !data.some((row) => rowHasVisibleValue(row, visibleSeries))
+    ) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex h-full min-h-56 w-full items-center justify-center px-4 text-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage}
+            </div>
+        )
+    }
 
     return (
         <ChartContainer

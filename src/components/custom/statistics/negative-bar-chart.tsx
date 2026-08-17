@@ -10,6 +10,11 @@ import {
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
 
+function rowHasVisibleValue(row: object, key: string) {
+    const value = (row as Record<string, unknown>)[key]
+    return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+}
+
 export type NegativeBarChartProps = {
     data: object[]
     config: ChartConfig
@@ -18,6 +23,7 @@ export type NegativeBarChartProps = {
     positiveColor?: string
     negativeColor?: string
     className?: string
+    emptyMessage?: string
 }
 
 export function NegativeBarChart({
@@ -28,7 +34,21 @@ export function NegativeBarChart({
     positiveColor = 'var(--chart-1)',
     negativeColor = 'var(--chart-3)',
     className,
+    emptyMessage = 'No data for the selected period.',
 }: NegativeBarChartProps) {
+    if (data.length === 0 || !data.some((row) => rowHasVisibleValue(row, valueKey))) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex max-h-75 min-h-56 w-full items-center justify-center px-4 text-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage}
+            </div>
+        )
+    }
+
     const withFill = data.map((d) => {
         const record = d as Record<string, unknown>
         const value = record[valueKey]

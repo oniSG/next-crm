@@ -17,12 +17,18 @@ import {
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
 
+function rowHasVisibleValue(row: object, key: string) {
+    const value = (row as Record<string, unknown>)[key]
+    return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+}
+
 export type LabeledBarChartProps = {
     data: object[]
     config: ChartConfig
     categoryKey: string
     valueKey: string
     className?: string
+    emptyMessage?: string
 }
 
 export function LabeledBarChart({
@@ -31,7 +37,21 @@ export function LabeledBarChart({
     categoryKey,
     valueKey,
     className,
+    emptyMessage = 'No data for the selected period.',
 }: LabeledBarChartProps) {
+    if (data.length === 0 || !data.some((row) => rowHasVisibleValue(row, valueKey))) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex max-h-75 min-h-56 w-full items-center justify-center px-4 text-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage}
+            </div>
+        )
+    }
+
     return (
         <ChartContainer
             config={config}

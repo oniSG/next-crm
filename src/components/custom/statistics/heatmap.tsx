@@ -47,7 +47,7 @@ export function Heatmap({
     className,
     color = 'var(--chart-1)',
     formatValue = (value) => String(value),
-    emptyMessage = 'Tento graf neobsahuje žádné údaje',
+    emptyMessage = 'No data for the selected period.',
 }: HeatmapProps) {
     const rows = uniqueInOrder(data.map((cell) => cell.row))
     const columns = uniqueInOrder(data.map((cell) => cell.column))
@@ -62,7 +62,7 @@ export function Heatmap({
         return (
             <div
                 className={cn(
-                    'text-muted-foreground flex h-48 items-center justify-center text-sm',
+                    'text-muted-foreground flex h-48 items-center justify-center px-4 text-center text-sm',
                     className,
                 )}
             >

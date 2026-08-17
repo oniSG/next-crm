@@ -58,27 +58,17 @@ function chartTableTabs(chart: ReactNode, table: ReactNode): GraphCardTab[] {
     ]
 }
 
-function emptyChartMessage(message: string, className = 'h-72') {
-    return (
-        <p
-            className={`text-muted-foreground flex ${className} items-center justify-center text-sm`}
-        >
-            {message}
-        </p>
-    )
-}
-
 export function PartnerSeasonTickets() {
-    const { partner, category, season } = usePartnerSeasonTicketsFilters()
+    const { partners, categories, season } = usePartnerSeasonTicketsFilters()
 
     const dashboardData = useMemo(
         () =>
             getPartnerSeasonTicketsData({
-                partner,
-                category,
+                partners,
+                categories,
                 season,
             }),
-        [partner, category, season],
+        [partners, categories, season],
     )
 
     const {
@@ -88,7 +78,6 @@ export function PartnerSeasonTickets() {
         categoryUtilization,
         partnerUsage,
         selectedCategories,
-        hasEvents,
     } = dashboardData
 
     const topEventsChart = useMemo(
@@ -231,27 +220,21 @@ export function PartnerSeasonTickets() {
                         ]),
                     }}
                     tabs={chartTableTabs(
-                        hasEvents ? (
-                            <LineChart
-                                data={timeline}
-                                config={USAGE_OVER_TIME_CONFIG}
-                                categoryKey="label"
-                                series={[...USAGE_OVER_TIME_SERIES]}
-                                showYAxis
-                                angledXAxis
-                                showDots
-                                xAxisLabel="Datum události"
-                                yAxisLabel="Počet návštěv"
-                                formatValue={formatCount}
-                                legendQueryKey="partner-tickets-usage-timeline-muted"
-                                className="h-80"
-                            />
-                        ) : (
-                            emptyChartMessage(
-                                'Pro zvolené filtry nejsou k dispozici žádné události.',
-                                'h-80',
-                            )
-                        ),
+                        <LineChart
+                            data={timeline}
+                            config={USAGE_OVER_TIME_CONFIG}
+                            categoryKey="label"
+                            series={[...USAGE_OVER_TIME_SERIES]}
+                            showYAxis
+                            angledXAxis
+                            showDots
+                            xAxisLabel="Datum události"
+                            yAxisLabel="Počet návštěv"
+                            formatValue={formatCount}
+                            emptyMessage="Pro zvolené filtry nejsou k dispozici žádné události."
+                            legendQueryKey="partner-tickets-usage-timeline-muted"
+                            className="h-80"
+                        />,
                         <SimpleTable
                             data={timeline}
                             columns={USAGE_TIMELINE_COLUMNS}
@@ -281,25 +264,20 @@ export function PartnerSeasonTickets() {
                         ]),
                     }}
                     tabs={chartTableTabs(
-                        topEvents.length > 0 ? (
-                            <BarChart
-                                data={topEventsChart.data}
-                                config={topEventsConfig}
-                                categoryKey="label"
-                                series={topEventsChart.series}
-                                stacked
-                                orientation="horizontal"
-                                showYAxis
-                                xAxisLabel="Návštěvy"
-                                formatValue={formatCount}
-                                legendQueryKey="partner-tickets-top-events-muted"
-                                className="h-72"
-                            />
-                        ) : (
-                            emptyChartMessage(
-                                'Pro zvolené filtry nejsou k dispozici žádné události.',
-                            )
-                        ),
+                        <BarChart
+                            data={topEventsChart.data}
+                            config={topEventsConfig}
+                            categoryKey="label"
+                            series={topEventsChart.series}
+                            stacked
+                            orientation="horizontal"
+                            showYAxis
+                            xAxisLabel="Návštěvy"
+                            formatValue={formatCount}
+                            emptyMessage="Pro zvolené filtry nejsou k dispozici žádné události."
+                            legendQueryKey="partner-tickets-top-events-muted"
+                            className="h-72"
+                        />,
                         <SimpleTable
                             data={topEvents}
                             columns={TOP_EVENT_COLUMNS}
@@ -327,33 +305,28 @@ export function PartnerSeasonTickets() {
                         ]),
                     }}
                     tabs={chartTableTabs(
-                        categoryUtilization.length > 0 ? (
-                            <div
-                                className="w-full"
-                                style={{
-                                    height: categoryChartHeight,
-                                }}
-                            >
-                                <BarChart
-                                    data={categoryChart.data}
-                                    config={categoryChartConfig}
-                                    categoryKey="label"
-                                    series={categoryChart.series}
-                                    stacked
-                                    orientation="horizontal"
-                                    showYAxis
-                                    categoryMaxLength={22}
-                                    xAxisLabel="Využití"
-                                    formatValue={formatPercent}
-                                    legendQueryKey="partner-tickets-categories-muted"
-                                    className="h-full"
-                                />
-                            </div>
-                        ) : (
-                            emptyChartMessage(
-                                'Pro zvolené filtry nejsou k dispozici žádné kategorie.',
-                            )
-                        ),
+                        <div
+                            className="w-full"
+                            style={{
+                                height: categoryChartHeight,
+                            }}
+                        >
+                            <BarChart
+                                data={categoryChart.data}
+                                config={categoryChartConfig}
+                                categoryKey="label"
+                                series={categoryChart.series}
+                                stacked
+                                orientation="horizontal"
+                                showYAxis
+                                categoryMaxLength={22}
+                                xAxisLabel="Využití"
+                                formatValue={formatPercent}
+                                emptyMessage="Pro zvolené filtry nejsou k dispozici žádné kategorie."
+                                legendQueryKey="partner-tickets-categories-muted"
+                                className="h-full"
+                            />
+                        </div>,
                         <SimpleTable
                             data={categoryUtilization}
                             columns={CATEGORY_UTILIZATION_COLUMNS}
@@ -395,32 +368,27 @@ export function PartnerSeasonTickets() {
                     ]),
                 }}
                 tabs={chartTableTabs(
-                    partnerUsage.length > 0 ? (
-                        <div
-                            className="w-full"
-                            style={{ height: partnerChartHeight }}
-                        >
-                            <BarChart
-                                data={partnerUsage}
-                                config={TICKET_CATEGORY_CONFIG}
-                                categoryKey="label"
-                                series={[...selectedCategories]}
-                                stacked
-                                orientation="horizontal"
-                                showYAxis
-                                categoryMaxLength={24}
-                                xAxisLabel="Průměrné využití permanentek (%)"
-                                yAxisLabel="Partner"
-                                formatValue={formatPercent}
-                                legendQueryKey="partner-tickets-top-partners-muted"
-                                className="h-full"
-                            />
-                        </div>
-                    ) : (
-                        emptyChartMessage(
-                            'Pro zvolené filtry nejsou k dispozici žádní partneři.',
-                        )
-                    ),
+                    <div
+                        className="w-full"
+                        style={{ height: partnerChartHeight }}
+                    >
+                        <BarChart
+                            data={partnerUsage}
+                            config={TICKET_CATEGORY_CONFIG}
+                            categoryKey="label"
+                            series={[...selectedCategories]}
+                            stacked
+                            orientation="horizontal"
+                            showYAxis
+                            categoryMaxLength={24}
+                            xAxisLabel="Průměrné využití permanentek (%)"
+                            yAxisLabel="Partner"
+                            formatValue={formatPercent}
+                            emptyMessage="Pro zvolené filtry nejsou k dispozici žádní partneři."
+                            legendQueryKey="partner-tickets-top-partners-muted"
+                            className="h-full"
+                        />
+                    </div>,
                     <SimpleTable
                         data={partnerUsage}
                         columns={partnerColumns}

@@ -24,6 +24,13 @@ import { useMutedSeries } from './use-muted-series'
 
 const AVERAGE_KEY = 'average'
 
+function rowHasVisibleValue(row: object, keys: readonly string[]) {
+    return keys.some((key) => {
+        const value = (row as Record<string, unknown>)[key]
+        return typeof value === 'number' ? value !== 0 : value != null && value !== ''
+    })
+}
+
 export type LineChartProps = {
     data: object[]
     config: ChartConfig
@@ -41,6 +48,7 @@ export type LineChartProps = {
      */
     showAverage?: boolean
     formatValue?: (value: number) => string
+    emptyMessage?: string
     /** When set, legend clicks mute/unmute series and persist state in the URL. */
     legendQueryKey?: string
 }
@@ -69,6 +77,7 @@ export function LineChart({
     showDots = false,
     showAverage = false,
     formatValue,
+    emptyMessage = 'No data for the selected period.',
     legendQueryKey,
 }: LineChartProps) {
     const reactId = useId().replace(/:/g, '')
@@ -124,6 +133,22 @@ export function LineChart({
         dataKey: key,
         color: chartConfig[key]?.color ?? `var(--color-${key})`,
     }))
+
+    if (
+        data.length === 0 ||
+        !data.some((row) => rowHasVisibleValue(row, series))
+    ) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex h-full min-h-56 w-full items-center justify-center px-4 text-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage}
+            </div>
+        )
+    }
 
     return (
         <ChartContainer

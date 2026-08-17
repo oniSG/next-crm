@@ -38,17 +38,17 @@ export function SimpleTable<T>({
     className,
     footer,
     onRowClick,
-    emptyMessage,
+    emptyMessage = 'No data for the selected period.',
 }: SimpleTableProps<T>) {
     if (data.length === 0) {
         return (
             <div
                 className={cn(
-                    'text-muted-foreground flex h-24 items-center justify-center text-sm',
+                    'text-muted-foreground flex h-24 items-center justify-center px-4 text-center text-sm',
                     className,
                 )}
             >
-                {emptyMessage ?? 'No data for the selected period.'}
+                {emptyMessage}
             </div>
         )
     }

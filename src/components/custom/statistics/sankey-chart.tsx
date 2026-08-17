@@ -43,6 +43,7 @@ export type SankeyChartProps = {
         left?: number
     }
     className?: string
+    emptyMessage?: string
 }
 
 const NodeValuesContext = createContext<number[]>([])
@@ -147,7 +148,21 @@ export function SankeyChart({
     verticalAlign = 'top',
     margin = { top: 16, right: 180, bottom: 16, left: 16 },
     className,
+    emptyMessage = 'No data for the selected period.',
 }: SankeyChartProps) {
+    if (data.nodes.length === 0 || data.links.length === 0) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground flex h-140 w-full items-center justify-center px-4 text-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage}
+            </div>
+        )
+    }
+
     const nodeValues = getNodeValues(data)
 
     return (

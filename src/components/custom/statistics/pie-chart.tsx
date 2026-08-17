@@ -17,10 +17,30 @@ export type PieChartProps = {
     config: ChartConfig
     className?: string
     innerRadius?: number
+    emptyMessage?: string
 }
 
-export function PieChart({ data, config, className, innerRadius }: PieChartProps) {
+export function PieChart({
+    data,
+    config,
+    className,
+    innerRadius,
+    emptyMessage = 'No data for the selected period.',
+}: PieChartProps) {
     const total = data.reduce((sum, item) => sum + item.value, 0)
+
+    if (data.length === 0 || total === 0) {
+        return (
+            <div
+                className={cn(
+                    'text-muted-foreground mx-auto flex aspect-square max-h-[280px] w-full items-center justify-center px-4 text-center text-sm',
+                    className,
+                )}
+            >
+                {emptyMessage}
+            </div>
+        )
+    }
 
     return (
         <ChartContainer
