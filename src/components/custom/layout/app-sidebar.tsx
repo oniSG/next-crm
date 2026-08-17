@@ -169,6 +169,11 @@ const fansGroups: NavGroup[] = [
                         icon: <CreditCardIcon />,
                     },
                     {
+                        title: 'Partnerské permanentky',
+                        url: '/partnerske-permanentky',
+                        icon: <TicketsIcon />,
+                    },
+                    {
                         title: 'Manažerský report',
                         url: '/report-management',
                         icon: <ClipboardCheckIcon />,
@@ -284,6 +289,11 @@ const businessGroups: NavGroup[] = [
                         title: 'Membership',
                         url: '/report-membership',
                         icon: <CreditCardIcon />,
+                    },
+                    {
+                        title: 'Partnerské permanentky',
+                        url: '/partnerske-permanentky',
+                        icon: <TicketsIcon />,
                     },
                     {
                         title: 'Manažerský report',

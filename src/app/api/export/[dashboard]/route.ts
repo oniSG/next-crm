@@ -29,6 +29,7 @@ const ALLOWED_DASHBOARDS = new Set([
     'sales-report',
     'report-business',
     'report-membership',
+    'partnerske-permanentky',
     'noticeboard-marketing',
     'data-quality',
     'relatoo-index',

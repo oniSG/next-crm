@@ -167,6 +167,12 @@ const pages: {
             by: 'Tomas',
         },
         {
+            name: 'Partnerské permanentky',
+            path: '/partnerske-permanentky',
+            status: 'progress',
+            by: 'Tomas',
+        },
+        {
             name: 'Alumni – Přehled',
             path: '/alumni-prehled',
             status: 'progress',
