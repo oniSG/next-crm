@@ -69,39 +69,39 @@ export function getAlumniFieldOptionsForSelection(
     return ALUMNI_FIELD_OPTIONS.filter((option) => allowed.has(option.value))
 }
 
-export function pruneAlumniTeamSelection(
-    teams: readonly string[],
+export function pruneAlumniTeamSelection<T extends string>(
+    teams: readonly T[],
     schools: readonly string[],
-) {
+): T[] {
     const allowed = valuesFromRows(matchingRows([], schools), 'team')
     if (schools.length === 0) return [...teams]
     return teams.filter((team) => allowed.has(team))
 }
 
-export function pruneAlumniSchoolSelection(
-    schools: readonly string[],
+export function pruneAlumniSchoolSelection<T extends string>(
+    schools: readonly T[],
     teams: readonly string[],
-) {
+): T[] {
     const allowed = valuesFromRows(matchingRows(teams, []), 'school')
     if (teams.length === 0) return [...schools]
     return schools.filter((school) => allowed.has(school))
 }
 
-export function pruneAlumniFacultySelection(
-    faculties: readonly string[],
+export function pruneAlumniFacultySelection<T extends string>(
+    faculties: readonly T[],
     teams: readonly string[],
     schools: readonly string[],
-) {
+): T[] {
     const allowed = valuesFromRows(matchingRows(teams, schools), 'faculty')
     return faculties.filter((faculty) => allowed.has(faculty))
 }
 
-export function pruneAlumniFieldSelection(
-    fields: readonly string[],
+export function pruneAlumniFieldSelection<T extends string>(
+    fields: readonly T[],
     teams: readonly string[],
     schools: readonly string[],
     faculties: readonly string[],
-) {
+): T[] {
     const allowed = valuesFromRows(matchingRows(teams, schools, faculties), 'field')
     return fields.filter((field) => allowed.has(field))
 }

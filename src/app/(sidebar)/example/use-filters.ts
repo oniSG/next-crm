@@ -17,8 +17,6 @@ import {
     SEGMENT_OPTIONS,
     TEAM_OPTIONS,
 } from './data'
-import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
-
 const segmentValues = SEGMENT_OPTIONS.map((option) => option.value) as [
     (typeof SEGMENT_OPTIONS)[number]['value'],
     ...(typeof SEGMENT_OPTIONS)[number]['value'][],
@@ -80,12 +78,12 @@ export function useFilters() {
         dateRange,
         setDateRange,
         segment,
-        setSegment: setLiteralParam(setSegment),
+        setSegment,
         teams,
-        setTeams: setLiteralParams(setTeams),
+        setTeams,
         channels,
-        setChannels: setLiteralParams(setChannels),
+        setChannels,
         regions,
-        setRegions: setLiteralParams(setRegions),
+        setRegions,
     }
 }

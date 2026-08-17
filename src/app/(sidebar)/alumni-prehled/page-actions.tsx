@@ -34,9 +34,7 @@ export function PageActions() {
             <MultiSelectFilter
                 options={ALUMNI_TEAM_OPTIONS}
                 value={teams}
-                onChange={(next) => {
-                    void setTeams(next)
-                }}
+                onChange={setTeams}
                 leadingLabel="Tým"
                 placeholder="Vše"
                 className="w-52"

@@ -67,7 +67,7 @@ export function PageActions() {
         [teams, schools, faculties],
     )
 
-    const handleTeamsChange = (nextTeams: string[]) => {
+    const handleTeamsChange = (nextTeams: typeof teams) => {
         void setTeams(nextTeams)
 
         const nextSchools = pruneAlumniSchoolSelection(schools, nextTeams)
@@ -175,9 +175,7 @@ export function PageActions() {
                     label="Obor"
                     options={fieldOptions}
                     value={fields}
-                    onChange={(next) => {
-                        void setFields(next)
-                    }}
+                    onChange={setFields}
                     placeholder="Vše"
                     className="w-full"
                 />
@@ -185,9 +183,7 @@ export function PageActions() {
                     label="Stupeň"
                     options={ALUMNI_DEGREE_OPTIONS}
                     value={degrees}
-                    onChange={(next) => {
-                        void setDegrees(next)
-                    }}
+                    onChange={setDegrees}
                     placeholder="Vše"
                     searchable={false}
                     className="w-full"

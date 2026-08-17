@@ -11,7 +11,6 @@ import {
     type SeasonKey,
     type TicketCategoryKey,
 } from './data'
-import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
 const partnerValues = PARTNER_USAGE.map((partner) => partner.id) as [
     PartnerId,
@@ -46,10 +45,10 @@ export function useFilters() {
 
     return {
         partners,
-        setPartners: setLiteralParams(setPartners),
+        setPartners,
         categories,
-        setCategories: setLiteralParams(setCategories),
+        setCategories,
         season,
-        setSeason: setLiteralParam(setSeason),
+        setSeason,
     }
 }

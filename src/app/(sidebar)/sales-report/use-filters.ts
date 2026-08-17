@@ -17,7 +17,6 @@ import {
     TEAM_OPTIONS,
     type Period,
 } from './data'
-import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
 const periodValues = PERIOD_OPTIONS.map((option) => option.value) as [
     Period,
@@ -76,8 +75,8 @@ export function useFilters() {
         period,
         setPeriod,
         teams,
-        setTeams: setLiteralParams(setTeams),
+        setTeams,
         category,
-        setCategory: setLiteralParam(setCategory),
+        setCategory,
     }
 }

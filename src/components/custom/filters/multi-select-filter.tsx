@@ -16,15 +16,15 @@ import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
-export type MultiSelectFilterOption = {
+export type MultiSelectFilterOption<T extends string = string> = {
     label: string
-    value: string
+    value: T
 }
 
-export type MultiSelectFilterProps = {
-    options: ReadonlyArray<MultiSelectFilterOption>
-    value: string[]
-    onChange: (value: string[]) => void
+export type MultiSelectFilterProps<T extends string = string> = {
+    options: ReadonlyArray<MultiSelectFilterOption<T>>
+    value: readonly NoInfer<T>[]
+    onChange: (value: NoInfer<T>[]) => void
     placeholder?: string
     label?: string
     /** Compact label shown inside the trigger (for toolbars). */
@@ -35,7 +35,7 @@ export type MultiSelectFilterProps = {
     className?: string
 }
 
-export function MultiSelectFilter({
+export function MultiSelectFilter<T extends string>({
     options,
     value,
     onChange,
@@ -46,7 +46,7 @@ export function MultiSelectFilter({
     emptyMessage = 'Žádné výsledky.',
     searchable = true,
     className,
-}: MultiSelectFilterProps) {
+}: MultiSelectFilterProps<T>) {
     const id = useId()
     const [open, setOpen] = useState(false)
     const selectedLabels = options
@@ -65,7 +65,7 @@ export function MultiSelectFilter({
               ? selectedLabels[0]
               : `${selectedLabels.length} vybráno`
 
-    function toggle(optionValue: string) {
+    function toggle(optionValue: T) {
         if (value.includes(optionValue)) {
             onChange(value.filter((item) => item !== optionValue))
             return

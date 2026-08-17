@@ -7,7 +7,6 @@ import {
     ALUMNI_SEASON_VALUES,
     ALUMNI_TEAM_VALUES,
 } from '@/lib/alumni/filters'
-import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
 export function useFilters() {
     const [seasonFrom, setSeasonFrom] = useQueryState(
@@ -31,10 +30,10 @@ export function useFilters() {
 
     return {
         seasonFrom,
-        setSeasonFrom: setLiteralParam(setSeasonFrom),
+        setSeasonFrom,
         seasonTo,
-        setSeasonTo: setLiteralParam(setSeasonTo),
+        setSeasonTo,
         teams,
-        setTeams: setLiteralParams(setTeams),
+        setTeams,
     }
 }

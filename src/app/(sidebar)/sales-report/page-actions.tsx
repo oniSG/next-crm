@@ -9,11 +9,8 @@ import {
     DISCOUNT_CATEGORY_OPTIONS,
     PERIOD_OPTIONS,
     TEAM_OPTIONS,
-    type Period,
 } from './data'
 import { useFilters } from './use-filters'
-
-const periodValues = PERIOD_OPTIONS.map((option) => option.value)
 
 export function PageActions() {
     const {
@@ -38,20 +35,14 @@ export function PageActions() {
             <SelectFilter
                 options={PERIOD_OPTIONS}
                 value={period}
-                onChange={(value) => {
-                    if (periodValues.includes(value as Period)) {
-                        void setPeriod(value as Period)
-                    }
-                }}
+                onChange={setPeriod}
                 leadingLabel="Období"
                 className="min-w-0 w-auto"
             />
             <MultiSelectFilter
                 options={TEAM_OPTIONS}
                 value={teams}
-                onChange={(next) => {
-                    void setTeams(next)
-                }}
+                onChange={setTeams}
                 leadingLabel="Tým"
                 placeholder="Vše"
                 className="w-52"
@@ -59,7 +50,7 @@ export function PageActions() {
             <SelectFilter
                 options={DISCOUNT_CATEGORY_OPTIONS}
                 value={category}
-                onChange={(value) => void setCategory(value as typeof category)}
+                onChange={setCategory}
                 leadingLabel="Kategorie slev"
             />
             <ExportButton dashboard="sales-report" filename="sales-report.pdf" />

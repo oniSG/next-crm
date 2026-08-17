@@ -20,18 +20,14 @@ export function PageActions() {
             <MultiSelectFilter
                 options={PARTNER_FILTER_OPTIONS}
                 value={partners}
-                onChange={(next) => {
-                    void setPartners(next)
-                }}
+                onChange={setPartners}
                 leadingLabel="Partner"
                 placeholder="Vše"
             />
             <MultiSelectFilter
                 options={CATEGORY_FILTER_OPTIONS}
                 value={categories}
-                onChange={(next) => {
-                    void setCategories(next)
-                }}
+                onChange={setCategories}
                 leadingLabel="Kategorie"
                 placeholder="Vše"
             />

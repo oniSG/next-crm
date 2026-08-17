@@ -13,15 +13,15 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
-export type SelectFilterOption = {
+export type SelectFilterOption<T extends string = string> = {
     label: string
-    value: string
+    value: T
 }
 
-export type SelectFilterProps = {
-    options: ReadonlyArray<SelectFilterOption>
-    value: string
-    onChange: (value: string) => void
+export type SelectFilterProps<T extends string = string> = {
+    options: ReadonlyArray<SelectFilterOption<T>>
+    value: NoInfer<T>
+    onChange: (value: NoInfer<T>) => void
     placeholder?: string
     label?: string
     labelClassName?: string
@@ -31,7 +31,7 @@ export type SelectFilterProps = {
     contentAlign?: 'start' | 'center' | 'end'
 }
 
-export function SelectFilter({
+export function SelectFilter<T extends string>({
     options,
     value,
     onChange,
@@ -41,7 +41,7 @@ export function SelectFilter({
     leadingLabel,
     className,
     contentAlign = 'end',
-}: SelectFilterProps) {
+}: SelectFilterProps<T>) {
     const id = useId()
 
     const select = (
@@ -49,7 +49,8 @@ export function SelectFilter({
             items={[...options]}
             value={value}
             onValueChange={(next) => {
-                if (next) onChange(next)
+                const selected = options.find((option) => option.value === next)
+                if (selected) onChange(selected.value)
             }}
         >
             <SelectTrigger

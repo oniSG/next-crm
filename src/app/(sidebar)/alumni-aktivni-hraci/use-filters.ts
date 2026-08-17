@@ -10,7 +10,6 @@ import {
     ALUMNI_SEASON_VALUES,
     ALUMNI_TEAM_VALUES,
 } from '@/lib/alumni/filters'
-import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
 const facultyValues = ALUMNI_FACULTY_OPTIONS.map((option) => option.value) as [
     string,
@@ -61,16 +60,16 @@ export function useFilters() {
 
     return {
         seasonFrom,
-        setSeasonFrom: setLiteralParam(setSeasonFrom),
+        setSeasonFrom,
         seasonTo,
-        setSeasonTo: setLiteralParam(setSeasonTo),
+        setSeasonTo,
         teams,
-        setTeams: setLiteralParams(setTeams),
+        setTeams,
         faculties,
         setFaculties,
         fields,
         setFields,
         degrees,
-        setDegrees: setLiteralParams(setDegrees),
+        setDegrees,
     }
 }
