@@ -1,5 +1,6 @@
 'use client'
 
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import {
     CalendarDaysIcon,
@@ -12,7 +13,10 @@ import {
 
 import InfoTooltip from '@/components/custom/other/info-tooltip'
 import { BarChart } from '@/components/custom/statistics/bar-chart'
-import { DataVisulaizationCard } from '@/components/custom/statistics/data-visualization-card'
+import {
+    DataVisulaizationCard,
+    type GraphCardTab,
+} from '@/components/custom/statistics/data-visualization-card'
 import { KpiCard } from '@/components/custom/statistics/kpi-card'
 import { LineChart } from '@/components/custom/statistics/line-chart'
 import { ReportHeaderCard } from '@/components/custom/statistics/report-header-card'
@@ -20,83 +24,87 @@ import { SimpleTable } from '@/components/custom/statistics/simple-table'
 
 import {
     buildPartnerUsageColumns,
-    computeKpis,
-    filterEventsByDate,
     formatCount,
     formatPercent,
-    getCategoryUtilization,
-    getPartnerUsageRows,
-    getTopEvents,
-    getUsageTimeline,
-    PARTNER_EVENTS,
     TICKET_CATEGORIES,
     TICKET_CATEGORY_CONFIG,
-    TICKET_CATEGORY_SERIES,
     USAGE_OVER_TIME_CONFIG,
     USAGE_OVER_TIME_SERIES,
     USAGE_TIMELINE_COLUMNS,
     TOP_EVENT_COLUMNS,
     CATEGORY_UTILIZATION_COLUMNS,
-    type TicketCategoryKey,
 } from './data'
+import { getPartnerSeasonTicketsData } from './filter-data'
 import { usePartnerSeasonTicketsFilters } from './use-partner-season-tickets-filters'
 import {
     buildCategoryConfig,
     toSparseCategoryChart,
 } from '@/lib/alumni/sparse-category-chart'
 
+function chartTableTabs(chart: ReactNode, table: ReactNode): GraphCardTab[] {
+    return [
+        {
+            name: 'Graf',
+            value: 'chart',
+            icon: <ChartColumnIcon />,
+            content: chart,
+        },
+        {
+            name: 'Tabulka',
+            value: 'table',
+            icon: <TableIcon />,
+            content: table,
+        },
+    ]
+}
+
+function emptyChartMessage(message: string, className = 'h-72') {
+    return (
+        <p
+            className={`text-muted-foreground flex ${className} items-center justify-center text-sm`}
+        >
+            {message}
+        </p>
+    )
+}
+
 export function PartnerSeasonTickets() {
-    const { dateRange, categories } = usePartnerSeasonTicketsFilters()
+    const { partner, category, season } = usePartnerSeasonTicketsFilters()
 
-    const selectedCategories = useMemo(
+    const dashboardData = useMemo(
         () =>
-            categories.length > 0
-                ? categories
-                : TICKET_CATEGORY_SERIES,
-        [categories],
-    ) as TicketCategoryKey[]
-
-    const filteredEvents = useMemo(
-        () =>
-            filterEventsByDate(
-                PARTNER_EVENTS,
-                dateRange.from,
-                dateRange.to,
-            ),
-        [dateRange.from, dateRange.to],
+            getPartnerSeasonTicketsData({
+                partner,
+                category,
+                season,
+            }),
+        [partner, category, season],
     )
 
-    const kpis = useMemo(
-        () => computeKpis(filteredEvents),
-        [filteredEvents],
-    )
-
-    const timeline = useMemo(
-        () => getUsageTimeline(filteredEvents),
-        [filteredEvents],
-    )
-
-    const topEvents = useMemo(
-        () => getTopEvents(filteredEvents),
-        [filteredEvents],
-    )
+    const {
+        kpis,
+        timeline,
+        topEvents,
+        categoryUtilization,
+        partnerUsage,
+        selectedCategories,
+        hasEvents,
+    } = dashboardData
 
     const topEventsChart = useMemo(
-        () => toSparseCategoryChart(topEvents.map((row) => ({
-            label: row.label,
-            count: row.visits,
-        }))),
+        () =>
+            toSparseCategoryChart(
+                topEvents.map((row) => ({
+                    label: row.label,
+                    count: row.visits,
+                })),
+            ),
         [topEvents],
     )
 
     const topEventsConfig = useMemo(
         () => buildCategoryConfig(topEvents),
         [topEvents],
-    )
-
-    const categoryUtilization = useMemo(
-        () => getCategoryUtilization(selectedCategories),
-        [selectedCategories],
     )
 
     const categoryChart = useMemo(
@@ -115,17 +123,11 @@ export function PartnerSeasonTickets() {
         [categoryUtilization],
     )
 
-    const partnerUsage = useMemo(
-        () => getPartnerUsageRows(selectedCategories),
-        [selectedCategories],
-    )
-
     const partnerColumns = useMemo(
         () => buildPartnerUsageColumns(selectedCategories),
         [selectedCategories],
     )
 
-    const topEventsChartHeight = Math.max(220, topEvents.length * 48 + 80)
     const categoryChartHeight = Math.max(
         280,
         categoryUtilization.length * 36 + 80,
@@ -154,7 +156,8 @@ export function PartnerSeasonTickets() {
                     }}
                     action={
                         <InfoTooltip>
-                            Využito = alespoň jeden průchod na událost.
+                            Počet rozdaných partnerských permanentek pro zvolenou
+                            sezónu a filtry.
                         </InfoTooltip>
                     }
                 />
@@ -227,45 +230,38 @@ export function PartnerSeasonTickets() {
                             row.visits,
                         ]),
                     }}
-                    tabs={[
-                        {
-                            name: 'Graf',
-                            value: 'chart',
-                            icon: <ChartColumnIcon />,
-                            content: (
-                                <LineChart
-                                    data={timeline}
-                                    config={USAGE_OVER_TIME_CONFIG}
-                                    categoryKey="label"
-                                    series={[...USAGE_OVER_TIME_SERIES]}
-                                    showYAxis
-                                    angledXAxis
-                                    showDots
-                                    xAxisLabel="Datum události"
-                                    yAxisLabel="Počet návštěv"
-                                    formatValue={formatCount}
-                                    legendQueryKey="partner-tickets-usage-timeline-muted"
-                                    className="h-80"
-                                />
-                            ),
-                        },
-                        {
-                            name: 'Tabulka',
-                            value: 'table',
-                            icon: <TableIcon />,
-                            content: (
-                                <SimpleTable
-                                    data={timeline}
-                                    columns={USAGE_TIMELINE_COLUMNS}
-                                    getRowKey={(row) => row.date}
-                                />
-                            ),
-                        },
-                    ]}
+                    tabs={chartTableTabs(
+                        hasEvents ? (
+                            <LineChart
+                                data={timeline}
+                                config={USAGE_OVER_TIME_CONFIG}
+                                categoryKey="label"
+                                series={[...USAGE_OVER_TIME_SERIES]}
+                                showYAxis
+                                angledXAxis
+                                showDots
+                                xAxisLabel="Datum události"
+                                yAxisLabel="Počet návštěv"
+                                formatValue={formatCount}
+                                legendQueryKey="partner-tickets-usage-timeline-muted"
+                                className="h-80"
+                            />
+                        ) : (
+                            emptyChartMessage(
+                                'Pro zvolené filtry nejsou k dispozici žádné události.',
+                                'h-80',
+                            )
+                        ),
+                        <SimpleTable
+                            data={timeline}
+                            columns={USAGE_TIMELINE_COLUMNS}
+                            getRowKey={(row) => `${row.date}:${row.opponent}`}
+                        />,
+                    )}
                 />
             </section>
 
-            <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <section className="grid grid-cols-1 gap-4">
                 <DataVisulaizationCard
                     title="Top 3 události"
                     description="Podle počtu použitých permanentek."
@@ -280,50 +276,36 @@ export function PartnerSeasonTickets() {
                         filename: 'top-3-udalosti',
                         headers: ['Událost', 'Návštěvy'],
                         rows: topEvents.map((row) => [
-                            row.label,
+                            row.event,
                             row.visits,
                         ]),
                     }}
-                    tabs={[
-                        {
-                            name: 'Graf',
-                            value: 'chart',
-                            icon: <ChartColumnIcon />,
-                            content: (
-                                <div
-                                    className="w-full"
-                                    style={{ height: topEventsChartHeight }}
-                                >
-                                    <BarChart
-                                        data={topEventsChart.data}
-                                        config={topEventsConfig}
-                                        categoryKey="label"
-                                        series={topEventsChart.series}
-                                        stacked
-                                        orientation="horizontal"
-                                        showYAxis
-                                        categoryMaxLength={28}
-                                        xAxisLabel="Návštěvy"
-                                        formatValue={formatCount}
-                                        legendQueryKey="partner-tickets-top-events-muted"
-                                        className="h-full"
-                                    />
-                                </div>
-                            ),
-                        },
-                        {
-                            name: 'Tabulka',
-                            value: 'table',
-                            icon: <TableIcon />,
-                            content: (
-                                <SimpleTable
-                                    data={topEvents}
-                                    columns={TOP_EVENT_COLUMNS}
-                                    getRowKey={(row) => row.label}
-                                />
-                            ),
-                        },
-                    ]}
+                    tabs={chartTableTabs(
+                        topEvents.length > 0 ? (
+                            <BarChart
+                                data={topEventsChart.data}
+                                config={topEventsConfig}
+                                categoryKey="label"
+                                series={topEventsChart.series}
+                                stacked
+                                orientation="horizontal"
+                                showYAxis
+                                xAxisLabel="Návštěvy"
+                                formatValue={formatCount}
+                                legendQueryKey="partner-tickets-top-events-muted"
+                                className="h-72"
+                            />
+                        ) : (
+                            emptyChartMessage(
+                                'Pro zvolené filtry nejsou k dispozici žádné události.',
+                            )
+                        ),
+                        <SimpleTable
+                            data={topEvents}
+                            columns={TOP_EVENT_COLUMNS}
+                            getRowKey={(row) => row.label}
+                        />,
+                    )}
                 />
 
                 <DataVisulaizationCard
@@ -344,48 +326,40 @@ export function PartnerSeasonTickets() {
                             row.utilization,
                         ]),
                     }}
-                    tabs={[
-                        {
-                            name: 'Graf',
-                            value: 'chart',
-                            icon: <ChartColumnIcon />,
-                            content: (
-                                <div
-                                    className="w-full"
-                                    style={{
-                                        height: categoryChartHeight,
-                                    }}
-                                >
-                                    <BarChart
-                                        data={categoryChart.data}
-                                        config={categoryChartConfig}
-                                        categoryKey="label"
-                                        series={categoryChart.series}
-                                        stacked
-                                        orientation="horizontal"
-                                        showYAxis
-                                        categoryMaxLength={22}
-                                        xAxisLabel="Využití"
-                                        formatValue={formatPercent}
-                                        legendQueryKey="partner-tickets-categories-muted"
-                                        className="h-full"
-                                    />
-                                </div>
-                            ),
-                        },
-                        {
-                            name: 'Tabulka',
-                            value: 'table',
-                            icon: <TableIcon />,
-                            content: (
-                                <SimpleTable
-                                    data={categoryUtilization}
-                                    columns={CATEGORY_UTILIZATION_COLUMNS}
-                                    getRowKey={(row) => row.key}
+                    tabs={chartTableTabs(
+                        categoryUtilization.length > 0 ? (
+                            <div
+                                className="w-full"
+                                style={{
+                                    height: categoryChartHeight,
+                                }}
+                            >
+                                <BarChart
+                                    data={categoryChart.data}
+                                    config={categoryChartConfig}
+                                    categoryKey="label"
+                                    series={categoryChart.series}
+                                    stacked
+                                    orientation="horizontal"
+                                    showYAxis
+                                    categoryMaxLength={22}
+                                    xAxisLabel="Využití"
+                                    formatValue={formatPercent}
+                                    legendQueryKey="partner-tickets-categories-muted"
+                                    className="h-full"
                                 />
-                            ),
-                        },
-                    ]}
+                            </div>
+                        ) : (
+                            emptyChartMessage(
+                                'Pro zvolené filtry nejsou k dispozici žádné kategorie.',
+                            )
+                        ),
+                        <SimpleTable
+                            data={categoryUtilization}
+                            columns={CATEGORY_UTILIZATION_COLUMNS}
+                            getRowKey={(row) => row.key}
+                        />,
+                    )}
                 />
             </section>
 
@@ -396,8 +370,8 @@ export function PartnerSeasonTickets() {
                 action={
                     <InfoTooltip>
                         Průměrné využití permanentek jednotlivých partnerů,
-                        rozdělené podle kategorie. Filtr Kategorie skrývá
-                        příslušné části sloupců.
+                        rozdělené podle kategorie. Filtry Partner a Kategorie
+                        zužují zobrazená data.
                     </InfoTooltip>
                 }
                 tableExportable={{
@@ -420,47 +394,39 @@ export function PartnerSeasonTickets() {
                         }, 0),
                     ]),
                 }}
-                tabs={[
-                    {
-                        name: 'Graf',
-                        value: 'chart',
-                        icon: <ChartColumnIcon />,
-                        content: (
-                            <div
-                                className="w-full"
-                                style={{ height: partnerChartHeight }}
-                            >
-                                <BarChart
-                                    data={partnerUsage}
-                                    config={TICKET_CATEGORY_CONFIG}
-                                    categoryKey="label"
-                                    series={[...selectedCategories]}
-                                    stacked
-                                    orientation="horizontal"
-                                    showYAxis
-                                    categoryMaxLength={24}
-                                    xAxisLabel="Průměrné využití permanentek (%)"
-                                    yAxisLabel="Partner"
-                                    formatValue={formatPercent}
-                                    legendQueryKey="partner-tickets-top-partners-muted"
-                                    className="h-full"
-                                />
-                            </div>
-                        ),
-                    },
-                    {
-                        name: 'Tabulka',
-                        value: 'table',
-                        icon: <TableIcon />,
-                        content: (
-                            <SimpleTable
+                tabs={chartTableTabs(
+                    partnerUsage.length > 0 ? (
+                        <div
+                            className="w-full"
+                            style={{ height: partnerChartHeight }}
+                        >
+                            <BarChart
                                 data={partnerUsage}
-                                columns={partnerColumns}
-                                getRowKey={(row) => String(row.label)}
+                                config={TICKET_CATEGORY_CONFIG}
+                                categoryKey="label"
+                                series={[...selectedCategories]}
+                                stacked
+                                orientation="horizontal"
+                                showYAxis
+                                categoryMaxLength={24}
+                                xAxisLabel="Průměrné využití permanentek (%)"
+                                yAxisLabel="Partner"
+                                formatValue={formatPercent}
+                                legendQueryKey="partner-tickets-top-partners-muted"
+                                className="h-full"
                             />
-                        ),
-                    },
-                ]}
+                        </div>
+                    ) : (
+                        emptyChartMessage(
+                            'Pro zvolené filtry nejsou k dispozici žádní partneři.',
+                        )
+                    ),
+                    <SimpleTable
+                        data={partnerUsage}
+                        columns={partnerColumns}
+                        getRowKey={(row) => String(row.label)}
+                    />,
+                )}
             />
         </div>
     )

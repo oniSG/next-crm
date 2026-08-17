@@ -50,9 +50,7 @@ export const TICKET_CATEGORY_OPTIONS = TICKET_CATEGORIES.map((category) => ({
     label: category.label,
 }))
 
-export const TICKET_CATEGORY_SERIES = TICKET_CATEGORIES.map(
-    (category) => category.key,
-)
+export const TICKET_CATEGORY_SERIES = TICKET_CATEGORIES.map((category) => category.key)
 
 export const TICKET_CATEGORY_CONFIG = {
     klub: { label: 'Klub', color: 'var(--chart-3)' },
@@ -117,7 +115,28 @@ export const PARTNER_EVENTS: PartnerEvent[] = [
     { date: '2026-04-10', opponent: 'Rytíři Kladno', visits: 139 },
     { date: '2026-04-14', opponent: 'HC Litvínov', visits: 145 },
     { date: '2026-04-17', opponent: 'PSG Berani Zlín', visits: 128 },
+    // 2024/25
+    { date: '2024-08-08', opponent: 'BK Mladá Boleslav', visits: 128 },
+    { date: '2024-08-23', opponent: 'HC Vítkovice Ridera', visits: 151 },
+    { date: '2024-09-06', opponent: 'HC Kometa Brno', visits: 178 },
+    { date: '2024-09-13', opponent: 'HC Škoda Plzeň', visits: 194 },
+    { date: '2024-09-20', opponent: 'Bílí Tygři Liberec', visits: 142 },
+    { date: '2024-10-04', opponent: 'HC Sparta Praha', visits: 231 },
+    { date: '2024-10-11', opponent: 'HC Dynamo Pardubice', visits: 268 },
+    { date: '2024-10-18', opponent: 'PSG Berani Zlín', visits: 121 },
+    { date: '2024-11-08', opponent: 'HC Oceláři Třinec', visits: 214 },
+    { date: '2024-11-22', opponent: 'HC Kometa Brno', visits: 186 },
+    { date: '2024-12-06', opponent: 'Bílí Tygři Liberec', visits: 159 },
+    { date: '2024-12-20', opponent: 'HC Sparta Praha', visits: 218 },
+    { date: '2025-01-10', opponent: 'HC Dynamo Pardubice', visits: 241 },
+    { date: '2025-02-07', opponent: 'HC Oceláři Třinec', visits: 223 },
+    { date: '2025-03-07', opponent: 'Bílí Tygři Liberec', visits: 181 },
+    { date: '2025-03-21', opponent: 'HC Oceláři Třinec', visits: 276 },
+    { date: '2025-04-04', opponent: 'HC Dynamo Pardubice', visits: 208 },
+    { date: '2025-04-11', opponent: 'Rytíři Kladno', visits: 127 },
 ]
+
+export const TOP_PARTNERS_LIMIT = 100
 
 export const ISSUED_SEASON_TICKETS = 408
 export const USED_SEASON_TICKETS = 374
@@ -136,24 +155,77 @@ export const CATEGORY_UTILIZATION: Record<TicketCategoryKey, number> = {
 }
 
 export type PartnerUsage = {
+    id: string
     name: string
     byCategory: Partial<Record<TicketCategoryKey, number>>
 }
 
+export const ALL_PARTNERS_VALUE = 'all'
+export const ALL_CATEGORIES_VALUE = 'all'
+export const DEFAULT_SEASON = '2025-26'
+
+export const SEASON_OPTIONS = [
+    { value: '2025-26', label: '2025/26' },
+    { value: '2024-25', label: '2024/25' },
+] as const
+
+export type SeasonKey = (typeof SEASON_OPTIONS)[number]['value']
+
+export const SEASON_STATS: Record<
+    SeasonKey,
+    { issued: number; used: number; partnersActive: number }
+> = {
+    '2025-26': { issued: 408, used: 374, partnersActive: 50 },
+    '2024-25': { issued: 392, used: 358, partnersActive: 47 },
+}
+
+export const SEASON_RANGES: Record<SeasonKey, { from: Date; to: Date }> = {
+    '2025-26': { from: new Date(2025, 7, 1), to: new Date(2026, 3, 30) },
+    '2024-25': { from: new Date(2024, 7, 1), to: new Date(2025, 3, 30) },
+}
+
+export function getSeasonDateRange(season: string) {
+    return SEASON_RANGES[season as SeasonKey] ?? SEASON_RANGES[DEFAULT_SEASON]
+}
+
 export const PARTNER_USAGE: PartnerUsage[] = [
     {
+        id: 'advokatni-kancelar-slezak',
+        name: 'Advokátní kancelář Slezák a partneři',
+        byCategory: { vipGold: 38.2, partneri: 22.1, sezonniMmhk: 18.4 },
+    },
+    {
+        id: 'astor-komplex',
+        name: 'ASTOR-KOMPLEX s.r.o.',
+        byCategory: { vipSilver: 31.6, skybox: 24.8, sezonniVerni: 16.2 },
+    },
+    {
+        id: 'audit-eu',
+        name: 'Audit EU s.r.o.',
+        byCategory: { sezonniMmhk: 29.4, sezonni: 17.8, klub: 11.3 },
+    },
+    {
+        id: 'axam',
+        name: 'AXAM spol. s r.o.',
+        byCategory: { partneri: 26.7, sezonniVerni: 20.5, vipGold: 15.9 },
+    },
+    {
+        id: 'ricoh-czech-republic',
         name: 'RICOH Czech Republic',
         byCategory: { vipGold: 41.2, sezonniMmhk: 33.8 },
     },
     {
+        id: 'msv-vytahy',
         name: 'MSV výtahy, a.s.',
         byCategory: { vipGold: 28.4, sezonniMmhk: 24.1, sezonniVerni: 19.6 },
     },
     {
+        id: 'logex-logistics',
         name: 'LogEx Logistics s.r.o.',
         byCategory: { vipGold: 70.2 },
     },
     {
+        id: 'gastro-hk',
         name: 'GASTRO-HK s.r.o.',
         byCategory: {
             partneri: 18.4,
@@ -163,41 +235,67 @@ export const PARTNER_USAGE: PartnerUsage[] = [
         },
     },
     {
+        id: 'cez-esco',
         name: 'ČEZ ESCO',
         byCategory: { vipSilver: 32.6, skybox: 28.4 },
     },
     {
+        id: 'petrof',
         name: 'Petrof, spol. s r.o.',
         byCategory: { vipGold: 22.8, vipSilver: 21.4, sezonniMmhk: 14.9 },
     },
     {
+        id: 'trelleborg-bohemia',
         name: 'Trelleborg Bohemia',
         byCategory: { sezonniVerni: 26.3, sezonni: 18.7, klub: 12.4 },
     },
     {
+        id: 'autocont',
         name: 'AutoCont a.s.',
         byCategory: { vipSilver: 29.1, partneri: 16.8, skybox: 11.2 },
     },
     {
+        id: 'kiekert-cs',
         name: 'Kiekert-CS s.r.o.',
         byCategory: { sezonniMmhk: 27.5, sezonniVerni: 18.6 },
     },
     {
+        id: 'continental-barum',
         name: 'Continental Barum',
         byCategory: { skybox: 24.8, klub: 13.1, partneri: 9.4 },
     },
     {
+        id: 'synot-tip',
         name: 'Synot Tip',
         byCategory: { vipGold: 21.7, partneri: 14.6, sezonni: 8.9 },
     },
     {
+        id: 'premedis',
         name: 'Premedis s.r.o.',
         byCategory: { sezonniVerni: 19.4, sezonni: 12.8, klub: 8.2 },
     },
 ]
 
+export type PartnerId = (typeof PARTNER_USAGE)[number]['id']
+export type PartnerFilterValue = typeof ALL_PARTNERS_VALUE | PartnerId
+export type CategoryFilterValue = typeof ALL_CATEGORIES_VALUE | TicketCategoryKey
+
+export const PARTNER_FILTER_OPTIONS = [
+    { value: ALL_PARTNERS_VALUE, label: 'Všechny' },
+    ...PARTNER_USAGE.map((partner) => ({
+        value: partner.id,
+        label: partner.name,
+    })),
+]
+
+export const CATEGORY_FILTER_OPTIONS = [
+    { value: ALL_CATEGORIES_VALUE, label: 'Všechny' },
+    ...TICKET_CATEGORY_OPTIONS,
+]
+
 export type UsageTimelinePoint = {
     date: string
+    opponent: string
     label: string
     event: string
     visits: number
@@ -205,7 +303,23 @@ export type UsageTimelinePoint = {
 
 export type TopEventPoint = {
     label: string
+    event: string
     visits: number
+}
+
+function shortOpponent(opponent: string) {
+    return opponent.replace(/^(HC|BK|PSG)\s+/u, '').replace(/\s+Ridera$/u, '')
+}
+
+export function getTopEvents(events: PartnerEvent[], limit = 3): TopEventPoint[] {
+    return [...events]
+        .sort((a, b) => b.visits - a.visits || a.date.localeCompare(b.date))
+        .slice(0, limit)
+        .map((event) => ({
+            label: `${formatEventDate(event.date)} · ${shortOpponent(event.opponent)}`,
+            event: `${formatEventDateLong(event.date)} – Mountfield HK – ${event.opponent}`,
+            visits: event.visits,
+        }))
 }
 
 export type CategoryUtilizationPoint = {
@@ -218,11 +332,7 @@ export type PartnerUsagePoint = {
     label: string
 } & Record<string, string | number>
 
-export function filterEventsByDate(
-    events: PartnerEvent[],
-    from: Date,
-    to: Date,
-) {
+export function filterEventsByDate(events: PartnerEvent[], from: Date, to: Date) {
     const fromTime = new Date(from)
     fromTime.setHours(0, 0, 0, 0)
     const toTime = new Date(to)
@@ -237,76 +347,128 @@ export function filterEventsByDate(
 export function getUsageTimeline(events: PartnerEvent[]): UsageTimelinePoint[] {
     return events.map((event) => ({
         date: event.date,
+        opponent: event.opponent,
         label: formatEventDate(event.date),
         event: `Mountfield HK – ${event.opponent}`,
         visits: event.visits,
     }))
 }
 
-export function getTopEvents(
-    events: PartnerEvent[],
-    limit = 3,
-): TopEventPoint[] {
-    return [...events]
-        .sort((a, b) => b.visits - a.visits || a.date.localeCompare(b.date))
-        .slice(0, limit)
-        .map((event) => ({
-            label: `${formatEventDate(event.date)} – Mountfield HK – ${event.opponent}`,
-            visits: event.visits,
-        }))
+export function partnerUsageWeight(
+    partner: PartnerUsage,
+    categories: readonly TicketCategoryKey[] = TICKET_CATEGORY_SERIES,
+) {
+    return categories.reduce((sum, key) => sum + (partner.byCategory[key] ?? 0), 0)
+}
+
+export function getPartnerShare(partnerId: PartnerFilterValue) {
+    if (partnerId === ALL_PARTNERS_VALUE) return 1
+
+    const selected = PARTNER_USAGE.find((row) => row.id === partnerId)
+    if (!selected) return 1
+
+    const selectedWeight = partnerUsageWeight(selected)
+    const totalWeight = PARTNER_USAGE.reduce(
+        (sum, row) => sum + partnerUsageWeight(row),
+        0,
+    )
+    return totalWeight > 0 ? selectedWeight / totalWeight : 1
+}
+
+export function getCategoryShare(category: CategoryFilterValue) {
+    if (category === ALL_CATEGORIES_VALUE) return 1
+
+    const categoryUtil = CATEGORY_UTILIZATION[category]
+    const averageUtil =
+        TICKET_CATEGORY_SERIES.reduce((sum, key) => sum + CATEGORY_UTILIZATION[key], 0) /
+        TICKET_CATEGORY_SERIES.length
+    return averageUtil > 0 ? categoryUtil / averageUtil : 1
+}
+
+export function getFilterScale(
+    partner: PartnerFilterValue,
+    category: CategoryFilterValue,
+) {
+    return getPartnerShare(partner) * getCategoryShare(category)
 }
 
 export function getCategoryUtilization(
     categories: readonly TicketCategoryKey[],
+    partnerId: PartnerFilterValue = ALL_PARTNERS_VALUE,
 ): CategoryUtilizationPoint[] {
-    return TICKET_CATEGORIES.filter((category) =>
-        categories.includes(category.key),
-    )
+    const partner =
+        partnerId === ALL_PARTNERS_VALUE
+            ? null
+            : PARTNER_USAGE.find((row) => row.id === partnerId)
+
+    return TICKET_CATEGORIES.filter((category) => categories.includes(category.key))
         .map((category) => ({
             label: category.label,
             key: category.key,
-            utilization: CATEGORY_UTILIZATION[category.key],
+            utilization: partner
+                ? (partner.byCategory[category.key] ?? 0)
+                : CATEGORY_UTILIZATION[category.key],
         }))
+        .filter(
+            (row) =>
+                partnerId === ALL_PARTNERS_VALUE ||
+                row.utilization > 0 ||
+                categories.length === 1,
+        )
         .sort((a, b) => b.utilization - a.utilization)
 }
 
 export function getPartnerUsageRows(
     categories: readonly TicketCategoryKey[],
+    partnerId: PartnerFilterValue = ALL_PARTNERS_VALUE,
+    limit: number = TOP_PARTNERS_LIMIT,
 ): PartnerUsagePoint[] {
     const categorySet = new Set(categories)
+    const partners =
+        partnerId === ALL_PARTNERS_VALUE
+            ? PARTNER_USAGE
+            : PARTNER_USAGE.filter((partner) => partner.id === partnerId)
 
-    return PARTNER_USAGE.map((partner) => {
-        const row: PartnerUsagePoint = { label: partner.name }
-        for (const category of TICKET_CATEGORIES) {
-            const value = partner.byCategory[category.key] ?? 0
-            row[category.key] = categorySet.has(category.key) ? value : 0
-        }
-        return row
-    }).sort((a, b) => partnerTotal(b, categories) - partnerTotal(a, categories))
+    return partners
+        .map((partner) => {
+            const row: PartnerUsagePoint = { label: partner.name }
+            for (const category of TICKET_CATEGORIES) {
+                const value = partner.byCategory[category.key] ?? 0
+                row[category.key] = categorySet.has(category.key) ? value : 0
+            }
+            return row
+        })
+        .sort((a, b) => partnerTotal(b, categories) - partnerTotal(a, categories))
+        .slice(0, partnerId === ALL_PARTNERS_VALUE ? limit : undefined)
 }
 
-function partnerTotal(
-    row: PartnerUsagePoint,
-    categories: readonly TicketCategoryKey[],
-) {
+function partnerTotal(row: PartnerUsagePoint, categories: readonly TicketCategoryKey[]) {
     return categories.reduce((sum, key) => {
         const value = row[key]
         return sum + (typeof value === 'number' ? value : 0)
     }, 0)
 }
 
-export function computeKpis(events: PartnerEvent[]) {
+export function computeKpis(
+    events: PartnerEvent[],
+    options?: {
+        issued?: number
+        used?: number
+        partnersTotal?: number
+        partnersActive?: number
+    },
+) {
     const visits = events.reduce((sum, event) => sum + event.visits, 0)
     const eventCount = events.length
-    const availableSlots = ISSUED_SEASON_TICKETS * eventCount
-    const averageUtilization =
-        availableSlots > 0 ? (visits / availableSlots) * 100 : 0
+    const issued = options?.issued ?? ISSUED_SEASON_TICKETS
+    const availableSlots = issued * eventCount
+    const averageUtilization = availableSlots > 0 ? (visits / availableSlots) * 100 : 0
 
     return {
-        issued: ISSUED_SEASON_TICKETS,
-        used: USED_SEASON_TICKETS,
-        partnersTotal: PARTNERS_TOTAL,
-        partnersActive: PARTNERS_ACTIVE,
+        issued,
+        used: options?.used ?? USED_SEASON_TICKETS,
+        partnersTotal: options?.partnersTotal ?? PARTNERS_TOTAL,
+        partnersActive: options?.partnersActive ?? PARTNERS_ACTIVE,
         visits,
         eventCount,
         averageUtilization,
@@ -337,7 +499,7 @@ export const TOP_EVENT_COLUMNS: SimpleTableColumn<TopEventPoint>[] = [
     {
         id: 'event',
         header: 'Událost',
-        cell: (row) => row.label,
+        cell: (row) => row.event,
     },
     {
         id: 'visits',
@@ -368,18 +530,18 @@ export function buildPartnerUsageColumns(
     categories: readonly TicketCategoryKey[],
 ): SimpleTableColumn<PartnerUsagePoint>[] {
     const categoryColumns: SimpleTableColumn<PartnerUsagePoint>[] =
-        TICKET_CATEGORIES.filter((category) =>
-            categories.includes(category.key),
-        ).map((category) => ({
-            id: category.key,
-            header: category.label,
-            cell: (row) => {
-                const value = row[category.key]
-                return typeof value === 'number' ? formatPercent(value) : '—'
-            },
-            cellClassName: 'text-right',
-            headerClassName: 'text-right',
-        }))
+        TICKET_CATEGORIES.filter((category) => categories.includes(category.key)).map(
+            (category) => ({
+                id: category.key,
+                header: category.label,
+                cell: (row) => {
+                    const value = row[category.key]
+                    return typeof value === 'number' ? formatPercent(value) : '—'
+                },
+                cellClassName: 'text-right',
+                headerClassName: 'text-right',
+            }),
+        )
 
     return [
         {

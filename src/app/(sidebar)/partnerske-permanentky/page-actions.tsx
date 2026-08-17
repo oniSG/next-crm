@@ -1,35 +1,38 @@
 'use client'
 
-import { DateRangeFilter } from '@/components/custom/filters/date-range-filter'
-import { MultiSelectFilter } from '@/components/custom/filters/multi-select-filter'
+import { SelectFilter } from '@/components/custom/filters/select-filter'
 import { ExportButton } from '@/components/custom/statistics/export-button'
 
-import { TICKET_CATEGORY_OPTIONS } from './data'
+import {
+    CATEGORY_FILTER_OPTIONS,
+    PARTNER_FILTER_OPTIONS,
+    SEASON_OPTIONS,
+} from './data'
 import { usePartnerSeasonTicketsFilters } from './use-partner-season-tickets-filters'
 
 export function PageActions() {
-    const {
-        today,
-        dateRange,
-        setDateRange,
-        categories,
-        setCategories,
-    } = usePartnerSeasonTicketsFilters()
+    const { partner, setPartner, category, setCategory, season, setSeason } =
+        usePartnerSeasonTicketsFilters()
 
     return (
         <>
-            <DateRangeFilter
-                value={dateRange}
-                onChange={setDateRange}
-                today={today}
+            <SelectFilter
+                options={PARTNER_FILTER_OPTIONS}
+                value={partner}
+                onChange={setPartner}
+                leadingLabel="Partner"
             />
-            <MultiSelectFilter
-                options={TICKET_CATEGORY_OPTIONS}
-                value={categories}
-                onChange={setCategories}
+            <SelectFilter
+                options={CATEGORY_FILTER_OPTIONS}
+                value={category}
+                onChange={setCategory}
                 leadingLabel="Kategorie"
-                placeholder="Vše"
-                className="w-56"
+            />
+            <SelectFilter
+                options={SEASON_OPTIONS}
+                value={season}
+                onChange={setSeason}
+                leadingLabel="Sezona"
             />
             <ExportButton
                 dashboard="partnerske-permanentky"

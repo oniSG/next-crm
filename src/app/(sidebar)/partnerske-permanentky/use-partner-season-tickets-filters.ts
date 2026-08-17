@@ -1,45 +1,46 @@
 'use client'
 
-import { useMemo, useState } from 'react'
-import { parseAsIsoDate, useQueryState } from 'nuqs'
+import { useFilterParam } from '@/lib/alumni/use-filter-param'
 
-import type { DateRange } from '@/components/custom/filters/date-presets'
-import { useMultiFilterParam } from '@/lib/alumni/use-filter-param'
+import {
+    ALL_CATEGORIES_VALUE,
+    ALL_PARTNERS_VALUE,
+    CATEGORY_FILTER_OPTIONS,
+    DEFAULT_SEASON,
+    PARTNER_FILTER_OPTIONS,
+    SEASON_OPTIONS,
+    type CategoryFilterValue,
+    type PartnerFilterValue,
+    type SeasonKey,
+} from './data'
 
-import { TICKET_CATEGORY_OPTIONS } from './data'
-
-const categoryValues = TICKET_CATEGORY_OPTIONS.map((option) => option.value)
-
-const defaultFrom = new Date(2025, 7, 1)
-const defaultTo = new Date(2026, 3, 30)
+const partnerValues = PARTNER_FILTER_OPTIONS.map((option) => option.value)
+const categoryValues = CATEGORY_FILTER_OPTIONS.map((option) => option.value)
+const seasonValues = SEASON_OPTIONS.map((option) => option.value)
 
 export function usePartnerSeasonTicketsFilters() {
-    const [today] = useState(() => new Date())
-    const [from, setFrom] = useQueryState(
-        'from',
-        parseAsIsoDate.withDefault(defaultFrom),
+    const [partner, setPartner] = useFilterParam(
+        'partner',
+        partnerValues,
+        ALL_PARTNERS_VALUE,
     )
-    const [to, setTo] = useQueryState(
-        'to',
-        parseAsIsoDate.withDefault(defaultTo),
-    )
-    const [categories, setCategories] = useMultiFilterParam(
+    const [category, setCategory] = useFilterParam(
         'category',
         categoryValues,
+        ALL_CATEGORIES_VALUE,
+    )
+    const [season, setSeason] = useFilterParam(
+        'season',
+        seasonValues,
+        DEFAULT_SEASON,
     )
 
-    const dateRange = useMemo<DateRange>(() => ({ from, to }), [from, to])
-
-    function setDateRange(range: DateRange) {
-        void setFrom(range.from)
-        void setTo(range.to)
-    }
-
     return {
-        today,
-        dateRange,
-        setDateRange,
-        categories,
-        setCategories,
+        partner: partner as PartnerFilterValue,
+        setPartner,
+        category: category as CategoryFilterValue,
+        setCategory,
+        season: season as SeasonKey,
+        setSeason,
     }
 }

@@ -24,6 +24,7 @@ export type SelectFilterProps = {
     onChange: (value: string) => void
     placeholder?: string
     label?: string
+    labelClassName?: string
     /** Compact label shown inside the trigger (for toolbars). */
     leadingLabel?: string
     className?: string
@@ -36,6 +37,7 @@ export function SelectFilter({
     onChange,
     placeholder,
     label,
+    labelClassName,
     leadingLabel,
     className,
     contentAlign = 'end',
@@ -56,9 +58,11 @@ export function SelectFilter({
                     label
                         ? 'w-full min-w-0 overflow-hidden'
                         : leadingLabel
-                          ? 'w-56 max-w-64 min-w-0 overflow-hidden'
+                          ? 'w-auto min-w-0'
                           : 'w-40 min-w-0 overflow-hidden',
-                    leadingLabel && 'gap-2',
+                    leadingLabel && 'gap-2 whitespace-nowrap',
+                    leadingLabel &&
+                        '*:data-[slot=select-value]:line-clamp-none *:data-[slot=select-value]:overflow-visible *:data-[slot=select-value]:text-clip',
                     className,
                 )}
             >
@@ -69,7 +73,7 @@ export function SelectFilter({
                 ) : null}
                 <SelectValue
                     placeholder={placeholder ?? label}
-                    className={leadingLabel ? 'min-w-0 flex-1 truncate' : undefined}
+                    className={leadingLabel ? 'shrink-0' : undefined}
                 />
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false} align={contentAlign}>
@@ -88,7 +92,9 @@ export function SelectFilter({
 
     return (
         <div className="flex flex-col gap-1">
-            <Label htmlFor={id}>{label}</Label>
+            <Label htmlFor={id} className={labelClassName}>
+                {label}
+            </Label>
             {select}
         </div>
     )
