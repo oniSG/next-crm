@@ -58,15 +58,15 @@ export type EventReportData = ReportEventOption & {
 }
 
 export const EVENT_SALES_BY_DAY_CONFIG = {
-    count: { label: 'Tickets sold', color: 'var(--chart-1)' },
+    count: { label: 'Prodané vstupenky', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
 export const EVENT_SALES_BY_PRICE_CONFIG = {
-    count: { label: 'Tickets sold', color: 'var(--chart-2)' },
+    count: { label: 'Prodané vstupenky', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
 export const EVENT_SALES_BY_SECTOR_CONFIG = {
-    count: { label: 'Tickets sold', color: 'var(--chart-3)' },
+    count: { label: 'Prodané vstupenky', color: 'var(--chart-3)' },
 } satisfies ChartConfig
 
 export const EVENT_SOLD_USED_CONFIG = {
@@ -103,20 +103,20 @@ export function getEventSoldUsedRows(event: EventReportData): EventSoldUsedRow[]
 export const SALES_BY_DAY_COLUMNS: SimpleTableColumn<EventSalesByDayRow>[] = [
     {
         id: 'day',
-        header: 'Day',
+        header: 'Den',
         cellClassName: 'font-medium',
         cell: (row) => row.label,
     },
     {
         id: 'count',
-        header: 'Tickets sold',
+        header: 'Prodané vstupenky',
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => numberFormatter.format(row.count),
     },
     {
         id: 'revenue',
-        header: 'Revenue',
+        header: 'Tržba',
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => currencyFormatter.format(row.revenue ?? 0),
@@ -126,20 +126,20 @@ export const SALES_BY_DAY_COLUMNS: SimpleTableColumn<EventSalesByDayRow>[] = [
 export const SALES_BY_PRICE_COLUMNS: SimpleTableColumn<EventSalesByPriceRow>[] = [
     {
         id: 'price',
-        header: 'Price',
+        header: 'Cena',
         cellClassName: 'font-medium',
         cell: (row) => row.label,
     },
     {
         id: 'count',
-        header: 'Tickets sold',
+        header: 'Prodané vstupenky',
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => numberFormatter.format(row.count),
     },
     {
         id: 'revenue',
-        header: 'Revenue',
+        header: 'Tržba',
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => currencyFormatter.format(row.revenue ?? 0),
@@ -149,13 +149,13 @@ export const SALES_BY_PRICE_COLUMNS: SimpleTableColumn<EventSalesByPriceRow>[] =
 export const SALES_BY_SECTOR_COLUMNS: SimpleTableColumn<EventSalesBySectorRow>[] = [
     {
         id: 'sector',
-        header: 'Sector',
+        header: 'Sektor',
         cellClassName: 'font-medium',
         cell: (row) => row.label,
     },
     {
         id: 'count',
-        header: 'Tickets sold',
+        header: 'Prodané vstupenky',
         headerClassName: 'text-right',
         cellClassName: 'text-right tabular-nums',
         cell: (row) => numberFormatter.format(row.count),

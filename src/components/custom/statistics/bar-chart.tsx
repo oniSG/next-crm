@@ -23,6 +23,7 @@ import { cn } from '@/lib/utils'
 
 import { formatCompactNumber } from './format-compact-number'
 import { useMutedSeries } from './use-muted-series'
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 
 const AVERAGE_KEY = 'average'
 const AVERAGE_COLOR = '#000'
@@ -157,7 +158,7 @@ export function BarChart({
     className,
     formatValue,
     formatSecondaryValue,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
     showAverage = false,
     showAverageInLegend = true,
     legendQueryKey,

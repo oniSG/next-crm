@@ -20,6 +20,7 @@ import {
 import { cn } from '@/lib/utils'
 
 import { useMutedSeries } from './use-muted-series'
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 
 function rowHasVisibleValue(row: object, keys: readonly string[]) {
     return keys.some((key) => {
@@ -47,7 +48,7 @@ export function AreaChart({
     series,
     stacked = true,
     className,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
     legendQueryKey,
 }: AreaChartProps) {
     const reactId = useId().replace(/:/g, '')

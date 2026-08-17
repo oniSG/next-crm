@@ -171,7 +171,7 @@ export function AlumniGraduationRate() {
                                 showYAxis
                                 angledXAxis
                                 showDots
-                                showAverage
+                                showAverage={teamSeasonSeries.length > 1}
                                 xAxisLabel="Sezóna"
                                 yAxisLabel="Graduation rate (%)"
                                 formatValue={formatGraduationPercent}

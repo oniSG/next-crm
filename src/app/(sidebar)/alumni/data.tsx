@@ -18,9 +18,9 @@ import {
     sumAlumniMetrics,
     type AlumniMetricTotals,
 } from '@/lib/alumni/metrics'
-import { buildCategoryConfig } from '@/lib/alumni/sparse-category-chart'
+import { buildCategoryConfig } from '@/lib/statistics/sparse-category-chart'
 
-import alumniBySeasonDetail from './data/alumni-by-season-detail.json'
+import alumniBySeasonDetail from '@/lib/alumni/data/alumni-by-season-detail.json'
 
 export { formatGraduationPercent, formatPlayerCount }
 

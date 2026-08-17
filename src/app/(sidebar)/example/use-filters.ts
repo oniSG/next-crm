@@ -6,6 +6,7 @@ import {
     parseAsIsoDate,
     parseAsStringLiteral,
     useQueryState,
+    useQueryStates,
 } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
@@ -16,11 +17,24 @@ import {
     SEGMENT_OPTIONS,
     TEAM_OPTIONS,
 } from './data'
+import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
-const segmentValues: string[] = SEGMENT_OPTIONS.map((option) => option.value)
-const teamValues: string[] = TEAM_OPTIONS.map((option) => option.value)
-const channelValues: string[] = CHANNEL_OPTIONS.map((option) => option.value)
-const regionValues: string[] = REGION_OPTIONS.map((option) => option.value)
+const segmentValues = SEGMENT_OPTIONS.map((option) => option.value) as [
+    (typeof SEGMENT_OPTIONS)[number]['value'],
+    ...(typeof SEGMENT_OPTIONS)[number]['value'][],
+]
+const teamValues = TEAM_OPTIONS.map((option) => option.value) as [
+    (typeof TEAM_OPTIONS)[number]['value'],
+    ...(typeof TEAM_OPTIONS)[number]['value'][],
+]
+const channelValues = CHANNEL_OPTIONS.map((option) => option.value) as [
+    (typeof CHANNEL_OPTIONS)[number]['value'],
+    ...(typeof CHANNEL_OPTIONS)[number]['value'][],
+]
+const regionValues = REGION_OPTIONS.map((option) => option.value) as [
+    (typeof REGION_OPTIONS)[number]['value'],
+    ...(typeof REGION_OPTIONS)[number]['value'][],
+]
 
 /** Demo data months cover Jan–Jul 2026. */
 const defaultFrom = new Date(2026, 0, 1)
@@ -28,14 +42,10 @@ const defaultTo = new Date(2026, 6, 31)
 
 export function useFilters() {
     const [today] = useState(() => new Date(2026, 7, 15))
-    const [from, setFrom] = useQueryState(
-        'from',
-        parseAsIsoDate.withDefault(defaultFrom),
-    )
-    const [to, setTo] = useQueryState(
-        'to',
-        parseAsIsoDate.withDefault(defaultTo),
-    )
+    const [{ from, to }, setRange] = useQueryStates({
+        from: parseAsIsoDate.withDefault(defaultFrom),
+        to: parseAsIsoDate.withDefault(defaultTo),
+    })
     const [segment, setSegment] = useQueryState(
         'segment',
         parseAsStringLiteral(segmentValues).withDefault('all'),
@@ -62,8 +72,7 @@ export function useFilters() {
     const dateRange = useMemo<DateRange>(() => ({ from, to }), [from, to])
 
     function setDateRange(range: DateRange) {
-        void setFrom(range.from)
-        void setTo(range.to)
+        void setRange({ from: range.from, to: range.to })
     }
 
     return {
@@ -71,12 +80,12 @@ export function useFilters() {
         dateRange,
         setDateRange,
         segment,
-        setSegment,
+        setSegment: setLiteralParam(setSegment),
         teams,
-        setTeams,
+        setTeams: setLiteralParams(setTeams),
         channels,
-        setChannels,
+        setChannels: setLiteralParams(setChannels),
         regions,
-        setRegions,
+        setRegions: setLiteralParams(setRegions),
     }
 }

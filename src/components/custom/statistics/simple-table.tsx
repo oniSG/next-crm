@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import type { ReactNode } from 'react'
 
 import {
@@ -38,7 +39,7 @@ export function SimpleTable<T>({
     className,
     footer,
     onRowClick,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: SimpleTableProps<T>) {
     if (data.length === 0) {
         return (

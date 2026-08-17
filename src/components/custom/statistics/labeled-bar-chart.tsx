@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import {
     Bar,
     BarChart as RechartsBarChart,
@@ -37,7 +38,7 @@ export function LabeledBarChart({
     categoryKey,
     valueKey,
     className,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: LabeledBarChartProps) {
     if (data.length === 0 || !data.some((row) => rowHasVisibleValue(row, valueKey))) {
         return (

@@ -5,7 +5,7 @@ import {
     ALUMNI_TEAM_OPTIONS,
 } from './filters'
 
-import alumniBySeasonDetail from '../../app/(sidebar)/alumni/data/alumni-by-season-detail.json'
+import alumniBySeasonDetail from './data/alumni-by-season-detail.json'
 
 type AlumniDetailRow = {
     team: string

@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import { Pie, PieChart as RechartsPieChart } from 'recharts'
 
 import {
@@ -25,7 +26,7 @@ export function PieChart({
     config,
     className,
     innerRadius,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: PieChartProps) {
     const total = data.reduce((sum, item) => sum + item.value, 0)
 

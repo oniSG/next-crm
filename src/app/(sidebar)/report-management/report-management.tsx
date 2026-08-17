@@ -168,7 +168,7 @@ export function ReportManagement() {
                 tableExportable={{
                     filename: 'vyvoj-trzeb-za-prodane-vstupenky',
                     headers: [
-                        'Month',
+                        'Měsíc',
                         ...TICKET_REVENUE_COLUMNS.map((column) => column.label),
                     ],
                     rows: ticketRevenueRows.map((row) => [
@@ -180,7 +180,7 @@ export function ReportManagement() {
                 }}
                 tabs={[
                     {
-                        name: 'Chart',
+                        name: 'Graf',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
@@ -192,16 +192,16 @@ export function ReportManagement() {
                                 series={TICKET_CHANNEL_KEYS}
                                 stacked
                                 showYAxis
-                                xAxisLabel="Month"
-                                yAxisLabel="CZK"
+                                xAxisLabel="Měsíc"
+                                yAxisLabel="Kč"
                                 className="h-80"
-                                emptyMessage="No ticket sales data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o prodeji vstupenek."
                                 legendQueryKey="management-ticket-revenue-muted"
                             />
                         ),
                     },
                     {
-                        name: 'Table',
+                        name: 'Tabulka',
                         value: 'table',
                         icon: <TableIcon />,
                         content: (
@@ -214,7 +214,7 @@ export function ReportManagement() {
                                     ticketRevenueRows,
                                     TICKET_REVENUE_COLUMNS,
                                 )}
-                                emptyMessage="No ticket sales data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o prodeji vstupenek."
                             />
                         ),
                     },
@@ -233,7 +233,7 @@ export function ReportManagement() {
                 tableExportable={{
                     filename: 'pocet-prodanych-kusu-vstupenek',
                     headers: [
-                        'Month',
+                        'Měsíc',
                         ...TICKET_COUNT_COLUMNS.map((column) => column.label),
                     ],
                     rows: ticketCountRows.map((row) => [
@@ -245,7 +245,7 @@ export function ReportManagement() {
                 }}
                 tabs={[
                     {
-                        name: 'Chart',
+                        name: 'Graf',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
@@ -257,16 +257,16 @@ export function ReportManagement() {
                                 series={TICKET_CHANNEL_KEYS}
                                 stacked
                                 showYAxis
-                                xAxisLabel="Month"
-                                yAxisLabel="Count"
+                                xAxisLabel="Měsíc"
+                                yAxisLabel="Počet"
                                 className="h-80"
-                                emptyMessage="No ticket sales data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o prodeji vstupenek."
                                 legendQueryKey="management-ticket-count-muted"
                             />
                         ),
                     },
                     {
-                        name: 'Table',
+                        name: 'Tabulka',
                         value: 'table',
                         icon: <TableIcon />,
                         content: (
@@ -279,7 +279,7 @@ export function ReportManagement() {
                                     ticketCountRows,
                                     TICKET_COUNT_COLUMNS,
                                 )}
-                                emptyMessage="No ticket sales data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o prodeji vstupenek."
                             />
                         ),
                     },
@@ -298,7 +298,7 @@ export function ReportManagement() {
                 tableExportable={{
                     filename: 'vyvoj-celkoveho-poctu-navstevniku',
                     headers: [
-                        'Month',
+                        'Měsíc',
                         ...VISITOR_TOTAL_COLUMNS.map((column) => column.label),
                     ],
                     rows: fanDevelopment.map((row) => [
@@ -308,7 +308,7 @@ export function ReportManagement() {
                 }}
                 tabs={[
                     {
-                        name: 'Chart',
+                        name: 'Graf',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
@@ -319,16 +319,16 @@ export function ReportManagement() {
                                 categoryKey="label"
                                 series={VISITOR_TOTAL_KEYS}
                                 showYAxis
-                                xAxisLabel="Month"
-                                yAxisLabel="Count"
+                                xAxisLabel="Měsíc"
+                                yAxisLabel="Počet"
                                 className="h-80"
-                                emptyMessage="No visitor data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o návštěvnících."
                                 legendQueryKey="management-visitor-total-muted"
                             />
                         ),
                     },
                     {
-                        name: 'Table',
+                        name: 'Tabulka',
                         value: 'table',
                         icon: <TableIcon />,
                         content: (
@@ -337,7 +337,7 @@ export function ReportManagement() {
                                 data={fanDevelopment}
                                 columns={toSectionTableColumns(VISITOR_TOTAL_COLUMNS)}
                                 getRowKey={(row) => row.period}
-                                emptyMessage="No visitor data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o návštěvnících."
                             />
                         ),
                     },
@@ -356,7 +356,7 @@ export function ReportManagement() {
                 tableExportable={{
                     filename: 'prirustky-poctu-navstevniku',
                     headers: [
-                        'Month',
+                        'Měsíc',
                         ...VISITOR_GROWTH_COLUMNS.map((column) => column.label),
                     ],
                     rows: fanDevelopment.map((row) => [
@@ -368,7 +368,7 @@ export function ReportManagement() {
                 }}
                 tabs={[
                     {
-                        name: 'Chart',
+                        name: 'Graf',
                         value: 'chart',
                         icon: <ChartColumnIcon />,
                         content: (
@@ -379,16 +379,16 @@ export function ReportManagement() {
                                 categoryKey="label"
                                 series={VISITOR_GROWTH_KEYS}
                                 showYAxis
-                                xAxisLabel="Month"
-                                yAxisLabel="Count"
+                                xAxisLabel="Měsíc"
+                                yAxisLabel="Počet"
                                 className="h-80"
-                                emptyMessage="No visitor growth data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o přírůstku návštěvníků."
                                 legendQueryKey="management-visitor-growth-muted"
                             />
                         ),
                     },
                     {
-                        name: 'Table',
+                        name: 'Tabulka',
                         value: 'table',
                         icon: <TableIcon />,
                         content: (
@@ -401,7 +401,7 @@ export function ReportManagement() {
                                     fanDevelopment,
                                     VISITOR_GROWTH_COLUMNS,
                                 )}
-                                emptyMessage="No visitor growth data for the selected period."
+                                emptyMessage="Pro vybrané období nejsou žádná data o přírůstku návštěvníků."
                             />
                         ),
                     },

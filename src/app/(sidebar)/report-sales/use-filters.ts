@@ -1,13 +1,16 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { parseAsIsoDate, parseAsStringLiteral, useQueryState } from 'nuqs'
+import { parseAsIsoDate, parseAsStringLiteral, useQueryStates } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
 
 import { PERIOD_OPTIONS, type Period } from './data'
 
-const periodValues = PERIOD_OPTIONS.map((option) => option.value)
+const periodValues = PERIOD_OPTIONS.map((option) => option.value) as [
+    Period,
+    ...Period[],
+]
 
 export function useFilters() {
     const [today] = useState(() => new Date())
@@ -16,30 +19,27 @@ export function useFilters() {
         [today],
     )
 
-    const [from, setFrom] = useQueryState('from', parseAsIsoDate)
-    const [to, setTo] = useQueryState('to', parseAsIsoDate)
-    const [period, setPeriod] = useQueryState(
-        'period',
-        parseAsStringLiteral(periodValues)
-            .withDefault('day')
+    const [{ from, to, period }, setFilters] = useQueryStates({
+        from: parseAsIsoDate.withDefault(defaultFrom),
+        to: parseAsIsoDate.withDefault(today),
+        period: parseAsStringLiteral(periodValues)
+            .withDefault('month')
             .withOptions({ clearOnDefault: true }),
-    )
+    })
 
-    const dateRange: DateRange = {
-        from: from ?? defaultFrom,
-        to: to ?? today,
-    }
+    const dateRange = useMemo<DateRange>(() => ({ from, to }), [from, to])
 
     function setDateRange(range: DateRange) {
-        void setFrom(range.from)
-        void setTo(range.to)
+        void setFilters({ from: range.from, to: range.to })
     }
 
     return {
         today,
         dateRange,
         setDateRange,
-        period: period as Period,
-        setPeriod,
+        period,
+        setPeriod: (value: Period) => {
+            void setFilters({ period: value })
+        },
     }
 }

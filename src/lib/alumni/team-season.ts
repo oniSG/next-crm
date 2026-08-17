@@ -21,7 +21,8 @@ export type AlumniTeamSeasonRow = {
 
 export type GraduationByTeamSeasonPoint = {
     label: string
-} & Record<(typeof GRADUATION_BY_TEAM_SERIES)[number], number>
+    average?: number
+} & Partial<Record<(typeof GRADUATION_BY_TEAM_SERIES)[number], number>>
 
 export type TeamComparisonPoint = {
     label: string
@@ -77,29 +78,51 @@ export function filterTeamSeasonRows(
 export function getGraduationByTeamSeason(
     rows: readonly AlumniTeamSeasonRow[],
 ): GraduationByTeamSeasonPoint[] {
-    const bySeason = new Map<string, GraduationByTeamSeasonPoint>()
+    const bySeason = new Map<
+        string,
+        {
+            teams: Partial<Record<GraduationByTeamSeriesKey, number>>
+            completed: number
+            incomplete: number
+        }
+    >()
 
     for (const row of rows) {
         const current = bySeason.get(row.season) ?? {
-            label: row.season,
-            'black-dogs-budweis': 0,
-            sparta: 0,
-            kometa: 0,
-            dynamo: 0,
-            mountfield: 0,
-            trinec: 0,
+            teams: {},
+            completed: 0,
+            incomplete: 0,
         }
-        if (row.team in GRADUATION_BY_TEAM_CONFIG) {
-            current[row.team as GraduationByTeamSeriesKey] = rateFromDepartures(
-                row.completed,
-                row.incomplete,
-            )
+        current.completed += row.completed
+        current.incomplete += row.incomplete
+        const departures = row.completed + row.incomplete
+        if (
+            departures > 0 &&
+            row.team in GRADUATION_BY_TEAM_CONFIG
+        ) {
+            current.teams[row.team as GraduationByTeamSeriesKey] =
+                rateFromDepartures(row.completed, row.incomplete)
         }
         bySeason.set(row.season, current)
     }
 
     return SEASON_VALUES.filter((season) => bySeason.has(season)).map(
-        (season) => bySeason.get(season)!,
+        (season) => {
+            const current = bySeason.get(season)!
+            const leagueDepartures = current.completed + current.incomplete
+            return {
+                label: season,
+                ...current.teams,
+                ...(leagueDepartures > 0
+                    ? {
+                          average: rateFromDepartures(
+                              current.completed,
+                              current.incomplete,
+                          ),
+                      }
+                    : {}),
+            }
+        },
     )
 }
 
@@ -189,7 +212,7 @@ export function buildGraduationByTeamColumns(
             headerClassName: 'text-right',
             cellClassName: 'text-right tabular-nums',
             cell: (row: GraduationByTeamSeasonPoint) =>
-                percentFormatter.format(row[key]),
+                row[key] == null ? '–' : percentFormatter.format(row[key]),
         })),
     ]
 }

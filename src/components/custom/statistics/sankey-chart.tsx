@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import { createContext, useContext } from 'react'
 import {
     Layer,
@@ -148,7 +149,7 @@ export function SankeyChart({
     verticalAlign = 'top',
     margin = { top: 16, right: 180, bottom: 16, left: 16 },
     className,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: SankeyChartProps) {
     if (data.nodes.length === 0 || data.links.length === 0) {
         return (

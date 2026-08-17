@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import { cn } from '@/lib/utils'
 
 export type HeatmapCell = {
@@ -47,7 +48,7 @@ export function Heatmap({
     className,
     color = 'var(--chart-1)',
     formatValue = (value) => String(value),
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: HeatmapProps) {
     const rows = uniqueInOrder(data.map((cell) => cell.row))
     const columns = uniqueInOrder(data.map((cell) => cell.column))

@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils'
 
 import { formatCompactNumber } from './format-compact-number'
 import { useMutedSeries } from './use-muted-series'
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 
 const AVERAGE_KEY = 'average'
 
@@ -57,9 +58,15 @@ function averageOfRow(
     row: object,
     keys: readonly string[],
 ): number | undefined {
+    const record = row as Record<string, unknown>
+    const precomputed = record[AVERAGE_KEY]
+    if (typeof precomputed === 'number' && Number.isFinite(precomputed)) {
+        return precomputed
+    }
+
     const values = keys
-        .map((key) => Number((row as Record<string, unknown>)[key]))
-        .filter((value) => Number.isFinite(value))
+        .map((key) => record[key])
+        .filter((value): value is number => typeof value === 'number' && Number.isFinite(value))
     if (values.length === 0) return undefined
     return values.reduce((sum, value) => sum + value, 0) / values.length
 }
@@ -77,7 +84,7 @@ export function LineChart({
     showDots = false,
     showAverage = false,
     formatValue,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
     legendQueryKey,
 }: LineChartProps) {
     const reactId = useId().replace(/:/g, '')

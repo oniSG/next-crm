@@ -6,6 +6,7 @@ import {
     parseAsIsoDate,
     parseAsStringLiteral,
     useQueryState,
+    useQueryStates,
 } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
@@ -16,24 +17,35 @@ import {
     TEAM_OPTIONS,
     type Period,
 } from './data'
+import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
-const periodValues: string[] = PERIOD_OPTIONS.map((option) => option.value)
-const teamValues: string[] = TEAM_OPTIONS.map((option) => option.value)
-const categoryValues: string[] = DISCOUNT_CATEGORY_OPTIONS.map((option) => option.value)
+const periodValues = PERIOD_OPTIONS.map((option) => option.value) as [
+    Period,
+    ...Period[],
+]
+const teamValues = TEAM_OPTIONS.map((option) => option.value) as [
+    (typeof TEAM_OPTIONS)[number]['value'],
+    ...(typeof TEAM_OPTIONS)[number]['value'][],
+]
+const categoryValues = DISCOUNT_CATEGORY_OPTIONS.map((option) => option.value) as [
+    (typeof DISCOUNT_CATEGORY_OPTIONS)[number]['value'],
+    ...(typeof DISCOUNT_CATEGORY_OPTIONS)[number]['value'][],
+]
 
 const defaultFrom = new Date(2024, 4, 17)
 const defaultTo = new Date(2026, 7, 15)
 
 export function useFilters() {
     const [today] = useState(() => new Date())
-    const [from, setFrom] = useQueryState(
-        'from',
-        parseAsIsoDate.withDefault(defaultFrom),
-    )
-    const [to, setTo] = useQueryState('to', parseAsIsoDate.withDefault(defaultTo))
+    const [{ from, to }, setRange] = useQueryStates({
+        from: parseAsIsoDate.withDefault(defaultFrom),
+        to: parseAsIsoDate.withDefault(defaultTo),
+    })
     const [period, setPeriod] = useQueryState(
         'period',
-        parseAsStringLiteral(periodValues).withDefault('month'),
+        parseAsStringLiteral(periodValues)
+            .withDefault('month')
+            .withOptions({ clearOnDefault: true }),
     )
     const [teams, setTeams] = useQueryState(
         'team',
@@ -43,7 +55,9 @@ export function useFilters() {
     )
     const [category, setCategory] = useQueryState(
         'category',
-        parseAsStringLiteral(categoryValues).withDefault('all'),
+        parseAsStringLiteral(categoryValues)
+            .withDefault('all')
+            .withOptions({ clearOnDefault: true }),
     )
 
     const dateRange = useMemo<DateRange>(
@@ -52,19 +66,18 @@ export function useFilters() {
     )
 
     function setDateRange(range: DateRange) {
-        void setFrom(range.from)
-        void setTo(range.to)
+        void setRange({ from: range.from, to: range.to })
     }
 
     return {
         today,
         dateRange,
         setDateRange,
-        period: period as Period,
+        period,
         setPeriod,
         teams,
-        setTeams,
+        setTeams: setLiteralParams(setTeams),
         category,
-        setCategory,
+        setCategory: setLiteralParam(setCategory),
     }
 }

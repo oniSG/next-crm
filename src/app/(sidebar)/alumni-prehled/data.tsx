@@ -13,7 +13,7 @@ import {
     type TeamComparisonPoint,
 } from '@/lib/alumni/team-season'
 
-import graduationBySeasonTeam from '../alumni-graduation-rate/data/graduation-by-season-team.json'
+import graduationBySeasonTeam from '@/lib/alumni/data/graduation-by-season-team.json'
 
 export type {
     AlumniTeamSeasonRow as OverviewSeasonTeamRow,

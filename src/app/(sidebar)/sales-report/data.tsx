@@ -49,8 +49,24 @@ export const DISCOUNT_TEAM_SERIES = [
 
 export type DiscountTeamKey = (typeof DISCOUNT_TEAM_SERIES)[number]
 
+export const DISCOUNT_TEAM_LABELS: Record<DiscountTeamKey, string> = {
+    akademiciplzen: 'Akademici Plzeň',
+    blackdogsbudweis: 'Black Dogs Budweis',
+    boostrava: 'BO Ostrava',
+    czufarmers: 'ČZU Farmers',
+    engineersprague: 'Engineers Prague',
+    finalfour: 'Final Four',
+    hcmuni: 'HC MUNI',
+    hcnorthwings: 'HC North Wings',
+    ridersup: 'Riders UP',
+    ukhockeyprague: 'UK Hockey Prague',
+    unitedhk: 'United HK',
+    vsefalcons: 'VŠE Falcons',
+    vutcavaliers: 'VUT Cavaliers',
+}
+
 export const TEAM_OPTIONS = DISCOUNT_TEAM_SERIES.map((value) => ({
-    label: value,
+    label: DISCOUNT_TEAM_LABELS[value],
     value,
 }))
 
@@ -132,7 +148,10 @@ export const DISCOUNT_CATEGORY_CONFIG = {
 export const DISCOUNT_TEAM_CONFIG = Object.fromEntries(
     DISCOUNT_TEAM_SERIES.map((team, index) => [
         team,
-        { label: team, color: `var(--chart-${(index % 16) + 1})` },
+        {
+            label: DISCOUNT_TEAM_LABELS[team],
+            color: `var(--chart-${(index % 16) + 1})`,
+        },
     ]),
 ) as ChartConfig
 
@@ -203,6 +222,10 @@ export function toDateKey(date: Date) {
     const m = String(date.getMonth() + 1).padStart(2, '0')
     const d = String(date.getDate()).padStart(2, '0')
     return `${y}-${m}-${d}`
+}
+
+function teamLabel(team: string) {
+    return DISCOUNT_TEAM_LABELS[team as DiscountTeamKey] ?? team
 }
 
 export function periodColumnLabel(period: Period) {
@@ -286,7 +309,7 @@ export function getDiscountedTicketsByTeamHeatmap(
         const column = periodBucket(row.date, period)
         const key = `${row.team}|${column}`
         const existing = cells.get(key) ?? {
-            row: row.team,
+            row: teamLabel(row.team),
             column,
             value: 0,
         }
@@ -308,7 +331,7 @@ export function getDiscountAmountByTeamHeatmap(
         const column = periodBucket(row.date, period)
         const key = `${row.team}|${column}`
         const existing = cells.get(key) ?? {
-            row: row.team,
+            row: teamLabel(row.team),
             column,
             value: 0,
         }
@@ -411,7 +434,7 @@ export function getTicketsSoldByTeam(
         byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.totalTickets)
     }
     return teamSeries
-        .map((key) => ({ label: key, count: byTeam.get(key) ?? 0 }))
+        .map((key) => ({ label: teamLabel(key), count: byTeam.get(key) ?? 0 }))
         .filter((row) => row.count > 0)
         .sort((a, b) => b.count - a.count)
 }
@@ -426,7 +449,7 @@ export function getTicketRevenueByTeam(
         byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.revenue)
     }
     return teamSeries
-        .map((key) => ({ label: key, revenue: byTeam.get(key) ?? 0 }))
+        .map((key) => ({ label: teamLabel(key), revenue: byTeam.get(key) ?? 0 }))
         .filter((row) => row.revenue > 0)
         .sort((a, b) => b.revenue - a.revenue)
 }
@@ -444,7 +467,7 @@ export function getCsobPartnerDiscountByTeam(
         byTeam.set(row.team, (byTeam.get(row.team) ?? 0) + row.tickets)
     }
     return teamSeries
-        .map((key) => ({ label: key, count: byTeam.get(key) ?? 0 }))
+        .map((key) => ({ label: teamLabel(key), count: byTeam.get(key) ?? 0 }))
         .filter((row) => row.count > 0)
         .sort((a, b) => b.count - a.count)
 }

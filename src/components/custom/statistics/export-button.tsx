@@ -50,7 +50,7 @@ export function ExportButton({ dashboard, filename }: ExportButtonProps) {
             className={cn(buttonVariants({ variant: 'outline' }))}
         >
             {loading ? <Loader2 className="animate-spin" /> : <Download />}
-            {loading ? 'Exporting…' : 'Export'}
+            {loading ? 'Exportuji…' : 'Exportovat'}
         </button>
     )
 }

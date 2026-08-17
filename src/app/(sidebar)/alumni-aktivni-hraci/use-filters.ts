@@ -3,36 +3,40 @@
 import { parseAsArrayOf, parseAsStringLiteral, useQueryState } from 'nuqs'
 
 import {
-    ALUMNI_DEGREE_OPTIONS,
+    ALUMNI_DEGREE_VALUES,
     ALUMNI_FACULTY_OPTIONS,
     ALUMNI_FIELD_OPTIONS,
     ALUMNI_FILTER_DEFAULTS,
-    ALUMNI_SEASON_OPTIONS,
-    ALUMNI_TEAM_OPTIONS,
+    ALUMNI_SEASON_VALUES,
+    ALUMNI_TEAM_VALUES,
 } from '@/lib/alumni/filters'
+import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
-const seasonValues: string[] = ALUMNI_SEASON_OPTIONS.map((option) => option.value)
-const teamValues: string[] = ALUMNI_TEAM_OPTIONS.map((option) => option.value)
-const facultyValues: string[] = ALUMNI_FACULTY_OPTIONS.map((option) => option.value)
-const fieldValues: string[] = ALUMNI_FIELD_OPTIONS.map((option) => option.value)
-const degreeValues: string[] = ALUMNI_DEGREE_OPTIONS.map((option) => option.value)
+const facultyValues = ALUMNI_FACULTY_OPTIONS.map((option) => option.value) as [
+    string,
+    ...string[],
+]
+const fieldValues = ALUMNI_FIELD_OPTIONS.map((option) => option.value) as [
+    string,
+    ...string[],
+]
 
 export function useFilters() {
     const [seasonFrom, setSeasonFrom] = useQueryState(
         'seasonFrom',
-        parseAsStringLiteral(seasonValues).withDefault(
+        parseAsStringLiteral(ALUMNI_SEASON_VALUES).withDefault(
             ALUMNI_FILTER_DEFAULTS.seasonFrom,
         ),
     )
     const [seasonTo, setSeasonTo] = useQueryState(
         'seasonTo',
-        parseAsStringLiteral(seasonValues).withDefault(
+        parseAsStringLiteral(ALUMNI_SEASON_VALUES).withDefault(
             ALUMNI_FILTER_DEFAULTS.seasonTo,
         ),
     )
     const [teams, setTeams] = useQueryState(
         'team',
-        parseAsArrayOf(parseAsStringLiteral(teamValues))
+        parseAsArrayOf(parseAsStringLiteral(ALUMNI_TEAM_VALUES))
             .withDefault([])
             .withOptions({ clearOnDefault: true }),
     )
@@ -50,23 +54,23 @@ export function useFilters() {
     )
     const [degrees, setDegrees] = useQueryState(
         'degree',
-        parseAsArrayOf(parseAsStringLiteral(degreeValues))
+        parseAsArrayOf(parseAsStringLiteral(ALUMNI_DEGREE_VALUES))
             .withDefault([])
             .withOptions({ clearOnDefault: true }),
     )
 
     return {
         seasonFrom,
-        setSeasonFrom,
+        setSeasonFrom: setLiteralParam(setSeasonFrom),
         seasonTo,
-        setSeasonTo,
+        setSeasonTo: setLiteralParam(setSeasonTo),
         teams,
-        setTeams,
+        setTeams: setLiteralParams(setTeams),
         faculties,
         setFaculties,
         fields,
         setFields,
         degrees,
-        setDegrees,
+        setDegrees: setLiteralParams(setDegrees),
     }
 }

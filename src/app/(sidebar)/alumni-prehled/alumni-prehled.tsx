@@ -21,7 +21,7 @@ import {
 import {
     buildCategoryConfig,
     toSparseCategoryChart,
-} from '@/lib/alumni/sparse-category-chart'
+} from '@/lib/statistics/sparse-category-chart'
 import {
     buildGraduationByTeamColumns,
     filterOverviewRows,
@@ -173,7 +173,7 @@ export function AlumniPrehled() {
                                     showYAxis
                                     angledXAxis
                                     showDots
-                                    showAverage
+                                    showAverage={graduationSeries.length > 1}
                                     xAxisLabel="Sezóna"
                                     yAxisLabel="Graduation rate (%)"
                                     formatValue={formatGraduationPercent}

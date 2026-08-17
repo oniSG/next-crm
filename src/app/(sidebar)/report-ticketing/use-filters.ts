@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { parseAsIsoDate, useQueryState } from 'nuqs'
+import { parseAsIsoDate, useQueryStates } from 'nuqs'
 
 import type { DateRange } from '@/components/custom/filters/date-presets'
 
@@ -12,14 +12,11 @@ import {
 
 export function useFilters() {
     const [today] = useState(() => new Date())
-    const [eventFrom, setEventFrom] = useQueryState(
-        'event-from',
-        parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_FROM),
-    )
-    const [eventTo, setEventTo] = useQueryState(
-        'event-to',
-        parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_TO),
-    )
+    const [{ 'event-from': eventFrom, 'event-to': eventTo }, setRange] =
+        useQueryStates({
+            'event-from': parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_FROM),
+            'event-to': parseAsIsoDate.withDefault(TICKETS_BY_EVENT_DEFAULT_TO),
+        })
 
     const eventDateRange = useMemo<DateRange>(
         () => ({ from: eventFrom, to: eventTo }),
@@ -27,8 +24,10 @@ export function useFilters() {
     )
 
     function setEventDateRange(range: DateRange) {
-        void setEventFrom(range.from)
-        void setEventTo(range.to)
+        void setRange({
+            'event-from': range.from,
+            'event-to': range.to,
+        })
     }
 
     return {

@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import {
     PolarAngleAxis,
     PolarGrid,
@@ -39,7 +40,7 @@ export function RadarChart({
     categoryKey,
     series,
     className,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: RadarChartProps) {
     if (
         data.length === 0 ||

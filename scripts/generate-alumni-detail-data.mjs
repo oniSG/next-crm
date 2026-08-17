@@ -177,7 +177,7 @@ for (const season of seasons) {
 
 const outPath = path.join(
     process.cwd(),
-    'src/app/(sidebar)/alumni/data/alumni-by-season-detail.json',
+    'src/lib/alumni/data/alumni-by-season-detail.json',
 )
 fs.writeFileSync(outPath, JSON.stringify(rows, null, 2) + '\n')
 
@@ -209,7 +209,7 @@ const graduationRows = [...graduationByTeamSeason.values()].sort((a, b) => {
 
 const graduationOutPath = path.join(
     process.cwd(),
-    'src/app/(sidebar)/alumni-graduation-rate/data/graduation-by-season-team.json',
+    'src/lib/alumni/data/graduation-by-season-team.json',
 )
 fs.writeFileSync(graduationOutPath, JSON.stringify(graduationRows, null, 2) + '\n')
 

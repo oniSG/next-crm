@@ -7,24 +7,24 @@ import type { SimpleTableColumn } from '@/components/custom/statistics/simple-ta
 import type { KpiCardContent } from '@/components/custom/statistics/kpi-card'
 
 /** Zákaznické segmenty — koláčový graf. */
-export const SEGMENT_OPTIONS: SelectFilterOption[] = [
+export const SEGMENT_OPTIONS = [
     { value: 'all', label: 'Všechny' },
     { value: 'enterprise', label: 'Enterprise' },
     { value: 'smb', label: 'SMB' },
     { value: 'startup', label: 'Startup' },
     { value: 'personal', label: 'Personal' },
-]
+] as const satisfies ReadonlyArray<SelectFilterOption>
 
 /** Týmy — heatmapa. */
-export const TEAM_OPTIONS: MultiSelectFilterOption[] = [
+export const TEAM_OPTIONS = [
     { value: 'a-team', label: 'A tým' },
     { value: 'b-team', label: 'B tým' },
     { value: 'u19', label: 'U19' },
     { value: 'u17', label: 'U17' },
-]
+] as const satisfies ReadonlyArray<MultiSelectFilterOption>
 
 /** Kanály — labeled bar (sessions) + tabulka kampaní. */
-export const CHANNEL_OPTIONS: MultiSelectFilterOption[] = [
+export const CHANNEL_OPTIONS = [
     { value: 'organic', label: 'Organic' },
     { value: 'direct', label: 'Direct' },
     { value: 'referral', label: 'Referral' },
@@ -32,15 +32,15 @@ export const CHANNEL_OPTIONS: MultiSelectFilterOption[] = [
     { value: 'push', label: 'Push' },
     { value: 'sms', label: 'SMS' },
     { value: 'web', label: 'Web' },
-]
+] as const satisfies ReadonlyArray<MultiSelectFilterOption>
 
 /** Regiony — tabulka kampaní. */
-export const REGION_OPTIONS: MultiSelectFilterOption[] = [
+export const REGION_OPTIONS = [
     { value: 'praha', label: 'Praha' },
     { value: 'brno', label: 'Brno' },
     { value: 'ostrava', label: 'Ostrava' },
     { value: 'plzen', label: 'Plzeň' },
-]
+] as const satisfies ReadonlyArray<MultiSelectFilterOption>
 
 export const KPI_DETAIL_ROWS: KpiCardContent[] = [
     { label: 'Otevření', value: '42 %' },

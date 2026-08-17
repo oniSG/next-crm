@@ -51,6 +51,18 @@ function buildFieldOptions() {
     return [...byValue.entries()].map(([value, label]) => ({ label, value }))
 }
 
+type OptionValue<T extends readonly { value: string }[]> =
+    T[number]['value']
+
+function optionValues<T extends readonly { value: string }[]>(
+    options: T,
+): [OptionValue<T>, ...OptionValue<T>[]] {
+    return options.map((option) => option.value) as [
+        OptionValue<T>,
+        ...OptionValue<T>[],
+    ]
+}
+
 export const ALUMNI_SEASON_OPTIONS = [
     { label: '2015/2016', value: '2015/2016' },
     { label: '2016/2017', value: '2016/2017' },
@@ -65,6 +77,8 @@ export const ALUMNI_SEASON_OPTIONS = [
     { label: '2025/2026', value: '2025/2026' },
 ] as const
 
+export const ALUMNI_SEASON_VALUES = optionValues(ALUMNI_SEASON_OPTIONS)
+
 export const ALUMNI_TEAM_OPTIONS = [
     { label: 'Black Dogs Budweis', value: 'black-dogs-budweis' },
     { label: 'HC Sparta Praha', value: 'sparta' },
@@ -73,6 +87,8 @@ export const ALUMNI_TEAM_OPTIONS = [
     { label: 'Mountfield HK', value: 'mountfield' },
     { label: 'HC Oceláři Třinec', value: 'trinec' },
 ] as const
+
+export const ALUMNI_TEAM_VALUES = optionValues(ALUMNI_TEAM_OPTIONS)
 
 export const ALUMNI_SCHOOL_OPTIONS = buildSchoolOptions()
 
@@ -85,6 +101,8 @@ export const ALUMNI_DEGREE_OPTIONS = [
     { label: 'Magisterské', value: 'magisterske' },
     { label: 'Doktorské', value: 'doktorske' },
 ] as const
+
+export const ALUMNI_DEGREE_VALUES = optionValues(ALUMNI_DEGREE_OPTIONS)
 
 const ALUMNI_DEGREE_ORDER = new Map<string, number>(
     ALUMNI_DEGREE_OPTIONS.map((option, index) => [option.value, index]),

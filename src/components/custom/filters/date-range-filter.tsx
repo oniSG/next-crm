@@ -79,7 +79,7 @@ export function DateRangeFilter({
                     <Button
                         variant="outline"
                         className={cn('gap-2', className)}
-                        aria-label="Change date range"
+                        aria-label="Změnit období"
                     >
                         <span className="text-sm">{formatDateRange(value)}</span>
                         <ChevronDown className="size-4 opacity-50" />
@@ -93,7 +93,7 @@ export function DateRangeFilter({
                             htmlFor="date-range-from"
                             className="text-muted-foreground text-xs"
                         >
-                            Start date
+                            Od
                         </label>
                         <Input
                             id="date-range-from"
@@ -107,7 +107,7 @@ export function DateRangeFilter({
                             htmlFor="date-range-to"
                             className="text-muted-foreground text-xs"
                         >
-                            End date
+                            Do
                         </label>
                         <Input
                             id="date-range-to"

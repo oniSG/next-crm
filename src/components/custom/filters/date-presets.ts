@@ -32,12 +32,12 @@ export type Preset = {
 export const PRESETS: Preset[] = [
     {
         key: 'today',
-        label: 'Today',
+        label: 'Dnes',
         getRange: (t) => ({ from: t, to: t }),
     },
     {
         key: 'yesterday',
-        label: 'Yesterday',
+        label: 'Včera',
         getRange: (t) => {
             const y = subDays(t, 1)
             return { from: y, to: y }
@@ -45,27 +45,27 @@ export const PRESETS: Preset[] = [
     },
     {
         key: 'last-7-days',
-        label: 'Last 7 days',
+        label: 'Posledních 7 dní',
         getRange: (t) => ({ from: subDays(t, 6), to: t }),
     },
     {
         key: 'last-30-days',
-        label: 'Last 30 days',
+        label: 'Posledních 30 dní',
         getRange: (t) => ({ from: subDays(t, 29), to: t }),
     },
     {
         key: 'last-90-days',
-        label: 'Last 90 days',
+        label: 'Posledních 90 dní',
         getRange: (t) => ({ from: subDays(t, 89), to: t }),
     },
     {
         key: 'this-month',
-        label: 'This month',
+        label: 'Tento měsíc',
         getRange: (t) => ({ from: startOfMonth(t), to: t }),
     },
     {
         key: 'last-month',
-        label: 'Last month',
+        label: 'Minulý měsíc',
         getRange: (t) => {
             const prev = subMonths(t, 1)
             return { from: startOfMonth(prev), to: endOfMonth(prev) }

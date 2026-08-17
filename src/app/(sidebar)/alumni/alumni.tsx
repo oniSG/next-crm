@@ -17,7 +17,7 @@ import {
     percentFormatter,
     rateFromDepartures,
 } from '@/lib/alumni/metrics'
-import { toSparseCategoryChart } from '@/lib/alumni/sparse-category-chart'
+import { toSparseCategoryChart } from '@/lib/statistics/sparse-category-chart'
 import {
     ALUMNI_BY_UNIVERSITY_COLUMNS,
     ALUMNI_BY_UNIVERSITY_FACULTY_COLUMNS,

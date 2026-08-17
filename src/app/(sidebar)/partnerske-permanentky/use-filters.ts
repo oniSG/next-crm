@@ -4,16 +4,27 @@ import { parseAsArrayOf, parseAsStringLiteral, useQueryState } from 'nuqs'
 
 import {
     DEFAULT_SEASON,
-    PARTNER_FILTER_OPTIONS,
+    PARTNER_USAGE,
     SEASON_OPTIONS,
     TICKET_CATEGORY_SERIES,
     type PartnerId,
     type SeasonKey,
     type TicketCategoryKey,
 } from './data'
+import { setLiteralParam, setLiteralParams } from '@/lib/query-state'
 
-const partnerValues: string[] = PARTNER_FILTER_OPTIONS.map((option) => option.value)
-const seasonValues: string[] = SEASON_OPTIONS.map((option) => option.value)
+const partnerValues = PARTNER_USAGE.map((partner) => partner.id) as [
+    PartnerId,
+    ...PartnerId[],
+]
+const seasonValues = SEASON_OPTIONS.map((option) => option.value) as [
+    SeasonKey,
+    ...SeasonKey[],
+]
+const categoryValues = TICKET_CATEGORY_SERIES as [
+    TicketCategoryKey,
+    ...TicketCategoryKey[],
+]
 
 export function useFilters() {
     const [partners, setPartners] = useQueryState(
@@ -24,7 +35,7 @@ export function useFilters() {
     )
     const [categories, setCategories] = useQueryState(
         'category',
-        parseAsArrayOf(parseAsStringLiteral([...TICKET_CATEGORY_SERIES] as string[]))
+        parseAsArrayOf(parseAsStringLiteral(categoryValues))
             .withDefault([])
             .withOptions({ clearOnDefault: true }),
     )
@@ -34,11 +45,11 @@ export function useFilters() {
     )
 
     return {
-        partners: partners as PartnerId[],
-        setPartners,
-        categories: categories as TicketCategoryKey[],
-        setCategories,
-        season: season as SeasonKey,
-        setSeason,
+        partners,
+        setPartners: setLiteralParams(setPartners),
+        categories,
+        setCategories: setLiteralParams(setCategories),
+        season,
+        setSeason: setLiteralParam(setSeason),
     }
 }

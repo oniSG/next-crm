@@ -1,5 +1,6 @@
 'use client'
 
+import { EMPTY_CHART_MESSAGE } from './empty-chart-message'
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, LabelList } from 'recharts'
 
 import {
@@ -34,7 +35,7 @@ export function NegativeBarChart({
     positiveColor = 'var(--chart-1)',
     negativeColor = 'var(--chart-3)',
     className,
-    emptyMessage = 'No data for the selected period.',
+    emptyMessage = EMPTY_CHART_MESSAGE,
 }: NegativeBarChartProps) {
     if (data.length === 0 || !data.some((row) => rowHasVisibleValue(row, valueKey))) {
         return (

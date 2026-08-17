@@ -51,8 +51,9 @@ export function ReportSales() {
                 queryKey="sales-revenue-by-channel-view"
                 action={
                     <InfoTooltip>
-                        Grafické znázornění příjmů z prodeje vstupenek za posledních
-                        30 dní, rozdělené podle prodejních kanálů.
+                        Příjmy z prodeje vstupenek podle prodejních kanálů za
+                        vybrané období. Podíl kanálů vychází z celkového mixu,
+                        částky se škálují na tržbu ve filtru.
                     </InfoTooltip>
                 }
                 tableExportable={{
@@ -104,8 +105,8 @@ export function ReportSales() {
                 queryKey="sales-revenue-by-date-view"
                 action={
                     <InfoTooltip>
-                        Statistický přehled příjmů z prodeje vstupenek za posledních
-                        30 dní.
+                        Statistický přehled příjmů z prodeje vstupenek za vybrané
+                        období.
                     </InfoTooltip>
                 }
                 tableExportable={{

@@ -46,7 +46,7 @@ import { useFilters } from './use-filters'
 import {
     buildCategoryConfig,
     toSparseCategoryChart,
-} from '@/lib/alumni/sparse-category-chart'
+} from '@/lib/statistics/sparse-category-chart'
 
 export function SalesReport() {
     const { dateRange, period, teams, category } = useFilters()

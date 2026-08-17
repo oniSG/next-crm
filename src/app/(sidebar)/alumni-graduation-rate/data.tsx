@@ -20,7 +20,7 @@ import {
     type GraduationByTeamSeasonPoint,
 } from '@/lib/alumni/team-season'
 
-import graduationBySeasonTeam from './data/graduation-by-season-team.json'
+import graduationBySeasonTeam from '@/lib/alumni/data/graduation-by-season-team.json'
 
 export type {
     AlumniTeamSeasonRow as GraduationSeasonTeamRow,

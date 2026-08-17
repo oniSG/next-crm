@@ -16,12 +16,12 @@ import {
     sumAlumniMetrics,
     type AlumniMetricTotals,
 } from '@/lib/alumni/metrics'
-import { buildCategoryConfig } from '@/lib/alumni/sparse-category-chart'
+import { buildCategoryConfig } from '@/lib/statistics/sparse-category-chart'
 
-import alumniBySeasonDetail from '../alumni/data/alumni-by-season-detail.json'
+import alumniBySeasonDetail from '@/lib/alumni/data/alumni-by-season-detail.json'
 import type { AlumniSeasonDetailRow } from '../alumni/data'
 
-export { toSparseCategoryChart } from '@/lib/alumni/sparse-category-chart'
+export { toSparseCategoryChart } from '@/lib/statistics/sparse-category-chart'
 export { formatPlayerCount }
 
 const ALUMNI_BY_SEASON_DETAIL = alumniBySeasonDetail as AlumniSeasonDetailRow[]
@@ -296,7 +296,6 @@ export function getActivePlayersDetail(
 
     return [...byKey.values()]
         .sort((a, b) => b.count - a.count || a.year - b.year)
-        .slice(0, 50)
         .map((entry, index) => ({
             id: `AP-${String(index + 1).padStart(3, '0')}`,
             team: entry.team,

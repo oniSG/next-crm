@@ -183,7 +183,7 @@ export function toSectionTableColumns(
     return [
         {
             id: 'label',
-            header: 'Month',
+            header: 'Měsíc',
             cell: (row) => row.label,
             cellClassName: 'font-medium',
         },
@@ -223,46 +223,46 @@ export function toSectionFooter(
 
 export const TICKET_CHANNEL_SERIES: ReportChartSeries[] = [
     { key: 'online', label: 'Online', color: 'var(--chart-1)' },
-    { key: 'boxOffice', label: 'Box office', color: 'var(--chart-2)' },
-    { key: 'administration', label: 'Administration', color: 'var(--chart-3)' },
-    { key: 'mobileApp', label: 'Mobile app', color: 'var(--chart-4)' },
+    { key: 'boxOffice', label: 'Pokladna', color: 'var(--chart-2)' },
+    { key: 'administration', label: 'Administrace', color: 'var(--chart-3)' },
+    { key: 'mobileApp', label: 'Mobilní aplikace', color: 'var(--chart-4)' },
     { key: 'partner', label: 'Partner', color: 'var(--chart-6)' },
 ]
 
 export const TICKET_REVENUE_COLUMNS: ReportTableColumn[] = [
     { key: 'online', label: 'Online', format: 'currency' },
-    { key: 'boxOffice', label: 'Box office', format: 'currency' },
-    { key: 'administration', label: 'Administration', format: 'currency' },
-    { key: 'mobileApp', label: 'Mobile app', format: 'currency' },
+    { key: 'boxOffice', label: 'Pokladna', format: 'currency' },
+    { key: 'administration', label: 'Administrace', format: 'currency' },
+    { key: 'mobileApp', label: 'Mobilní aplikace', format: 'currency' },
     { key: 'partner', label: 'Partner', format: 'currency' },
-    { key: 'total', label: 'Total', format: 'currency', emphasize: true },
+    { key: 'total', label: 'Celkem', format: 'currency', emphasize: true },
 ]
 
 export const TICKET_COUNT_COLUMNS: ReportTableColumn[] = [
     { key: 'online', label: 'Online', format: 'number' },
-    { key: 'boxOffice', label: 'Box office', format: 'number' },
-    { key: 'administration', label: 'Administration', format: 'number' },
-    { key: 'mobileApp', label: 'Mobile app', format: 'number' },
+    { key: 'boxOffice', label: 'Pokladna', format: 'number' },
+    { key: 'administration', label: 'Administrace', format: 'number' },
+    { key: 'mobileApp', label: 'Mobilní aplikace', format: 'number' },
     { key: 'partner', label: 'Partner', format: 'number' },
-    { key: 'total', label: 'Total', format: 'number', emphasize: true },
+    { key: 'total', label: 'Celkem', format: 'number', emphasize: true },
 ]
 
 export const VISITOR_TOTAL_COLUMNS: ReportTableColumn[] = [
-    { key: 'total', label: 'Total visitors', format: 'number', emphasize: true },
+    { key: 'total', label: 'Návštěvníci celkem', format: 'number', emphasize: true },
 ]
 
 export const VISITOR_TOTAL_SERIES: ReportChartSeries[] = [
-    { key: 'total', label: 'Visitors', color: 'var(--chart-1)' },
+    { key: 'total', label: 'Návštěvníci', color: 'var(--chart-1)' },
 ]
 
 export const VISITOR_GROWTH_COLUMNS: ReportTableColumn[] = [
-    { key: 'added', label: 'Added', format: 'number' },
-    { key: 'removed', label: 'Removed', format: 'number' },
-    { key: 'netChange', label: 'Net growth', format: 'signed', emphasize: true },
+    { key: 'added', label: 'Přidaní', format: 'number' },
+    { key: 'removed', label: 'Odebraní', format: 'number' },
+    { key: 'netChange', label: 'Čistý přírůstek', format: 'signed', emphasize: true },
 ]
 
 export const VISITOR_GROWTH_SERIES: ReportChartSeries[] = [
-    { key: 'netChange', label: 'Net growth', color: 'var(--chart-1)' },
+    { key: 'netChange', label: 'Čistý přírůstek', color: 'var(--chart-1)' },
 ]
 
 export const MANAGEMENT_REPORT_DATA = managementReport as ManagementReportData

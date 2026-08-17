@@ -39,7 +39,7 @@ import { useFilters } from './use-filters'
 import {
     buildCategoryConfig,
     toSparseCategoryChart,
-} from '@/lib/alumni/sparse-category-chart'
+} from '@/lib/statistics/sparse-category-chart'
 
 function chartTableTabs(chart: ReactNode, table: ReactNode): GraphCardTab[] {
     return [

@@ -40,7 +40,7 @@ import {
     type EventReportData,
 } from './data'
 
-const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+const dateFormatter = new Intl.DateTimeFormat('cs-CZ', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -137,7 +137,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
 
             <section className="grid gap-4 md:grid-cols-3" aria-label="Event overview">
                 <KpiCard
-                    label="Tickets sold"
+                    label="Prodané vstupenky"
                     icon={<TicketCheckIcon className="size-4" />}
                     iconClassName="bg-chart-1/10 text-chart-1"
                     value={`${((event.tickets.sold / event.tickets.capacity) * 100).toFixed(1)} %`}
@@ -203,7 +203,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                     }
                     tableExportable={{
                         filename: 'sales-by-days',
-                        headers: ['Day', 'Tickets sold', 'Revenue'],
+                        headers: ['Den', 'Prodané vstupenky', 'Tržba'],
                         rows: event.salesByDay.map((row) => [
                             row.label,
                             row.count,
@@ -212,7 +212,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                     }}
                     tabs={[
                         {
-                            name: 'Chart',
+                            name: 'Graf',
                             value: 'chart',
                             icon: <ChartColumnIcon />,
                             content: (
@@ -231,7 +231,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                             ),
                         },
                         {
-                            name: 'Table',
+                            name: 'Tabulka',
                             value: 'table',
                             icon: <TableIcon />,
                             content: (
@@ -263,7 +263,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                     }
                     tableExportable={{
                         filename: 'number-of-tickets-sold-by-price',
-                        headers: ['Price', 'Tickets sold', 'Revenue'],
+                        headers: ['Cena', 'Prodané vstupenky', 'Tržba'],
                         rows: event.salesByPrice.map((row) => [
                             row.label,
                             row.count,
@@ -272,7 +272,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                     }}
                     tabs={[
                         {
-                            name: 'Chart',
+                            name: 'Graf',
                             value: 'chart',
                             icon: <ChartColumnIcon />,
                             content: (
@@ -291,7 +291,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                             ),
                         },
                         {
-                            name: 'Table',
+                            name: 'Tabulka',
                             value: 'table',
                             icon: <TableIcon />,
                             content: (
@@ -364,12 +364,12 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                     }
                     tableExportable={{
                         filename: 'tickets-sold-by-sector',
-                        headers: ['Sector', 'Tickets sold'],
+                        headers: ['Sektor', 'Prodané vstupenky'],
                         rows: event.salesBySector.map((row) => [row.label, row.count]),
                     }}
                     tabs={[
                         {
-                            name: 'Chart',
+                            name: 'Graf',
                             value: 'chart',
                             icon: <ChartColumnIcon />,
                             content: (
@@ -388,7 +388,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                             ),
                         },
                         {
-                            name: 'Table',
+                            name: 'Tabulka',
                             value: 'table',
                             icon: <TableIcon />,
                             content: (
@@ -424,7 +424,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                     }}
                     tabs={[
                         {
-                            name: 'Chart',
+                            name: 'Graf',
                             value: 'chart',
                             icon: <ChartColumnIcon />,
                             content: (
@@ -444,7 +444,7 @@ export function ReportEventDetail({ event, showBack = true }: ReportEventDetailP
                             ),
                         },
                         {
-                            name: 'Table',
+                            name: 'Tabulka',
                             value: 'table',
                             icon: <TableIcon />,
                             content: (
