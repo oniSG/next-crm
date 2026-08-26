@@ -189,7 +189,10 @@ function GridLabel({
 
 function StickyGridBackground() {
     return (
-        <span aria-hidden className="absolute inset-0 z-0 bg-white">
+        <span
+            aria-hidden
+            className="absolute inset-0 z-0 bg-[color-mix(in_srgb,var(--card)_95%,white)]"
+        >
             <span className="bg-border/40 absolute inset-y-0 right-0 w-px" />
         </span>
     )

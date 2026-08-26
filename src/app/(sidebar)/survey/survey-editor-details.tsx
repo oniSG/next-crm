@@ -32,27 +32,65 @@ export type QuestionSelection = {
 type DetailProps = {
     selection?: QuestionSelection
     sectionSelection?: SurveyFormData['sections'][number]
+    thankYouSelected?: boolean
+    thankYouTitle: string
+    thankYouDescription: string
+    showThankYouLogo: boolean
+    thankYouLinkText: string
+    thankYouLinkUrl: string
     onQuestionChange: (values: Partial<SurveyQuestion>) => void
     onSectionNameChange: (sectionId: string, name: string) => void
+    onThankYouTitleChange: (thankYouTitle: string) => void
+    onThankYouDescriptionChange: (thankYouDescription: string) => void
+    onShowThankYouLogoChange: (showThankYouLogo: boolean) => void
+    onThankYouLinkTextChange: (thankYouLinkText: string) => void
+    onThankYouLinkUrlChange: (thankYouLinkUrl: string) => void
 }
 
 export function DetailSettingsColumn({
     selection,
     sectionSelection,
+    thankYouSelected,
+    thankYouTitle,
+    thankYouDescription,
+    showThankYouLogo,
+    thankYouLinkText,
+    thankYouLinkUrl,
     onClose,
     onQuestionChange,
     onSectionNameChange,
+    onThankYouTitleChange,
+    onThankYouDescriptionChange,
+    onShowThankYouLogoChange,
+    onThankYouLinkTextChange,
+    onThankYouLinkUrlChange,
 }: DetailProps & { onClose: () => void }) {
     return (
         <div>
-            <DetailHeader selection={selection} onClose={onClose} showCloseButton />
+            <DetailHeader
+                selection={selection}
+                thankYouSelected={thankYouSelected}
+                onClose={onClose}
+                showCloseButton
+            />
             <div className="p-4 pb-24">
                 <DetailContent
                     panelId="detail-column"
                     selection={selection}
                     sectionSelection={sectionSelection}
+                    thankYouSelected={thankYouSelected}
+                    thankYouTitle={thankYouTitle}
+                    thankYouDescription={thankYouDescription}
+                    showThankYouLogo={showThankYouLogo}
+                    thankYouLinkText={thankYouLinkText}
+                    thankYouLinkUrl={thankYouLinkUrl}
                     onQuestionChange={onQuestionChange}
                     onSectionNameChange={onSectionNameChange}
+                    onThankYouTitleChange={onThankYouTitleChange}
+                    onThankYouDescriptionChange={onThankYouDescriptionChange}
+                    onShowThankYouLogoChange={onShowThankYouLogoChange}
+                    onThankYouLinkTextChange={onThankYouLinkTextChange}
+                    onThankYouLinkUrlChange={onThankYouLinkUrlChange}
                 />
             </div>
         </div>
@@ -63,9 +101,20 @@ export function DetailSettingsSheet({
     open,
     selection,
     sectionSelection,
+    thankYouSelected,
+    thankYouTitle,
+    thankYouDescription,
+    showThankYouLogo,
+    thankYouLinkText,
+    thankYouLinkUrl,
     onOpenChange,
     onQuestionChange,
     onSectionNameChange,
+    onThankYouTitleChange,
+    onThankYouDescriptionChange,
+    onShowThankYouLogoChange,
+    onThankYouLinkTextChange,
+    onThankYouLinkUrlChange,
 }: {
     open: boolean
     onOpenChange: (open: boolean) => void
@@ -73,14 +122,29 @@ export function DetailSettingsSheet({
     return (
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent className="w-full sm:max-w-md lg:hidden">
-                <DetailHeader selection={selection} sheet />
+                <DetailHeader
+                    selection={selection}
+                    thankYouSelected={thankYouSelected}
+                    sheet
+                />
                 <div className="min-h-0 flex-1 overflow-y-auto p-4 pb-24">
                     <DetailContent
                         panelId="detail-sheet"
                         selection={selection}
                         sectionSelection={sectionSelection}
+                        thankYouSelected={thankYouSelected}
+                        thankYouTitle={thankYouTitle}
+                        thankYouDescription={thankYouDescription}
+                        showThankYouLogo={showThankYouLogo}
+                        thankYouLinkText={thankYouLinkText}
+                        thankYouLinkUrl={thankYouLinkUrl}
                         onQuestionChange={onQuestionChange}
                         onSectionNameChange={onSectionNameChange}
+                        onThankYouTitleChange={onThankYouTitleChange}
+                        onThankYouDescriptionChange={onThankYouDescriptionChange}
+                        onShowThankYouLogoChange={onShowThankYouLogoChange}
+                        onThankYouLinkTextChange={onThankYouLinkTextChange}
+                        onThankYouLinkUrlChange={onThankYouLinkUrlChange}
                     />
                 </div>
             </SheetContent>
@@ -90,11 +154,13 @@ export function DetailSettingsSheet({
 
 function DetailHeader({
     selection,
+    thankYouSelected,
     onClose,
     showCloseButton = false,
     sheet = false,
 }: {
     selection?: QuestionSelection
+    thankYouSelected?: boolean
     onClose?: () => void
     showCloseButton?: boolean
     sheet?: boolean
@@ -104,24 +170,36 @@ function DetailHeader({
             <div className="min-w-0">
                 {sheet ? (
                     <SheetTitle>
-                        {selection ? 'Question settings' : 'Section settings'}
+                        {selection
+                            ? 'Question settings'
+                            : thankYouSelected
+                              ? 'Thank you page settings'
+                              : 'Section settings'}
                     </SheetTitle>
                 ) : (
                     <h2 className="font-heading text-base font-medium">
-                        {selection ? 'Question settings' : 'Section settings'}
+                        {selection
+                            ? 'Question settings'
+                            : thankYouSelected
+                              ? 'Thank you page settings'
+                              : 'Section settings'}
                     </h2>
                 )}
                 {sheet ? (
                     <SheetDescription>
                         {selection
                             ? `${selection.sectionName} · Edit the selected question.`
-                            : 'Edit the selected section.'}
+                            : thankYouSelected
+                              ? 'Edit the message shown after submission.'
+                              : 'Edit the selected section.'}
                     </SheetDescription>
                 ) : (
                     <p className="text-muted-foreground text-sm">
                         {selection
                             ? `${selection.sectionName} · Edit the selected question.`
-                            : 'Edit the selected section.'}
+                            : thankYouSelected
+                              ? 'Edit the message shown after submission.'
+                              : 'Edit the selected section.'}
                     </p>
                 )}
             </div>
@@ -153,8 +231,19 @@ function DetailContent({
     panelId,
     selection,
     sectionSelection,
+    thankYouSelected,
+    thankYouTitle,
+    thankYouDescription,
+    showThankYouLogo,
+    thankYouLinkText,
+    thankYouLinkUrl,
     onQuestionChange,
     onSectionNameChange,
+    onThankYouTitleChange,
+    onThankYouDescriptionChange,
+    onShowThankYouLogoChange,
+    onThankYouLinkTextChange,
+    onThankYouLinkUrlChange,
 }: DetailProps & { panelId: string }) {
     return (
         <>
@@ -171,6 +260,81 @@ function DetailContent({
                     section={sectionSelection}
                     onChange={onSectionNameChange}
                 />
+            )}
+            {thankYouSelected && !selection && !sectionSelection && (
+                <div className="space-y-7">
+                    <div className="space-y-5">
+                        <Field>
+                            <FieldLabel htmlFor={`${panelId}-thank-you-title`}>
+                                Thank you title <RequiredIndicator />
+                            </FieldLabel>
+                            <Input
+                                id={`${panelId}-thank-you-title`}
+                                value={thankYouTitle}
+                                required
+                                onChange={(event) =>
+                                    onThankYouTitleChange(event.target.value)
+                                }
+                            />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor={`${panelId}-thank-you-description`}>
+                                Thank you description <RequiredIndicator />
+                            </FieldLabel>
+                            <Textarea
+                                id={`${panelId}-thank-you-description`}
+                                value={thankYouDescription}
+                                required
+                                onChange={(event) =>
+                                    onThankYouDescriptionChange(event.target.value)
+                                }
+                            />
+                        </Field>
+                        <Field orientation="horizontal">
+                            <FieldLabel htmlFor={`${panelId}-thank-you-logo`}>
+                                Show logo
+                            </FieldLabel>
+                            <Switch
+                                id={`${panelId}-thank-you-logo`}
+                                checked={showThankYouLogo}
+                                onCheckedChange={onShowThankYouLogoChange}
+                            />
+                        </Field>
+                    </div>
+                    <Separator />
+                    <section className="space-y-4">
+                        <h3 className="text-sm font-semibold">Link</h3>
+                        <Field>
+                            <FieldLabel htmlFor={`${panelId}-thank-you-link-text`}>
+                                Link text
+                                {thankYouLinkUrl.trim() && <RequiredIndicator />}
+                            </FieldLabel>
+                            <Input
+                                id={`${panelId}-thank-you-link-text`}
+                                value={thankYouLinkText}
+                                required={Boolean(thankYouLinkUrl.trim())}
+                                onChange={(event) =>
+                                    onThankYouLinkTextChange(event.target.value)
+                                }
+                            />
+                        </Field>
+                        <Field>
+                            <FieldLabel htmlFor={`${panelId}-thank-you-link-url`}>
+                                URL
+                                {thankYouLinkText.trim() && <RequiredIndicator />}
+                            </FieldLabel>
+                            <Input
+                                id={`${panelId}-thank-you-link-url`}
+                                type="url"
+                                value={thankYouLinkUrl}
+                                required={Boolean(thankYouLinkText.trim())}
+                                onChange={(event) =>
+                                    onThankYouLinkUrlChange(event.target.value)
+                                }
+                            />
+                        </Field>
+                    </section>
+                </div>
             )}
         </>
     )

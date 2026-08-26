@@ -82,14 +82,23 @@ function BasicSettingsCard({ initialData }: { initialData: SurveyFormData }) {
                     />
                 </Field>
                 <Field>
-                    <FieldLabel htmlFor="survey-thank-you-message">
-                        Thank you message
+                    <FieldLabel htmlFor="survey-thank-you-title">
+                        Thank you title
+                    </FieldLabel>
+                    <Input
+                        id="survey-thank-you-title"
+                        name="thank-you-title"
+                        defaultValue={initialData.thankYouTitle}
+                    />
+                </Field>
+                <Field>
+                    <FieldLabel htmlFor="survey-thank-you-description">
+                        Thank you description
                     </FieldLabel>
                     <Textarea
-                        id="survey-thank-you-message"
-                        name="thank-you-message"
-                        defaultValue={initialData.thankYouMessage}
-                        placeholder="Message shown after the survey is submitted"
+                        id="survey-thank-you-description"
+                        name="thank-you-description"
+                        defaultValue={initialData.thankYouDescription}
                     />
                 </Field>
             </CardContent>

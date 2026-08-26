@@ -6,7 +6,10 @@ import { arrayMove } from '@dnd-kit/sortable'
 
 import PageHeader from '@/components/custom/layout/page-header'
 import { SaveCancelActions } from '@/components/custom/other/save-cancel-actions'
-import { SurveyPreview } from '@/components/custom/survey/survey-preview'
+import {
+    SurveyBackground,
+    SurveyPreview,
+} from '@/components/custom/survey/survey-preview'
 import { Button } from '@/components/ui/button'
 
 import {
@@ -41,6 +44,7 @@ export function SurveyEditorWorkspace({
     const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null)
     const [mobileSettingsOpen, setMobileSettingsOpen] = useState(false)
     const [mobileDetailsOpen, setMobileDetailsOpen] = useState(false)
+    const [thankYouSelected, setThankYouSelected] = useState(false)
     const dirty = JSON.stringify(survey) !== JSON.stringify(savedSurvey)
     const questionSelection = selectedQuestion
         ? findQuestion(survey, selectedQuestion)
@@ -157,6 +161,40 @@ export function SurveyEditorWorkspace({
         }
     }
 
+    function duplicateQuestion(sectionId: string, questionId: string) {
+        const duplicateId = `question-${crypto.randomUUID()}`
+
+        setSurvey((current) => ({
+            ...current,
+            sections: current.sections.map((section) => {
+                if (section.id !== sectionId) return section
+
+                const source = section.questions.find(
+                    (question) => question.id === questionId,
+                )
+                if (!source) return section
+
+                const duplicate = structuredClone(source)
+                duplicate.id = duplicateId
+                duplicate.isNew = true
+                duplicate.selectionOptions = duplicate.selectionOptions.map((option) => ({
+                    ...option,
+                    id: `option-${crypto.randomUUID()}`,
+                }))
+
+                return {
+                    ...section,
+                    questions: insertQuestionAfter(
+                        section.questions,
+                        duplicate,
+                        questionId,
+                    ),
+                }
+            }),
+        }))
+        selectQuestion(sectionId, duplicateId)
+    }
+
     function reorderSections(activeId: string, overId: string) {
         setSurvey((current) => {
             const oldIndex = current.sections.findIndex(
@@ -196,18 +234,21 @@ export function SurveyEditorWorkspace({
     }
 
     function selectQuestion(sectionId: string, questionId: string) {
+        setThankYouSelected(false)
         setSelectedSectionId(null)
         setSelectedQuestion({ sectionId, questionId })
         setMobileDetailsOpen(window.matchMedia('(max-width: 1023px)').matches)
     }
 
     function selectSection(sectionId: string) {
+        setThankYouSelected(false)
         setSelectedQuestion(null)
         setSelectedSectionId(sectionId)
         setMobileDetailsOpen(window.matchMedia('(max-width: 1023px)').matches)
     }
 
     function showGeneralSettings() {
+        setThankYouSelected(false)
         setSelectedQuestion(null)
         setSelectedSectionId(null)
         setMobileDetailsOpen(false)
@@ -216,11 +257,20 @@ export function SurveyEditorWorkspace({
         }
     }
 
+    function selectThankYouPage() {
+        setSelectedQuestion(null)
+        setSelectedSectionId(null)
+        setThankYouSelected(true)
+        setMobileSettingsOpen(false)
+        setMobileDetailsOpen(window.matchMedia('(max-width: 1023px)').matches)
+    }
+
     function closeDetails(open: boolean) {
         if (open) return
         setMobileDetailsOpen(false)
         setSelectedQuestion(null)
         setSelectedSectionId(null)
+        setThankYouSelected(false)
     }
 
     return (
@@ -242,32 +292,60 @@ export function SurveyEditorWorkspace({
                 </Button>
             </PageHeader>
             <div className="bg-muted/25 min-h-[calc(100dvh-3rem)] lg:grid lg:grid-cols-[minmax(0,1fr)_auto]">
-                <div className="mx-auto flex w-full max-w-4xl min-w-0 justify-center p-4 lg:col-start-1 lg:row-start-1 xl:p-8">
+                <SurveyBackground
+                    survey={survey}
+                    className="flex w-full min-w-0 justify-center p-4 lg:col-start-1 lg:row-start-1 xl:p-8"
+                >
                     <SurveyPreview
                         survey={survey}
+                        className="relative z-1"
+                        showThankYouPage
                         readOnly
                         showSubmit={false}
                         sampleAnswerDate={previewDate}
                         selectedQuestion={selectedQuestion}
                         onSelectSurvey={showGeneralSettings}
+                        onSelectThankYou={selectThankYouPage}
                         onSelectSection={selectSection}
                         onSelectQuestion={selectQuestion}
                         onAddSection={addSection}
                         onAddQuestion={addQuestion}
                         onRemoveSection={removeSection}
                         onRemoveQuestion={removeQuestion}
+                        onDuplicateQuestion={duplicateQuestion}
                         onReorderSections={reorderSections}
                         onReorderQuestions={reorderQuestions}
                     />
-                </div>
+                </SurveyBackground>
                 <ResizableSettingsColumn>
-                    {questionSelection || sectionSelection ? (
+                    {questionSelection || sectionSelection || thankYouSelected ? (
                         <DetailSettingsColumn
                             selection={questionSelection}
                             sectionSelection={sectionSelection}
+                            thankYouSelected={thankYouSelected}
+                            thankYouTitle={survey.thankYouTitle}
+                            thankYouDescription={survey.thankYouDescription}
+                            showThankYouLogo={survey.showThankYouLogo}
+                            thankYouLinkText={survey.thankYouLinkText}
+                            thankYouLinkUrl={survey.thankYouLinkUrl}
                             onClose={() => closeDetails(false)}
                             onQuestionChange={changeQuestion}
                             onSectionNameChange={changeSectionName}
+                            onThankYouTitleChange={(thankYouTitle) =>
+                                changeSurvey({ thankYouTitle })
+                            }
+                            onThankYouDescriptionChange={(thankYouDescription) =>
+                                changeSurvey({ thankYouDescription })
+                            }
+                            onShowThankYouLogoChange={(showThankYouLogo) =>
+                                changeSurvey({ showThankYouLogo })
+                            }
+                            onThankYouLinkTextChange={(thankYouLinkText) =>
+                                changeSurvey({ thankYouLinkText })
+                            }
+                            onThankYouLinkUrlChange={(thankYouLinkUrl) =>
+                                changeSurvey({ thankYouLinkUrl })
+                            }
                         />
                     ) : (
                         <BasicSettingsColumn
@@ -288,9 +366,30 @@ export function SurveyEditorWorkspace({
                     open={mobileDetailsOpen}
                     selection={questionSelection}
                     sectionSelection={sectionSelection}
+                    thankYouSelected={thankYouSelected}
+                    thankYouTitle={survey.thankYouTitle}
+                    thankYouDescription={survey.thankYouDescription}
+                    showThankYouLogo={survey.showThankYouLogo}
+                    thankYouLinkText={survey.thankYouLinkText}
+                    thankYouLinkUrl={survey.thankYouLinkUrl}
                     onOpenChange={closeDetails}
                     onQuestionChange={changeQuestion}
                     onSectionNameChange={changeSectionName}
+                    onThankYouTitleChange={(thankYouTitle) =>
+                        changeSurvey({ thankYouTitle })
+                    }
+                    onThankYouDescriptionChange={(thankYouDescription) =>
+                        changeSurvey({ thankYouDescription })
+                    }
+                    onShowThankYouLogoChange={(showThankYouLogo) =>
+                        changeSurvey({ showThankYouLogo })
+                    }
+                    onThankYouLinkTextChange={(thankYouLinkText) =>
+                        changeSurvey({ thankYouLinkText })
+                    }
+                    onThankYouLinkUrlChange={(thankYouLinkUrl) =>
+                        changeSurvey({ thankYouLinkUrl })
+                    }
                 />
                 <SaveCancelActions
                     open={dirty}

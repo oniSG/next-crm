@@ -51,12 +51,22 @@ export type SurveySection = {
 export type SurveyFormData = {
     name: string
     description: string
-    thankYouMessage: string
+    thankYouTitle: string
+    thankYouDescription: string
+    showThankYouLogo: boolean
+    thankYouLinkText: string
+    thankYouLinkUrl: string
     expireDate: string
     sharePublicly: boolean
     linkValidity: number
     shareEmails: string[]
+    tags: string[]
     color: string
+    backgroundImage: {
+        name: string
+        size: number
+        url: string
+    } | null
     multiple: boolean
     showLogo: boolean
     sections: SurveySection[]

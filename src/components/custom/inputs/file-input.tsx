@@ -12,6 +12,11 @@ export type FileInputProps = {
     accept?: string
     disabled?: boolean
     className?: string
+    value?: {
+        name: string
+        size: number
+        url: string
+    } | null
     onFileChange?: (file: File | null) => void
 }
 
@@ -21,6 +26,7 @@ export function FileInput({
     accept,
     disabled,
     className,
+    value,
     onFileChange,
 }: FileInputProps) {
     const inputRef = useRef<HTMLInputElement>(null)
@@ -28,9 +34,12 @@ export function FileInput({
     const [file, setFile] = useState<File | null>(null)
     const [isRemoving, setIsRemoving] = useState(false)
     const previewUrl = useMemo(
-        () => (file?.type.startsWith('image/') ? URL.createObjectURL(file) : null),
-        [file],
+        () =>
+            value?.url ??
+            (file?.type.startsWith('image/') ? URL.createObjectURL(file) : null),
+        [file, value?.url],
     )
+    const displayedFile = value === undefined ? file : value
 
     useEffect(() => {
         return () => {
@@ -75,7 +84,7 @@ export function FileInput({
                 onChange={(event) => changeFile(event.target.files?.[0] ?? null)}
             />
 
-            {!file ? (
+            {!displayedFile ? (
                 <Button
                     type="button"
                     variant="outline"
@@ -98,7 +107,7 @@ export function FileInput({
                         <div className="group relative shrink-0">
                             <div
                                 role="img"
-                                aria-label={`Preview of ${file.name}`}
+                                aria-label={`Preview of ${displayedFile.name}`}
                                 className="size-9 rounded-md border bg-cover bg-center"
                                 style={{ backgroundImage: `url(${previewUrl})` }}
                             />
@@ -115,9 +124,11 @@ export function FileInput({
                     )}
 
                     <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium">{file.name}</p>
+                        <p className="truncate text-sm font-medium">
+                            {displayedFile.name}
+                        </p>
                         <p className="text-muted-foreground text-xs">
-                            {formatFileSize(file.size)}
+                            {formatFileSize(displayedFile.size)}
                         </p>
                     </div>
 

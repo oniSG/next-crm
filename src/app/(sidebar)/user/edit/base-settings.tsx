@@ -1,18 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import {
-    ChevronsUpDownIcon,
-    KeyRoundIcon,
-    Loader2Icon,
-    ShieldCheckIcon,
-} from 'lucide-react'
+import { KeyRoundIcon, Loader2Icon, ShieldCheckIcon } from 'lucide-react'
 
 import { TAG_OPTIONS } from './data'
 
 import { FileInput } from '@/components/custom/inputs/file-input'
 import { PhoneNumberInput } from '@/components/custom/inputs/phone-number-input'
-import { Badge } from '@/components/ui/badge'
+import { TagsSelect } from '@/components/custom/inputs/tags-select'
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -21,16 +16,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import {
-    Command,
-    CommandEmpty,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from '@/components/ui/command'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 
@@ -86,15 +73,6 @@ function ContactInformationCard() {
 
 function RoleAppearanceCard() {
     const [tags, setTags] = useState<string[]>(['Sales', 'Management'])
-    const [tagsOpen, setTagsOpen] = useState(false)
-
-    function toggleTag(tag: string) {
-        setTags((current) =>
-            current.includes(tag)
-                ? current.filter((item) => item !== tag)
-                : [...current, tag],
-        )
-    }
 
     return (
         <Card>
@@ -143,54 +121,12 @@ function RoleAppearanceCard() {
 
                 <Field>
                     <FieldLabel htmlFor="user-tags">Tags</FieldLabel>
-                    <Popover open={tagsOpen} onOpenChange={setTagsOpen}>
-                        <PopoverTrigger
-                            render={
-                                <Button
-                                    id="user-tags"
-                                    type="button"
-                                    variant="outline"
-                                    className="h-auto min-h-8 w-full justify-between whitespace-normal"
-                                />
-                            }
-                        >
-                            <span className="flex flex-wrap gap-1">
-                                {tags.length > 0 ? (
-                                    tags.map((tag) => (
-                                        <Badge key={tag} variant="secondary">
-                                            {tag}
-                                        </Badge>
-                                    ))
-                                ) : (
-                                    <span className="text-muted-foreground">
-                                        Select tags
-                                    </span>
-                                )}
-                            </span>
-                            <ChevronsUpDownIcon className="text-muted-foreground size-4" />
-                        </PopoverTrigger>
-                        <PopoverContent align="start" className="w-(--anchor-width) p-0">
-                            <Command>
-                                <CommandInput placeholder="Search tags…" />
-                                <CommandList>
-                                    <CommandEmpty>No tags found.</CommandEmpty>
-                                    {TAG_OPTIONS.map((tag) => {
-                                        const selected = tags.includes(tag)
-                                        return (
-                                            <CommandItem
-                                                key={tag}
-                                                value={tag}
-                                                data-checked={selected}
-                                                onSelect={() => toggleTag(tag)}
-                                            >
-                                                {tag}
-                                            </CommandItem>
-                                        )
-                                    })}
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
+                    <TagsSelect
+                        id="user-tags"
+                        options={TAG_OPTIONS}
+                        value={tags}
+                        onValueChange={setTags}
+                    />
                 </Field>
 
                 <Separator />

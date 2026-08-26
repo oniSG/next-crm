@@ -3,13 +3,16 @@
 import { useRef, useState, type PointerEvent, type ReactNode } from 'react'
 
 import { EmailTagsInput } from '@/components/custom/inputs/email-tags-input'
+import { FileInput } from '@/components/custom/inputs/file-input'
 import {
     HexColorInput,
     normalizeHexColor,
 } from '@/components/custom/inputs/hex-color-input'
 import { RequiredIndicator } from '@/components/custom/other/required-indicator'
+import { TagsSelect } from '@/components/custom/inputs/tags-select'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
 import {
     Sheet,
     SheetContent,
@@ -29,6 +32,14 @@ type Props = {
 }
 
 const MIN_SETTINGS_WIDTH = 250
+const SURVEY_TAG_OPTIONS = [
+    'Customer feedback',
+    'Matchday',
+    'Internal',
+    'Priority',
+    'Marketing',
+    'Event',
+] as const
 
 export function ResizableSettingsColumn({ children }: { children: ReactNode }) {
     const [width, setWidth] = useState(432)
@@ -163,6 +174,27 @@ function GeneralSettings({
     minExpireDate,
     onChange,
 }: Props & { panelId: string }) {
+    function changeBackgroundImage(file: File | null) {
+        if (!file) {
+            onChange({ backgroundImage: null })
+            return
+        }
+
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+            if (typeof reader.result !== 'string') return
+
+            onChange({
+                backgroundImage: {
+                    name: file.name,
+                    size: file.size,
+                    url: reader.result,
+                },
+            })
+        })
+        reader.readAsDataURL(file)
+    }
+
     return (
         <div className="space-y-7">
             <SettingsGroup title="Survey">
@@ -189,19 +221,28 @@ function GeneralSettings({
                         }
                     />
                 </Field>
-                <Field>
-                    <FieldLabel htmlFor={`${panelId}-survey-thanks`}>
-                        Thank you message
+                <Field orientation="horizontal">
+                    <FieldLabel htmlFor={`${panelId}-survey-multiple`}>
+                        Multiple filling possible
                     </FieldLabel>
-                    <Textarea
-                        id={`${panelId}-survey-thanks`}
-                        value={survey.thankYouMessage}
-                        onChange={(event) =>
-                            onChange({ thankYouMessage: event.target.value })
-                        }
+                    <Switch
+                        id={`${panelId}-survey-multiple`}
+                        checked={survey.multiple}
+                        onCheckedChange={(multiple) => onChange({ multiple })}
                     />
                 </Field>
             </SettingsGroup>
+            <Separator />
+            <Field>
+                <FieldLabel htmlFor={`${panelId}-survey-tags`}>Tags</FieldLabel>
+                <TagsSelect
+                    id={`${panelId}-survey-tags`}
+                    options={SURVEY_TAG_OPTIONS}
+                    value={survey.tags}
+                    onValueChange={(tags) => onChange({ tags })}
+                />
+            </Field>
+            <Separator />
             <SettingsGroup title="Expiration">
                 <Field>
                     <FieldLabel htmlFor={`${panelId}-survey-expire`}>
@@ -262,6 +303,7 @@ function GeneralSettings({
                     </>
                 )}
             </SettingsGroup>
+            <Separator />
             <SettingsGroup title="Theme">
                 <Field>
                     <FieldLabel htmlFor={`${panelId}-survey-color`}>
@@ -276,14 +318,15 @@ function GeneralSettings({
                         }}
                     />
                 </Field>
-                <Field orientation="horizontal">
-                    <FieldLabel htmlFor={`${panelId}-survey-multiple`}>
-                        Multiple filling possible
+                <Field>
+                    <FieldLabel htmlFor={`${panelId}-survey-background-image`}>
+                        Background image
                     </FieldLabel>
-                    <Switch
-                        id={`${panelId}-survey-multiple`}
-                        checked={survey.multiple}
-                        onCheckedChange={(multiple) => onChange({ multiple })}
+                    <FileInput
+                        id={`${panelId}-survey-background-image`}
+                        accept="image/*"
+                        value={survey.backgroundImage}
+                        onFileChange={changeBackgroundImage}
                     />
                 </Field>
                 <Field orientation="horizontal">

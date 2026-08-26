@@ -116,14 +116,24 @@ export function buildSurveyPreviewData(
     return {
         name: text(formData, 'name', fallback.name),
         description: text(formData, 'description'),
-        thankYouMessage: text(formData, 'thank-you-message'),
+        thankYouTitle: text(formData, 'thank-you-title', fallback.thankYouTitle),
+        thankYouDescription: text(
+            formData,
+            'thank-you-description',
+            fallback.thankYouDescription,
+        ),
+        showThankYouLogo: fallback.showThankYouLogo,
+        thankYouLinkText: fallback.thankYouLinkText,
+        thankYouLinkUrl: fallback.thankYouLinkUrl,
         expireDate: text(formData, 'expire-date'),
         sharePublicly: checked(formData, 'share-publicly-after-expiration-date'),
         linkValidity: number(formData, 'link-validity', fallback.linkValidity),
         shareEmails: formData
             .getAll('share-emails[]')
             .filter((value): value is string => typeof value === 'string'),
+        tags: fallback.tags,
         color: normalizeHexColor(text(formData, 'customColor')) ?? fallback.color,
+        backgroundImage: fallback.backgroundImage,
         multiple: checked(formData, 'multiple'),
         showLogo: checked(formData, 'show-logo'),
         sections,

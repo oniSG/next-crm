@@ -28,7 +28,7 @@ export function SaveCancelActions({
                 className,
             )}
         >
-            <ButtonGroup className="w-full rounded-lg bg-white shadow-[0_12px_56px_12px_rgba(255,255,255,0.96)] md:w-fit">
+            <ButtonGroup className="bg-background w-full rounded-lg shadow-[0_12px_56px_12px_rgba(255,255,255,0.96)] md:w-fit dark:shadow-[0_12px_56px_12px_rgba(0,0,0,0.8)]">
                 <Button
                     type="button"
                     variant="outline"

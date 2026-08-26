@@ -21,7 +21,7 @@ export function RatingSettings({
     onValueChange: (value: number) => void
 }) {
     return (
-        <Field className="w-28 shrink-0">
+        <Field className="w-full">
             <FieldLabel htmlFor={id}>Star count</FieldLabel>
             <Select
                 value={String(value)}

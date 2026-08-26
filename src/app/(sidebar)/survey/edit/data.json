@@ -1,12 +1,22 @@
 {
     "name": "Matchday experience survey",
     "description": "Help us improve the stadium and matchday experience.",
-    "thankYouMessage": "Thank you for sharing your feedback with us.",
+    "thankYouTitle": "Thank you for your feedback",
+    "thankYouDescription": "Your response has been successfully submitted and will help us improve the matchday experience.",
+    "showThankYouLogo": true,
+    "thankYouLinkText": "Visit our website",
+    "thankYouLinkUrl": "https://example.com",
     "expireDate": "2026-09-30",
     "sharePublicly": true,
     "linkValidity": 30,
     "shareEmails": ["marketing@relatoo.cz", "support@relatoo.cz"],
+    "tags": ["Customer feedback", "Matchday"],
     "color": "#7EC71E",
+    "backgroundImage": {
+        "name": "football-logo.svg",
+        "size": 8190,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Football_%28soccer_ball%29.svg"
+    },
     "multiple": false,
     "showLogo": true,
     "sections": [

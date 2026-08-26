@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import {
     CalendarIcon,
+    CopyIcon,
+    EllipsisVerticalIcon,
+    ExternalLinkIcon,
     GripVerticalIcon,
     ImageIcon,
     PlusIcon,
@@ -31,6 +34,12 @@ import { SelectionInput } from '@/components/custom/inputs/selection-input'
 import { StarRatingInput } from '@/components/custom/inputs/star-rating-input'
 import { Button } from '@/components/ui/button'
 import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
     Card,
     CardContent,
     CardDescription,
@@ -42,21 +51,53 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 
+export function SurveyBackground({
+    survey,
+    as: Component = 'div',
+    className,
+    children,
+}: {
+    survey: SurveyFormData
+    as?: 'div' | 'main'
+    className?: string
+    children: ReactNode
+}) {
+    return (
+        <Component className={cn('relative isolate', className)}>
+            {survey.backgroundImage && (
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 z-0 bg-repeat"
+                    style={{
+                        backgroundImage: `url(${JSON.stringify(survey.backgroundImage.url)})`,
+                    }}
+                />
+            )}
+            {children}
+        </Component>
+    )
+}
+
 export function SurveyPreview({
     survey,
     showSubmit = true,
     className,
     fullScreenMobile = false,
+    showThankYouPage = false,
+    thankYouOnly = false,
+    thankYouLinkActive = false,
     sampleAnswerDate,
     readOnly = false,
     selectedQuestion,
     onSelectSurvey,
+    onSelectThankYou,
     onSelectSection,
     onSelectQuestion,
     onAddSection,
     onAddQuestion,
     onRemoveSection,
     onRemoveQuestion,
+    onDuplicateQuestion,
     onReorderSections,
     onReorderQuestions,
 }: {
@@ -64,16 +105,21 @@ export function SurveyPreview({
     showSubmit?: boolean
     className?: string
     fullScreenMobile?: boolean
+    showThankYouPage?: boolean
+    thankYouOnly?: boolean
+    thankYouLinkActive?: boolean
     sampleAnswerDate?: string
     readOnly?: boolean
     selectedQuestion?: { sectionId: string; questionId: string } | null
     onSelectSurvey?: () => void
+    onSelectThankYou?: () => void
     onSelectSection?: (sectionId: string) => void
     onSelectQuestion?: (sectionId: string, questionId: string) => void
     onAddSection?: () => void
     onAddQuestion?: (sectionId: string, afterQuestionId?: string) => void
     onRemoveSection?: (sectionId: string) => void
     onRemoveQuestion?: (sectionId: string, questionId: string) => void
+    onDuplicateQuestion?: (sectionId: string, questionId: string) => void
     onReorderSections?: (activeId: string, overId: string) => void
     onReorderQuestions?: (sectionId: string, activeId: string, overId: string) => void
 }) {
@@ -93,6 +139,7 @@ export function SurveyPreview({
         <div
             className={cn(
                 'w-full max-w-3xl min-w-0',
+                showThankYouPage && !thankYouOnly && 'space-y-4',
                 fullScreenMobile && 'max-sm:min-h-svh max-sm:max-w-none',
                 className,
             )}
@@ -103,161 +150,232 @@ export function SurveyPreview({
                 } as CSSProperties
             }
         >
-            <Card
-                className={cn(
-                    'min-w-0 shadow-sm',
-                    onSelectSection && 'overflow-visible',
-                    fullScreenMobile &&
-                        'max-sm:min-h-svh max-sm:rounded-none max-sm:shadow-none max-sm:ring-0',
-                )}
-            >
-                <CardHeader
+            {!thankYouOnly && (
+                <Card
                     className={cn(
-                        '-mt-(--card-spacing) border-b py-6',
-                        onSelectSurvey && 'cursor-pointer',
-                        fullScreenMobile && 'max-sm:rounded-none',
+                        'min-w-0 shadow-sm transition-opacity',
+                        onSelectSection && 'overflow-visible',
+                        fullScreenMobile &&
+                            'max-sm:min-h-svh max-sm:rounded-none max-sm:shadow-none max-sm:ring-0',
                     )}
-                    style={{
-                        backgroundColor:
-                            'color-mix(in srgb, var(--survey-color) 10%, transparent)',
-                    }}
-                    onClick={onSelectSurvey}
                 >
-                    <CardTitle className="text-2xl">{survey.name}</CardTitle>
-                    <CardDescription className="max-w-2xl text-base">
-                        {survey.description}
-                    </CardDescription>
-                    {survey.expireDate && (
-                        <div className="text-muted-foreground flex items-center gap-1.5 pt-2 text-xs">
-                            <CalendarIcon className="size-3.5" />
-                            Available until {survey.expireDate}
-                            {survey.multiple && ' · Multiple submissions allowed'}
-                        </div>
-                    )}
-                </CardHeader>
-                <CardContent className="min-w-0 space-y-10 p-0">
-                    <DndContext
-                        id="survey-preview-sections-dnd"
-                        sensors={sensors}
-                        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
-                        onDragStart={() => setSectionsCollapsed(true)}
-                        onDragCancel={() => setSectionsCollapsed(false)}
-                        onDragEnd={reorderSections}
+                    <CardHeader
+                        className={cn(
+                            '-mt-(--card-spacing) border-b py-6',
+                            onSelectSurvey && 'cursor-pointer',
+                            fullScreenMobile && 'max-sm:rounded-none',
+                        )}
+                        style={{
+                            backgroundColor:
+                                'color-mix(in srgb, var(--survey-color) 10%, transparent)',
+                        }}
+                        onClick={onSelectSurvey}
                     >
-                        <SortableContext
-                            items={survey.sections.map((section) => section.id)}
-                            strategy={verticalListSortingStrategy}
+                        <CardTitle className="text-2xl">{survey.name}</CardTitle>
+                        <CardDescription className="max-w-2xl text-base">
+                            {survey.description}
+                        </CardDescription>
+                        {survey.expireDate && (
+                            <div className="text-muted-foreground flex items-center gap-1.5 pt-2 text-xs">
+                                <CalendarIcon className="size-3.5" />
+                                Available until {survey.expireDate}
+                                {survey.multiple && ' · Multiple submissions allowed'}
+                            </div>
+                        )}
+                    </CardHeader>
+                    <CardContent className="min-w-0 space-y-10 p-0">
+                        <DndContext
+                            id="survey-preview-sections-dnd"
+                            sensors={sensors}
+                            modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+                            onDragStart={() => setSectionsCollapsed(true)}
+                            onDragCancel={() => setSectionsCollapsed(false)}
+                            onDragEnd={reorderSections}
                         >
-                            <div
-                                className={cn(
-                                    sectionsCollapsed ? 'space-y-0' : 'space-y-10',
-                                )}
+                            <SortableContext
+                                items={survey.sections.map((section) => section.id)}
+                                strategy={verticalListSortingStrategy}
                             >
-                                {survey.sections.map((section, sectionIndex) => (
-                                    <SurveySection
-                                        key={section.id}
-                                        title={section.name}
-                                        id={section.id}
-                                        sectionNumber={sectionIndex + 1}
-                                        showSeparator={sectionIndex > 0}
-                                        questionsCollapsed={sectionsCollapsed}
-                                        draggable={Boolean(onReorderSections)}
-                                        sensors={sensors}
-                                        questionIds={section.questions.map(
-                                            (question) => question.id,
-                                        )}
-                                        onQuestionDragEnd={(event) => {
-                                            if (
-                                                event.over &&
-                                                event.active.id !== event.over.id
-                                            ) {
-                                                onReorderQuestions?.(
-                                                    section.id,
-                                                    String(event.active.id),
-                                                    String(event.over.id),
-                                                )
+                                <div
+                                    className={cn(
+                                        sectionsCollapsed ? 'space-y-0' : 'space-y-10',
+                                    )}
+                                >
+                                    {survey.sections.map((section, sectionIndex) => (
+                                        <SurveySection
+                                            key={section.id}
+                                            title={section.name}
+                                            id={section.id}
+                                            sectionNumber={sectionIndex + 1}
+                                            showSeparator={sectionIndex > 0}
+                                            questionsCollapsed={sectionsCollapsed}
+                                            draggable={Boolean(onReorderSections)}
+                                            sensors={sensors}
+                                            questionIds={section.questions.map(
+                                                (question) => question.id,
+                                            )}
+                                            onQuestionDragEnd={(event) => {
+                                                if (
+                                                    event.over &&
+                                                    event.active.id !== event.over.id
+                                                ) {
+                                                    onReorderQuestions?.(
+                                                        section.id,
+                                                        String(event.active.id),
+                                                        String(event.over.id),
+                                                    )
+                                                }
+                                            }}
+                                            removable={Boolean(onRemoveSection)}
+                                            removeDisabled={survey.sections.length === 1}
+                                            onRemove={() => onRemoveSection?.(section.id)}
+                                            onSelect={() => onSelectSection?.(section.id)}
+                                            onAddQuestion={
+                                                onAddQuestion
+                                                    ? () => onAddQuestion(section.id)
+                                                    : undefined
                                             }
-                                        }}
-                                        removable={Boolean(onRemoveSection)}
-                                        removeDisabled={survey.sections.length === 1}
-                                        onRemove={() => onRemoveSection?.(section.id)}
-                                        onSelect={() => onSelectSection?.(section.id)}
-                                        onAddQuestion={
-                                            onAddQuestion
-                                                ? () => onAddQuestion(section.id)
-                                                : undefined
-                                        }
+                                        >
+                                            {section.questions.map((question) => (
+                                                <Question
+                                                    key={question.id}
+                                                    id={question.id}
+                                                    title={question.name}
+                                                    description={question.description}
+                                                    required={question.required}
+                                                    editable={Boolean(onSelectQuestion)}
+                                                    draggable={Boolean(
+                                                        onReorderQuestions,
+                                                    )}
+                                                    selected={
+                                                        selectedQuestion?.sectionId ===
+                                                            section.id &&
+                                                        selectedQuestion.questionId ===
+                                                            question.id
+                                                    }
+                                                    onSelect={() =>
+                                                        onSelectQuestion?.(
+                                                            section.id,
+                                                            question.id,
+                                                        )
+                                                    }
+                                                    removable={Boolean(onRemoveQuestion)}
+                                                    copyable={Boolean(
+                                                        onDuplicateQuestion,
+                                                    )}
+                                                    removeDisabled={
+                                                        section.questions.length === 1
+                                                    }
+                                                    onRemove={() =>
+                                                        onRemoveQuestion?.(
+                                                            section.id,
+                                                            question.id,
+                                                        )
+                                                    }
+                                                    onDuplicate={() =>
+                                                        onDuplicateQuestion?.(
+                                                            section.id,
+                                                            question.id,
+                                                        )
+                                                    }
+                                                >
+                                                    <QuestionInput
+                                                        question={question}
+                                                        name={`answers[${section.id}][${question.id}]`}
+                                                        disabled={readOnly}
+                                                        sampleAnswerDate={
+                                                            sampleAnswerDate
+                                                        }
+                                                    />
+                                                </Question>
+                                            ))}
+                                        </SurveySection>
+                                    ))}
+                                </div>
+                            </SortableContext>
+                        </DndContext>
+                        {onAddSection && (
+                            <>
+                                <Separator />
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    className="mx-4 w-fit"
+                                    onClick={onAddSection}
+                                >
+                                    <PlusIcon />
+                                    Add section
+                                </Button>
+                            </>
+                        )}
+                        {showSubmit && (
+                            <>
+                                <Separator />
+                                <div className="flex items-center justify-end gap-3 px-4 pb-4">
+                                    {survey.showLogo && <PlaceholderLogo />}
+                                    <Button type="submit">Submit survey</Button>
+                                </div>
+                            </>
+                        )}
+                    </CardContent>
+                </Card>
+            )}
+            {showThankYouPage && (
+                <Card
+                    className={cn(
+                        'min-w-0 shadow-sm transition-opacity',
+                        onSelectThankYou && 'cursor-pointer',
+                    )}
+                    role={onSelectThankYou ? 'button' : undefined}
+                    tabIndex={onSelectThankYou ? 0 : undefined}
+                    onClick={onSelectThankYou}
+                    onKeyDown={(event) => {
+                        if (
+                            onSelectThankYou &&
+                            (event.key === 'Enter' || event.key === ' ')
+                        ) {
+                            event.preventDefault()
+                            onSelectThankYou()
+                        }
+                    }}
+                >
+                    <CardHeader>
+                        <CardTitle>{survey.thankYouTitle || 'Thank you'}</CardTitle>
+                        <CardDescription>
+                            {survey.thankYouDescription || 'Thank you for your response.'}
+                        </CardDescription>
+                    </CardHeader>
+                    {(survey.thankYouLinkText || survey.showThankYouLogo) && (
+                        <CardContent className="flex items-center justify-between gap-4">
+                            {survey.thankYouLinkText &&
+                                (thankYouLinkActive ? (
+                                    <a
+                                        href={survey.thankYouLinkUrl}
+                                        className="inline-flex items-center gap-1.5 font-medium"
+                                        style={{ color: 'var(--survey-color)' }}
                                     >
-                                        {section.questions.map((question) => (
-                                            <Question
-                                                key={question.id}
-                                                id={question.id}
-                                                title={question.name}
-                                                description={question.description}
-                                                required={question.required}
-                                                editable={Boolean(onSelectQuestion)}
-                                                draggable={Boolean(onReorderQuestions)}
-                                                selected={
-                                                    selectedQuestion?.sectionId ===
-                                                        section.id &&
-                                                    selectedQuestion.questionId ===
-                                                        question.id
-                                                }
-                                                onSelect={() =>
-                                                    onSelectQuestion?.(
-                                                        section.id,
-                                                        question.id,
-                                                    )
-                                                }
-                                                removable={Boolean(onRemoveQuestion)}
-                                                removeDisabled={
-                                                    section.questions.length === 1
-                                                }
-                                                onRemove={() =>
-                                                    onRemoveQuestion?.(
-                                                        section.id,
-                                                        question.id,
-                                                    )
-                                                }
-                                            >
-                                                <QuestionInput
-                                                    question={question}
-                                                    name={`answers[${section.id}][${question.id}]`}
-                                                    disabled={readOnly}
-                                                    sampleAnswerDate={sampleAnswerDate}
-                                                />
-                                            </Question>
-                                        ))}
-                                    </SurveySection>
+                                        <ExternalLinkIcon className="size-4" />
+                                        {survey.thankYouLinkText}
+                                    </a>
+                                ) : (
+                                    <span
+                                        className="inline-flex items-center gap-1.5 font-medium"
+                                        style={{ color: 'var(--survey-color)' }}
+                                        onClick={(event) => event.stopPropagation()}
+                                    >
+                                        <ExternalLinkIcon className="size-4" />
+                                        {survey.thankYouLinkText}
+                                    </span>
                                 ))}
-                            </div>
-                        </SortableContext>
-                    </DndContext>
-                    {onAddSection && (
-                        <>
-                            <Separator />
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                className="mx-4 w-fit"
-                                onClick={onAddSection}
-                            >
-                                <PlusIcon />
-                                Add section
-                            </Button>
-                        </>
+                            {survey.showThankYouLogo && (
+                                <div className="ml-auto">
+                                    <PlaceholderLogo />
+                                </div>
+                            )}
+                        </CardContent>
                     )}
-                    {showSubmit && (
-                        <>
-                            <Separator />
-                            <div className="flex items-center justify-end gap-3 px-4 pb-4">
-                                {survey.showLogo && <PlaceholderLogo />}
-                                <Button type="submit">Submit survey</Button>
-                            </div>
-                        </>
-                    )}
-                </CardContent>
-            </Card>
+                </Card>
+            )}
         </div>
     )
 }
@@ -365,7 +483,7 @@ function SurveySection({
                     className={cn(
                         'flex items-center gap-3',
                         onSelect &&
-                            'sticky top-12 z-10 -mx-4 cursor-pointer border-b border-transparent bg-white/90 px-4 py-2 backdrop-blur-md dark:bg-black/80',
+                            'bg-card/90 sticky top-12 z-10 -mx-4 cursor-pointer border-b border-transparent px-4 py-2 backdrop-blur-md',
                         isHeaderStuck && 'border-border',
                     )}
                     role={onSelect ? 'button' : undefined}
@@ -378,6 +496,21 @@ function SurveySection({
                         }
                     }}
                 >
+                    {draggable && (
+                        <Button
+                            ref={setActivatorNodeRef}
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            className="text-muted-foreground shrink-0 cursor-grab touch-none active:cursor-grabbing"
+                            aria-label={`Move section ${sectionNumber}`}
+                            onClick={(event) => event.stopPropagation()}
+                            {...attributes}
+                            {...listeners}
+                        >
+                            <GripVerticalIcon />
+                        </Button>
+                    )}
                     <span
                         className="flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white"
                         style={{ backgroundColor: 'var(--survey-color)' }}
@@ -407,24 +540,6 @@ function SurveySection({
                             Add question
                         </Button>
                     )}
-                    {draggable && (
-                        <Button
-                            ref={setActivatorNodeRef}
-                            type="button"
-                            variant="ghost"
-                            size="icon-sm"
-                            className={cn(
-                                'text-muted-foreground cursor-grab touch-none active:cursor-grabbing',
-                                !onAddQuestion && 'ml-auto',
-                            )}
-                            aria-label={`Move section ${sectionNumber}`}
-                            onClick={(event) => event.stopPropagation()}
-                            {...attributes}
-                            {...listeners}
-                        >
-                            <GripVerticalIcon />
-                        </Button>
-                    )}
                     {removable && (
                         <Button
                             type="button"
@@ -432,7 +547,7 @@ function SurveySection({
                             size="icon-sm"
                             className={cn(
                                 'text-muted-foreground hover:text-destructive',
-                                !draggable && 'ml-auto',
+                                !onAddQuestion && 'ml-auto',
                             )}
                             disabled={removeDisabled}
                             aria-label={`Remove section ${sectionNumber}`}
@@ -615,6 +730,8 @@ function Question({
     removable = false,
     removeDisabled = false,
     onRemove,
+    copyable = false,
+    onDuplicate,
     draggable = false,
 }: {
     id: string
@@ -628,6 +745,8 @@ function Question({
     removable?: boolean
     removeDisabled?: boolean
     onRemove?: () => void
+    copyable?: boolean
+    onDuplicate?: () => void
     draggable?: boolean
 }) {
     const {
@@ -661,18 +780,7 @@ function Question({
                 }
             }}
         >
-            <div className="flex min-w-0 items-start gap-2">
-                <FieldLabel
-                    className={cn(
-                        'min-w-0 flex-1 items-start text-base',
-                        editable && 'max-w-full overflow-hidden',
-                    )}
-                >
-                    <span className={cn(editable && 'min-w-0 flex-1 truncate')}>
-                        {title}
-                    </span>
-                    {required && <RequiredIndicator />}
-                </FieldLabel>
+            <div className="flex min-w-0 items-center gap-2">
                 {draggable && (
                     <Button
                         ref={setActivatorNodeRef}
@@ -688,21 +796,63 @@ function Question({
                         <GripVerticalIcon />
                     </Button>
                 )}
-                {removable && (
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        className="text-muted-foreground hover:text-destructive shrink-0"
-                        disabled={removeDisabled}
-                        aria-label={`Remove question ${title}`}
-                        onClick={(event) => {
-                            event.stopPropagation()
-                            onRemove?.()
-                        }}
-                    >
-                        <Trash2Icon />
-                    </Button>
+                <FieldLabel
+                    className={cn(
+                        'min-w-0 flex-1 items-start text-base',
+                        editable && 'max-w-full overflow-hidden',
+                    )}
+                >
+                    <span className={cn(editable && 'min-w-0 flex-1 truncate')}>
+                        {title}
+                    </span>
+                    {required && <RequiredIndicator />}
+                </FieldLabel>
+                {(copyable || removable) && (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger
+                            render={
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    className="text-muted-foreground shrink-0"
+                                    aria-label={`Question actions for ${title}`}
+                                    onClick={(event) => event.stopPropagation()}
+                                />
+                            }
+                        >
+                            <EllipsisVerticalIcon />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                            align="end"
+                            className="min-w-52 whitespace-nowrap"
+                        >
+                            {copyable && (
+                                <DropdownMenuItem
+                                    onClick={(event) => {
+                                        event.stopPropagation()
+                                        onDuplicate?.()
+                                    }}
+                                >
+                                    <CopyIcon />
+                                    Duplicate question
+                                </DropdownMenuItem>
+                            )}
+                            {removable && (
+                                <DropdownMenuItem
+                                    variant="destructive"
+                                    disabled={removeDisabled}
+                                    onClick={(event) => {
+                                        event.stopPropagation()
+                                        onRemove?.()
+                                    }}
+                                >
+                                    <Trash2Icon />
+                                    Remove question
+                                </DropdownMenuItem>
+                            )}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 )}
             </div>
             {description && (
