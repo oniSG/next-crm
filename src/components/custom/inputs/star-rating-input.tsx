@@ -35,7 +35,7 @@ export function StarRatingInput({
         <div
             role="radiogroup"
             aria-label="Rating"
-            className={cn('flex w-fit items-center gap-1', className)}
+            className={cn('flex w-fit items-center gap-0.5 sm:gap-1', className)}
             onMouseLeave={() => setHoveredValue(null)}
         >
             {Array.from({ length: count }, (_, index) => {
@@ -46,7 +46,7 @@ export function StarRatingInput({
                     <label
                         key={starValue}
                         className={cn(
-                            'relative cursor-pointer rounded-md p-0.5 transition-transform hover:scale-110',
+                            'relative cursor-pointer rounded-md p-0 transition-transform hover:scale-110 sm:p-0.5',
                             disabled && 'cursor-not-allowed opacity-50 hover:scale-100',
                         )}
                         onMouseEnter={() => {
@@ -62,7 +62,12 @@ export function StarRatingInput({
                             required={required}
                             aria-label={`${starValue} of ${count} stars`}
                             className="peer sr-only"
-                            onChange={() => changeValue(starValue)}
+                            onClick={() =>
+                                changeValue(
+                                    !required && value === starValue ? 0 : starValue,
+                                )
+                            }
+                            onChange={() => undefined}
                         />
                         <span className="peer-focus-visible:ring-ring block rounded-md peer-focus-visible:ring-3">
                             <StarIcon
@@ -76,7 +81,7 @@ export function StarRatingInput({
                                         : undefined
                                 }
                                 className={cn(
-                                    'size-8 transition-colors',
+                                    'size-5 transition-colors sm:size-8',
                                     !selected && 'text-muted-foreground/35',
                                 )}
                             />

@@ -13,6 +13,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export type EmailTagsInputProps = {
     id?: string
     name?: string
+    value?: string[]
     defaultValue?: string[]
     placeholder?: string
     disabled?: boolean
@@ -24,6 +25,7 @@ export type EmailTagsInputProps = {
 export function EmailTagsInput({
     id,
     name = 'emails',
+    value: controlledValue,
     defaultValue = [],
     placeholder = 'email@example.com',
     disabled,
@@ -31,13 +33,16 @@ export function EmailTagsInput({
     className,
     onValueChange,
 }: EmailTagsInputProps) {
-    const [emails, setEmails] = useState(() => uniqueEmails(defaultValue))
+    const [uncontrolledEmails, setUncontrolledEmails] = useState(() =>
+        uniqueEmails(defaultValue),
+    )
+    const emails = controlledValue ? uniqueEmails(controlledValue) : uncontrolledEmails
     const [draft, setDraft] = useState('')
     const [error, setError] = useState<string | null>(null)
     const [open, setOpen] = useState(false)
 
     function updateEmails(nextEmails: string[]) {
-        setEmails(nextEmails)
+        if (!controlledValue) setUncontrolledEmails(nextEmails)
         onValueChange?.(nextEmails)
     }
 

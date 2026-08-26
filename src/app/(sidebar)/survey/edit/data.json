@@ -1,0 +1,146 @@
+{
+    "name": "Matchday experience survey",
+    "description": "Help us improve the stadium and matchday experience.",
+    "thankYouMessage": "Thank you for sharing your feedback with us.",
+    "expireDate": "2026-09-30",
+    "sharePublicly": true,
+    "linkValidity": 30,
+    "shareEmails": ["marketing@relatoo.cz", "support@relatoo.cz"],
+    "color": "#7EC71E",
+    "multiple": false,
+    "showLogo": true,
+    "sections": [
+        {
+            "id": "section-1",
+            "name": "Overall experience",
+            "questions": [
+                {
+                    "id": "question-1",
+                    "name": "How would you rate your overall matchday experience, including arrival, stadium atmosphere, seating comfort, staff helpfulness, refreshments, and the journey home after the final whistle?",
+                    "description": "Please consider every part of your visit from the moment you approached the stadium until you left the surrounding area, including signage, queues, security checks, cleanliness, entertainment, and the overall feeling of the event.",
+                    "type": "rating",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-2",
+                    "name": "How likely are you to visit another match at this stadium during the next season and recommend the complete experience to friends, family members, or colleagues?",
+                    "description": "Select the value that best represents your intention to return, taking into account the quality of the event, the price of admission, available services, accessibility, and your overall satisfaction.",
+                    "type": "linear-scale",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 8,
+                    "textStart": "Not likely",
+                    "textEnd": "Very likely",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [],
+                    "multipleSelection": false
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "name": "Services and facilities",
+            "questions": [
+                {
+                    "id": "question-1",
+                    "name": "Which stadium services, facilities, hospitality areas, information points, food stands, merchandise shops, and accessibility options did you use during your visit?",
+                    "description": "Choose every relevant option and consider all services you interacted with before the match, during the event, at half-time, and while leaving the venue after the match.",
+                    "type": "selection",
+                    "required": false,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Refreshments",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Fan shop",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-3",
+                            "label": "Other",
+                            "allowSecondaryText": true,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": true
+                },
+                {
+                    "id": "question-2",
+                    "isNew": false,
+                    "name": "How would you evaluate each detailed part of the stadium services and facilities during your complete matchday visit?",
+                    "description": "This grid intentionally contains long row and column labels so truncation and tooltips can be tested in the survey editor.",
+                    "type": "answer-grid",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": [
+                        "Venue layout, cleanliness, signage, and overall accessibility",
+                        "Staff friendliness, availability, knowledge, and speed of assistance",
+                        "Refreshment selection, quality, pricing, and waiting times",
+                        "Pre-match entertainment, crowd atmosphere, and in-stadium audio"
+                    ],
+                    "columns": [
+                        "Very poor and significantly below what I expected",
+                        "Below expectations with several noticeable problems",
+                        "Generally good with only a few areas for improvement",
+                        "Excellent and consistently better than I expected"
+                    ],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                }
+            ]
+        }
+    ]
+}

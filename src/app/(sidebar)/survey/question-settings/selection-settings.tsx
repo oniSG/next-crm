@@ -1,6 +1,6 @@
 'use client'
 
-import { SelectionOptionsPopover } from '@/components/custom/inputs/selection-options-popover'
+import { SelectionOptionsList } from '@/components/custom/inputs/selection-options-list'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Switch } from '@/components/ui/switch'
 import type { SurveyQuestion } from '../temp'
@@ -21,14 +21,14 @@ export function SelectionSettings({
     onMultipleChange: (value: boolean) => void
 }) {
     return (
-        <div className="grid grid-cols-[1fr_auto] items-center gap-3 pl-11">
-            <SelectionOptionsPopover
+        <div className="space-y-4 pl-11">
+            <SelectionOptionsList
                 id={`${id}-options`}
                 name={`${name}[options]`}
                 value={value}
                 onValueChange={onValueChange}
             />
-            <Field orientation="horizontal">
+            <Field orientation="horizontal" className="justify-between">
                 <FieldLabel htmlFor={`${id}-multiple-selection`}>
                     Multiple options
                 </FieldLabel>

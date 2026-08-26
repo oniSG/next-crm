@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+
 import { AppSidebar } from '@/components/custom/layout/app-sidebar'
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
 
@@ -9,7 +11,9 @@ export default function Layout({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>{children}</SidebarInset>
+            <SidebarInset>
+                <Suspense fallback={null}>{children}</Suspense>
+            </SidebarInset>
         </SidebarProvider>
     )
 }

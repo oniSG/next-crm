@@ -1,0 +1,388 @@
+{
+    "name": "Matchday experience survey",
+    "description": "Help us improve your stadium visit. Completing the survey takes only a few minutes.",
+    "thankYouMessage": "Thank you for sharing your feedback.",
+    "expireDate": "2026-09-30",
+    "sharePublicly": true,
+    "linkValidity": 30,
+    "shareEmails": [],
+    "color": "#c71eb3",
+    "multiple": true,
+    "showLogo": true,
+    "sections": [
+        {
+            "id": "section-1",
+            "name": "Basic information",
+            "questions": [
+                {
+                    "id": "question-1",
+                    "isNew": false,
+                    "name": "What did you enjoy most about your complete stadium visit, from arriving in the surrounding area and finding your entrance to watching the match and travelling home afterward?",
+                    "description": "Share your experience in your own words and feel free to mention the atmosphere, organization, staff, seating, refreshments, entertainment, accessibility, or any memorable interaction during the day.",
+                    "type": "text",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-2",
+                    "isNew": false,
+                    "name": "On which date did you attend the event that you are evaluating in this detailed matchday experience survey?",
+                    "description": "Select the exact date of your visit so that we can connect your feedback with the correct fixture, venue configuration, staffing plan, and services available on that particular day.",
+                    "type": "date",
+                    "required": false,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-3",
+                    "isNew": false,
+                    "name": "How would you rate the complete experience across arrival, entry, seating, atmosphere, staff assistance, refreshments, facilities, and departure from the stadium?",
+                    "description": "Choose from one to five stars after considering every stage of your visit rather than focusing only on the sporting result or one individual interaction.",
+                    "type": "rating",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-4",
+                    "isNew": false,
+                    "name": "How would you rate the atmosphere?",
+                    "description": "This question demonstrates a ten-star rating.",
+                    "type": "rating",
+                    "required": false,
+                    "starCount": 10,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                }
+            ]
+        },
+        {
+            "id": "section-2",
+            "name": "Services and preferences",
+            "questions": [
+                {
+                    "id": "question-1",
+                    "isNew": false,
+                    "name": "Which service did you use most?",
+                    "description": "Select one option.",
+                    "type": "selection",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Refreshments",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Fan shop",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-3",
+                            "label": "Parking",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-4",
+                            "label": "Other",
+                            "allowSecondaryText": true,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-2",
+                    "isNew": false,
+                    "name": "Which areas should we improve?",
+                    "description": "Select all applicable options.",
+                    "type": "selection",
+                    "required": false,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Queue times",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Food selection",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-3",
+                            "label": "Signage",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-4",
+                            "label": "Other",
+                            "allowSecondaryText": true,
+                            "secondaryTextRequired": true
+                        }
+                    ],
+                    "multipleSelection": true
+                }
+            ]
+        },
+        {
+            "id": "section-3",
+            "name": "Detailed evaluation",
+            "questions": [
+                {
+                    "id": "question-1",
+                    "isNew": false,
+                    "name": "Would you recommend the event?",
+                    "description": "A compact three-point linear scale.",
+                    "type": "linear-scale",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 3,
+                    "textStart": "Definitely not",
+                    "textEnd": "Definitely yes",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-2",
+                    "isNew": false,
+                    "name": "How likely are you to visit again?",
+                    "description": "A detailed eight-point linear scale.",
+                    "type": "linear-scale",
+                    "required": false,
+                    "starCount": 5,
+                    "rateCount": 8,
+                    "textStart": "Not likely",
+                    "textEnd": "Very likely",
+                    "rows": ["Row 1"],
+                    "columns": ["Column 1", "Column 2"],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-3",
+                    "isNew": false,
+                    "name": "Rate each part of your visit",
+                    "description": "Choose one answer in every row.",
+                    "type": "answer-grid",
+                    "required": true,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": [
+                        "Venue layout, cleanliness, signage, and overall accessibility",
+                        "Staff friendliness, availability, knowledge, and speed of assistance",
+                        "Refreshment selection, quality, pricing, and waiting times",
+                        "Pre-match entertainment, crowd atmosphere, and in-stadium audio"
+                    ],
+                    "columns": [
+                        "Very poor and significantly below what I expected",
+                        "Below expectations with several noticeable problems",
+                        "Generally good with only a few areas for improvement",
+                        "Excellent and consistently better than I expected"
+                    ],
+                    "checkMoreOptions": false,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                },
+                {
+                    "id": "question-4",
+                    "isNew": false,
+                    "name": "Detailed 10 × 10 evaluation grid",
+                    "description": "This maximum-size grid allows multiple answers in every row.",
+                    "type": "answer-grid",
+                    "required": false,
+                    "starCount": 5,
+                    "rateCount": 5,
+                    "textStart": "",
+                    "textEnd": "",
+                    "rows": [
+                        "Detailed stadium experience evaluation area 1 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 2 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 3 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 4 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 5 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 6 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 7 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 8 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 9 with a deliberately long descriptive label",
+                        "Detailed stadium experience evaluation area 10 with a deliberately long descriptive label"
+                    ],
+                    "columns": [
+                        "Detailed response option 1 with intentionally extended wording",
+                        "Detailed response option 2 with intentionally extended wording",
+                        "Detailed response option 3 with intentionally extended wording",
+                        "Detailed response option 4 with intentionally extended wording",
+                        "Detailed response option 5 with intentionally extended wording",
+                        "Detailed response option 6 with intentionally extended wording",
+                        "Detailed response option 7 with intentionally extended wording",
+                        "Detailed response option 8 with intentionally extended wording",
+                        "Detailed response option 9 with intentionally extended wording",
+                        "Detailed response option 10 with intentionally extended wording"
+                    ],
+                    "checkMoreOptions": true,
+                    "selectionOptions": [
+                        {
+                            "id": "option-1",
+                            "label": "Option 1",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        },
+                        {
+                            "id": "option-2",
+                            "label": "Option 2",
+                            "allowSecondaryText": false,
+                            "secondaryTextRequired": false
+                        }
+                    ],
+                    "multipleSelection": false
+                }
+            ]
+        }
+    ]
+}

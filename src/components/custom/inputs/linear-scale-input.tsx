@@ -23,12 +23,12 @@ export function LinearScaleInput({
     disabled?: boolean
     required?: boolean
     className?: string
-    onValueChange?: (value: number) => void
+    onValueChange?: (value: number | undefined) => void
 }) {
     const safeCount = Math.min(8, Math.max(3, count))
     const [value, setValue] = useState(defaultValue)
 
-    function changeValue(nextValue: number) {
+    function changeValue(nextValue: number | undefined) {
         setValue(nextValue)
         onValueChange?.(nextValue)
     }
@@ -64,7 +64,14 @@ export function LinearScaleInput({
                                 required={required}
                                 aria-label={`${rateValue} of ${safeCount}`}
                                 className="peer sr-only"
-                                onChange={() => changeValue(rateValue)}
+                                onClick={() =>
+                                    changeValue(
+                                        !required && value === rateValue
+                                            ? undefined
+                                            : rateValue,
+                                    )
+                                }
+                                onChange={() => undefined}
                             />
                             <span
                                 style={
@@ -90,8 +97,12 @@ export function LinearScaleInput({
             </div>
             {(startLabel || endLabel) && (
                 <div className="text-muted-foreground flex justify-between gap-4 text-xs">
-                    <span>{startLabel}</span>
-                    <span className="text-right">{endLabel}</span>
+                    <span className="max-w-2/5 break-words whitespace-normal">
+                        {startLabel}
+                    </span>
+                    <span className="max-w-2/5 text-right break-words whitespace-normal">
+                        {endLabel}
+                    </span>
                 </div>
             )}
         </div>

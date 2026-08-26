@@ -1,5 +1,17 @@
 import type { SurveyFormData, SurveyQuestion, SurveySection } from './temp'
 
+export function getTodayDateInputValue() {
+    const parts = new Intl.DateTimeFormat('en', {
+        timeZone: 'Europe/Prague',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).formatToParts(new Date())
+    const values = Object.fromEntries(parts.map((part) => [part.type, part.value]))
+
+    return `${values.year}-${values.month}-${values.day}`
+}
+
 export function createDefaultSelectionOptions(): SurveyQuestion['selectionOptions'] {
     return [
         {
@@ -46,6 +58,11 @@ export function createDefaultSection(id = 'section-1'): SurveySection {
 }
 
 export function createDefaultSurveyData(): SurveyFormData {
+    const firstSection = createDefaultSection()
+    firstSection.name = 'Untitled section'
+    firstSection.questions[0].name = 'Untitled question'
+    firstSection.questions[0].description = 'Optional question description'
+
     return {
         name: 'Untitled survey',
         description: '',
@@ -57,6 +74,6 @@ export function createDefaultSurveyData(): SurveyFormData {
         color: '#7EC71E',
         multiple: false,
         showLogo: false,
-        sections: [createDefaultSection()],
+        sections: [firstSection],
     }
 }

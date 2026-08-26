@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
 
 import './../print.css'
 
@@ -74,7 +74,9 @@ export function PrintShell({
                 )}
             </header>
 
-            <main className="flex-1">{body}</main>
+            <main className="flex-1">
+                <Suspense fallback={null}>{body}</Suspense>
+            </main>
 
             <footer className="text-muted-foreground mt-8 grid grid-cols-3 items-center text-xs">
                 <span>

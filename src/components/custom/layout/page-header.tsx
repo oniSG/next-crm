@@ -20,11 +20,21 @@ export type Crumb = {
 type PageHeaderProps = {
     breadcrumbs?: Crumb[]
     children?: ReactNode
+    className?: string
 }
 
-export default function PageHeader({ breadcrumbs = [], children }: PageHeaderProps) {
+export default function PageHeader({
+    breadcrumbs = [],
+    children,
+    className,
+}: PageHeaderProps) {
     return (
-        <header className="bg-background sticky top-0 z-10 flex h-12 shrink-0 items-center gap-2 border-b">
+        <header
+            className={cn(
+                'bg-background sticky top-0 z-20 flex h-12 shrink-0 items-center gap-2 border-b',
+                className,
+            )}
+        >
             <div className="flex items-center gap-2 px-4">
                 <SidebarTrigger className="-ml-1" />
                 {breadcrumbs.length > 0 && (

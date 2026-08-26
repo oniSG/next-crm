@@ -38,7 +38,9 @@ export function SelectionInput({
             ? checked
                 ? [...value, optionValue]
                 : value.filter((item) => item !== optionValue)
-            : [optionValue]
+            : checked
+              ? [optionValue]
+              : []
 
         setValue(nextValue)
         onValueChange?.(nextValue)
@@ -86,9 +88,19 @@ export function SelectionInput({
                                     accentColor: 'var(--survey-color, var(--primary))',
                                 }}
                                 className="size-4"
-                                onChange={(event) =>
-                                    changeValue(option.value, event.target.checked)
-                                }
+                                onClick={() => {
+                                    if (!multiple) {
+                                        changeValue(
+                                            option.value,
+                                            required && checked ? true : !checked,
+                                        )
+                                    }
+                                }}
+                                onChange={(event) => {
+                                    if (multiple) {
+                                        changeValue(option.value, event.target.checked)
+                                    }
+                                }}
                             />
                             <span>{option.label}</span>
                         </label>
